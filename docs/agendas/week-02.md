@@ -5,7 +5,7 @@
 | Location: | Drebbelweg PC1 - Cube 6 |
 | Chair | Anne-Sophie |
 | Minute Taker | Niels |
-| Attendees: | Niels, Anne-Sophie,   |
+| Attendees: | Niels, Anne-Sophie, Ayoub, Eelco, Giulia, Thijmen|
 
 Agenda Items:
 
