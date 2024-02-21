@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseTest {
 
-    private static final Event SOME_EVENT = new Event("Drinkfest");
+//    private static final Event SOME_EVENT = new Event("Drinkfest");
 //    private static final Participant SOME_PARTICIPANT = new Participant("A", "B");
 
 //    @Test
