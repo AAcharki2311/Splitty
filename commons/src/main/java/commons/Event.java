@@ -13,14 +13,18 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    private long code;
     private String name;
     private Date creationDate;
     private Date lastActDate;
 
+    public Event(String name) {
+        this.name = name;
+        creationDate = new Date();
+    }
+
     /**
      * The getter for the Event-ID
+     *
      * @return the Event-ID
      */
     public long getId() {
@@ -28,15 +32,8 @@ public class Event {
     }
 
     /**
-     * The getter for the access code of the Event
-     * @return the access code of the Event
-     */
-    public long getCode() {
-        return code;
-    }
-
-    /**
      * The getter for the name of the Event
+     *
      * @return the name of the Event
      */
     public String getName() {
@@ -45,6 +42,7 @@ public class Event {
 
     /**
      * The getter for the creation date of the Event
+     *
      * @return the creation date of the Event
      */
     public Date getCreationDate() {
@@ -53,6 +51,7 @@ public class Event {
 
     /**
      * The getter for the date of the last activity of the Event
+     *
      * @return the last activity date of the Event
      */
     public Date getLastActDate() {
@@ -61,6 +60,7 @@ public class Event {
 
     /**
      * The setter for the name of the Event
+     *
      * @param name the name to set the name of the Event to
      */
     public void setName(String name) {
@@ -69,6 +69,7 @@ public class Event {
 
     /**
      * The setter for the date of the last activity of the Event
+     *
      * @param lastActDate the date to set the last activity date of the Event to
      */
     public void setLastActDate(Date lastActDate) {
@@ -78,6 +79,7 @@ public class Event {
     /**
      * The equality method for Event
      * Events are considered equal iff they are both Events and their id's match
+     *
      * @param o the object to compare to
      * @return True if equal
      */
@@ -89,6 +91,12 @@ public class Event {
         return id == event.id;
     }
 
+    /**
+     * The hashing method for Event
+     * The hash is solely based on the Event-ID
+     *
+     * @return the hash of the Event
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);
