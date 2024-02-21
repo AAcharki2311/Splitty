@@ -9,7 +9,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
-import java.util.Objects;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
@@ -96,7 +95,7 @@ public class Event {
      * The equality method for Event
      * Events are considered equal iff they are both Events and their id's match
      *
-     * @param o the object to compare to
+     * @param obj the object to compare to
      * @return True if equal
      */
     @Override
