@@ -28,8 +28,8 @@ public class EventTest {
     public void checkEquals() {
         Event e1 = new Event("TestEvent1");
         Event e2 = new Event("TestEvent2");
-        assertNotEquals(e1, e2);
-        assertEquals(e1, e1);
+        assertFalse(e1.equals(e2));
+        assertTrue(e1.equals(e1));
     }
 
     @Test
