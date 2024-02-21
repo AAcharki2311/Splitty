@@ -24,12 +24,13 @@ public class Event {
     /**
      * The constructor for Event without args
      */
-    public Event(){
+    public Event() {
         //for object mapper
     }
 
     /**
      * The constructor for Event
+     *
      * @param name The name for the event
      */
     public Event(String name) {
@@ -116,6 +117,7 @@ public class Event {
 
     /**
      * A method to return event in a human-readable format
+     *
      * @return A string with the Event object converted to a Human-Readable Format
      */
     @Override

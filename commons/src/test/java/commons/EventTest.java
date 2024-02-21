@@ -2,6 +2,8 @@ package commons;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EventTest {
@@ -16,6 +18,20 @@ public class EventTest {
         Event e = new Event("TestEvent");
         assertEquals("TestEvent", e.getName());
     }
+    
+    @Test
+    public void checkCreationDateGetter() {
+        Event e = new Event("TestEvent");
+        assertNotNull(e.getCreationDate());
+    }
+
+    @Test
+    public void checkActivityDate() {
+        Event e = new Event("TestEvent");
+        Date d = new Date();
+        e.setLastActDate(d);
+        assertEquals(d, e.getLastActDate());
+    }
 
     @Test
     public void checkNameSetter() {
@@ -25,11 +41,22 @@ public class EventTest {
     }
 
     @Test
-    public void checkEquals() {
+    public void checkEqualsNotSame() {
         Event e1 = new Event("TestEvent1");
         Event e2 = new Event("TestEvent2");
         assertFalse(e1.equals(e2));
-        assertTrue(e1.equals(e1));
+    }
+
+    @Test
+    public void checkEqualsSelf() {
+        Event e = new Event("TestEvent");
+        assertTrue(e.equals(e));
+    }
+
+    @Test
+    public void checkEqualsNull() {
+        Event e = new Event("TestEvent");
+        assertFalse(e.equals(null));
     }
 
     @Test
