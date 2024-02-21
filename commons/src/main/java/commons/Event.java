@@ -4,9 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Event {
@@ -17,6 +22,17 @@ public class Event {
     private Date creationDate;
     private Date lastActDate;
 
+    /**
+     * The constructor for Event without args
+     */
+    public Event(){
+        //for object mapper
+    }
+
+    /**
+     * The constructor for Event
+     * @param name The name for the event
+     */
     public Event(String name) {
         this.name = name;
         creationDate = new Date();
@@ -84,11 +100,8 @@ public class Event {
      * @return True if equal
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
-        return id == event.id;
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     /**
@@ -99,6 +112,15 @@ public class Event {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    /**
+     * A method to return event in a human-readable format
+     * @return A string with the Event object converted to a Human-Readable Format
+     */
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 }
