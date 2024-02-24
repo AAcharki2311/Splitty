@@ -6,16 +6,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseTest {
 
-//    private static final Event SOME_EVENT = new Event("Drinkfest");
-//    private static final Participant SOME_PARTICIPANT = new Participant("A", "B");
+    private static final Event SOME_EVENT = new Event("Drinkfest");
+    private static final Participant SOME_PARTICIPANT = new Participant(1205, SOME_EVENT,"A", "B");
 
-//    @Test
-//    public void checkConstructor() {
+    @Test
+    public void checkConstructor() {
 //        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
-//        assertEquals(SOME_EVENT, e.event);
+        var e = new Expense(SOME_EVENT, 4.50, new Date(2024-11-10), "snack", "food");
+        assertEquals(SOME_EVENT, e.event);
 //        assertEquals(SOME_PARTICIPANT, e.participant);
-//        assertNotNull(e.expense);
-//    }
+        assertNotNull(e);
+    }
 
     @Test
     void getId() {

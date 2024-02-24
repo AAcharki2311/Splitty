@@ -18,9 +18,9 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "eventId")
-//    protected Event event;
+    @ManyToOne
+    @JoinColumn(name = "eventId")
+    protected Event event;
 
 //    @ManyToOne
 //    @JoinColumn(name = "creditorId")
@@ -40,17 +40,17 @@ public class Expense {
 
     /**
      * Constructor for creating a new expense
-//     * @param event the {Event} associated with this {Expense}
+     * @param event the {Event} associated with this {Expense}
 //     * @param participant the {participant} associated with this {Expense}
      * @param amount amount of the expense
      * @param date date of the expense
      * @param description description of the expense
      * @param tag tag of the expense
      */
-    public Expense(//Event event, Participant participant,//TODO: add participant class
+    public Expense(Event event, //Participant participant,
                    double amount, Date date,
                    String description, String tag) {
-//        this.event = event;
+        this.event = event;
 //        this.participant = participant;
         this.amount = amount;
         this.date = date;
@@ -66,17 +66,17 @@ public class Expense {
         return id;
     }
 
-//    /**
-//     * Getter for the ID of the event
-//     * @return ID of the event
-//     */
-//    public long getEventId() {
-//        if (event != null) {
-//            return event.getId();
-//        } else {
-//            return 00;
-//        }
-//    }
+    /**
+     * Getter for the ID of the event
+     * @return ID of the event
+     */
+    public long getEventId() {
+        if (event != null) {
+            return event.getId();
+        } else {
+            return 0;
+        }
+    }
 
 //    /**
 //     * Getter for the ID of the creditor
@@ -84,7 +84,7 @@ public class Expense {
 //     */
 //    public long getCreditorId() {
 //        if (participant != null) {
-//            return participant.getId();
+//            return participant.getP_id();
 //        } else {
 //            return 00;
 //        }
