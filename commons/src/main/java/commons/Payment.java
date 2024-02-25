@@ -24,7 +24,7 @@ public class Payment {
         this.ev_id = ev_id;
         this.p_id = p_id;
         this.amount = amount;
-        date = new Date();
+        this.date = date;
     }
 
     /**
