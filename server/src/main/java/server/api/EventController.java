@@ -8,8 +8,6 @@ import commons.Participant;
 import server.database.EventRepository;
 import java.util.*;
 
-import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
-
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -60,7 +58,7 @@ public class EventController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Event> add(@RequestBody Event event) {
-        if (event == null || isNullOrEmpty(event.getName())) { // Add other attributes
+        if (event == null || event.getName() == null) { // Add other attributes + Check isNullOrEmpty
             return ResponseEntity.badRequest().build();
         }
         Event postedEvent = eventRepository.save(event);
