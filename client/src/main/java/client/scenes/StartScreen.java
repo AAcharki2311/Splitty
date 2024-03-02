@@ -30,7 +30,7 @@ import javafx.fxml.Initializable;
 //import javafx.scene.control.TableColumn;
 //import javafx.scene.control.TableView;
 
-public class QuoteOverviewCtrl implements Initializable {
+public class StartScreen implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -47,7 +47,7 @@ public class QuoteOverviewCtrl implements Initializable {
 //    private TableColumn<Quote, String> colQuote;
 
     @Inject
-    public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public StartScreen(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -64,8 +64,8 @@ public class QuoteOverviewCtrl implements Initializable {
     }
 
     public void refresh() {
-          var quotes = server.getQuotes();
-          System.out.println(quotes);
+        var quotes = server.getQuotes();
+        System.out.println(quotes);
 //        data = FXCollections.observableList(quotes);
 //        table.setItems(data);
     }
