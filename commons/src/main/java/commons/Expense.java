@@ -22,9 +22,9 @@ public class Expense {
     @JoinColumn(name = "eventId")
     protected Event event;
 
-//    @ManyToOne
-//    @JoinColumn(name = "creditorId")
-//    protected Participant participant;
+    @ManyToOne
+    @JoinColumn(name = "creditorId")
+    protected Participant participant;
 
     private double amount;
     private Date date;
@@ -47,11 +47,11 @@ public class Expense {
      * @param description description of the expense
      * @param tag tag of the expense
      */
-    public Expense(Event event, //Participant participant,
+    public Expense(Event event, Participant participant,
                    double amount, Date date,
                    String description, String tag) {
         this.event = event;
-//        this.participant = participant;
+        this.participant = participant;
         this.amount = amount;
         this.date = date;
         this.description = description;

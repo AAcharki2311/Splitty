@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import java.util.*;
 @Entity
 public class Payment {
-    private int p1_id;
-    private int p2_id;
+    @ManyToOne
+    @JoinColumn(name = "payerId")
+    private Participant payer;
+    @ManyToOne
+    @JoinColumn(name = "payeeId")
+    private Participant payee;
     @ManyToOne
     @JoinColumn(name = "eventId")
     private Event event;
@@ -19,16 +23,16 @@ public class Payment {
     /**
      * Constructor for Payments
      *
-     * @param p1_id Participant 1 id
-     * @param p2_id Participant 2 id
+     * @param payer Participant 1 id
+     * @param payee Participant 2 id
      * @param event Event id
      * @param p_id Payment id
      * @param amount Amount paid
      * @param date Date of the payment
      */
-    public Payment (int p1_id, int p2_id, Event event, int p_id, int amount, Date date) {
-        this.p1_id = p1_id;
-        this.p2_id = p2_id;
+    public Payment (Participant payer, Participant payee, Event event, int p_id, int amount, Date date) {
+        this.payer = payer;
+        this.payee = payee;
         this.event = event;
         this.p_id = p_id;
         this.amount = amount;
@@ -36,43 +40,43 @@ public class Payment {
     }
 
     /**
-     * The getter for p1_id
+     * The getter for payer
      *
-     * @return Participant 1 id
+     * @return Participant who paid
      */
-    public int getP1_id() {
-        return p1_id;
+    public Participant getPayer() {
+        return payer;
     }
 
     /**
-     * The setter for p1_id
+     * The setter for payer
      *
-     * @param p1_id Participant 1 id
+     * @param payer Participant who paid
      */
-    public void setP1_id(int p1_id) {
-        this.p1_id = p1_id;
+    public void setPayer(Participant payer) {
+        this.payer = payer;
     }
 
     /**
-     * The getter for p2_id
+     * The getter for payee
      *
-     * @return Participant 2 id
+     * @return Participant who got paid
      */
-    public int getP2_id() {
-        return p2_id;
+    public Participant getPayee() {
+        return payee;
     }
 
     /**
-     * The setter for p2_id
+     * The setter for payee
      *
-     * @param p2_id Participant 2 id
+     * @param payee Participant who got paid
      */
-    public void setP2_id(int p2_id) {
-        this.p2_id = p2_id;
+    public void setPayee(Participant payee) {
+        this.payee = payee;
     }
 
     /**
-     * The getter for ev_id
+     * The getter for event
      *
      * @return Event id
      */
@@ -160,14 +164,14 @@ public class Payment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(p1_id, p2_id, event, p_id, amount, date);
+        return Objects.hash(payer, payee, event, p_id, amount, date);
     }
 
     @Override
     public String toString() {
         return "Payments{" +
-                "p1_id=" + p1_id +
-                ", p2_id=" + p2_id +
+                "payer=" + payer +
+                ", payee=" + payee +
                 ", event=" + event +
                 ", p_id=" + p_id +
                 ", amount=" + amount +
