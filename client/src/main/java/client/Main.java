@@ -26,7 +26,7 @@ import com.google.inject.Injector;
 import client.scenes.AddQuoteCtrl;
 import client.scenes.MainCtrl;
 // import client.scenes.QuoteOverviewCtrl;
-import client.scenes.StartScreen;
+// import client.scenes.StartScreen;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
