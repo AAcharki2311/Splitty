@@ -25,6 +25,8 @@ public class MainCtrl {
     private Stage primaryStage;
 
     private QuoteOverviewCtrl overviewCtrl;
+
+    // private StartScreen overviewCtrl;
     private Scene overview;
 
     private AddQuoteCtrl addCtrl;
@@ -44,13 +46,13 @@ public class MainCtrl {
     }
 
     public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
+        primaryStage.setTitle("Splitty23");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 
     public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
+        primaryStage.setTitle("Splitty23");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
