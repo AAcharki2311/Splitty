@@ -8,6 +8,8 @@ import commons.Participant;
 import server.database.EventRepository;
 import java.util.*;
 
+import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
+
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -58,7 +60,7 @@ public class EventController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Event> add(@RequestBody Event event) {
-        if (event.getName() == null || event.getName().isEmpty()) { // Use id instead of name? + add other fields
+        if (event == null || isNullOrEmpty(event.getName())) { // Add other attributes
             return ResponseEntity.badRequest().build();
         }
         Event postedEvent = eventRepository.save(event);
@@ -81,7 +83,8 @@ public class EventController {
         if (currentEvent == null) {
             return ResponseEntity.notFound().build();
         }
-        currentEvent.setName(event.getName()); // Update just the name?
+        currentEvent.setName(event.getName());
+        currentEvent.setLastActDate(event.getLastActDate());
 
         Event newEvent = eventRepository.save(currentEvent);
         return ResponseEntity.ok(newEvent);
