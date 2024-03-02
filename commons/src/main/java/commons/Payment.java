@@ -1,9 +1,17 @@
 package commons;
+import jakarta.persistence.*;
+
 import java.util.*;
+@Entity
 public class Payment {
     private int p1_id;
     private int p2_id;
-    private int ev_id;
+    @ManyToOne
+    @JoinColumn(name = "eventId")
+    private Event event;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int p_id;
     private int amount;
     private Date date;
@@ -13,15 +21,15 @@ public class Payment {
      *
      * @param p1_id Participant 1 id
      * @param p2_id Participant 2 id
-     * @param ev_id Event id
+     * @param event Event id
      * @param p_id Payment id
      * @param amount Amount paid
      * @param date Date of the payment
      */
-    public Payment (int p1_id, int p2_id, int ev_id, int p_id, int amount, Date date) {
+    public Payment (int p1_id, int p2_id, Event event, int p_id, int amount, Date date) {
         this.p1_id = p1_id;
         this.p2_id = p2_id;
-        this.ev_id = ev_id;
+        this.event = event;
         this.p_id = p_id;
         this.amount = amount;
         this.date = date;
@@ -68,17 +76,17 @@ public class Payment {
      *
      * @return Event id
      */
-    public int getEv_id() {
-        return ev_id;
+    public Event getEvent() {
+        return event;
     }
 
     /**
-     * The setter for ev_id
+     * The setter for event
      *
-     * @param ev_id Event id
+     * @param event Event
      */
-    public void setEv_id(int ev_id) {
-        this.ev_id = ev_id;
+    public void setEv_id(Event event) {
+        this.event = event;
     }
 
     /**
@@ -152,7 +160,7 @@ public class Payment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(p1_id, p2_id, ev_id, p_id, amount, date);
+        return Objects.hash(p1_id, p2_id, event, p_id, amount, date);
     }
 
     @Override
@@ -160,7 +168,7 @@ public class Payment {
         return "Payments{" +
                 "p1_id=" + p1_id +
                 ", p2_id=" + p2_id +
-                ", ev_id=" + ev_id +
+                ", event=" + event +
                 ", p_id=" + p_id +
                 ", amount=" + amount +
                 ", date=" + date +
