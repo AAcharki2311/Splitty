@@ -4,9 +4,7 @@ import client.scenes.MainCtrl;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.shape.Circle;
 
 import java.net.URL;
 

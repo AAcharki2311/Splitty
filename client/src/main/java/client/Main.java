@@ -15,7 +15,7 @@
  */
 package client;
 
-import static com.google.inject.Guice.createInjector;
+//import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,7 +26,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
