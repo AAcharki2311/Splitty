@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.Participant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
