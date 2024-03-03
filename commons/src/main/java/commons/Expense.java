@@ -70,25 +70,17 @@ public class Expense {
      * Getter for the ID of the event
      * @return ID of the event
      */
-    public long getEventId() {
-        if (event != null) {
-            return event.getId();
-        } else {
-            return 0;
-        }
+    public Event getEvent() {
+        return event;
     }
 
-//    /**
-//     * Getter for the ID of the creditor
-//     * @return ID of the creditor
-//     */
-//    public long getCreditorId() {
-//        if (participant != null) {
-//            return participant.getP_id();
-//        } else {
-//            return 00;
-//        }
-//    }
+    /**
+     * Getter for the creditor
+     * @return the creditor
+     */
+    public Participant getCreditor() {
+        return participant;
+    }
 
     /**
      * Getter for the amount of the expense
