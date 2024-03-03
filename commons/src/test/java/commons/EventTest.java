@@ -18,7 +18,7 @@ public class EventTest {
         Event e = new Event("TestEvent");
         assertEquals("TestEvent", e.getName());
     }
-    
+
     @Test
     public void checkCreationDateGetter() {
         Event e = new Event("TestEvent");
@@ -65,5 +65,13 @@ public class EventTest {
         Event e2 = new Event("TestEvent2");
         assertEquals(e1.hashCode(), e1.hashCode());
         assertNotEquals(e1.hashCode(), e2.hashCode());
+    }
+
+    @Test
+    public void checkToString() {
+        Event e = new Event("TestEvent");
+        var actual = e.toString();
+        assertTrue(actual.contains(Event.class.getSimpleName()));
+        assertTrue(actual.contains("TestEvent"));
     }
 }

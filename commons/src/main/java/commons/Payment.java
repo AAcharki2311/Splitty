@@ -1,42 +1,53 @@
 package commons;
 import jakarta.persistence.*;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 import java.util.*;
+
 @Entity
 public class Payment {
-    @ManyToOne
-    @JoinColumn(name = "payerId")
-    private Participant payer;
-    @ManyToOne
-    @JoinColumn(name = "payeeId")
-    private Participant payee;
-    @ManyToOne
-    @JoinColumn(name = "eventId")
-    private Event event;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int p_id;
-    private int amount;
+    private long id;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "eventId")
+    private Event event;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "payerId")
+    private Participant payer;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "receivId")
+    private Participant receiv;
+
+    private double amount;
     private Date date;
 
     /**
      * Constructor for Payments
      *
      * @param payer Participant 1 id
-     * @param payee Participant 2 id
+     * @param receiv Participant 2 id
      * @param event Event id
-     * @param p_id Payment id
      * @param amount Amount paid
      * @param date Date of the payment
      */
-    public Payment (Participant payer, Participant payee, Event event, int p_id, int amount, Date date) {
-        this.payer = payer;
-        this.payee = payee;
+    public Payment (Event event, Participant payer, Participant receiv, double amount, Date date) {
         this.event = event;
-        this.p_id = p_id;
+        this.payer = payer;
+        this.receiv = receiv;
         this.amount = amount;
         this.date = date;
+    }
+
+    /**
+     * The default constructor for the Payment without args
+     */
+    public Payment() {
+        // for object mapper
     }
 
     /**
@@ -58,21 +69,21 @@ public class Payment {
     }
 
     /**
-     * The getter for payee
+     * The getter for receiv
      *
      * @return Participant who got paid
      */
-    public Participant getPayee() {
-        return payee;
+    public Participant getReceiv() {
+        return receiv;
     }
 
     /**
-     * The setter for payee
+     * The setter for receiv
      *
-     * @param payee Participant who got paid
+     * @param receiv Participant who got paid
      */
-    public void setPayee(Participant payee) {
-        this.payee = payee;
+    public void setReceiv(Participant receiv) {
+        this.receiv = receiv;
     }
 
     /**
@@ -89,7 +100,7 @@ public class Payment {
      *
      * @param event Event
      */
-    public void setEv_id(Event event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
@@ -98,17 +109,17 @@ public class Payment {
      *
      * @return Payment id
      */
-    public int getP_id() {
-        return p_id;
+    public long getId() {
+        return id;
     }
 
     /**
      * The setter for p_id
      *
-     * @param p_id Payment id
+     * @param id Payment id
      */
-    public void setP_id(int p_id) {
-        this.p_id = p_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -116,7 +127,7 @@ public class Payment {
      *
      * @return Amount paid
      */
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -125,7 +136,7 @@ public class Payment {
      *
      * @param amount Amount paid
      */
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -144,38 +155,38 @@ public class Payment {
      * @param date Date of the payment
      */
     public void setDate(Date date) {
-        date = new Date();
+        this.date = date;
     }
 
     /**
      * The equality for the class Payments
      * Two payments are equal if they are both objects Payments and their ids match
      *
-     * @param o The object to compare to
+     * @param obj The object to compare to
      * @return True if equal, False if not or null
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Payment payments = (Payment) o;
-        return p_id == payments.p_id;
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
+    /**
+     * The hashcode for the class Payments
+     *
+     * @return The hashcode of the object
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(payer, payee, event, p_id, amount, date);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * The toString method for the class Payments
+     *
+     * @return The string representation of the object
+     */
     @Override
     public String toString() {
-        return "Payments{" +
-                "payer=" + payer +
-                ", payee=" + payee +
-                ", event=" + event +
-                ", p_id=" + p_id +
-                ", amount=" + amount +
-                ", date=" + date +
-                '}';
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 }

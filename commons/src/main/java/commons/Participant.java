@@ -1,40 +1,53 @@
 package commons;
-
 import jakarta.persistence.*;
 
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long p_id;
-    @ManyToOne
+    private long id;
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "eventId")
     private Event event;
     private String name;
     private String email;
+    private String iban;
+    private String bic;
 
     /**
      *
-     * @param p_id the id of this person
      * @param event the event that this person belongs to
      * @param name the name of this person
      * @param email the email of this person
+     * @param iban the iban of this person
+     * @param bic the bic of this person
      */
-    public Participant(long p_id, Event event, String name, String email) {
-        this.p_id = p_id;
+    public Participant(Event event, String name, String email, String iban, String bic) {
         this.event = event;
         this.name = name;
         this.email = email;
+        this.iban = iban;
+        this.bic = bic;
+    }
+
+    /**
+     * The constructor for Participant without args
+     */
+    public Participant() {
+        //for object mapper
     }
 
     /**
      * Getter for the id of this participant
      * @return the id of this participant
      */
-    public long getP_id() {
-        return p_id;
+    public long getId() {
+        return id;
     }
 
     /**
@@ -78,16 +91,45 @@ public class Participant {
     }
 
     /**
+     * getter for the iban of this person
+     * @return the iban of this person
+     */
+    public String getIban() {
+        return iban;
+    }
+
+    /**
+     * setter for the iban of this person
+     * @param iban the new iban of this person
+     */
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    /**
+     * getter for the bic of this person
+     * @return the bic of this person
+     */
+    public String getBic() {
+        return bic;
+    }
+
+    /**
+     * setter for the bic of this person
+     * @param bic the new bic of this person
+     */
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
+    /**
      * Equals method
-     * @param o the object to be compared
+     * @param obj the object to be compared
      * @return true or false depending on equality
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Participant that = (Participant) o;
-        return p_id == that.p_id && Objects.equals(event, that.event) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     /**
@@ -96,7 +138,7 @@ public class Participant {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(p_id, event, name, email);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     /**
@@ -105,12 +147,7 @@ public class Participant {
      */
     @Override
     public String toString() {
-        return "Participant{" +
-                "p_id=" + p_id +
-                ", event=" + event +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 }
 
