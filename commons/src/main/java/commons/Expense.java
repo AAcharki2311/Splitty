@@ -41,7 +41,7 @@ public class Expense {
     /**
      * Constructor for creating a new expense
      * @param event the {Event} associated with this {Expense}
-//     * @param participant the {participant} associated with this {Expense}
+     * @param participant the {participant} associated with this {Expense}
      * @param amount amount of the expense
      * @param date date of the expense
      * @param description description of the expense
