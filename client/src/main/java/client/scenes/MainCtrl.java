@@ -24,8 +24,8 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+    /// private QuoteOverviewCtrl overviewCtrl;
+    // private Scene overview;
     private AddQuoteCtrl addCtrl;
     private Scene add;
     private Scene startScene;
@@ -51,12 +51,6 @@ public class MainCtrl {
 
         showStart();
         primaryStage.show();
-    }
-
-    public void showOverview() {
-        primaryStage.setTitle("Splitty23");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
     }
 
     public void showAdd() {

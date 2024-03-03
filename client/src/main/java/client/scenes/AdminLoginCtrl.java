@@ -14,8 +14,8 @@ public class AdminLoginCtrl {
     @FXML
     private Label pwtext;
 
-    private MainCtrl mc;
-    private String pw;
+    private final MainCtrl mc;
+    private final String pw;
     @Inject
     public AdminLoginCtrl(MainCtrl m) {
         this.mc = m;
