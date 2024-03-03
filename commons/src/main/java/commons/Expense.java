@@ -22,9 +22,9 @@ public class Expense {
     @JoinColumn(name = "eventId")
     protected Event event;
 
-//    @ManyToOne
-//    @JoinColumn(name = "creditorId")
-//    protected Participant participant;
+    @ManyToOne
+    @JoinColumn(name = "creditorId")
+    protected Participant participant;
 
     private double amount;
     private Date date;
@@ -41,17 +41,17 @@ public class Expense {
     /**
      * Constructor for creating a new expense
      * @param event the {Event} associated with this {Expense}
-//     * @param participant the {participant} associated with this {Expense}
+     * @param participant the {participant} associated with this {Expense}
      * @param amount amount of the expense
      * @param date date of the expense
      * @param description description of the expense
      * @param tag tag of the expense
      */
-    public Expense(Event event, //Participant participant,
+    public Expense(Event event, Participant participant,
                    double amount, Date date,
                    String description, String tag) {
         this.event = event;
-//        this.participant = participant;
+        this.participant = participant;
         this.amount = amount;
         this.date = date;
         this.description = description;
@@ -70,25 +70,17 @@ public class Expense {
      * Getter for the ID of the event
      * @return ID of the event
      */
-    public long getEventId() {
-        if (event != null) {
-            return event.getId();
-        } else {
-            return 0;
-        }
+    public Event getEvent() {
+        return event;
     }
 
-//    /**
-//     * Getter for the ID of the creditor
-//     * @return ID of the creditor
-//     */
-//    public long getCreditorId() {
-//        if (participant != null) {
-//            return participant.getP_id();
-//        } else {
-//            return 00;
-//        }
-//    }
+    /**
+     * Getter for the creditor
+     * @return the creditor
+     */
+    public Participant getCreditor() {
+        return participant;
+    }
 
     /**
      * Getter for the amount of the expense

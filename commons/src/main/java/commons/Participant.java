@@ -1,9 +1,16 @@
 package commons;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
 public class Participant {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int p_id;
+    @ManyToOne
+    @JoinColumn(name = "eventId")
     private Event event;
     private String name;
     private String email;
