@@ -1,14 +1,12 @@
 package client.scenes;
 
-// import client.scenes.MainCtrl;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 
 import java.net.URL;
 
-// import java.awt.*;
 import java.util.ResourceBundle;
 
 public class EventOverviewCtrl implements Initializable {
@@ -16,9 +14,9 @@ public class EventOverviewCtrl implements Initializable {
     private MainCtrl mc;
 
     @FXML
-    private ChoiceBox<String> choiceBoxOne;
+    private ComboBox<String> comboBoxOne;
 
-//    here must go an array with names
+    //    here must go an array with names
     private String[] names = {"John", "Chris", "Anna"};
 
     @Inject
@@ -28,7 +26,7 @@ public class EventOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        choiceBoxOne.getItems().addAll(names);
+        comboBoxOne.getItems().addAll(names);
     }
 
     public void clickInvite() {
@@ -37,6 +35,18 @@ public class EventOverviewCtrl implements Initializable {
 
     public void clickBack() {
         mc.showStart();
+    }
+
+    public void clickAddExpense() {
+        mc.showExpense();
+    }
+
+    public void clickAddParticipant() {
+        mc.showParticipant();
+    }
+
+    public void clickEditParticipant() {
+        mc.showEditParticipant();
     }
 
 
