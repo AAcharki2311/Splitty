@@ -6,18 +6,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseTest {
 
-    private static final Event SOME_EVENT = new Event("Drinkfest");
-    private static final Participant SOME_PARTICIPANT = new Participant(1205, SOME_EVENT,"A", "B");
+    private static final Event SOME_EVENT = new Event("TestEvent");
+
+    private static final Participant SOME_PARTICIPANT = new Participant(SOME_EVENT, "Max",
+            "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+
 
     @Test
     public void checkConstructor() {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
-//        var e = new Expense(SOME_EVENT, 4.50, new Date(2024-11-10), "snack", "food");
         assertEquals(SOME_EVENT, e.event);
         assertEquals(SOME_PARTICIPANT, e.participant);
         assertNotNull(e);
     }
-
 
     @Test
     void getEvent() {
@@ -45,9 +46,9 @@ class ExpenseTest {
     }
 
     @Test
-    void getDescription() {
+    void getTitle() {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
-        assertEquals("snack", e.getDescription());
+        assertEquals("snack", e.getTitle());
     }
 
     @Test
@@ -71,10 +72,10 @@ class ExpenseTest {
     }
 
     @Test
-    void setDescription() {
+    void setTitle() {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
-        e.setDescription("drinks");
-        assertEquals("drinks", e.getDescription());
+        e.setTitle("drinks");
+        assertEquals("drinks", e.getTitle());
     }
 
     @Test
@@ -86,10 +87,14 @@ class ExpenseTest {
 
     @Test
     public void hasToString() {
-        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food").toString();
-        assertTrue(e.contains(Expense.class.getSimpleName()));
-        assertTrue(e.contains("\n"));
-        assertTrue(e.contains("amount"));
+        var actual = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food").toString();
+        assertTrue(actual.contains(Expense.class.getSimpleName()));
+        assertTrue(actual.contains(SOME_EVENT.toString()));
+        assertTrue(actual.contains(SOME_PARTICIPANT.toString()));
+        assertTrue(actual.contains("4.5"));
+        assertTrue(actual.contains("snack"));
+        assertTrue(actual.contains("food"));
+        assertTrue(actual.contains(new Date(2024-11-10).toString()));
     }
 
     @Test

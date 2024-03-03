@@ -1,6 +1,6 @@
 package commons;
-
 import jakarta.persistence.*;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,17 +18,17 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "eventId")
     protected Event event;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "creditorId")
     protected Participant participant;
 
     private double amount;
     private Date date;
-    private String description;
+    private String title;
     private String tag;
 
     /**
@@ -44,17 +44,17 @@ public class Expense {
      * @param participant the {participant} associated with this {Expense}
      * @param amount amount of the expense
      * @param date date of the expense
-     * @param description description of the expense
+     * @param title description of the expense
      * @param tag tag of the expense
      */
     public Expense(Event event, Participant participant,
                    double amount, Date date,
-                   String description, String tag) {
+                   String title, String tag) {
         this.event = event;
         this.participant = participant;
         this.amount = amount;
         this.date = date;
-        this.description = description;
+        this.title = title;
         this.tag = tag;
     }
 
@@ -99,11 +99,11 @@ public class Expense {
     }
 
     /**
-     * Getter for the description of the expense
-     * @return description of the expense
+     * Getter for the title of the expense
+     * @return title of the expense
      */
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
     /**
@@ -131,11 +131,11 @@ public class Expense {
     }
 
     /**
-     * Setter for the description of the expense
-     * @param description of the expense
+     * Setter for the title of the expense
+     * @param title of the expense
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
