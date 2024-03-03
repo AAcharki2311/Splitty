@@ -23,44 +23,28 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
-    private QuoteOverviewCtrl overviewCtrl;
-
-    // private StartScreen overviewCtrl;
-    private Scene overview;
-    private AddQuoteCtrl addCtrl;
     private Scene add;
     private Scene startScene;
     private Scene eventOverviewScene;
     private Scene inviteScene;
+    private Scene aloginScene;
 
+    private Scene adashScene;
 
-
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair <StartScreenCtrl, Parent> start,
-                           Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite) {
+    public void initialize(Stage primaryStage,
+                           Pair <StartScreenCtrl, Parent> start,
+                           Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
+                           Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash){
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
 
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
         this.startScene = new Scene(start.getValue());
         this.eventOverviewScene = new Scene(eventO.getValue());
         this.inviteScene = new Scene(invite.getValue());
+        this.aloginScene = new Scene(alogin.getValue());
+        this.adashScene = new Scene(adash.getValue());
+
         showStart();
         primaryStage.show();
-    }
-
-    public void showOverview() {
-        primaryStage.setTitle("Splitty23");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
-
-    public void showAdd() {
-        primaryStage.setTitle("Splitty23");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
     public void showStart() {
@@ -76,5 +60,15 @@ public class MainCtrl {
     public void showInvite() {
         primaryStage.setTitle("Invite");
         primaryStage.setScene(inviteScene);
+    }
+
+    public void showAdminLogin () {
+        primaryStage.setTitle("Admin Login");
+        primaryStage.setScene(aloginScene);
+    }
+
+    public void showAdminDashboard() {
+        primaryStage.setTitle("Admin Dashboard");
+        primaryStage.setScene(adashScene);
     }
 }

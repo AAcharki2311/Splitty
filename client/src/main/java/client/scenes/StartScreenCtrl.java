@@ -1,18 +1,10 @@
 package client.scenes;
 
-import client.scenes.MainCtrl;
 import jakarta.inject.Inject;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-
-import java.awt.*;
 
 public class StartScreenCtrl {
 
-    private MainCtrl mc;
-    @FXML
-    private Button createBtn;
-
+    private final MainCtrl mc;
     @Inject
     public StartScreenCtrl(MainCtrl mc) {
         this.mc = mc;
@@ -22,4 +14,7 @@ public class StartScreenCtrl {
         mc.showEventOverview();
     }
 
+    public void clickAdmin() {
+        mc.showAdminLogin();
+    }
 }
