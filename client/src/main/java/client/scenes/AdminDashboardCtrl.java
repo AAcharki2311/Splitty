@@ -8,22 +8,16 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.awt.*;
 
-public class StartScreenCtrl {
+public class AdminDashboardCtrl {
 
     private MainCtrl mc;
-    @FXML
-    private Button createBtn;
 
     @Inject
-    public StartScreenCtrl(MainCtrl mc) {
+    public AdminDashboardCtrl(MainCtrl mc) {
         this.mc = mc;
     }
 
-    public void clickEvent() {
-        mc.showEventOverview();
-    }
-
-    public void clickAdmin() {
-        mc.showAdminLogin();
+    public void clickStart() {
+        mc.showStart();
     }
 }
