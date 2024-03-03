@@ -41,4 +41,5 @@
    <Button layoutX="272.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickAddParticipant" text="Add" />
    <Circle fx:id="backBtn" fill="#ff6159" layoutX="642.0" layoutY="14.0" onMouseClicked="#clickBack" radius="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
    <ComboBox fx:id="comboBoxOne" layoutX="428.0" layoutY="98.0" prefWidth="150.0" promptText="Names" />
+   <Button layoutX="418.0" layoutY="210.0" mnemonicParsing="false" onAction="#clickEditExpense" text="Edit Expense" />
 </AnchorPane>

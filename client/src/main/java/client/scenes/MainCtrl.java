@@ -29,6 +29,7 @@ public class MainCtrl {
     private Scene expenseScene;
     private Scene participantScene;
     private Scene editParticipantScene;
+    private Scene editExpenseScene;
     private Scene aloginScene;
     private Scene adashScene;
 
@@ -36,7 +37,7 @@ public class MainCtrl {
                            Pair <StartScreenCtrl, Parent> start,
                            Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
                            Pair <ExpenseCtrl, Parent> expense, Pair <ParticipantCtrl, Parent> participant,
-                           Pair <EditParticipantCtrl, Parent> editParticipant,
+                           Pair <EditParticipantCtrl, Parent> editParticipant, Pair <EditExpenseCtrl, Parent> editExpense,
                            Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash){
         this.primaryStage = primaryStage;
 
@@ -46,6 +47,7 @@ public class MainCtrl {
         this.expenseScene = new Scene(expense.getValue());
         this.participantScene = new Scene(participant.getValue());
         this.editParticipantScene = new Scene(editParticipant.getValue());
+        this.editExpenseScene = new Scene(editExpense.getValue());
 
         this.aloginScene = new Scene(alogin.getValue());
         this.adashScene = new Scene(adash.getValue());
@@ -84,6 +86,10 @@ public class MainCtrl {
         primaryStage.setScene(editParticipantScene);
     }
 
+    public void showEditExpense() {
+        primaryStage.setTitle("Edit Expense");
+        primaryStage.setScene(editExpenseScene);
+    }
 
     public void showAdminLogin () {
         primaryStage.setTitle("Admin Login");

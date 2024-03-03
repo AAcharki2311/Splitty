@@ -49,5 +49,10 @@ public class EventOverviewCtrl implements Initializable {
         mc.showEditParticipant();
     }
 
+    public void clickEditExpense() {
+        mc.showEditExpense();
+    }
+
+
 
 }
