@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.scenes.MainCtrl;
+// import client.scenes.MainCtrl;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,7 +8,7 @@ import javafx.scene.control.ChoiceBox;
 
 import java.net.URL;
 
-import java.awt.*;
+// import java.awt.*;
 import java.util.ResourceBundle;
 
 public class EventOverviewCtrl implements Initializable {

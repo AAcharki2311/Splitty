@@ -1,12 +1,12 @@
 package client.scenes;
 
-import client.scenes.MainCtrl;
+// import client.scenes.MainCtrl;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import org.apache.commons.lang3.RandomStringUtils;
+// import org.apache.commons.lang3.RandomStringUtils;
 
-import java.awt.*;
+// import java.awt.*;
 
 public class StartScreenCtrl {
 
