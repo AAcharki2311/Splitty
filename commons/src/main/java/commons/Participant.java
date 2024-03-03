@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int p_id;
+    private long p_id;
     @ManyToOne
     @JoinColumn(name = "eventId")
     private Event event;
@@ -22,7 +22,7 @@ public class Participant {
      * @param name the name of this person
      * @param email the email of this person
      */
-    public Participant(int p_id, Event event, String name, String email) {
+    public Participant(long p_id, Event event, String name, String email) {
         this.p_id = p_id;
         this.event = event;
         this.name = name;
@@ -33,7 +33,7 @@ public class Participant {
      * Getter for the id of this participant
      * @return the id of this participant
      */
-    public int getP_id() {
+    public long getP_id() {
         return p_id;
     }
 
