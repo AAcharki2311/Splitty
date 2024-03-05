@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.languageSwitchInterface;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;

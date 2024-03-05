@@ -1,12 +1,13 @@
 package client.scenes;
 
+import client.utils.languageSwitchInterface;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 
-public class ParticipantCtrl implements languageSwitchInterface{
+public class ParticipantCtrl implements languageSwitchInterface {
 
     private MainCtrl mc;
 

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ReadJSON;
+import client.utils.languageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

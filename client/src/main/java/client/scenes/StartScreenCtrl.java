@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.languageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, languageSwitchInterface{
+public class StartScreenCtrl implements Initializable, languageSwitchInterface {
     @FXML
     private ComboBox comboboxLanguage;
     private List<String> languages = new ArrayList<>(Arrays.asList("dutch", "english", "french"));
