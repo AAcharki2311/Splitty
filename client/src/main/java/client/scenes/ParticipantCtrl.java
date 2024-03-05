@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 
-public class ParticipantCtrl {
+public class ParticipantCtrl implements languageSwitchInterface{
 
     private MainCtrl mc;
 
@@ -45,5 +45,7 @@ public class ParticipantCtrl {
         System.out.println(meta.toString());
     }
 
+    @Override
+    public void langueageswitch(String taal) {
 
-}
+    }}

@@ -12,34 +12,48 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="144.0" layoutX="49.0" layoutY="210.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="58.0" layoutX="31.0" layoutY="75.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="150.0" layoutX="407.0" layoutY="73.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="191.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="144.0" layoutX="42.0" layoutY="218.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="111.0" layoutX="358.0" layoutY="78.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="277.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="284.0" layoutX="42.0" layoutY="78.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
    <Label layoutX="268.0" layoutY="16.0" text="EventName">
       <font>
          <Font name="Verdana Pro Cond Black" size="30.0" />
       </font>
    </Label>
-   <Button layoutX="559.0" layoutY="26.0" mnemonicParsing="false" onAction="#clickInvite" text="Send Invites" />
-   <Label layoutX="49.0" layoutY="77.0" text="Participants">
+   <Button fx:id="sendInviteBtn" layoutX="430.0" layoutY="328.0" mnemonicParsing="false" onAction="#clickInvite" prefHeight="25.0" prefWidth="160.0" text="Send Invites" />
+   <Label fx:id="partictext" layoutX="449.0" layoutY="80.0" text="Participants">
       <font>
          <Font name="Verdana Pro Cond Black" size="17.0" />
       </font></Label>
-   <Label layoutX="430.0" layoutY="77.0" text="Expenses" />
-   <Button layoutX="479.0" layoutY="312.0" mnemonicParsing="false" text="Settle Debts" />
-   <Button layoutX="503.0" layoutY="210.0" mnemonicParsing="false" onAction="#clickAddExpense" text="Add Expense" />
-   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+   <Label fx:id="expenstext" layoutX="60.0" layoutY="80.0" text="Expenses" textAlignment="CENTER">
+      <font>
+         <Font name="Verdana Pro Cond Black" size="17.0" />
+      </font></Label>
+   <Button fx:id="settleDebtsBtn" layoutX="430.0" layoutY="277.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Settle Debts" />
+   <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
-   <Label layoutX="66.0" layoutY="102.0" text="Names of particpants" />
-   <Button layoutX="99.0" layoutY="197.0" mnemonicParsing="false" text="All" />
-   <Button layoutX="129.0" layoutY="197.0" mnemonicParsing="false" text="From Name" />
-   <Button layoutX="208.0" layoutY="197.0" mnemonicParsing="false" text="Including Name" />
-   <Button layoutX="273.0" layoutY="73.0" mnemonicParsing="false" onAction="#clickEditParticipant" text="Edit" />
-   <Button layoutX="272.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickAddParticipant" text="Add" />
-   <Circle fx:id="backBtn" fill="#ff6159" layoutX="642.0" layoutY="14.0" onMouseClicked="#clickBack" radius="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
-   <ComboBox fx:id="comboBoxOne" layoutX="428.0" layoutY="98.0" prefWidth="150.0" promptText="Names" />
-   <Button layoutX="418.0" layoutY="210.0" mnemonicParsing="false" onAction="#clickEditExpense" text="Edit Expense" />
+   <Label layoutX="389.0" layoutY="105.0" text="Names of particpants" />
+   <Button fx:id="allBtn" layoutX="77.0" layoutY="208.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" text="All" />
+   <Button fx:id="fromNameBtn" layoutX="122.0" layoutY="208.0" maxHeight="25.0" maxWidth="79.0" minHeight="25.0" minWidth="79.0" mnemonicParsing="false" text="From Name" />
+   <Button fx:id="includingNameBtn" layoutX="205.0" layoutY="208.0" maxHeight="25.0" maxWidth="101.0" minHeight="25.0" minWidth="101.0" mnemonicParsing="false" text="Including Name" />
+   <Button fx:id="editBtn" layoutX="389.0" layoutY="148.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickEditParticipant" text="Edit" />
+   <Button fx:id="addBtn" layoutX="542.0" layoutY="148.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickAddParticipant" text="Add" />
+   <Label fx:id="expenstext1" layoutX="144.0" layoutY="104.0" text="show expenses of: " textFill="#656363">
+      <font>
+         <Font size="11.0" />
+      </font>
+   </Label>
+   <ComboBox fx:id="comboBoxOne" layoutX="87.0" layoutY="116.0" prefWidth="150.0" promptText="Names" />
+   <Circle fx:id="backBtn" fill="#ff6159" layoutX="12.0" layoutY="362.0" onMouseClicked="#clickBack" radius="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+   <ComboBox fx:id="comboboxLanguage" layoutX="481.0" layoutY="16.0" prefHeight="26.0" prefWidth="164.0" />
+   <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="446.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/br-circle-01.png" />
+      </image>
+   </ImageView>
+   <Button fx:id="editBtn1" layoutX="263.0" layoutY="86.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickEditExpense" text="Edit" />
+   <Button fx:id="addBtn1" layoutX="263.0" layoutY="148.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickAddExpense" text="Add" />
 </AnchorPane>

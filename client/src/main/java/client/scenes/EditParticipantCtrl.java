@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditParticipantCtrl implements Initializable {
+public class EditParticipantCtrl implements Initializable, languageSwitchInterface {
 
     private MainCtrl mc;
 
@@ -60,5 +60,7 @@ public class EditParticipantCtrl implements Initializable {
         System.out.println(meta.toString());
     }
 
+    @Override
+    public void langueageswitch(String taal) {
 
-}
+    }}

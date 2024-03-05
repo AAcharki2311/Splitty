@@ -42,13 +42,12 @@ public class Main extends Application {
         var start = FXML.load(StartScreenCtrl.class, "client", "scenes", "StartScreen.fxml");
         var eventOver = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
         var invite = FXML.load(InviteCtrl.class, "client", "scenes", "Invite.fxml");
-        var expense = FXML.load(ExpenseCtrl.class, "client", "scenes", "ExpenseScreen.fxml");
+        var expense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpenseScreen.fxml");
         var participant = FXML.load(ParticipantCtrl.class, "client", "scenes", "AddParticipantScreen.fxml");
         var editParticipant = FXML.load(EditParticipantCtrl.class, "client", "scenes", "EditParticipantScreen.fxml");
         var editExpense = FXML.load(EditExpenseCtrl.class, "client", "scenes", "EditExpenseScreen.fxml");
         var alogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
         var adash = FXML.load(AdminDashboardCtrl.class, "client", "scenes", "AdminDashboard.fxml");
-
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, start, eventOver, invite, expense, participant, editParticipant, editExpense, alogin, adash);

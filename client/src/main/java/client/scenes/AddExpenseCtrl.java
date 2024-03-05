@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
+public class AddExpenseCtrl implements Initializable, languageSwitchInterface {
 
     private MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -20,10 +20,6 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
     private ImageView imageview;
     @FXML
     private Label titleOfScreen;
-    @FXML
-    private Label changeTheExpenseOfText;
-    @FXML
-    private Label calledText;
     @FXML
     private Label fillInfoText;
     @FXML
@@ -47,19 +43,14 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
     @FXML
     private RadioButton splitRBtn;
     @FXML
-    private ComboBox<String> comboBoxName;
-    private String[] names = {"John", "Chris", "Anna"};     //    here must go an array with names
-    @FXML
-    private ComboBox<String> comboBoxExpensesTitle;
-    private String[] namesOfExpenses = {"Expense1", "Expense2", "Expense3"};    //    here must go an array with names of expenses
-    @FXML
     private ComboBox<String> comboBoxNamePaid;
+    private String[] names = {"John", "Chris", "Anna"};     //    here must go an array with names
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
 
     @Inject
-    public EditExpenseCtrl(MainCtrl mc, ReadJSON jsonReader) {
+    public AddExpenseCtrl(MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
     }
@@ -68,8 +59,6 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
-        comboBoxName.getItems().addAll(names);
-        comboBoxExpensesTitle.getItems().addAll(namesOfExpenses);
         comboBoxNamePaid.getItems().addAll(names);
         comboBoxCurr.getItems().addAll(curNames);
     }
@@ -93,13 +82,10 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
         mc.showEventOverview();
     }
 
-
     @Override
     public void langueageswitch(String taal) {
         HashMap<String, Object> h = jsonReader.readJsonToMap("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\resources\\languageJSONS\\language" + taal + ".json");
-        titleOfScreen.setText(h.get("key16").toString());
-        changeTheExpenseOfText.setText(h.get("key17").toString());
-        calledText.setText(h.get("key18").toString());
+        titleOfScreen.setText(h.get("key27").toString());
         fillInfoText.setText(h.get("key19").toString());
         whoPaidText.setText(h.get("key20").toString());
         titleText.setText(h.get("key21").toString());

@@ -28,7 +28,7 @@ public class MyModule implements Module {
         binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EventOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(InviteCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ExpenseCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddExpenseCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditExpenseCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ParticipantCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditParticipantCtrl.class).in(Scopes.SINGLETON);
