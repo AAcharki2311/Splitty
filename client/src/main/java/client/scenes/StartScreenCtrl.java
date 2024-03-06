@@ -70,7 +70,8 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
      */
     @Override
     public void langueageswitch(String taal) throws NullPointerException{
-        HashMap<String, Object> h = jsonReader.readJsonToMap("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\resources\\languageJSONS\\language" + taal + ".json");
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
         comboboxLanguage.setPromptText("Current language: " + taal);
         welcometext.setText(h.get("key1").toString());
         pleasetext.setText(h.get("key2").toString());

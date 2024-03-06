@@ -113,7 +113,8 @@ public class AddExpenseCtrl implements Initializable, languageSwitchInterface {
      */
     @Override
     public void langueageswitch(String taal) {
-        HashMap<String, Object> h = jsonReader.readJsonToMap("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\resources\\languageJSONS\\language" + taal + ".json");
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
         titleOfScreen.setText(h.get("key27").toString());
         fillInfoText.setText(h.get("key19").toString());
         whoPaidText.setText(h.get("key20").toString());
