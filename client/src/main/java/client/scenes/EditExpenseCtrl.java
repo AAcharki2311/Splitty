@@ -59,12 +59,22 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
 
+    /**
+     * Constructor of the EditExpenseCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     */
     @Inject
     public EditExpenseCtrl(MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
     }
 
+    /**
+     * This methods sets the image for the imageview and adds the items to the comboboxes
+     * @param url represent the URL
+     * @param resourceBundle represent the ResourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
@@ -75,6 +85,9 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
         comboBoxCurr.getItems().addAll(curNames);
     }
 
+    /**
+     * This method checks if the input is correct
+     */
     public void check() {
 //        TextFieldMoney.textProperty().addListener((observable, oldValue, newValue) -> {
 //            if (!newValue.matches("\\d*\\.?\\d*")) { // Regex to allow digits and optional decimal point
@@ -83,10 +96,16 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
 //        });
     }
 
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
     public void clickBack() {
         mc.showEventOverview();
     }
 
+    /**
+     * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventoverview screen
+     */
     public void submitEdit() {
         // check each textfield and combobox if they are filled in
         // if not, give a warning message and don't submit the form: please fill all in
@@ -94,7 +113,10 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
         mc.showEventOverview();
     }
 
-
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
+     */
     @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";

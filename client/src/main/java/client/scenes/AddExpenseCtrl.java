@@ -50,12 +50,27 @@ public class AddExpenseCtrl implements Initializable, languageSwitchInterface {
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
 
+    /**
+     *
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     */
     @Inject
     public AddExpenseCtrl(MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
     }
 
+    /**
+     *
+     * @param url this is an url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle bundle that localizes the root object
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
@@ -64,6 +79,9 @@ public class AddExpenseCtrl implements Initializable, languageSwitchInterface {
         comboBoxCurr.getItems().addAll(curNames);
     }
 
+    /**
+     * Check if an user input, is a double and does not contain letters
+     */
     public void check() {
 //        TextFieldMoney.textProperty().addListener((observable, oldValue, newValue) -> {
 //            if (!newValue.matches("\\d*\\.?\\d*")) { // Regex to allow digits and optional decimal point
@@ -72,10 +90,16 @@ public class AddExpenseCtrl implements Initializable, languageSwitchInterface {
 //        });
     }
 
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
     public void clickBack() {
         mc.showEventOverview();
     }
 
+    /**
+     * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventovervie screen
+     */
     public void submitEdit() {
         // check each textfield and combobox if they are filled in
         // if not, give a warning message and don't submit the form: please fill all in
@@ -83,6 +107,10 @@ public class AddExpenseCtrl implements Initializable, languageSwitchInterface {
         mc.showEventOverview();
     }
 
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
+     */
     @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";

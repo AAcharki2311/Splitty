@@ -22,6 +22,10 @@ import com.google.inject.Scopes;
 
 public class MyModule implements Module {
 
+    /**
+     * Configures the binding for each controller
+     * @param binder the binder
+     */
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);

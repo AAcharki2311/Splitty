@@ -22,11 +22,17 @@ public class MainCtrlTest {
 
     private MainCtrl sut;
 
+    /**
+     * bkablabka
+     */
     @BeforeEach
     public void setup() {
         sut = new MainCtrl();
     }
 
+    /**
+     * dvxhjgxjhxhx
+     */
     @Test
     public void writeSomeTests() {
         // TODO create replacement objects and write some tests

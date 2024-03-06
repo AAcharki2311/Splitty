@@ -47,6 +47,7 @@ public class MainCtrl {
     private EditExpenseCtrl editExpenseCtrl;
     private AddExpenseCtrl addExpenseCtrl;
 
+
     /**
      * Intializes all the controllers
      * @param primaryStage The primary stage

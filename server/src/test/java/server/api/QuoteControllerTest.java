@@ -35,6 +35,9 @@ public class QuoteControllerTest {
 
     private QuoteController sut;
 
+    /**
+     * dxkjdvxdvxk
+     */
     @BeforeEach
     public void setup() {
         random = new MyRandom();
@@ -42,12 +45,18 @@ public class QuoteControllerTest {
         sut = new QuoteController(random, repo);
     }
 
+    /**
+     * cvxjcvxhjcvxhcvxj
+     */
     @Test
     public void cannotAddNullPerson() {
         var actual = sut.add(getQuote(null));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
+    /**
+     * cxjhcxjcx
+     */
     @Test
     public void randomSelection() {
         sut.add(getQuote("q1"));
@@ -59,6 +68,9 @@ public class QuoteControllerTest {
         assertEquals("q2", actual.getBody().quote);
     }
 
+    /**
+     * cccgf
+     */
     @Test
     public void databaseIsUsed() {
         sut.add(getQuote("q1"));
@@ -74,6 +86,11 @@ public class QuoteControllerTest {
 
         public boolean wasCalled = false;
 
+        /**
+         * c
+         * @param bound the upper bound (exclusive).  Must be positive.
+         * @return dvjhvxj
+         */
         @Override
         public int nextInt(int bound) {
             wasCalled = true;
