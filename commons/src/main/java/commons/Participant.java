@@ -12,7 +12,6 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "eventId")
     private Event event;
     private String name;
     private String email;
