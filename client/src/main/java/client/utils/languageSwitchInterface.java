@@ -23,8 +23,7 @@ public interface languageSwitchInterface {
         String selectedOption = String.valueOf(comboboxLanguage.getSelectionModel().getSelectedItem());
         try {
             Properties appProps = new Properties();
-            String configFilePath = "C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\commons\\src\\config\\configfile.properties";
-
+            String configFilePath = "src/main/resources/configfile.properties";
             FileInputStream inputStream = new FileInputStream(configFilePath);
             appProps.load(inputStream);
             inputStream.close();

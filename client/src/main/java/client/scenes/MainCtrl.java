@@ -22,6 +22,7 @@ import javafx.util.Pair;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Properties;
 
 
@@ -101,13 +102,14 @@ public class MainCtrl {
      */
     public String setLanguage() throws IOException {
         Properties appProps = new Properties();
-        String configFilePath = "C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\commons\\src\\config\\configfile.properties";
+        String configFilePath = "src/main/resources/configfile.properties";
 
         FileInputStream inputStream = new FileInputStream(configFilePath);
         appProps.load(inputStream);
         inputStream.close();
 
         String configtaal = appProps.getProperty("language");
+
         String languageJSON;
         switch(configtaal){
             case "dutch":
