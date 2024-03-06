@@ -12,10 +12,11 @@ import java.util.*;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String name;
-    private Date creationDate;
-    private Date lastActDate;
+    public long id;
+
+    public String name;
+    public Date creationDate;
+    public Date lastActDate;
 
     /**
      * The constructor for Event without args
@@ -32,6 +33,7 @@ public class Event {
     public Event(String name) {
         this.name = name;
         creationDate = new Date();
+        lastActDate = new Date();
     }
 
     /**
