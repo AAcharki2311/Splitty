@@ -17,6 +17,9 @@ public class PaymentTest {
     private static final Participant NEW_RECIVER = new Participant(NEW_EVENT, "NEWJohn",
             "NEWJohn@gmail.com", "NEWNL98INGB9876543210", "NEWINGBL47");
 
+    /**
+     * test constructor
+     */
     @Test
     public void checkConstructor () {
         Date d = new Date(2024-11-10);
@@ -28,6 +31,9 @@ public class PaymentTest {
         assertEquals(d, p.getDate());
     }
 
+    /**
+     * test getter and setters
+     */
     @Test
     public void testGettersAndSetters() {
         Date d = new Date(2024-11-10);
@@ -48,6 +54,9 @@ public class PaymentTest {
 
     }
 
+    /**
+     * test equals
+     */
     @Test
     public void testEquals() {
         Date d = new Date(2024-11-10);
@@ -58,6 +67,9 @@ public class PaymentTest {
         assertNotEquals(p1, p3);
     }
 
+    /**
+     * test hash method
+     */
     @Test
     public void testHashCode() {
         Date d = new Date(2024-11-10);
@@ -68,6 +80,9 @@ public class PaymentTest {
         assert p1.hashCode() != p3.hashCode();
     }
 
+    /**
+     * test to string
+     */
     @Test
     public void testToString() {
         Date d = new Date(2024-11-10);
