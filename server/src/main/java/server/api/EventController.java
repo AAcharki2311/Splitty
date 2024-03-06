@@ -58,7 +58,7 @@ public class EventController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Event> add(@RequestBody Event event) {
-        if (event == null || event.getName() == null) { // Add other attributes + Check isNullOrEmpty
+        if (event == null || isNullOrEmpty(event.name) || event.lastActDate == null || event.creationDate == null) { // Add other attributes + Check isNullOrEmpty
             return ResponseEntity.badRequest().build();
         }
         Event postedEvent = eventRepository.save(event);
@@ -114,4 +114,9 @@ public class EventController {
     public ResponseEntity<Participant> getParticipants(@PathVariable("id") long id, @PathVariable("participantId") long participantId) {
         return ResponseEntity.notFound().build(); // Needs to be implemented the logic to find the participants
     }
+
+    private static boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
+
 }
