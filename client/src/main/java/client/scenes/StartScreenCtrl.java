@@ -39,6 +39,12 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
     @FXML
     private Button loginBTN;
 
+    /**
+     * This methods sets the image for the imageview and adds the items to the comboboxes
+     * @param url represent the URL
+     * @param resourceBundle represent the ResourceBundle
+     * When pressed on the combobox of languages, it translates it immeditalty
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboboxLanguage.getItems().addAll(languages);
@@ -57,6 +63,11 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
     }
+
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
+     */
     @Override
     public void langueageswitch(String taal) throws NullPointerException{
         HashMap<String, Object> h = jsonReader.readJsonToMap("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\resources\\languageJSONS\\language" + taal + ".json");
@@ -71,20 +82,35 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
         imageviewFlag.setImage(imageFlag);
     }
 
+
+    /**
+     * Constructor of the StartScreenCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     */
     @Inject
     public StartScreenCtrl(MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
     }
 
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
     public void clickEvent() {
         mc.showEventOverview();
     }
 
+    /**
+     * Method of the show admin button, when pressed, it shows the showAdminLogin screen
+     */
     public void clickAdmin() {
         mc.showAdminLogin();
     }
 
+    /**
+     * Method of the download template text, when pressed, it should download the template file
+     */
     public void downloadTemplate() {
         try {
             URL url = new URL("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\java\\client\\utils\\languageTemplate.json");

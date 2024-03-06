@@ -53,6 +53,11 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
     private ComboBox<String> comboBoxOne;
     private String[] names = {"John", "Chris", "Anna"};
 
+    /**
+     * This methods sets the image for the imageview and adds the items to the comboboxes
+     * @param url represent the URL
+     * @param resourceBundle represent the ResourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboBoxOne.getItems().addAll(names);
@@ -73,6 +78,10 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
         });
     }
 
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
+     */
     @Override
     public void langueageswitch(String taal) {
         HashMap<String, Object> h = jsonReader.readJsonToMap("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\resources\\languageJSONS\\language" + taal + ".json");
@@ -93,31 +102,55 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
         includingNameBtn.setText(h.get("key15").toString());
     }
 
+    /**
+     * Constructor of the EventoverviewCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     */
     @Inject
     public EventOverviewCtrl(MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
     }
+
+    /**
+     * Method of the invite button, when pressed, it shows the invite screen
+     */
     public void clickInvite() {
         mc.showInvite();
     }
 
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
     public void clickBack() {
         mc.showStart();
     }
 
+    /**
+     * Method of the add button, when pressed, it shows the add expense screen
+     */
     public void clickAddExpense() {
         mc.showExpense();
     }
 
+    /**
+     * Method of the add button, when pressed, it shows the add participant screen
+     */
     public void clickAddParticipant() {
         mc.showParticipant();
     }
 
+    /**
+     * Method of the edit button, when pressed, it shows the edit participant screen
+     */
     public void clickEditParticipant() {
         mc.showEditParticipant();
     }
 
+    /**
+     * Method of the edit button, when pressed, it shows the edit expense screen
+     */
     public void clickEditExpense() {
         mc.showEditExpense();
     }
