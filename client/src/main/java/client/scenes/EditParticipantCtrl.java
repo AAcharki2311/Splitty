@@ -63,7 +63,7 @@ public class EditParticipantCtrl implements Initializable, languageSwitchInterfa
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() {
-        mc.showEventOverview();
+        // mc.showEventOverview();
     }
 
     /**

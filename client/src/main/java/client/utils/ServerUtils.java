@@ -74,4 +74,5 @@ public class ServerUtils {
 				.accept(APPLICATION_JSON) //
 				.post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
 	}
+
 }

@@ -25,12 +25,12 @@
          <Font name="Calibri" size="10.0" />
       </font>
    </Button>
-   <TableView layoutX="42.0" layoutY="77.0" prefHeight="222.0" prefWidth="444.0">
+   <TableView fx:id="table" layoutX="42.0" layoutY="77.0" prefHeight="222.0" prefWidth="444.0">
       <columns>
-         <TableColumn editable="false" prefWidth="75.0" text="Event ID" />
-         <TableColumn editable="false" prefWidth="158.5" text="Event Name" />
-         <TableColumn editable="false" prefWidth="93.0" text="Creation Date" />
-         <TableColumn editable="false" prefWidth="114.5" text="Last Activity Date" />
+         <TableColumn fx:id="colId" editable="false" prefWidth="75.0" text="Event ID" />
+         <TableColumn fx:id="colName" editable="false" prefWidth="158.5" text="Event Name" />
+         <TableColumn fx:id="colDate1" editable="false" prefWidth="93.0" text="Creation Date" />
+         <TableColumn fx:id="colDate2" editable="false" prefWidth="114.5" text="Last Activity Date" />
       </columns>
    </TableView>
    <Button layoutX="523.0" layoutY="239.0" mnemonicParsing="false" onAction="#clickEvent" prefHeight="20.0" prefWidth="72.0" style="-fx-background-color: #116f9a;" text="Show Event" textFill="#f4fdff">
@@ -39,7 +39,7 @@
       </font>
    </Button>
    <TextField fx:id="inputimport" layoutX="495.0" layoutY="107.0" prefHeight="25.0" prefWidth="127.0" />
-   <TextField fx:id="inputname" layoutX="495.0" layoutY="206.0" prefHeight="25.0" prefWidth="127.0" />
+   <TextField fx:id="inputid" layoutX="495.0" layoutY="206.0" prefHeight="25.0" prefWidth="127.0" />
    <Text layoutX="495.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Import Event from JSON file" />
    <Text layoutX="495.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please type the file name" />
    <Text layoutX="495.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show Event Data" />

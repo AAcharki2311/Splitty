@@ -47,9 +47,10 @@ public class MainCtrl {
     private EditParticipantCtrl editParticipantCtrl;
     private EditExpenseCtrl editExpenseCtrl;
     private AddExpenseCtrl addExpenseCtrl;
+    private EventOverviewAdminCtrl eventOverviewAdminCtrl;
 
     /**
-     * Intializes all the controllers
+     * Initializes all the controllers
      * @param primaryStage The primary stage
      * @param start controller for the start screen
      * @param eventO controller for the screen with an overview of the event
@@ -57,7 +58,7 @@ public class MainCtrl {
      * @param addExpense controller for the screen where an expense can be added for an event
      * @param participant controller for the screen where a participant can be added
      * @param editParticipant controller the screen where a participant can be changed
-     * @param editExpense controller for the screen where expenses can be editted
+     * @param editExpense controller for the screen where expenses can be edited
      * @param alogin controller for the admin login screen
      * @param adash controller for the admin dashboard screen
      * @param aevent controller for the admin event view screen
@@ -86,6 +87,7 @@ public class MainCtrl {
         this.editParticipantCtrl = editParticipant.getKey();
         this.editExpenseCtrl = editExpense.getKey();
         this.addExpenseCtrl = addExpense.getKey();
+        this.eventOverviewAdminCtrl = aevent.getKey();
 
         ltest();
 
@@ -156,9 +158,12 @@ public class MainCtrl {
     /**
      * Shows the event overview screen
      */
-    public void showEventOverview() {
+    public void showEventOverview(long id) {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
+        System.out.println("showEventOverview reached");
+        eventOCtrl.update(id);
+        System.out.println("after update");
     }
 
     /**
@@ -219,10 +224,12 @@ public class MainCtrl {
 
     /**
      * Show the event information for admins
+     * @param id the id of the event
      */
-    public void showAdminEvent(){
+    public void showAdminEvent(String id){
         primaryStage.setTitle("Admin Event view");
         primaryStage.setScene(aeventScene);
+        eventOverviewAdminCtrl.update(id);
     }
 
 }

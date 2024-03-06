@@ -44,7 +44,7 @@ public class ParticipantCtrl implements languageSwitchInterface {
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() {
-        mc.showEventOverview();
+        // mc.showEventOverview();
     }
 
     /**

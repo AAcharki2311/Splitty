@@ -1,8 +1,11 @@
 package client.scenes;
 
+import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
 import client.utils.languageSwitchInterface;
+import commons.Event;
 import jakarta.inject.Inject;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -52,9 +55,13 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
     @FXML
     private ComboBox<String> comboBoxOne;
     private String[] names = {"John", "Chris", "Anna"};
+    @FXML
+    private Label eventName;
+
+    private final EventServerUtils server;
 
     /**
-     * This methods sets the image for the imageview and adds the items to the comboboxes
+     * This method sets the image for the imageview and adds the items to the comboboxes
      * @param url represent the URL
      * @param resourceBundle represent the ResourceBundle
      */
@@ -74,7 +81,7 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
                 throw new RuntimeException(e);
             }
 
-            mc.showEventOverview();
+            // mc.showEventOverview(id);
         });
     }
 
@@ -109,9 +116,10 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      */
     @Inject
-    public EventOverviewCtrl(MainCtrl mc, ReadJSON jsonReader) {
+    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
+        this.server = server;
     }
 
     /**
@@ -156,5 +164,11 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
         mc.showEditExpense();
     }
 
-
+    public void update(long id){
+        // name is the event name
+        Event x = server.getEventByID(id);
+        System.out.println("reached");
+        System.out.println(x.getId() + " " + x.getName());
+        // eventName.setText(x.getName());
+    }
 }

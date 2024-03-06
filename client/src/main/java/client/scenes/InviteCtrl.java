@@ -49,7 +49,7 @@ public class InviteCtrl implements languageSwitchInterface {
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() throws IOException {
-        mc.showEventOverview();
+        // mc.showEventOverview();
     }
 
     /**
