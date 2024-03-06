@@ -4,6 +4,9 @@ import commons.Event;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
+import org.aopalliance.reflect.Class;
+import org.checkerframework.checker.units.qual.C;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.util.List;
@@ -27,5 +30,30 @@ public class EventServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public Event getEventByID(long id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<Event>() {});
+    }
+
+    public Event updateEventByID(long id, Event event) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/"+id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
+
+    public boolean deleteEventByID(long id) {
+        Response response = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
+        return response.getStatus() == 204;
     }
 }
