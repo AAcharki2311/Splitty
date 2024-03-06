@@ -1,12 +1,15 @@
 package client.scenes;
 
+import client.utils.languageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.scene.control.Button;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.fxml.FXML;
 
-public class InviteCtrl  {
+import java.io.IOException;
+
+public class InviteCtrl implements languageSwitchInterface {
 
     private MainCtrl mc;
 
@@ -32,8 +35,12 @@ public class InviteCtrl  {
         copyButton.setText("Copied");
     }
 
-    public void clickBack() {
+    public void clickBack() throws IOException {
         mc.showEventOverview();
     }
 
+    @Override
+    public void langueageswitch(String taal) {
+
+    }
 }

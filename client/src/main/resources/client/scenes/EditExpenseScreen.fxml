@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditExpenseCtrl">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="237.0" layoutX="54.0" layoutY="130.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="543.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="49.0" layoutX="55.0" layoutY="73.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="542.0" />
+   <Label fx:id="titleOfScreen" layoutX="268.0" layoutY="16.0" text="Edit an Expense" textFill="WHITE">
+      <font>
+         <Font name="Century Gothic" size="30.0" />
+      </font>
+   </Label>
+   <Button fx:id="okBtn" layoutX="491.0" layoutY="325.0" mnemonicParsing="false" onAction="#submitEdit" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #06c926; -fx-border-color: white;" text="OK" textFill="WHITE" />
+   <Label fx:id="titleText" layoutX="90.0" layoutY="210.0" prefHeight="16.0" prefWidth="30.0" text="Title?" />
+   <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/logo-no-background.png" />
+      </image>
+   </ImageView>
+   <Circle fx:id="backBtn" fill="#ff6159" layoutX="642.0" layoutY="14.0" onMouseClicked="#clickBack" radius="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+   <Button fx:id="cancelBtn" layoutX="491.0" layoutY="280.0" mnemonicParsing="false" onAction="#clickBack" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #ff0000; -fx-border-color: white;" text="Cancel" textAlignment="CENTER" textFill="#e8e8e8">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font></Button>
+   <Label fx:id="whoPaidText" layoutX="90.0" layoutY="170.0" text="Who paid?" />
+   <Label fx:id="howMuchText" layoutX="90.0" layoutY="250.0" text="How much?" />
+   <Label fx:id="whenText" layoutX="90.0" layoutY="290.0" text="When?" />
+   <Label fx:id="howToSplitText" layoutX="90.0" layoutY="330.0" text="How to Split?" />
+   <TextField fx:id="titleTextField" layoutX="200.0" layoutY="210.0" prefHeight="25.0" prefWidth="225.0" promptText="e.g. McDonald's cheeseburger" />
+   <TextField fx:id="moneyField" layoutX="200.0" layoutY="250.0" onAction="#check" prefHeight="25.0" prefWidth="150.0" promptText="4,50" />
+   <DatePicker fx:id="dateField" layoutX="200.0" layoutY="290.0" prefHeight="25.0" prefWidth="225.0" promptText="29-02-2024" />
+   <RadioButton fx:id="splitRBtn" layoutX="200.0" layoutY="330.0" mnemonicParsing="false" text="Equally Between Everybody" />
+   <Label fx:id="fillInfoText" layoutX="224.0" layoutY="135.0" prefHeight="13.0" prefWidth="210.0" text="Fill in the information of your new expense" textFill="#868686">
+      <font>
+         <Font name="Century Gothic" size="10.0" />
+      </font>
+   </Label>
+   <ComboBox fx:id="comboBoxNamePaid" layoutX="200.0" layoutY="165.0" prefHeight="25.0" prefWidth="225.0" promptText="name of particpant" />
+   <ComboBox fx:id="comboBoxCurr" layoutX="350.0" layoutY="250.0" prefHeight="25.0" prefWidth="75.0" promptText="€/$/..." />
+   <ComboBox fx:id="comboBoxExpensesTitle" layoutX="440.0" layoutY="86.0" prefWidth="150.0" promptText="title of expense" />
+   <ComboBox fx:id="comboBoxName" layoutX="230.0" layoutY="86.0" prefHeight="26.0" prefWidth="138.0" promptText="name particpant" />
+   <Label fx:id="changeTheExpenseOfText" layoutX="67.0" layoutY="90.0" text="Change the expense of" textAlignment="CENTER">
+      <font>
+         <Font name="Verdana Pro Cond Black" size="14.0" />
+      </font>
+   </Label>
+   <Label fx:id="calledText" layoutX="375.0" layoutY="90.0" text="called" textAlignment="CENTER">
+      <font>
+         <Font name="Verdana Pro Cond Black" size="14.0" />
+      </font>
+   </Label>
+</AnchorPane>

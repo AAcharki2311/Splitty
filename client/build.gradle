@@ -18,7 +18,7 @@ java {
 
 
 dependencies {
-	implementation project(":commons")
+	implementation project(':commons')
 	
 	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.3'
@@ -30,5 +30,6 @@ dependencies {
 
 	implementation 'org.openjfx:javafx-controls:21.0.2'
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
 	
 }

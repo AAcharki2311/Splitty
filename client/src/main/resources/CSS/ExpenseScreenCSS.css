@@ -1,0 +1,14 @@
+.combo-box {
+    -fx-border-width: 1px;
+    -fx-border-color: #acacac;
+    -fx-border-radius: 10px;
+    -fx-padding: 0px;
+    -fx-font-weight: 700;
+    -fx-font-famiy: 'Open Sans', 'Helvetica Neue', 'Arail', 'sans-serif';
+
+}
+
+.combo-box-base:hover{
+    -fx-border-color: blue;
+}
+
