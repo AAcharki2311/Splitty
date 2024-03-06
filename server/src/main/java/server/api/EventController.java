@@ -58,7 +58,7 @@ public class EventController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Event> add(@RequestBody Event event) {
-        if (event == null || isNullOrEmpty(event.name) || event.lastActDate == null || event.creationDate == null) { // Add other attributes + Check isNullOrEmpty
+        if (event == null || isNullOrEmpty(event.name) || event.lastActDate == null || event.creationDate == null) {
             return ResponseEntity.badRequest().build();
         }
         Event postedEvent = eventRepository.save(event);
