@@ -38,11 +38,22 @@ public class EventServerUtilsTest {
 
     @Test
     public void CRUDEventByID() {
-        Event e = new Event("deleteEventByIDTest");
+        Event e = new Event("CRUDEventTest");
+
         e = ESU.addEvent(e);
-        System.out.println("Event created:");
+        System.out.println("Event created (Create):");
         System.out.println(e);
-        System.out.println("Event deleted:");
-        System.out.println(ESU.deleteEventByID(e.id));
+
+        e = ESU.getEventByID(e.id);
+        System.out.println("Event in database (Read):");
+        System.out.println(e);
+
+        e = ESU.updateEventByID(e.id, new Event("CRUDEventTestUpdated"));
+        System.out.println("Event updated (Update):");
+        System.out.println(e);
+
+        boolean d = ESU.deleteEventByID(e.id);
+        System.out.println("Event deleted (Delete):");
+        System.out.println(d);
     }
 }
