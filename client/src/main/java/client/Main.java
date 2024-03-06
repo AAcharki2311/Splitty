@@ -32,10 +32,24 @@ public class Main extends Application {
     private static final Injector INJECTOR = Guice.createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+    /**
+     * Main method
+     * @param args used for main method
+     * @throws URISyntaxException if something is wrong with the application
+     * @throws IOException if something is wrong with the application
+     */
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
 
+    /**
+     * Loads all the different scenes
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 

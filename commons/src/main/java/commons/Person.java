@@ -41,21 +41,39 @@ public class Person {
 		// for object mapper
 	}
 
+	/**
+	 *
+ 	 * @param firstName
+	 * @param lastName
+	 */
 	public Person(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 
+	/**
+	 *
+	 * @param obj
+	 * @return boolean
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
 
+	/**
+	 *
+	 * @return int
+	 */
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);

@@ -47,6 +47,20 @@ public class MainCtrl {
     private AddExpenseCtrl addExpenseCtrl;
 
 
+    /**
+     * Intializes all the controllers
+     * @param primaryStage The primary stage
+     * @param start controller for the start screen
+     * @param eventO controller for the screen with an overview of the event
+     * @param invite controller for the screen where people can be invited to an event
+     * @param addExpense controller for the screen where an expense can be added for an event
+     * @param participant controller for the screen where a participant can be added
+     * @param editParticipant controller the screen where a participant can be changed
+     * @param editExpense controller for the screen where expenses can be editted
+     * @param alogin controller for the admin login screen
+     * @param adash controller for the admin dashboard screen
+     * @throws IOException
+     */
     public void initialize(Stage primaryStage,
                            Pair <StartScreenCtrl, Parent> start,
                            Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
@@ -81,6 +95,11 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * Method to change the language
+     * @return the language to be used
+     * @throws IOException if someting is wrong with the JSON file
+     */
     public String setLanguage() throws IOException {
         Properties appProps = new Properties();
         String configFilePath = "C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\commons\\src\\config\\configfile.properties";
@@ -104,6 +123,10 @@ public class MainCtrl {
         }
     }
 
+    /**
+     * Changes the language for every screen
+     * @throws IOException if something is wrong with the JSON file
+     */
     public void ltest() throws IOException {
         String languageToTranslate = setLanguage();
 
@@ -117,46 +140,73 @@ public class MainCtrl {
 
     }
 
+    /**
+     * Shows the start screen
+     */
     public void showStart() {
         primaryStage.setTitle("StartScreen");
         primaryStage.setScene(startScene);
     }
 
+    /**
+     * Shows the event overview screen
+     */
     public void showEventOverview() {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
     }
 
+    /**
+     * Shows the invite screen
+     */
     public void showInvite() {
         primaryStage.setTitle("Invite");
         primaryStage.setScene(inviteScene);
     }
 
+    /**
+     * Shows the add expenses screen
+     */
     public void showExpense() {
         primaryStage.setTitle("Add Expense");
         primaryStage.setScene(expenseScene);
     }
 
+    /**
+     * Shows the add participant screen
+     */
     public void showParticipant() {
         primaryStage.setTitle("Add Participant");
         primaryStage.setScene(participantScene);
     }
 
+    /**
+     * Shows the edit participant screen
+     */
     public void showEditParticipant() {
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(editParticipantScene);
     }
 
+    /**
+     * Shows the edit expense screen
+     */
     public void showEditExpense() {
         primaryStage.setTitle("Edit Expense");
         primaryStage.setScene(editExpenseScene);
     }
 
+    /**
+     * Shows the admin login screen
+     */
     public void showAdminLogin () {
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(aloginScene);
     }
 
+    /**
+     * Shows the admin dashboard screen
+     */
     public void showAdminDashboard() {
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);

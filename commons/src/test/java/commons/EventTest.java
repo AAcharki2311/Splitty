@@ -7,24 +7,36 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EventTest {
+    /**
+     * Test contrsuctor
+     */
     @Test
     public void checkConstructer() {
         Event e = new Event();
         assertNotNull(e);
     }
 
+    /**
+     * Test namegetter
+     */
     @Test
     public void checkNameGetter() {
         Event e = new Event("TestEvent");
         assertEquals("TestEvent", e.getName());
     }
 
+    /**
+     * test creationdate getter
+     */
     @Test
     public void checkCreationDateGetter() {
         Event e = new Event("TestEvent");
         assertNotNull(e.getCreationDate());
     }
 
+    /**
+     * test check date
+     */
     @Test
     public void checkActivityDate() {
         Event e = new Event("TestEvent");
@@ -33,6 +45,9 @@ public class EventTest {
         assertEquals(d, e.getLastActDate());
     }
 
+    /**
+     * test checkk name setter
+     */
     @Test
     public void checkNameSetter() {
         Event e = new Event("TestEvent");
@@ -40,6 +55,9 @@ public class EventTest {
         assertEquals("TestEvent2", e.getName());
     }
 
+    /**
+     * test equals method
+     */
     @Test
     public void checkEqualsNotSame() {
         Event e1 = new Event("TestEvent1");
@@ -47,18 +65,27 @@ public class EventTest {
         assertFalse(e1.equals(e2));
     }
 
+    /**
+     * Test equals 2
+     */
     @Test
     public void checkEqualsSelf() {
         Event e = new Event("TestEvent");
         assertTrue(e.equals(e));
     }
 
+    /**
+     * test equals with null
+     */
     @Test
     public void checkEqualsNull() {
         Event e = new Event("TestEvent");
         assertFalse(e.equals(null));
     }
 
+    /**
+     * test for hash method
+     */
     @Test
     public void chechHash(){
         Event e1 = new Event("TestEvent1");
@@ -67,6 +94,9 @@ public class EventTest {
         assertNotEquals(e1.hashCode(), e2.hashCode());
     }
 
+    /**
+     * test to string
+     */
     @Test
     public void checkToString() {
         Event e = new Event("TestEvent");
