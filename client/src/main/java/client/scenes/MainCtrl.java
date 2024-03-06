@@ -157,6 +157,7 @@ public class MainCtrl {
 
     /**
      * Shows the event overview screen
+     * @param id the id of the event
      */
     public void showEventOverview(long id) {
         primaryStage.setTitle("EventOverview");

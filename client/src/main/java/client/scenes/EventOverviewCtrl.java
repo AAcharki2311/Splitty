@@ -5,7 +5,7 @@ import client.utils.ReadJSON;
 import client.utils.languageSwitchInterface;
 import commons.Event;
 import jakarta.inject.Inject;
-import javafx.collections.FXCollections;
+// import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -114,6 +114,7 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
      * Constructor of the EventoverviewCtrl
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param server server
      */
     @Inject
     public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
@@ -164,6 +165,10 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
         mc.showEditExpense();
     }
 
+    /**
+     * Updates the page with the right information
+     * @param id
+     */
     public void update(long id){
         // name is the event name
         Event x = server.getEventByID(id);

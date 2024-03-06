@@ -106,6 +106,7 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
      * Constructor of the StartScreenCtrl
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param server server
      */
     @Inject
     public StartScreenCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
