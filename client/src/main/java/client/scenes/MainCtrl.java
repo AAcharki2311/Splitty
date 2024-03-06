@@ -60,6 +60,7 @@ public class MainCtrl {
      * @param editExpense controller for the screen where expenses can be editted
      * @param alogin controller for the admin login screen
      * @param adash controller for the admin dashboard screen
+     * @param aevent controller for the admin event view screen
      * @throws IOException
      */
     public void initialize(Stage primaryStage,
