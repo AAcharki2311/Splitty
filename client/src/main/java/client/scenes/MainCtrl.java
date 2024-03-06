@@ -38,6 +38,8 @@ public class MainCtrl {
     private Scene aloginScene;
     private Scene adashScene;
 
+    private Scene aeventScene;
+
     private StartScreenCtrl startCtrl;
     private EventOverviewCtrl eventOCtrl;
     private InviteCtrl inviteCtrl;
@@ -45,7 +47,6 @@ public class MainCtrl {
     private EditParticipantCtrl editParticipantCtrl;
     private EditExpenseCtrl editExpenseCtrl;
     private AddExpenseCtrl addExpenseCtrl;
-
 
     /**
      * Intializes all the controllers
@@ -66,7 +67,8 @@ public class MainCtrl {
                            Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
                            Pair <AddExpenseCtrl, Parent> addExpense, Pair <ParticipantCtrl, Parent> participant,
                            Pair <EditParticipantCtrl, Parent> editParticipant, Pair <EditExpenseCtrl, Parent> editExpense,
-                           Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash) throws IOException {
+                           Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash,
+                           Pair <EventOverviewAdminCtrl, Parent> aevent) throws IOException {
         this.primaryStage = primaryStage;
         this.startScene = new Scene(start.getValue());
         this.eventOverviewScene = new Scene(eventO.getValue());
@@ -90,6 +92,7 @@ public class MainCtrl {
 
         this.aloginScene = new Scene(alogin.getValue());
         this.adashScene = new Scene(adash.getValue());
+        this.aeventScene = new Scene(aevent.getValue());
 
         showStart();
         primaryStage.show();
@@ -211,6 +214,14 @@ public class MainCtrl {
     public void showAdminDashboard() {
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
+    }
+
+    /**
+     * Show the event information for admins
+     */
+    public void showAdminEvent(){
+        primaryStage.setTitle("Admin Event view");
+        primaryStage.setScene(aeventScene);
     }
 
 }

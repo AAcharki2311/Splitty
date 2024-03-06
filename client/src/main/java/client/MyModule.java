@@ -38,6 +38,7 @@ public class MyModule implements Module {
         binder.bind(EditParticipantCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLoginCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminDashboardCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(EventOverviewAdminCtrl.class).in(Scopes.SINGLETON);
 
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewAdminCtrl">
+    <Text fill="#116f9a" layoutX="264.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eventname">
+        <font>
+            <Font name="Calibri" size="18.0" />
+        </font>
+    </Text>
+   <Button layoutX="265.0" layoutY="334.0" mnemonicParsing="false" onAction="#clickDashboard" prefHeight="20.0" prefWidth="127.0" style="-fx-background-color: #116f9a;" text="Return to Admin Dashboard" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="10.0" />
+      </font>
+   </Button>
+   <Button layoutX="183.0" layoutY="334.0" mnemonicParsing="false" onAction="#clickDelete" prefHeight="20.0" prefWidth="72.0" style="-fx-background-color: #116f9a;" text="Delete Event" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="10.0" />
+      </font>
+   </Button>
+   <Text layoutX="207.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Names of participants" />
+   <Text layoutX="207.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expenses" />
+</AnchorPane>
