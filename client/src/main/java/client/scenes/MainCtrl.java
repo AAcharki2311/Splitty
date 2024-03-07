@@ -38,6 +38,8 @@ public class MainCtrl {
     private Scene aloginScene;
     private Scene adashScene;
 
+    private Scene aeventScene;
+
     private StartScreenCtrl startCtrl;
     private EventOverviewCtrl eventOCtrl;
     private InviteCtrl inviteCtrl;
@@ -45,10 +47,11 @@ public class MainCtrl {
     private EditParticipantCtrl editParticipantCtrl;
     private EditExpenseCtrl editExpenseCtrl;
     private AddExpenseCtrl addExpenseCtrl;
-
+    private EventOverviewAdminCtrl eventOverviewAdminCtrl;
+    private AdminDashboardCtrl adminDashboardCtrl;
 
     /**
-     * Intializes all the controllers
+     * Initializes all the controllers
      * @param primaryStage The primary stage
      * @param start controller for the start screen
      * @param eventO controller for the screen with an overview of the event
@@ -56,9 +59,10 @@ public class MainCtrl {
      * @param addExpense controller for the screen where an expense can be added for an event
      * @param participant controller for the screen where a participant can be added
      * @param editParticipant controller the screen where a participant can be changed
-     * @param editExpense controller for the screen where expenses can be editted
+     * @param editExpense controller for the screen where expenses can be edited
      * @param alogin controller for the admin login screen
      * @param adash controller for the admin dashboard screen
+     * @param aevent controller for the admin event view screen
      * @throws IOException
      */
     public void initialize(Stage primaryStage,
@@ -66,7 +70,8 @@ public class MainCtrl {
                            Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
                            Pair <AddExpenseCtrl, Parent> addExpense, Pair <ParticipantCtrl, Parent> participant,
                            Pair <EditParticipantCtrl, Parent> editParticipant, Pair <EditExpenseCtrl, Parent> editExpense,
-                           Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash) throws IOException {
+                           Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash,
+                           Pair <EventOverviewAdminCtrl, Parent> aevent) throws IOException {
         this.primaryStage = primaryStage;
         this.startScene = new Scene(start.getValue());
         this.eventOverviewScene = new Scene(eventO.getValue());
@@ -90,6 +95,9 @@ public class MainCtrl {
 
         this.aloginScene = new Scene(alogin.getValue());
         this.adashScene = new Scene(adash.getValue());
+        this.aeventScene = new Scene(aevent.getValue());
+        this.eventOverviewAdminCtrl = aevent.getKey();
+        this.adminDashboardCtrl = adash.getKey();
 
         showStart();
         primaryStage.show();
@@ -112,10 +120,10 @@ public class MainCtrl {
 
         String languageJSON;
         switch(configtaal){
-            case "dutch":
+            case "Dutch":
                 languageJSON = "NL";
                 return languageJSON;
-            case "french":
+            case "French":
                 languageJSON = "FR";
                 return languageJSON;
             default:
@@ -151,10 +159,12 @@ public class MainCtrl {
 
     /**
      * Shows the event overview screen
+     * @param id the id of the event
      */
-    public void showEventOverview() {
+    public void showEventOverview(long id) {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
+        eventOCtrl.update(id);
     }
 
     /**
@@ -211,6 +221,17 @@ public class MainCtrl {
     public void showAdminDashboard() {
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
+        adminDashboardCtrl.refresh();
+    }
+
+    /**
+     * Show the event information for admins
+     * @param id the id of the event
+     */
+    public void showAdminEvent(String id){
+        primaryStage.setTitle("Admin Event view");
+        primaryStage.setScene(aeventScene);
+        eventOverviewAdminCtrl.update(id);
     }
 
 }

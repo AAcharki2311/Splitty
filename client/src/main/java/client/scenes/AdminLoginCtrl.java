@@ -40,6 +40,7 @@ public class AdminLoginCtrl {
      * the server output. If it isn't a message gets displayed.
      */
     public void clickLogin() {
+        mc.showAdminDashboard();
         String input = inputpw.getText();
         if (input.equals(pw)){
             mc.showAdminDashboard();

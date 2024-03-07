@@ -100,7 +100,7 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() {
-        mc.showEventOverview();
+        // mc.showEventOverview();
     }
 
     /**
@@ -110,7 +110,7 @@ public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
         // check each textfield and combobox if they are filled in
         // if not, give a warning message and don't submit the form: please fill all in
         // create a new expense object and add it to the list of expenses
-        mc.showEventOverview();
+        // mc.showEventOverview();
     }
 
     /**
