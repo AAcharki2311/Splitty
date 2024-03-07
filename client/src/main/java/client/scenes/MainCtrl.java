@@ -48,6 +48,7 @@ public class MainCtrl {
     private EditExpenseCtrl editExpenseCtrl;
     private AddExpenseCtrl addExpenseCtrl;
     private EventOverviewAdminCtrl eventOverviewAdminCtrl;
+    private AdminDashboardCtrl adminDashboardCtrl;
 
     /**
      * Initializes all the controllers
@@ -87,7 +88,6 @@ public class MainCtrl {
         this.editParticipantCtrl = editParticipant.getKey();
         this.editExpenseCtrl = editExpense.getKey();
         this.addExpenseCtrl = addExpense.getKey();
-        this.eventOverviewAdminCtrl = aevent.getKey();
 
         ltest();
 
@@ -96,6 +96,8 @@ public class MainCtrl {
         this.aloginScene = new Scene(alogin.getValue());
         this.adashScene = new Scene(adash.getValue());
         this.aeventScene = new Scene(aevent.getValue());
+        this.eventOverviewAdminCtrl = aevent.getKey();
+        this.adminDashboardCtrl = adash.getKey();
 
         showStart();
         primaryStage.show();
@@ -162,9 +164,7 @@ public class MainCtrl {
     public void showEventOverview(long id) {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
-        System.out.println("showEventOverview reached");
         eventOCtrl.update(id);
-        System.out.println("after update");
     }
 
     /**
@@ -221,6 +221,7 @@ public class MainCtrl {
     public void showAdminDashboard() {
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
+        adminDashboardCtrl.refresh();
     }
 
     /**

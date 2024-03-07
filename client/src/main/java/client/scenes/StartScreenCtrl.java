@@ -122,8 +122,8 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
         try {
             String name = eventName.getText();
             Event test = new Event(name);
-            server.addEvent(test);
-            System.out.println(test.toString());
+            test = server.addEvent(test);
+            System.out.println("Event created: " + test.id + " " + test.name);
             mc.showEventOverview(test.id);
         }
         catch (Exception e){

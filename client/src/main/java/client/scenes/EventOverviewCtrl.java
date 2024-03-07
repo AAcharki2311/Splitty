@@ -170,10 +170,9 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
      * @param id
      */
     public void update(long id){
-        // name is the event name
         Event x = server.getEventByID(id);
         System.out.println("reached");
         System.out.println(x.getId() + " " + x.getName());
-        // eventName.setText(x.getName());
+        eventName.setText(x.getName());
     }
 }
