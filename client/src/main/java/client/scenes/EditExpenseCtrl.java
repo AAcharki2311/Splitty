@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.utils.ReadJSON;
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class EditExpenseCtrl implements Initializable, languageSwitchInterface {
+public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
 
     private MainCtrl mc;
     private final ReadJSON jsonReader;
