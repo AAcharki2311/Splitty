@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditParticipantCtrl implements Initializable, languageSwitchInterface {
+public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
 
     private MainCtrl mc;
 
