@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Event;
-import commons.Participant;
 import server.database.EventRepository;
 import java.util.*;
 
@@ -101,18 +100,6 @@ public class EventController {
         }
         eventRepository.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * Method to get all the participants of an event
-     *
-     * @param id id of the event to use
-     * @param participantId ids of the participants to find
-     * @return list of all the participants of the event
-     */
-    @GetMapping("/{id}/participants/{participantId}")
-    public ResponseEntity<Participant> getParticipants(@PathVariable("id") long id, @PathVariable("participantId") long participantId) {
-        return ResponseEntity.notFound().build(); // Needs to be implemented the logic to find the participants
     }
 
     private static boolean isNullOrEmpty(String s) {

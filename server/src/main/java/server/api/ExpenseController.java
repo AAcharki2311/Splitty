@@ -58,8 +58,8 @@ public class ExpenseController {
     public ResponseEntity<Expense> add(@RequestBody Expense expense) {
         if (expense == null || expense.getId() < 0 ||
         expense.getAmount() < 0 || expense.getCreditor() == null ||
-        expense.getDate() == null || expense.getTag() == null ||
-        expense.getTitle() == null || expense.getEvent() == null) {
+        expense.getDate() == null || isNullOrEmpty(expense.getTag()) ||
+        isNullOrEmpty(expense.getTitle()) || expense.getEvent() == null) {
             return ResponseEntity.badRequest().build();
         }
         Expense postedExpense = expenseRepository.save(expense);
@@ -78,9 +78,9 @@ public class ExpenseController {
     }
 
     /**
-     * Method to have a list of all the expenses sorted by their person
+     * Method to have a list of all the expenses sorted by their creditor's name
      *
-     * @return list of expenses sorted by title
+     * @return list of expenses sorted by creditor's name
      */
     public List<Expense> getSortedExpensesPerson() {
         List<Expense> allExpenses = expenseRepository.findAll();
@@ -89,7 +89,7 @@ public class ExpenseController {
     }
 
     /**
-     * method to have a list of all the expenses sorted by their date
+     * Method to have a list of all the expenses sorted by their date
      *
      * @return list of expenses sorted by date
      */
@@ -97,5 +97,9 @@ public class ExpenseController {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(Expense::getDate));
         return allExpenses;
+    }
+
+    private static boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 }
