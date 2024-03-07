@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.scene.control.Button;
 import javafx.scene.input.Clipboard;
@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
-public class InviteCtrl implements languageSwitchInterface {
+public class InviteCtrl implements LanguageSwitchInterface {
 
     private MainCtrl mc;
 
