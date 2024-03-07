@@ -120,10 +120,10 @@ public class MainCtrl {
 
         String languageJSON;
         switch(configtaal){
-            case "dutch":
+            case "Dutch":
                 languageJSON = "NL";
                 return languageJSON;
-            case "french":
+            case "French":
                 languageJSON = "FR";
                 return languageJSON;
             default:
