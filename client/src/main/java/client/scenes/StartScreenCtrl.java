@@ -116,7 +116,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     * Method of the create event button, when pressed, it shows the eventoverview screen
      */
     public void clickEvent() {
         try {
