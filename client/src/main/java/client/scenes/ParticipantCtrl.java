@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
- * This class is the controller for the AddParticipant screen. It is used to add a participant to an event
+ * This class is the controller for the Participant screen. It is used to add a participant to an event
  */
 public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
 
