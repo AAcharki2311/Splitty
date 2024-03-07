@@ -5,6 +5,7 @@ import client.utils.EventServerUtils;
 import commons.Event;
 import jakarta.inject.Inject;
 // import javafx.beans.property.SimpleLongProperty;
+// import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,9 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 // import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+// import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AdminDashboardCtrl implements Initializable {
@@ -34,13 +37,13 @@ public class AdminDashboardCtrl implements Initializable {
     @FXML
     private TableView<Event> table;
     @FXML
-    private TableColumn<Event, Long> colId;
+    private TableColumn<Event, String> colId;
     @FXML
     private TableColumn<Event, String> colName;
     @FXML
-    private TableColumn<Event, Date> colDate1;
+    private TableColumn<Event, String> colDate1;
     @FXML
-    private TableColumn<Event, Date> colDate2;
+    private TableColumn<Event, String> colDate2;
 
     private ObservableList<Event> data;
 
@@ -67,11 +70,11 @@ public class AdminDashboardCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        // colId.setCellValueFactory(q -> new SimpleLongProperty(q.getValue().id);
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        colId.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().id)));
         colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().name));
-        // colDate1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().creationDate).toString());
-        // Event test = new Event("name");
-        // server.addEvent(test);
+        colDate1.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().creationDate)));
+        colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
         refresh();
     }
 

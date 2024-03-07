@@ -122,9 +122,9 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
         try {
             String name = eventName.getText();
             Event test = new Event(name);
-            System.out.println("New event created: " + test.getId() + " " + test.getName());
             server.addEvent(test);
-            mc.showEventOverview(test.getId());
+            System.out.println(test.toString());
+            mc.showEventOverview(test.id);
         }
         catch (Exception e){
             message.setText("Name cannot be empty");
