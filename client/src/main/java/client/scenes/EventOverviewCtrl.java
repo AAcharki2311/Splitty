@@ -60,6 +60,8 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
 
     private final EventServerUtils server;
 
+    private long eventid;
+
     /**
      * This method sets the image for the imageview and adds the items to the comboboxes
      * @param url represent the URL
@@ -169,8 +171,10 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
      * Updates the page with the right information
      * @param id
      */
-    public void update(long id){
-        Event x = server.getEventByID(id);
+    public void update(String id){
+        long eid = Long.parseLong(id);
+        this.eventid = eid;
+        Event x = server.getEventByID(eid);
         System.out.println("reached");
         System.out.println(x.getId() + " " + x.getName());
         eventName.setText(x.getName());

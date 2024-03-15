@@ -51,6 +51,8 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
     @FXML
     private TextField eventName;
     @FXML
+    private TextField eventJoin;
+    @FXML
     private Text message;
 
     /**
@@ -118,16 +120,29 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickEvent() {
+    public void createEvent() {
         try {
             String name = eventName.getText();
             Event test = new Event(name);
             test = server.addEvent(test);
             System.out.println("Event created: " + test.id + " " + test.name);
-            mc.showEventOverview(test.id);
+            mc.showEventOverview(String.valueOf(test.id));
         }
         catch (Exception e){
             message.setText("Name cannot be empty");
+        }
+    }
+
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
+    public void openEvent() {
+        try {
+            String eid = eventJoin.getText();
+            mc.showEventOverview(eid);
+        }
+        catch (Exception e){
+            message.setText("This Id is incorrect");
         }
     }
 
