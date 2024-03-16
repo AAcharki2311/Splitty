@@ -9,7 +9,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/payments")
-public class PaymentController {
+public class paymentController {
     private final Random random;
     private final PaymentRepository paymentRepository;
 
@@ -19,7 +19,7 @@ public class PaymentController {
      * @param random variable random
      * @param paymentRepository repository for payments
      */
-    public PaymentController(Random random, PaymentRepository paymentRepository) {
+    public paymentController(Random random, PaymentRepository paymentRepository) {
         this.random = random;
         this.paymentRepository = paymentRepository;
     }
