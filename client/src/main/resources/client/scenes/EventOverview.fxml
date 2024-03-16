@@ -41,7 +41,7 @@
    <Button fx:id="includingNameBtn" layoutX="205.0" layoutY="208.0" maxHeight="25.0" maxWidth="101.0" minHeight="25.0" minWidth="101.0" mnemonicParsing="false" text="Including Name" />
    <Button fx:id="editBtn" layoutX="389.0" layoutY="148.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickEditParticipant" text="Edit" />
    <Button fx:id="addBtn" layoutX="542.0" layoutY="148.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickAddParticipant" text="Add" />
-   <Label fx:id="expenstext1" layoutX="144.0" layoutY="104.0" text="show expenses of: " textFill="#656363">
+   <Label fx:id="showExpensOfText" contentDisplay="RIGHT" layoutX="86.0" layoutY="104.0" prefHeight="16.0" prefWidth="150.0" style="-fx-alignment: center;" text="show expenses of: " textAlignment="RIGHT" textFill="#656363">
       <font>
          <Font size="11.0" />
       </font>

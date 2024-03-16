@@ -33,6 +33,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     @FXML
     private Label expenstext;
     @FXML
+    private Label showExpensOfText;
+    @FXML
     private Button editBtn;
     @FXML
     private Button addBtn;
@@ -108,6 +110,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         allBtn.setText(h.get("key13").toString());
         fromNameBtn.setText(h.get("key14").toString());
         includingNameBtn.setText(h.get("key15").toString());
+        showExpensOfText.setText(h.get("key37").toString());
     }
 
     /**

@@ -13,42 +13,41 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditParticipantCtrl">
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="208.0" layoutX="29.0" layoutY="136.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="150.0" layoutX="407.0" layoutY="73.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="191.0" />
-   <Label layoutX="268.0" layoutY="16.0" text="Edit Participant">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="237.0" layoutX="54.0" layoutY="130.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="543.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="49.0" layoutX="55.0" layoutY="73.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="542.0" />
+   <Label fx:id="titleOfScreen" layoutX="268.0" layoutY="16.0" text="Edit a Participant" textFill="WHITE">
       <font>
-         <Font name="Verdana Pro Cond Black" size="30.0" />
+         <Font name="Century Gothic" size="30.0" />
       </font>
    </Label>
-   <Button layoutX="503.0" layoutY="318.0" mnemonicParsing="false" onAction="#getAllInfo" text="OK" />
-   <Label layoutX="57.0" layoutY="233.0" prefHeight="16.0" prefWidth="30.0" text="Email" />
-   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+   <Button fx:id="okBtn" layoutX="491.0" layoutY="325.0" mnemonicParsing="false" onAction="#submitEdit" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #06c926; -fx-border-color: white;" text="OK" textFill="WHITE" />
+   <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
    <Circle fx:id="backBtn" fill="#ff6159" layoutX="642.0" layoutY="14.0" onMouseClicked="#clickBack" radius="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
-   <Button layoutX="441.0" layoutY="318.0" mnemonicParsing="false" onAction="#clickBack" text="Abort" />
-   <Label layoutX="59.0" layoutY="195.0" text="Name" />
-   <Label layoutX="55.0" layoutY="272.0" text="IBAN" />
-   <Label layoutX="55.0" layoutY="312.0" text="BIC" />
-   <TextField fx:id="TextFieldEmail" layoutX="127.0" layoutY="230.0" prefHeight="25.0" prefWidth="150.0" promptText="fakeemail@gmail.com" />
-   <Label layoutX="38.0" layoutY="137.0" text="Add an Participant" textFill="WHITE">
+   <Button fx:id="cancelBtn" layoutX="491.0" layoutY="280.0" mnemonicParsing="false" onAction="#clickBack" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #ff0000; -fx-border-color: white;" text="Cancel" textAlignment="CENTER" textFill="#e8e8e8">
       <font>
-         <Font name="Century Gothic" size="25.0" />
-      </font>
-   </Label>
-   <Label layoutX="37.0" layoutY="165.0" prefHeight="13.0" prefWidth="210.0" text="Fill in the information of a new participant" textFill="#868686">
+         <Font name="System Bold" size="12.0" />
+      </font></Button>
+   <Label fx:id="fillInfoText" layoutX="61.0" layoutY="135.0" prefHeight="14.0" prefWidth="528.0" style="-fx-alignment: center;" text="Fill in the information of your new participant" textFill="#868686">
       <font>
          <Font name="Century Gothic" size="10.0" />
       </font>
    </Label>
-   <Circle fill="DODGERBLUE" layoutX="45.0" layoutY="203.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-   <Circle fill="DODGERBLUE" layoutX="44.0" layoutY="241.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-   <Circle fill="DODGERBLUE" layoutX="44.0" layoutY="279.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-   <Circle fill="DODGERBLUE" layoutX="42.0" layoutY="320.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-   <TextField fx:id="TextFieldIBAN" layoutX="128.0" layoutY="266.0" prefHeight="25.0" prefWidth="144.0" promptText="NL12 3456 7890 1234 56" />
-   <TextField fx:id="TextFieldBIC" layoutX="123.0" layoutY="306.0" prefHeight="25.0" prefWidth="150.0" promptText="ABCDEFGH" />
-   <TextField fx:id="TextFieldName" layoutX="126.0" layoutY="192.0" prefHeight="25.0" prefWidth="150.0" promptText="fakename" />
-   <ComboBox fx:id="comboBoxParticipants" layoutX="87.0" layoutY="86.0" prefWidth="150.0" promptText="Name" />
+   <ComboBox fx:id="comboBoxParticipants" layoutX="352.0" layoutY="86.0" prefHeight="26.0" prefWidth="138.0" promptText="name particpant" />
+   <Label fx:id="changeTheParticipantOfText" layoutX="67.0" layoutY="90.0" prefHeight="18.0" prefWidth="270.0" text="Change the participant called">
+      <font>
+         <Font name="Verdana Pro Cond Black" size="14.0" />
+      </font>
+   </Label>
+   <Label fx:id="emailText" layoutX="90.0" layoutY="210.0" prefHeight="16.0" prefWidth="30.0" text="Email" />
+   <Label fx:id="nameText" layoutX="90.0" layoutY="170.0" text="Name" />
+   <Label fx:id="ibanText" layoutX="90.0" layoutY="250.0" text="IBAN" />
+   <Label fx:id="bicText" layoutX="90.0" layoutY="290.0" text="BIC" />
+   <TextField fx:id="TextFieldEmail" layoutX="200.0" layoutY="210.0" prefHeight="25.0" prefWidth="225.0" promptText="fakeemail@gmail.com" />
+   <TextField fx:id="TextFieldIBAN" layoutX="200.0" layoutY="250.0" prefHeight="25.0" prefWidth="225.0" promptText="NL12 3456 7890 1234 56" />
+   <TextField fx:id="TextFieldBIC" layoutX="200.0" layoutY="290.0" prefHeight="25.0" prefWidth="225.0" promptText="ABCDEFGH" />
+   <TextField fx:id="TextFieldName" layoutX="200.0" layoutY="165.0" prefHeight="25.0" prefWidth="225.0" promptText="fakename" />
 </AnchorPane>
