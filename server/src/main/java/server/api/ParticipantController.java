@@ -124,7 +124,7 @@ public class ParticipantController {
         return eventParticipant;
     }
 
-    private static boolean isNullOrEmpty(String s) {
+    private boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 

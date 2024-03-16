@@ -99,7 +99,7 @@ public class ExpenseController {
         return allExpenses;
     }
 
-    private static boolean isNullOrEmpty(String s) {
+    private boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 }

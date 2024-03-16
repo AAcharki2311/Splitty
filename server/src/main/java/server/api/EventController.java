@@ -46,7 +46,10 @@ public class EventController {
         if (id < 0 || !eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(eventRepository.findById(id).get());
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if(optionalEvent.isPresent()) {
+            return ResponseEntity.ok(eventRepository.findById(id).get());
+        } else return ResponseEntity.notFound().build();
     }
 
     /**
@@ -102,7 +105,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    private static boolean isNullOrEmpty(String s) {
+    private boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
