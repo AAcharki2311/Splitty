@@ -60,7 +60,7 @@ public class PaymentController {
      */
     public List<Payment> getSortedPaymentsPayer() {
         List<Payment> allPayments = paymentRepository.findAll();
-        allPayments.sort(Comparator.comparing(Payment -> Payment.getPayer().getName()));
+        allPayments.sort(Comparator.comparing(payment -> payment.getPayer().getName()));
         return allPayments;
     }
 }

@@ -84,7 +84,7 @@ public class ExpenseController {
      */
     public List<Expense> getSortedExpensesPerson() {
         List<Expense> allExpenses = expenseRepository.findAll();
-        allExpenses.sort(Comparator.comparing(Expense -> Expense.getCreditor().getName()));
+        allExpenses.sort(Comparator.comparing(expense -> expense.getCreditor().getName()));
         return allExpenses;
     }
 
