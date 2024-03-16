@@ -20,6 +20,9 @@ public class EventControllerTest {
     private Event event1;
     private Event event2;
 
+    /**
+     * Set up for the tests
+     */
     @BeforeEach
     public void setup() {
         random = new MyRandom();
@@ -29,6 +32,9 @@ public class EventControllerTest {
         event2 = new Event("event2");
     }
 
+    /**
+     * Tests for the methods add and get
+     */
     @Test
     public void addAndGetTest() {
         eventController.add(event1);
@@ -38,6 +44,9 @@ public class EventControllerTest {
         assertEquals(event2, list.get(1));
     }
 
+    /**
+     * Test for the method getById
+     */
     @Test
     public void getByIdTest() {
         eventController.add(event1);
@@ -50,6 +59,9 @@ public class EventControllerTest {
         assertNotEquals(event1, responseEntity2.getBody());
     }
 
+    /**
+     * Test for the method getById if it's non-existing
+     */
     @Test
     public void getByWrongIdTest() {
         long id = -1;
@@ -57,6 +69,9 @@ public class EventControllerTest {
         assertEquals(BAD_REQUEST, responseEntity1.getStatusCode());
     }
 
+    /**
+     * Test for the update method
+     */
     @Test
     public void updateTest() {
         eventController.add(event1);
@@ -70,6 +85,9 @@ public class EventControllerTest {
         assertEquals(updatedEvent.getLastActDate(), responseEntity.getBody().getLastActDate()); // Check the updated lastActDate of the Event
     }
 
+    /**
+     * Test for the delete method
+     */
     @Test
     public void deleteTest() {
         eventController.add(event1);
