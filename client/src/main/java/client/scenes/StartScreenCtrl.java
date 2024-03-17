@@ -20,22 +20,27 @@ import java.net.URL;
 import java.util.*;
 
 public class StartScreenCtrl implements Initializable, languageSwitchInterface {
-    @FXML
-    private ComboBox comboboxLanguage;
+
+    /** BASIS **/
     private final EventServerUtils server;
-    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     private final MainCtrl mc;
-    private final ReadJSON jsonReader;
-    @FXML
-    private ImageView imageview;
-    @FXML
-    private ImageView imageviewFlag;
+    /** MENU **/
     @FXML
     private ImageView imgSet;
     @FXML
     private ImageView imgArrow;
     @FXML
     private ImageView imgHome;
+    /** NEEDED FOR LANGUAGE SWITCH **/
+    private final ReadJSON jsonReader;
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
+    @FXML
+    private ImageView imageviewFlag;
+    @FXML
+    private ComboBox comboboxLanguage;
+    /** PAGE **/
+    @FXML
+    private ImageView imageview;
     @FXML
     private Text welcometext;
     @FXML
