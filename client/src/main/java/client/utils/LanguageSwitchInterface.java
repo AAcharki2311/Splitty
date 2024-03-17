@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public interface languageSwitchInterface {
+public interface LanguageSwitchInterface {
 
     /**
      * This method is used to switch the language of the application

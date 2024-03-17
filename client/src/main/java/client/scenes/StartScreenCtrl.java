@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import commons.Event;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, languageSwitchInterface {
-
-    /** BASIS **/
+public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
+    @FXML
+    private ComboBox comboboxLanguage;
     private final EventServerUtils server;
     private final MainCtrl mc;
     /** MENU **/
@@ -123,7 +123,7 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
     }
 
     /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     * Method of the create event button, when pressed, it shows the eventoverview screen
      */
     public void createEvent() {
         try {

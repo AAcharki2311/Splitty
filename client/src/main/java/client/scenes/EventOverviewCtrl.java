@@ -2,7 +2,7 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import commons.Event;
 import jakarta.inject.Inject;
 // import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ import java.net.URL;
 
 import java.util.*;
 
-public class EventOverviewCtrl implements Initializable, languageSwitchInterface {
+public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface {
 
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -32,6 +32,8 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
     private Label partictext;
     @FXML
     private Label expenstext;
+    @FXML
+    private Label showExpensOfText;
     @FXML
     private Button editBtn;
     @FXML
@@ -110,6 +112,7 @@ public class EventOverviewCtrl implements Initializable, languageSwitchInterface
         allBtn.setText(h.get("key13").toString());
         fromNameBtn.setText(h.get("key14").toString());
         includingNameBtn.setText(h.get("key15").toString());
+        showExpensOfText.setText(h.get("key37").toString());
     }
 
     /**

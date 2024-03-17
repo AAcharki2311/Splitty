@@ -1,20 +1,28 @@
 package client.scenes;
 
-import client.utils.languageSwitchInterface;
+import client.utils.ReadJSON;
+import client.utils.LanguageSwitchInterface;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class EditParticipantCtrl implements Initializable, languageSwitchInterface {
+public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
 
     private MainCtrl mc;
-
+    private final ReadJSON jsonReader;
+    @FXML
+    private ImageView imageview;
     @FXML
     private TextField TextFieldName;
     @FXML
@@ -23,7 +31,16 @@ public class EditParticipantCtrl implements Initializable, languageSwitchInterfa
     private TextField TextFieldIBAN;
     @FXML
     private TextField TextFieldBIC;
-
+    @FXML
+    private Label changeTheParticipantOfText;
+    @FXML
+    private Label titleOfScreen;
+    @FXML
+    private Label fillInfoText;
+    @FXML
+    private Button cancelBtn;
+    @FXML
+    private Label nameText;
     @FXML
     private ComboBox<String> comboBoxParticipants;
     //    here must go an array with names of participants
@@ -32,19 +49,23 @@ public class EditParticipantCtrl implements Initializable, languageSwitchInterfa
     /**
      * Constructor of the EditParticipantCtrl
      * @param mc represent the MainCtrl
+     * @param jsonReader represent the ReadJSON
      */
     @Inject
-    public EditParticipantCtrl(MainCtrl mc) {
+    public EditParticipantCtrl(MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
+        this.jsonReader = jsonReader;
     }
 
     /**
-     * This methods sets the image for the imageview and adds the items to the comboboxes
+     * This method sets the image for the imageview and adds the items to the comboboxes
      * @param url represent the URL
      * @param resourceBundle represent the ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image image = new Image("images/logo-no-background.png");
+        imageview.setImage(image);
         comboBoxParticipants.getItems().addAll(names);
     }
 
@@ -69,13 +90,14 @@ public class EditParticipantCtrl implements Initializable, languageSwitchInterfa
     /**
      * Method of the save button, it gets all user input and when pressed, it shows the eventoverview screen
      */
-    public void getAllInfo() {
+    public void submitEdit() {
         String name = TextFieldName.getText();
         String email = TextFieldEmail.getText();
         String iban = TextFieldIBAN.getText();
         String bic = TextFieldBIC.getText();
         Participant meta = new Participant(null, name, email, iban, bic);
         System.out.println(meta.toString());
+//        mc.showEventOverview();
     }
 
     /**
@@ -84,5 +106,13 @@ public class EditParticipantCtrl implements Initializable, languageSwitchInterfa
      */
     @Override
     public void langueageswitch(String taal) {
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key28").toString());
+        changeTheParticipantOfText.setText(h.get("key29").toString());
+        fillInfoText.setText(h.get("key30").toString());
+        nameText.setText(h.get("key31").toString());
+        cancelBtn.setText(h.get("key26").toString());
 
-    }}
+    }
+}
