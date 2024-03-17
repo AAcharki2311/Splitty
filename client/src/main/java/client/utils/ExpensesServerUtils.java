@@ -46,4 +46,12 @@ public class ExpensesServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
+
+    public Expense getExpenseByID(long id) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/"+id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Expense>() {});
+    }
 }
