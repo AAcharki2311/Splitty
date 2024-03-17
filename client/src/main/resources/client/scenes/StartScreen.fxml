@@ -36,19 +36,19 @@
             <Image url="@../../images/logo-no-background.png" />
         </image>
     </ImageView>
-    <TextField fx:id="eventJoin" layoutX="286.0" layoutY="174.0" prefHeight="25.0" prefWidth="175.0" />
+    <TextField fx:id="eventJoin" layoutX="286.0" layoutY="174.0" onAction="#openEvent" prefHeight="25.0" prefWidth="175.0" />
     <Button fx:id="createBTN" layoutX="471.0" layoutY="207.0" mnemonicParsing="false" onAction="#createEvent" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Create Event" textFill="#f4fdff">
         <font>
             <Font name="Calibri" size="12.0" />
         </font>
     </Button>
-    <TextField fx:id="eventName" layoutX="286.0" layoutY="207.0" prefHeight="25.0" prefWidth="175.0" />
+    <TextField fx:id="eventName" layoutX="286.0" layoutY="207.0" onAction="#createEvent" prefHeight="25.0" prefWidth="175.0" />
     <Button fx:id="loginBTN" layoutX="363.0" layoutY="264.0" mnemonicParsing="false" onAction="#clickAdmin" prefHeight="20.0" prefWidth="135.0" style="-fx-background-color: #0D5575;" text="Log in as Admin" textFill="#f4fdff">
         <font>
             <Font name="Calibri" size="10.0" />
         </font>
     </Button>
-    <ComboBox fx:id="comboboxLanguage" layoutX="91.0" layoutY="367.0" prefHeight="26.0" prefWidth="92.0" />
+    <ComboBox fx:id="comboboxLanguage" layoutX="84.0" layoutY="366.0" prefHeight="26.0" prefWidth="160.0" />
     <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../../images/br-circle-01.png" />
@@ -61,15 +61,8 @@
         </font>
     </Text>
     <Line endX="180.0" layoutX="64.0" layoutY="125.0" startX="57.5" stroke="#0d5575" />
-    <Label layoutX="122.0" layoutY="141.0" text="Event 1" textFill="#0d5575">
-      <font>
-         <Font size="13.0" />
-      </font></Label>
-    <Label layoutX="122.0" layoutY="160.0" text="Event 2" textFill="#0d5575">
-      <font>
-         <Font size="13.0" />
-      </font></Label>
-    <Text fill="#c8d0d3" layoutX="187.0" layoutY="392.0" onMouseClicked="#downloadTemplate" strokeType="OUTSIDE" strokeWidth="0.0" text="Download template" textAlignment="RIGHT" wrappingWidth="100.01446533203125">
+    <Label fx:id="recentEventLabel" layoutX="115.0" layoutY="134.0" prefHeight="116.0" prefWidth="135.0" text="Event 1" />
+    <Text fill="#c8d0d3" layoutX="245.0" layoutY="389.0" onMouseClicked="#downloadTemplate" strokeType="OUTSIDE" strokeWidth="0.0" text="Download template" textAlignment="RIGHT" wrappingWidth="100.01446533203125">
         <font>
             <Font name="Calibri Italic" size="12.0" />
         </font>

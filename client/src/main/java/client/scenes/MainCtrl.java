@@ -120,10 +120,10 @@ public class MainCtrl {
 
         String languageJSON;
         switch(configtaal){
-            case "Dutch":
+            case "dutch", "Dutch":
                 languageJSON = "NL";
                 return languageJSON;
-            case "French":
+            case "french", "French":
                 languageJSON = "FR";
                 return languageJSON;
             default:
@@ -155,6 +155,7 @@ public class MainCtrl {
     public void showStart() {
         primaryStage.setTitle("StartScreen");
         primaryStage.setScene(startScene);
+        startCtrl.reset();
     }
 
     /**

@@ -2,24 +2,26 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.LanguageSwitchInterface;
+import client.utils.WriteEventNamesInterface;
 import commons.Event;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import client.utils.ReadJSON;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
+public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, WriteEventNamesInterface {
     @FXML
     private ComboBox comboboxLanguage;
     private final EventServerUtils server;
@@ -57,6 +59,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
     private TextField eventJoin;
     @FXML
     private Text message;
+    @FXML
+    private Label recentEventLabel;
 
     /**
      * This method sets the image for the imageview and adds the items to the comboboxes
@@ -66,6 +70,17 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        List<String> eventNames = readEventsFromJson();
+        if(eventNames.size() > 0){
+            String text = "";
+            List<String> tempList = eventNames.reversed();
+            for(String element : tempList){
+                text = text + element + "\n\n";
+            }
+            recentEventLabel.setText(text);
+        } else{
+            recentEventLabel.setText("No Recent Events");
+        }
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             languageChange(comboboxLanguage);
@@ -129,6 +144,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
             Event test = new Event(name);
             test = server.addEvent(test);
             System.out.println("Event created: " + test.id + " " + test.name);
+            writeEventName(test.name);
             mc.showEventOverview(String.valueOf(test.id));
         }
         catch (Exception e){
@@ -142,11 +158,44 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
     public void openEvent() {
         try {
             String eid = eventJoin.getText();
-            mc.showEventOverview(eid);
+            if(checkNumber(eid) && checkIdExists(eid)){
+                mc.showEventOverview(eid);
+                writeEventName(server.getEventByID(Long.parseLong(eid)).getName());
+                message.setText("");
+            } else{
+                throw new Exception("Exception message");
+            }
         }
         catch (Exception e){
             message.setText("This Id is incorrect");
         }
+    }
+
+    /**
+     * Method to check if the input is a number
+     * @param eid the input
+     * @return true if the input is a number, false if it isn't
+     */
+    public boolean checkNumber(String eid) {
+        boolean check = false;
+        try {
+            if(!eid.isBlank() &&  Integer.parseInt(eid) >= 0){
+                check = true;
+            }
+            return check;
+        } catch (NumberFormatException e) {
+            return check;
+        }
+    }
+
+    /**
+     * Method to check if the id exists
+     * @param id the id of the event
+     * @return true if the id exists, false if it doesn't
+     */
+    public boolean checkIdExists(String id) {
+        //TODO: Implement this method that checks the database if the id is existing
+        return true;
     }
 
     /**
@@ -183,16 +232,56 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
      */
     public void downloadTemplate() {
         try {
-            URL url = new URL("src/main/java/client/utils/languageTemplate.json");
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("languageTemplate.json");
+            fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
+            fileChooser.setTitle("Splitty23 - Download Language Template");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+            File file = fileChooser.showSaveDialog(null);
+            file.createNewFile();
 
+            try(PrintWriter printWriter = new PrintWriter(file)){
+                printWriter.print(readFile("src/main/resources/languageJSONS/languageTemplate.json"));
+            }
 
-//            downloadFile(fileUrl, destinationPath);
-        } catch (IOException e) {
+            System.out.println("Download Complete...");
+
+        } catch (Exception e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             String error = "Please restart the application and try again later.";
             errorAlert.setHeaderText("Error while downloading file.");
             errorAlert.setContentText(error);
             errorAlert.showAndWait();
+
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public String readFile(String url) throws IOException{
+        String text = "";
+        Scanner myScanner = new Scanner(new File(url));
+        while(myScanner.hasNextLine()){
+            String data = myScanner.nextLine();
+            text += data + "\n" ;
+        }
+        myScanner.close();
+        return text;
+    }
+
+    /**
+     * Method to reset the recent event label
+     */
+    public void reset() {
+        List<String> eventNames = readEventsFromJson();
+        if(eventNames.size() > 0){
+            String text = "";
+            List<String> tempList = eventNames.reversed();
+            for(String element : tempList){
+                text = text + element + "\n\n";
+            }
+            recentEventLabel.setText(text);
+        } else{
+            recentEventLabel.setText("No Recent Events");
         }
     }
 

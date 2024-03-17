@@ -84,8 +84,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            // mc.showEventOverview(id);
+            mc.showEventOverview(Long.toString(eventid));
         });
     }
 
