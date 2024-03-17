@@ -2,7 +2,7 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class AdminLoginCtrl implements Initializable, languageSwitchInterface {
+public class AdminLoginCtrl implements Initializable, LanguageSwitchInterface {
 
     /** BASIS **/
     private final EventServerUtils server;

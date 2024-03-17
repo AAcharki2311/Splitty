@@ -3,7 +3,7 @@ package client.scenes;
 import client.utils.EventServerUtils;
 // import client.utils.ServerUtils;
 import client.utils.ReadJSON;
-import client.utils.languageSwitchInterface;
+import client.utils.LanguageSwitchInterface;
 import commons.Event;
 import jakarta.inject.Inject;
 // import javafx.beans.property.SimpleLongProperty;
@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat;
 // import java.util.Date;
 import java.util.*;
 
-public class AdminDashboardCtrl implements Initializable, languageSwitchInterface {
+public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterface {
 
     /** BASIS **/
     private final EventServerUtils server;

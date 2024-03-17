@@ -36,8 +36,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
     private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     @FXML
     private ImageView imageviewFlag;
-    @FXML
-    private ComboBox comboboxLanguage;
     /** PAGE **/
     @FXML
     private ImageView imageview;
