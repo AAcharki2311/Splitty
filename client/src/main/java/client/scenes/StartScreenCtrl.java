@@ -257,6 +257,12 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         }
     }
 
+    /**
+     * Method to read a file
+     * @param url the url of the file
+     * @return the text of the file
+     * @throws IOException if something is wrong with the file
+     */
     public String readFile(String url) throws IOException{
         String text = "";
         Scanner myScanner = new Scanner(new File(url));
