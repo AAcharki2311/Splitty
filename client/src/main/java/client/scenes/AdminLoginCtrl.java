@@ -77,6 +77,8 @@ public class AdminLoginCtrl implements Initializable, languageSwitchInterface {
     /**
      * Constructer for the AdminLogin Controller
      * @param mc the main controller
+     * @param server the server
+     * @param jsonReader the jsonReader
      */
     @Inject
     public AdminLoginCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
