@@ -1,10 +1,5 @@
-/**
-* DELETE THIS AFTER READING
-* Translate each value after the "keyX" to your new language
- */
-
 {
-    "key0": "images/question-circle-01.png",
+    "key0": "images/br-circle-01.png",
     "key1": "Welcome to Splitty23!",
     "key2": "Please make a choice",
     "key3": "Join Event",
@@ -15,31 +10,11 @@
     "key8": "Expenses",
     "key9": "Edit",
     "key10": "Add",
-    "key11": "Settle Debts",
-    "key12": "Send Invite",
-    "key13": "All",
-    "key14": "From Name",
-    "key15": "Including Name",
-    "key16": "Edit an Expense",
-    "key17": "Change the expense of",
-    "key18": "called",
-    "key19": "Fill in the information of your new expense",
-    "key20": "Who paid?",
-    "key21": "Title?",
-    "key22": "How much?",
-    "key23": "When?",
-    "key24": "How to split?",
-    "key25": "Equally Between Everybody",
-    "key26": "Cancel",
-    "key27": "Add an Expense",
-    "key28": "Edit a Participant",
-    "key29": "Change the participant called",
-    "key30": "Fill in the information of your new participant",
-    "key31": "Name",
-    "key32": "Add a Participant",
-    "key33": "Invite a friend to join /eventname/!",
-    "key34": "OR",
-    "key35": "Your Invite Code",
-    "key36": "ADD MEMBER THROUGH EMAIL",
-    "key37": "show expenses of: "
+    "key11": "Edit Expense",
+    "key12": "Add Expense",
+    "key13": "Settle Debts",
+    "key14": "Send Invite",
+    "key15": "All",
+    "key16": "From Name",
+    "key17": "Including Name"
 }
