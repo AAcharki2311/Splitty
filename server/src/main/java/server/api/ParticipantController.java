@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Event;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,16 @@ public class ParticipantController {
     }
 
     /**
+     * Method to get all the participant in the repository (unsorted)
+     *
+     * @return all the participants in the current repository
+     */
+    @GetMapping(path = {"", "/"})
+    public List<Participant> getParticipants() {
+        return participantRepository.findAll();
+    }
+
+    /**
      * Method to find a participant from its id
      *
      * @param id id of the participant to find
@@ -46,7 +57,10 @@ public class ParticipantController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Participant> add(@RequestBody Participant participant) {
-        if (participant == null) {
+        if (participant == null || participant.getId() < 0 ||
+        isNullOrEmpty(participant.getEmail()) || isNullOrEmpty(participant.getName()) ||
+        participant.getEvent() == null || isNullOrEmpty(participant.getBic()) ||
+        isNullOrEmpty(participant.getIban())) {
             return ResponseEntity.badRequest().build();
         }
         Participant postedParticipant = participantRepository.save(participant);
@@ -89,6 +103,29 @@ public class ParticipantController {
         }
         participantRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Method to get all the participants of a specific event
+     *
+     * @param eventId id of the event to use
+     * @return list of all the participants of a specific event
+     */
+    @GetMapping("/participants/event/{eventId}")
+    public List<Participant> getParticipants(@PathVariable("eventID") long eventId) {
+        List<Participant> eventParticipant = new ArrayList<>();
+        List<Participant> allParticipants = getParticipants();
+        for(int i = 0; i < allParticipants.size(); i++) {
+            Event event = allParticipants.get(i).getEvent();
+            if (event.getId() == eventId) {
+                eventParticipant.add(allParticipants.get(i));
+            }
+        }
+        return eventParticipant;
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 
 }

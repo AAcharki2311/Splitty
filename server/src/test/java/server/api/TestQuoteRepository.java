@@ -89,7 +89,6 @@ public class TestQuoteRepository implements QuoteRepository {
     @Override
     public void flush() {
         // TODO Auto-generated method stub
-
     }
 
     /**

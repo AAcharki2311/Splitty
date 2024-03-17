@@ -32,13 +32,35 @@ public class PaymentController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Payment> add(@RequestBody Payment payment) {
-        if (payment == null) {
+        if (payment == null || payment.getId() < 0 ||
+        payment.getAmount() <= 0 || payment.getDate() == null ||
+        payment.getEvent() == null || payment.getPayer() == null ||
+        payment.getReceiv() == null) {
             return ResponseEntity.badRequest().build();
         }
         Payment postedPayment = paymentRepository.save(payment);
         return ResponseEntity.ok(postedPayment);
     }
 
-    // method to select sorted
+    /**
+     * Method to have a list of all the payments sorted by their date
+     *
+     * @return list of payments sorted by date
+     */
+    public List<Payment> getSortedPaymentsDate() {
+        List<Payment> allPayments = paymentRepository.findAll();
+        allPayments.sort(Comparator.comparing(Payment::getDate));
+        return allPayments;
+    }
 
+    /**
+     * Method to have a list of all the payments sorted by their payer
+     *
+     * @return list of payments sorted by payer
+     */
+    public List<Payment> getSortedPaymentsPayer() {
+        List<Payment> allPayments = paymentRepository.findAll();
+        allPayments.sort(Comparator.comparing(payment -> payment.getPayer().getName()));
+        return allPayments;
+    }
 }

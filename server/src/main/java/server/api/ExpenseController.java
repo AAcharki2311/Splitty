@@ -25,6 +25,16 @@ public class ExpenseController {
     }
 
     /**
+     * Method to get all the expenses in the repository (unsorted)
+     *
+     * @return all the expenses in the current repository
+     */
+    @GetMapping(path = {"", "/"})
+    public List<Expense> getExpenses() {
+        return expenseRepository.findAll();
+    }
+
+    /**
      * Method to find an expense from its id
      *
      * @param id id of the expense to find
@@ -46,13 +56,50 @@ public class ExpenseController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Expense> add(@RequestBody Expense expense) {
-        if (expense == null) {
+        if (expense == null || expense.getId() < 0 ||
+        expense.getAmount() < 0 || expense.getCreditor() == null ||
+        expense.getDate() == null || isNullOrEmpty(expense.getTag()) ||
+        isNullOrEmpty(expense.getTitle()) || expense.getEvent() == null) {
             return ResponseEntity.badRequest().build();
         }
         Expense postedExpense = expenseRepository.save(expense);
         return ResponseEntity.ok(postedExpense);
     }
 
-    // method to select sorted
+    /**
+     * Method to have a list of all the expenses sorted by their title
+     *
+     * @return list of expenses sorted by title
+     */
+    public List<Expense> getSortedExpensesTitle() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        allExpenses.sort(Comparator.comparing(Expense::getTitle));
+        return allExpenses;
+    }
 
+    /**
+     * Method to have a list of all the expenses sorted by their creditor's name
+     *
+     * @return list of expenses sorted by creditor's name
+     */
+    public List<Expense> getSortedExpensesPerson() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        allExpenses.sort(Comparator.comparing(expense -> expense.getCreditor().getName()));
+        return allExpenses;
+    }
+
+    /**
+     * Method to have a list of all the expenses sorted by their date
+     *
+     * @return list of expenses sorted by date
+     */
+    public List<Expense> getSortedExpensesDate() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        allExpenses.sort(Comparator.comparing(Expense::getDate));
+        return allExpenses;
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
 }
