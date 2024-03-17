@@ -1,6 +1,5 @@
 package client.utils;
 
-import com.sun.javafx.application.ParametersImpl;
 import commons.Participant;
 import jakarta.ws.rs.client.ClientBuilder;
 
@@ -15,6 +14,16 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ParticipantsServerUtil {
     private static final String SERVER = "https://localhost:8080/api/participants";
+
+    public Participant addParticipant(Participant participant) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
+    }
+
+
 
     public List<Participant> getAllParticipants() {
         return ClientBuilder.newClient(new ClientConfig())
