@@ -8,7 +8,6 @@ import commons.Expense;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
-import commons.Expense;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -17,6 +16,9 @@ public class ExpensesServerUtils {
 
     private static final String SERVER = "http://localhost:8080/api/expenses";
 
+    /**
+     * @return list of all expenses
+     */
     public List<Expense> getExpenses() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER)
@@ -25,6 +27,10 @@ public class ExpensesServerUtils {
                 .get(new GenericType<List<Expense>>() {});
     }
 
+    /**
+     * @param expense the expense to add
+     * @return added expense
+     */
     public Expense addExpense(Expense expense) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER)
@@ -33,6 +39,10 @@ public class ExpensesServerUtils {
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }
 
+    /**
+     * @param id the id of the expense to get
+     * @return expense with given id
+     */
     public Expense getExpenseByID(long id) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/"+id)
@@ -41,6 +51,10 @@ public class ExpensesServerUtils {
                 .get(new GenericType<Expense>() {});
     }
 
+    /**
+     * @param id the id of the expense to remove
+     * @return if the delete operation was successful
+     */
     public boolean deleteExpenseByID(long id) {
         Response response = ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/"+id)
