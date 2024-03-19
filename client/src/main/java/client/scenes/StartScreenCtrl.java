@@ -144,7 +144,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             Event test = new Event(name);
             test = server.addEvent(test);
             System.out.println("Event created: " + test.id + " " + test.name);
-            writeEventName(test.name);
+            writeEventName("name: " + test.name + " - id: " + (test.id));
             mc.showEventOverview(String.valueOf(test.id));
         }
         catch (Exception e){
@@ -158,10 +158,15 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     public void openEvent() {
         try {
             String eid = eventJoin.getText();
-            if(checkNumber(eid) && checkIdExists(eid)){
-                mc.showEventOverview(eid);
-                writeEventName(server.getEventByID(Long.parseLong(eid)).getName());
-                message.setText("");
+            if(checkNumber(eid)){
+                try{
+                    server.getEventByID(Long.parseLong(eid));
+                    mc.showEventOverview(eid);
+                    writeEventName("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid);
+                    message.setText("");
+                } catch(Exception e){
+                    throw new Exception();
+                }
             } else{
                 throw new Exception("Exception message");
             }
@@ -186,16 +191,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         } catch (NumberFormatException e) {
             return check;
         }
-    }
-
-    /**
-     * Method to check if the id exists
-     * @param id the id of the event
-     * @return true if the id exists, false if it doesn't
-     */
-    public boolean checkIdExists(String id) {
-        //TODO: Implement this method that checks the database if the id is existing
-        return true;
     }
 
     /**
