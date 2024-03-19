@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
 import jakarta.inject.Inject;
@@ -23,13 +24,17 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
-    private int inviteCode = 356;
+    private long inviteCode;
+    @FXML
+    private Label labelEventName;
     @FXML
     private Label inviteText;
     @FXML
     private Label orText;
     @FXML
     private Label inviteCodeText;
+    @FXML
+    private Label integerInviteCode;
     @FXML
     private Label addEmailText;
     @FXML
@@ -38,20 +43,24 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
     private Button sendButton;
     @FXML
     private Button cancelBtn;
+    private final EventServerUtils server;
+    private long eventid;
 
     /**
      * Constructor of the InviteCtrl
+     * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader represent the ReadJSON
      */
     @Inject
-    public InviteCtrl(MainCtrl mc, ReadJSON jsonReader) {
+    public InviteCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
+        this.server = server;
     }
 
     /**
-     * This methods sets the images for the imageviews and adds the items to the comboboxes
+     * This method sets the images for the imageviews and adds the items to the comboboxes
      * @param url represent the URL
      * @param resourceBundle represent the ResourceBundle
      */
@@ -80,7 +89,7 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
     public void copyToClipboard() {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
-        content.putString(String.valueOf(inviteCode));
+        content.putString(integerInviteCode.getText());
         clipboard.setContent(content);
     }
 
@@ -111,7 +120,7 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() throws IOException {
-        // mc.showEventOverview();
+        mc.showEventOverview(String.valueOf(eventid));
     }
 
     /**
@@ -127,5 +136,42 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
         inviteCodeText.setText(h.get("key35").toString());
         addEmailText.setText(h.get("key36").toString());
         cancelBtn.setText(h.get("key26").toString());
+    }
+
+    /**
+     * Updates the page with the right information
+     * @param id the id of the event
+     */
+    public void update(String id){
+        long eid = Long.parseLong(id);
+        this.eventid = eid;
+        System.out.println("reached");
+        System.out.println(eid + " " + server.getEventByID(eid).getName());
+
+        labelEventName.setText(server.getEventByID(eid).getName());
+
+        this.inviteCode = eventid;
+        long stringEventIdU = inviteCode;
+        String stringInviteCode = String.valueOf(stringEventIdU);
+        switch (stringInviteCode.length()){
+            case 1:
+                integerInviteCode.setText("00000" + stringInviteCode);
+                break;
+            case 2:
+                integerInviteCode.setText("0000" + stringInviteCode);
+                break;
+            case 3:
+                integerInviteCode.setText("000" + stringInviteCode);
+                break;
+            case 4:
+                integerInviteCode.setText("00" + stringInviteCode);
+                break;
+            case 5:
+                integerInviteCode.setText("0" + stringInviteCode);
+                break;
+            default:
+                integerInviteCode.setText(stringInviteCode);
+                break;
+        }
     }
 }
