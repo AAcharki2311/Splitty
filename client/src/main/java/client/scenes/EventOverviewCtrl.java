@@ -131,7 +131,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
-        mc.showInvite();
+        mc.showInvite(String.valueOf(eventid));
     }
 
     /**
