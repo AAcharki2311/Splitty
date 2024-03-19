@@ -170,10 +170,12 @@ public class MainCtrl {
 
     /**
      * Shows the invite screen
+     * @param id the id of the event
      */
-    public void showInvite() {
+    public void showInvite(String id) {
         primaryStage.setTitle("Invite");
         primaryStage.setScene(inviteScene);
+        inviteCtrl.update(id);
     }
 
     /**
