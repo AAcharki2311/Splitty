@@ -15,6 +15,10 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ParticipantsServerUtil {
     private static final String SERVER = "https://localhost:8080/api/participants";
 
+    /**
+     * @param participant the participant to add
+     * @return the added participant
+     */
     public Participant addParticipant(Participant participant) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER)
@@ -24,7 +28,9 @@ public class ParticipantsServerUtil {
     }
 
 
-
+    /**
+     * @return a list of all participants
+     */
     public List<Participant> getAllParticipants() {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER)
@@ -33,6 +39,11 @@ public class ParticipantsServerUtil {
                 .get(new GenericType<List<Participant>>() {});
     }
 
+    /**
+     * @param id the id of the participant to find
+     *           participant found at: https://localhost:8080/api/participants/id
+     * @return the found participant with given id
+     */
     public Participant getParticipantByID(long id) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/"+id)
@@ -41,6 +52,12 @@ public class ParticipantsServerUtil {
                 .get(new GenericType<Participant>() {});
     }
 
+    /**
+     * @param id the id of the participant to update
+     *           participant found at: https://localhost:8080/api/participants/id
+     * @param participant the updated participant, replaces the original at id
+     * @return the new updated participant
+     */
     public Participant updateParticipantByID(long id, Participant participant) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/"+id)
@@ -49,6 +66,10 @@ public class ParticipantsServerUtil {
                 .put(Entity.entity(participant,APPLICATION_JSON), Participant.class);
     }
 
+    /**
+     * @param id the id of the participant to delete
+     * @return whether the deletion was a success
+     */
     public boolean deleteParticipantByID(long id) {
         Response response = ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/"+id)
