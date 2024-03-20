@@ -180,10 +180,12 @@ public class MainCtrl {
 
     /**
      * Shows the add expenses screen
+     * @param id the id of the event
      */
-    public void showExpense() {
+    public void showExpense(String id) {
         primaryStage.setTitle("Add Expense");
         primaryStage.setScene(expenseScene);
+        addExpenseCtrl.update(id);
     }
 
     /**
@@ -208,10 +210,12 @@ public class MainCtrl {
 
     /**
      * Shows the edit expense screen
+     * @param id the id of the event
      */
-    public void showEditExpense() {
+    public void showEditExpense(String id) {
         primaryStage.setTitle("Edit Expense");
         primaryStage.setScene(editExpenseScene);
+        editExpenseCtrl.update(id);
     }
 
     /**

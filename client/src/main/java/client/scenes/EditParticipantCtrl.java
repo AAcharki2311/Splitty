@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
 import commons.Participant;
@@ -15,7 +16,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
@@ -45,7 +48,7 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     @FXML
     private ComboBox<String> comboBoxParticipants;
     //    here must go an array with names of participants
-    private String[] names = {""};
+    private ArrayList<String> names = new ArrayList<>();
     private final EventServerUtils server;
     private long eventid;
     @FXML
@@ -73,8 +76,7 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
-//        names = server.getEventByID(eventid).;
-        comboBoxParticipants.getItems().addAll(names);
+//        update(String.valueOf(eventid));
     }
 
 
@@ -156,5 +158,13 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
 
         labelEventName.setText(server.getEventByID(eid).getName());
 
+//        ParticipantsServerUtil participantsServerUtil = new ParticipantsServerUtil();
+//        List<Participant> participants = participantsServerUtil.getAllParticipants();
+//        names.clear();
+//        for (Participant p : participants) {
+//            names.add(p.getName());
+//        }
+//        comboBoxParticipants.getItems().clear();
+//        comboBoxParticipants.getItems().addAll(names);
     }
 }

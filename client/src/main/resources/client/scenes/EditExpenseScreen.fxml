@@ -44,7 +44,7 @@
    <Label fx:id="whenText" layoutX="90.0" layoutY="303.0" text="When?" />
    <Label fx:id="howToSplitText" layoutX="90.0" layoutY="343.0" text="How to Split?" />
    <TextField fx:id="titleTextField" layoutX="200.0" layoutY="223.0" prefHeight="25.0" prefWidth="225.0" promptText="e.g. McDonald's cheeseburger" />
-   <TextField fx:id="moneyField" layoutX="200.0" layoutY="263.0" onAction="#check" prefHeight="25.0" prefWidth="150.0" promptText="4,50" />
+   <TextField fx:id="moneyField" layoutX="200.0" layoutY="263.0" prefHeight="25.0" prefWidth="150.0" promptText="4,50" />
    <DatePicker fx:id="dateField" layoutX="200.0" layoutY="303.0" prefHeight="25.0" prefWidth="225.0" promptText="29-02-2024" />
    <RadioButton fx:id="splitRBtn" layoutX="200.0" layoutY="343.0" mnemonicParsing="false" text="Equally Between Everybody" />
    <Label fx:id="fillInfoText" layoutX="71.0" layoutY="155.0" prefHeight="14.0" prefWidth="513.0" style="-fx-alignment: center;" text="Fill in the information of your new expense" textFill="#868686">

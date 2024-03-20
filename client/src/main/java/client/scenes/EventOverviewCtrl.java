@@ -145,7 +145,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * Method of the add button, when pressed, it shows the add expense screen
      */
     public void clickAddExpense() {
-        mc.showExpense();
+        mc.showExpense(String.valueOf(eventid));
     }
 
     /**
@@ -166,7 +166,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * Method of the edit button, when pressed, it shows the edit expense screen
      */
     public void clickEditExpense() {
-        mc.showEditExpense();
+        mc.showEditExpense(String.valueOf(eventid));
     }
 
     /**
