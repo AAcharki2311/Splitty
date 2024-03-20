@@ -141,19 +141,32 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     public void createEvent() {
         try {
             String name = eventName.getText();
-            Event newEvent = new Event(name);
-            newEvent = server.addEvent(newEvent);
-            System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
-            writeEventName("name: " + newEvent.name + " - id: " + (newEvent.id));
-            mc.showEventOverview(String.valueOf(newEvent.id));
+            if(name.isBlank()){
+                throw new IllegalArgumentException("Name can not be empty");
+            } else{
+                List<Event> allEvents = server.getAllEvents();
+                List<String> namesOfAllEvents = new ArrayList<>();
+                for(Event e : allEvents){
+                    namesOfAllEvents.add(e.getName());
+                }
+                if(!namesOfAllEvents.contains(name)){
+                    Event newEvent = new Event(name);
+                    newEvent = server.addEvent(newEvent);
+                    System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
+                    writeEventName("name: " + newEvent.name + " - id: " + (newEvent.id));
+                    mc.showEventOverview(String.valueOf(newEvent.id));
+                } else {
+                    throw new IllegalArgumentException("Name must be unique");
+                }
+            }
         }
         catch (Exception e){
-            message.setText("Name cannot be empty");
+            message.setText(e.getMessage());
         }
     }
 
     /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     * Method of the Join button, when pressed, it shows the eventoverview screen
      */
     public void openEvent() {
         try {
@@ -165,14 +178,14 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                     writeEventName("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid);
                     message.setText("");
                 } catch(Exception e){
-                    throw new Exception();
+                    throw new IllegalArgumentException("This Id does not exist");
                 }
             } else{
-                throw new Exception("Exception message");
+                throw new IllegalArgumentException("This Id is incorrect");
             }
         }
         catch (Exception e){
-            message.setText("This Id is incorrect");
+            message.setText(e.getMessage());
         }
     }
 

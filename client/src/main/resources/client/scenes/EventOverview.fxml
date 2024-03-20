@@ -35,7 +35,7 @@
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
-   <Label layoutX="389.0" layoutY="105.0" text="Names of particpants" />
+   <Label fx:id="particNameLabel" layoutX="389.0" layoutY="105.0" text="Names of particpants" />
    <Button fx:id="allBtn" layoutX="77.0" layoutY="208.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" text="All" />
    <Button fx:id="fromNameBtn" layoutX="122.0" layoutY="208.0" maxHeight="25.0" maxWidth="79.0" minHeight="25.0" minWidth="79.0" mnemonicParsing="false" text="From Name" />
    <Button fx:id="includingNameBtn" layoutX="205.0" layoutY="208.0" maxHeight="25.0" maxWidth="101.0" minHeight="25.0" minWidth="101.0" mnemonicParsing="false" text="Including Name" />

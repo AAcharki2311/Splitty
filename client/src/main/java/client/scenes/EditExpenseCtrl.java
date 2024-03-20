@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.checkerframework.checker.units.qual.C;
 
 import java.net.URL;
 import java.time.LocalDate;

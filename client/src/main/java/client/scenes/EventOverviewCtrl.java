@@ -35,6 +35,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     @FXML
     private Label showExpensOfText;
     @FXML
+    private Label particNameLabel;
+    @FXML
     private Button editBtn;
     @FXML
     private Button addBtn;
@@ -56,7 +58,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private ImageView imageview;
     @FXML
     private ComboBox<String> comboBoxOne;
-    private String[] names = {"John", "Chris", "Anna"};
+
+    private String[] names = {"John", "Chris", "Anna"}; //Names of the participants
     @FXML
     private Label eventName;
 
@@ -180,5 +183,11 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         System.out.println("reached");
         System.out.println(x.getId() + " " + x.getName());
         eventName.setText(x.getName());
+
+        String particText = "";
+        for(String name : names){
+            particText += name + ", ";
+        }
+        particNameLabel.setText(particText);
     }
 }

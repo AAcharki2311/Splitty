@@ -87,7 +87,7 @@
     </Text>
     <Line endX="180.0" layoutX="64.0" layoutY="125.0" startX="57.5" stroke="#0d5575" />
     <Label fx:id="recentEventLabel" layoutX="115.0" layoutY="134.0" prefHeight="116.0" prefWidth="135.0" text="Event 1" />
-   <Text fx:id="message" fill="#0d5575" layoutX="347.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="167.0">
+   <Text fx:id="message" fill="#0d5575" layoutX="290.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="275.0">
       <font>
          <Font name="Calibri" size="14.0" />
       </font>
