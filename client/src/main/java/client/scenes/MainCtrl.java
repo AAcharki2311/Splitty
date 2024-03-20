@@ -188,18 +188,22 @@ public class MainCtrl {
 
     /**
      * Shows the add participant screen
+     * @param id the id of the event
      */
-    public void showParticipant() {
+    public void showParticipant(String id) {
         primaryStage.setTitle("Add Participant");
         primaryStage.setScene(participantScene);
+        participantCtrl.update(id);
     }
 
     /**
      * Shows the edit participant screen
+     * @param id the id of the event
      */
-    public void showEditParticipant() {
+    public void showEditParticipant(String id) {
         primaryStage.setTitle("Edit Participant");
         primaryStage.setScene(editParticipantScene);
+        editParticipantCtrl.update(id);
     }
 
     /**

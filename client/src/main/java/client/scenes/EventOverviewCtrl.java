@@ -152,14 +152,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * Method of the add button, when pressed, it shows the add participant screen
      */
     public void clickAddParticipant() {
-        mc.showParticipant();
+        mc.showParticipant(String.valueOf(eventid));
     }
 
     /**
      * Method of the edit button, when pressed, it shows the edit participant screen
      */
     public void clickEditParticipant() {
-        mc.showEditParticipant();
+        mc.showEditParticipant(String.valueOf(eventid));
     }
 
     /**
