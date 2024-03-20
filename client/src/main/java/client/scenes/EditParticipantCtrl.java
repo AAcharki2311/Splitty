@@ -91,8 +91,6 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     public void submitEdit() {
         try{
             var e = server.getEventByID(eventid);
-            var oldP = "old participant";
-            var newP = "new participant";
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
