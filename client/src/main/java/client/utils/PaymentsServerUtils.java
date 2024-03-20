@@ -14,6 +14,9 @@ public class PaymentsServerUtils {
 
     private static final String SERVER = "http://localhost:8080/api/payments";
 
+    /**
+     * @return list of all payments
+     */
     public List<Payment> getPayments() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER)
@@ -22,6 +25,10 @@ public class PaymentsServerUtils {
                 .get(new GenericType<List<Payment>>() {});
     }
 
+    /**
+     * @param payment the payment to add
+     * @return the added payment
+     */
     public Payment addPayments(Payment payment) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER)
@@ -30,6 +37,10 @@ public class PaymentsServerUtils {
                 .post(Entity.entity(payment, APPLICATION_JSON), Payment.class);
     }
 
+    /**
+     * @param id the id of the payment to retrieve
+     * @return the retrieved payment
+     */
     public Payment getPaymentByID(long id) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/"+id)
