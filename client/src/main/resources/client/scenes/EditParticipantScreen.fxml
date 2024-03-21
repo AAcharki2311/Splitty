@@ -20,7 +20,7 @@
          <Font name="Verdana Pro Cond Black" size="30.0" />
       </font>
    </Label>
-   <Label fx:id="titleOfScreen" layoutX="358.0" layoutY="54.0" text="Add a Participant" textFill="WHITE">
+   <Label fx:id="titleOfScreen" alignment="CENTER_RIGHT" layoutX="212.0" layoutY="54.0" prefHeight="36.0" prefWidth="386.0" text="Add a Participant" textFill="WHITE">
       <font>
          <Font name="Century Gothic" size="28.0" />
       </font>
@@ -55,4 +55,9 @@
    <TextField fx:id="TextFieldIBAN" layoutX="201.0" layoutY="266.0" prefHeight="25.0" prefWidth="225.0" promptText="NL12 3456 7890 1234 56" />
    <TextField fx:id="TextFieldBIC" layoutX="201.0" layoutY="306.0" prefHeight="25.0" prefWidth="225.0" promptText="ABCDEFGH" />
    <TextField fx:id="TextFieldName" layoutX="201.0" layoutY="181.0" prefHeight="25.0" prefWidth="225.0" promptText="fakename" />
+   <Button fx:id="deleteBtn" layoutX="491.0" layoutY="180.0" mnemonicParsing="false" onAction="#delete" prefHeight="55.0" prefWidth="86.0" style="-fx-background-color: #ff0000; -fx-border-color: red;" text="Delete participant" textAlignment="CENTER" textFill="#e8e8e8" wrapText="true">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Button>
 </AnchorPane>

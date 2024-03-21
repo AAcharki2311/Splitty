@@ -22,7 +22,7 @@
          <Font name="Verdana Pro Cond Black" size="30.0" />
       </font>
    </Label>
-   <Label fx:id="titleOfScreen" layoutX="384.0" layoutY="54.0" text="Edit an Expense" textFill="WHITE">
+   <Label fx:id="titleOfScreen" alignment="CENTER_RIGHT" layoutX="212.0" layoutY="54.0" prefHeight="36.0" prefWidth="386.0" text="Edit an Expense" textFill="WHITE">
       <font>
          <Font name="Century Gothic" size="28.0" />
       </font>
@@ -66,4 +66,9 @@
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>
    </Label>
+   <Button fx:id="deleteBtn" layoutX="491.0" layoutY="180.0" mnemonicParsing="false" onAction="#delete" prefHeight="55.0" prefWidth="86.0" style="-fx-background-color: #ff0000; -fx-border-color: red;" text="Delete expense" textAlignment="CENTER" textFill="#e8e8e8" wrapText="true">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Button>
 </AnchorPane>

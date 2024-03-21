@@ -44,6 +44,8 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private Button cancelBtn;
     @FXML
+    private Button deleteBtn;
+    @FXML
     private TextField titleTextField;
     @FXML
     private TextField moneyField;
@@ -173,6 +175,8 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
         howToSplitText.setText(h.get("key24").toString());
         splitRBtn.setText(h.get("key25").toString());
         cancelBtn.setText(h.get("key26").toString());
+        deleteBtn.setText(h.get("key39").toString());
+
     }
 
     /**
@@ -187,5 +191,12 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
 
         labelEventName.setText(server.getEventByID(eid).getName());
 
+    }
+
+    /**
+     * Method of the delete button, when pressed, it deletes the expense
+     */
+    public void delete(){
+        System.out.println("Delete button pressed");
     }
 }

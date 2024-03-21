@@ -21,7 +21,7 @@
          <Font name="Verdana Pro Cond Black" size="30.0" />
       </font>
    </Label>
-   <Label fx:id="titleOfScreen" layoutX="382.0" layoutY="54.0" text="Add an Expense" textFill="WHITE">
+   <Label fx:id="titleOfScreen" alignment="CENTER_RIGHT" layoutX="212.0" layoutY="60.0" prefHeight="36.0" prefWidth="386.0" text="Add an Expense" textFill="WHITE">
       <font>
          <Font name="Century Gothic" size="28.0" />
       </font>

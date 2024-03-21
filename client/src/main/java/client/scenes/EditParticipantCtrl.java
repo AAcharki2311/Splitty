@@ -41,6 +41,8 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     @FXML
     private Button cancelBtn;
     @FXML
+    private Button deleteBtn;
+    @FXML
     private Label nameText;
     @FXML
     private ComboBox<String> comboBoxParticipants;
@@ -141,6 +143,7 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
         fillInfoText.setText(h.get("key30").toString());
         nameText.setText(h.get("key31").toString());
         cancelBtn.setText(h.get("key26").toString());
+        deleteBtn.setText(h.get("key40").toString());
     }
 
     /**
@@ -163,5 +166,12 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
 //        }
 //        comboBoxParticipants.getItems().clear();
 //        comboBoxParticipants.getItems().addAll(names);
+    }
+
+    /**
+     * Method of the delete button, when pressed, it deletes the expense
+     */
+    public void delete(){
+        System.out.println("Delete button pressed");
     }
 }
