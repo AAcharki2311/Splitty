@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
-
-    private MainCtrl mc;
+    private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
@@ -96,7 +95,6 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
         comboBoxCurr.getItems().addAll(curNames);
     }
 
-
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
@@ -144,7 +142,7 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
      * @param splitRBtn the radio button that indicates if the expense is split
      * @return true if the input is correct, false if the input is incorrect
      */
-    public boolean validate(String title, double money,ComboBox comboBoxNamePaid, ComboBox comboBoxCurr, ComboBox comboBoxName, ComboBox comboBoxExpensesTitle, RadioButton splitRBtn){
+    public boolean validate(String title, double money, ComboBox comboBoxNamePaid, ComboBox comboBoxCurr, ComboBox comboBoxName, ComboBox comboBoxExpensesTitle, RadioButton splitRBtn){
         if(title.isBlank() || money < 0 ||
                 comboBoxNamePaid.getValue() == null ||
                 comboBoxCurr.getValue() == null ||

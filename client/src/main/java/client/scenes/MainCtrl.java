@@ -225,5 +225,4 @@ public class MainCtrl {
         primaryStage.setScene(aeventScene);
         eventOverviewAdminCtrl.update(id);
     }
-
 }

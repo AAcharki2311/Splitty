@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
-
-    private MainCtrl mc;
+    private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;

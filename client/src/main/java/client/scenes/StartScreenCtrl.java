@@ -294,12 +294,10 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
      */
     public void reset() {
         List<String> eventNames = readEventsFromJson();
-        if(eventNames.size() > 0){
+        if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
-            for(String element : tempList){
-                text = text + element + "\n\n";
-            }
+            for(String element : tempList) text = text + element + "\n\n";
             recentEventLabel.setText(text);
         } else{
             recentEventLabel.setText("No Recent Events");

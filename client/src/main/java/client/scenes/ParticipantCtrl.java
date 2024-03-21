@@ -20,8 +20,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
-
-    private MainCtrl mc;
+    private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
@@ -71,17 +70,6 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
-     * This method checks if the input is a valid number
-     */
-    public void check() {
-//        TextFieldMoney.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue.matches("\\d*\\.?\\d*")) { // Regex to allow digits and optional decimal point
-//                TextFieldMoney.setText(oldValue); // Revert to the old value if new value doesn't match
-//            }
-//        });
-    }
-
-    /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() throws IOException {
@@ -91,7 +79,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     /**
      * This method gets all the information from the textfields and prints it to the console
      */
-    public void submit() throws IOException {
+    public void submit() {
         try{
             var e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
@@ -157,6 +145,5 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
         System.out.println(eid + " " + server.getEventByID(eid).getName());
 
         labelEventName.setText(server.getEventByID(eid).getName());
-
     }
 }
