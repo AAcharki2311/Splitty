@@ -5,6 +5,7 @@ import client.utils.LanguageSwitchInterface;
 import client.utils.WriteEventNamesInterface;
 import commons.Event;
 import jakarta.inject.Inject;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -61,6 +63,21 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     private Text message;
     @FXML
     private Label recentEventLabel;
+    @FXML
+    private ImageView warningImageview;
+
+    /**
+     * Constructor of the StartScreenCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param server server
+     */
+    @Inject
+    public StartScreenCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+        this.mc = mc;
+        this.jsonReader = jsonReader;
+        this.server = server;
+    }
 
     /**
      * This method sets the image for the imageview and adds the items to the comboboxes
@@ -71,12 +88,10 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<String> eventNames = readEventsFromJson();
-        if(eventNames.size() > 0){
+        if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
-            for(String element : tempList){
-                text = text + element + "\n\n";
-            }
+            for(String element : tempList) text = text + element + "\n\n";
             recentEventLabel.setText(text);
         } else{
             recentEventLabel.setText("No Recent Events");
@@ -100,6 +115,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
+
     }
 
     /**
@@ -119,20 +135,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         recentviewedtext.setText(h.get("key6").toString());
         Image imageFlag = new Image(h.get("key0").toString());
         imageviewFlag.setImage(imageFlag);
-    }
-
-
-    /**
-     * Constructor of the StartScreenCtrl
-     * @param mc represent the MainCtrl
-     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
-     * @param server server
-     */
-    @Inject
-    public StartScreenCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
-        this.mc = mc;
-        this.jsonReader = jsonReader;
-        this.server = server;
     }
 
     /**
@@ -214,21 +216,21 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     }
 
     /**
-     * Javadoc
+     * Method of the back button, when pressed, it shows the start screen
      */
     public void clickBack(){
         // does nothing as Start Screen has no back
     }
 
     /**
-     * Javadoc
+     * Method of the home button, when pressed, it shows the start screen
      */
     public void clickHome(){
         mc.showStart();
     }
 
     /**
-     * Javadoc
+     * Method of the settings button, when pressed, it shows the *settings screen*
      */
     public void clickSettings(){
         // mc.showSettings();
@@ -253,13 +255,18 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             }
 
             System.out.println("Download Complete...");
+            warningImageview.setImage(new Image("images/notifications/Slide5.png"));
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.play();
 
         } catch (Exception e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            String error = "Please restart the application and try again later.";
-            errorAlert.setHeaderText("Error while downloading file.");
-            errorAlert.setContentText(error);
-            errorAlert.showAndWait();
+            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.play();
 
             System.out.println(e.getMessage());
         }
@@ -298,5 +305,4 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             recentEventLabel.setText("No Recent Events");
         }
     }
-
 }

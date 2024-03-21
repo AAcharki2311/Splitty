@@ -11,10 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import client.utils.ParticipantsServerUtil;
 
-
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;

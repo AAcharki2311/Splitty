@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
-import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
 import commons.Participant;
@@ -18,7 +17,6 @@ import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
