@@ -153,7 +153,7 @@ public class MainCtrl {
      * Shows the start screen
      */
     public void showStart() {
-        primaryStage.setTitle("StartScreen");
+        primaryStage.setTitle("Splitty 23");
         primaryStage.setScene(startScene);
         startCtrl.reset();
     }
