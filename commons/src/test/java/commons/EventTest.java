@@ -26,6 +26,15 @@ public class EventTest {
     }
 
     /**
+     * Test IDgetter
+     */
+    @Test
+    public void checkIDGetter() {
+        Event e = new Event("TestEvent");
+        assertNotNull(e.getId());
+    }
+
+    /**
      * test creationdate getter
      */
     @Test

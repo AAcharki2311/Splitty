@@ -7,6 +7,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class ParticipantTest {
 
     @Test
+    void emptyConstructor(){
+        Participant p = new Participant();
+        assertNotNull(p);
+    }
+
+    @Test
+    void getId(){
+        Event e = new Event("TestEvent");
+        Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+        assertNotNull(a.getId());
+    }
+
+    @Test
     void getName(){
         Event e = new Event("TestEvent");
         Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
