@@ -148,14 +148,12 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             } else{
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
-                for(Event e : allEvents){
-                    namesOfAllEvents.add(e.getName());
-                }
+                for(Event e : allEvents){ namesOfAllEvents.add(e.getName()); }
                 if(!namesOfAllEvents.contains(name)){
                     Event newEvent = new Event(name);
                     newEvent = server.addEvent(newEvent);
                     System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
-                    writeEventName("name: " + newEvent.name + " - id: " + (newEvent.id));
+                    writeEventName(("name: " + newEvent.name + " - id: " + (newEvent.id)), String.valueOf(newEvent.id));
                     mc.showEventOverview(String.valueOf(newEvent.id));
                 } else {
                     throw new IllegalArgumentException("Name must be unique");
@@ -177,7 +175,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                 try{
                     server.getEventByID(Long.parseLong(eid));
                     mc.showEventOverview(eid);
-                    writeEventName("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid);
+                    writeEventName(("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid), eid);
                     message.setText("");
                 } catch(Exception e){
                     throw new IllegalArgumentException("This Id does not exist");

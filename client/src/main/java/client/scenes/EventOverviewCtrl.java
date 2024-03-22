@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 
@@ -62,6 +63,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private Label eventName;
     private final EventServerUtils server;
     private long eventid;
+    @FXML
+    private Label editEventNameLabel;
 
     /**
      * Constructor of the EventoverviewCtrl
@@ -124,6 +127,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         fromNameBtn.setText(h.get("key14").toString());
         includingNameBtn.setText(h.get("key15").toString());
         showExpensOfText.setText(h.get("key37").toString());
+        editEventNameLabel.setText(h.get("key38").toString());
     }
 
     /**
@@ -166,6 +170,46 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      */
     public void clickEditExpense() {
         mc.showEditExpense(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the edit event name button, when pressed, it shows the edit event name dialog
+     */
+    public void editEventName(){
+        String oldName = eventName.getText();
+        String newName = "";
+
+        while(true){
+            newName = JOptionPane.showInputDialog("Enter the new name of the event");
+            if (newName == null || newName.equals(oldName)) {
+                System.out.println("Operation cancelled by the user. Name remains unchanged.");
+                return;
+            } else if (newName.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Name cannot be empty.");
+            } else if(checkDuplicateName(newName)){
+                JOptionPane.showMessageDialog(null, "Not allowed. Duplicate name detected.");
+            } else {
+                Event x = server.getEventByID(eventid);
+                x.setName(newName);
+                server.updateEventByID(eventid, x);
+
+                eventName.setText(server.getEventByID(eventid).getName());
+                System.out.println("Name of event(id " + eventid + ") changed from " + oldName + " to " + newName);
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method checks if the name is a duplicate
+     * @param name the name of the event
+     * @return true if the name is a duplicate, false if the name is not a duplicate
+     */
+    public boolean checkDuplicateName(String name){
+        List<Event> allEvents = server.getAllEvents();
+        List<String> namesOfAllEvents = new ArrayList<>();
+        for(Event e : allEvents){ namesOfAllEvents.add(e.getName());}
+        return namesOfAllEvents.contains(name);
     }
 
     /**
