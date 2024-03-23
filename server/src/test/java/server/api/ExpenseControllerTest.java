@@ -49,7 +49,6 @@ public class ExpenseControllerTest {
         expenseController.add(expense1);
         expenseController.add(expense2);
         List<Expense> list = expenseController.getExpenses();
-        System.out.println(list);
         assertEquals(expense1, list.get(0));
         assertEquals(expense2, list.get(1));
     }
