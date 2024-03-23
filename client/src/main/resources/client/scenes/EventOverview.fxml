@@ -15,7 +15,7 @@
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="144.0" layoutX="42.0" layoutY="218.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="111.0" layoutX="358.0" layoutY="78.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="277.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="284.0" layoutX="42.0" layoutY="78.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
-   <Label fx:id="eventName" layoutX="268.0" layoutY="16.0" text="EventName">
+   <Label fx:id="eventName" layoutX="268.0" layoutY="16.0">
       <font>
          <Font name="Verdana Pro Cond Black" size="30.0" />
       </font>
@@ -35,7 +35,7 @@
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
-   <Label layoutX="389.0" layoutY="105.0" text="Names of particpants" />
+   <Label fx:id="particNameLabel" layoutX="389.0" layoutY="105.0" text="Names of particpants" />
    <Button fx:id="allBtn" layoutX="77.0" layoutY="208.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" text="All" />
    <Button fx:id="fromNameBtn" layoutX="122.0" layoutY="208.0" maxHeight="25.0" maxWidth="79.0" minHeight="25.0" minWidth="79.0" mnemonicParsing="false" text="From Name" />
    <Button fx:id="includingNameBtn" layoutX="205.0" layoutY="208.0" maxHeight="25.0" maxWidth="101.0" minHeight="25.0" minWidth="101.0" mnemonicParsing="false" text="Including Name" />

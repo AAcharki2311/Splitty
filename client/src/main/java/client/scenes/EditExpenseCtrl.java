@@ -1,7 +1,10 @@
 package client.scenes;
 
+import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
+import commons.Expense;
+import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,12 +13,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
-
-    private MainCtrl mc;
+    private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
@@ -40,6 +44,8 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private Button cancelBtn;
     @FXML
+    private Button deleteBtn;
+    @FXML
     private TextField titleTextField;
     @FXML
     private TextField moneyField;
@@ -58,20 +64,26 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
+    private final EventServerUtils server;
+    private long eventid;
+    @FXML
+    private Label labelEventName;
 
     /**
      * Constructor of the EditExpenseCtrl
+     * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      */
     @Inject
-    public EditExpenseCtrl(MainCtrl mc, ReadJSON jsonReader) {
+    public EditExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
+        this.server = server;
     }
 
     /**
-     * This methods sets the image for the imageview and adds the items to the comboboxes
+     * This method sets the image for the imageview and adds the items to the comboboxes
      * @param url represent the URL
      * @param resourceBundle represent the ResourceBundle
      */
@@ -86,31 +98,62 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
-     * This method checks if the input is correct
-     */
-    public void check() {
-//        TextFieldMoney.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue.matches("\\d*\\.?\\d*")) { // Regex to allow digits and optional decimal point
-//                TextFieldMoney.setText(oldValue); // Revert to the old value if new value doesn't match
-//            }
-//        });
-    }
-
-    /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() {
-        // mc.showEventOverview();
+        mc.showEventOverview(String.valueOf(eventid));
     }
 
     /**
      * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventoverview screen
      */
     public void submitEdit() {
-        // check each textfield and combobox if they are filled in
-        // if not, give a warning message and don't submit the form: please fill all in
-        // create a new expense object and add it to the list of expenses
-        // mc.showEventOverview();
+        try{
+            var e = server.getEventByID(eventid);
+            String title = titleTextField.getText();
+            Double money = Double.parseDouble(moneyField.getText());
+            LocalDate localDate = dateField.getValue();
+            Date date = java.sql.Date.valueOf(localDate);
+            String tag = "-";
+            var p = new Participant();
+//            ParticipantsServerUtil participantsServerUtil = new ParticipantsServerUtil();
+//            var p = participantsServerUtil.getParticipantByID(1);
+            if(validate(title, money, comboBoxNamePaid, comboBoxCurr, comboBoxName, comboBoxExpensesTitle, splitRBtn)){
+                Expense exp = new Expense(e, p, money, date, title, tag);
+                System.out.println("New Expense added: " +
+                        exp.getTitle() + " " +
+                        exp.getAmount() + " " +
+                        exp.getDate());
+                clickBack();
+            } else {
+                throw new Exception("Exception message");
+            }
+        } catch (Exception e){
+            System.out.println("Something went wrong");
+        }
+    }
+
+    /**
+     * This method checks if the input is correct
+     * @param title the title of the expense
+     * @param money the amount of money
+     * @param comboBoxNamePaid the name of the person who paid
+     * @param comboBoxCurr the currency of the expense
+     * @param comboBoxName the name of the expense
+     * @param comboBoxExpensesTitle the title of the expense
+     * @param splitRBtn the radio button that indicates if the expense is split
+     * @return true if the input is correct, false if the input is incorrect
+     */
+    public boolean validate(String title, double money, ComboBox comboBoxNamePaid, ComboBox comboBoxCurr, ComboBox comboBoxName, ComboBox comboBoxExpensesTitle, RadioButton splitRBtn){
+        if(title.isBlank() || money < 0 ||
+                comboBoxNamePaid.getValue() == null ||
+                comboBoxCurr.getValue() == null ||
+                comboBoxName.getValue() == null ||
+                comboBoxExpensesTitle.getValue() == null ||
+                !splitRBtn.isSelected()){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -132,5 +175,28 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
         howToSplitText.setText(h.get("key24").toString());
         splitRBtn.setText(h.get("key25").toString());
         cancelBtn.setText(h.get("key26").toString());
+        deleteBtn.setText(h.get("key39").toString());
+
+    }
+
+    /**
+     * Updates the page with the right information
+     * @param id the id of the event
+     */
+    public void update(String id){
+        long eid = Long.parseLong(id);
+        this.eventid = eid;
+        System.out.println("reached");
+        System.out.println(eid + " " + server.getEventByID(eid).getName());
+
+        labelEventName.setText(server.getEventByID(eid).getName());
+
+    }
+
+    /**
+     * Method of the delete button, when pressed, it deletes the expense
+     */
+    public void delete(){
+        System.out.println("Delete button pressed");
     }
 }

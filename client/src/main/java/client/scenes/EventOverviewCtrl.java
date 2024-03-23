@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.*;
 
 public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface {
-
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
@@ -34,6 +33,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private Label expenstext;
     @FXML
     private Label showExpensOfText;
+    @FXML
+    private Label particNameLabel;
     @FXML
     private Button editBtn;
     @FXML
@@ -56,13 +57,24 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private ImageView imageview;
     @FXML
     private ComboBox<String> comboBoxOne;
-    private String[] names = {"John", "Chris", "Anna"};
+    private String[] names = {"John", "Chris", "Anna"}; //Names of the participants
     @FXML
     private Label eventName;
-
     private final EventServerUtils server;
-
     private long eventid;
+
+    /**
+     * Constructor of the EventoverviewCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param server server
+     */
+    @Inject
+    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+        this.mc = mc;
+        this.jsonReader = jsonReader;
+        this.server = server;
+    }
 
     /**
      * This method sets the image for the imageview and adds the items to the comboboxes
@@ -115,19 +127,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     }
 
     /**
-     * Constructor of the EventoverviewCtrl
-     * @param mc represent the MainCtrl
-     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
-     * @param server server
-     */
-    @Inject
-    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
-        this.mc = mc;
-        this.jsonReader = jsonReader;
-        this.server = server;
-    }
-
-    /**
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
@@ -145,33 +144,33 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * Method of the add button, when pressed, it shows the add expense screen
      */
     public void clickAddExpense() {
-        mc.showExpense();
+        mc.showExpense(String.valueOf(eventid));
     }
 
     /**
      * Method of the add button, when pressed, it shows the add participant screen
      */
     public void clickAddParticipant() {
-        mc.showParticipant();
+        mc.showParticipant(String.valueOf(eventid));
     }
 
     /**
      * Method of the edit button, when pressed, it shows the edit participant screen
      */
     public void clickEditParticipant() {
-        mc.showEditParticipant();
+        mc.showEditParticipant(String.valueOf(eventid));
     }
 
     /**
      * Method of the edit button, when pressed, it shows the edit expense screen
      */
     public void clickEditExpense() {
-        mc.showEditExpense();
+        mc.showEditExpense(String.valueOf(eventid));
     }
 
     /**
      * Updates the page with the right information
-     * @param id
+     * @param id the id of the event
      */
     public void update(String id){
         long eid = Long.parseLong(id);
@@ -180,5 +179,11 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         System.out.println("reached");
         System.out.println(x.getId() + " " + x.getName());
         eventName.setText(x.getName());
+
+        String particText = "";
+        for(String name : names){
+            particText += name + ", ";
+        }
+        particNameLabel.setText(particText);
     }
 }

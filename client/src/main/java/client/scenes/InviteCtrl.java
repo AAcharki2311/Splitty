@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class InviteCtrl implements Initializable, LanguageSwitchInterface {
-
-    private MainCtrl mc;
+    private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
@@ -79,7 +78,6 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
         imageviewSend.setFitHeight(13);
         imageviewSend.setFitWidth(13);
         sendButton.setGraphic(imageviewSend);
-
     }
 
     /**
