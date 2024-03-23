@@ -5,7 +5,6 @@ import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 
 import client.utils.LanguageSwitchInterface;
-import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
@@ -19,7 +18,6 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -59,7 +57,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
      * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader represent the ReadJSON
-     *                   @param pcu represent the ParticipantsServerUtil
+     * @param pcu represent the ParticipantsServerUtil
      */
     @Inject
     public ParticipantCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil pcu) {
@@ -102,12 +100,6 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
             if(validate(name, email, iban, bic) && !duplicate){
                 Participant p = new Participant(e, name, email, iban, bic);
                 pcu.addParticipant(p);
-                System.out.println("New Participant added: " +
-                        p.getEvent().getName() + " " +
-                        p.getName() + " " +
-                        p.getEmail() + " " +
-                        p.getIban() + " " +
-                        p.getBic());
                 clickBack();
             } else {
                 if(duplicate){

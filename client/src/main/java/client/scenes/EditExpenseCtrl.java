@@ -17,7 +17,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
