@@ -79,6 +79,9 @@ public class ExpenseControllerTest {
         assertEquals(BAD_REQUEST, responseEntity1.getStatusCode());
     }
 
+    /**
+     * Test for the method getSortedExpensesTitle
+     */
     @Test
     public void getSortedTitleTest() {
         expenseController.add(expense1);
@@ -89,6 +92,9 @@ public class ExpenseControllerTest {
         assertEquals(checkExpense, expenseController.getSortedExpensesTitle());
     }
 
+    /**
+     * Test for the method getSortedExpensesPerson
+     */
     @Test
     public void getSortedPersonTest() {
         expenseController.add(expense1);
@@ -99,6 +105,9 @@ public class ExpenseControllerTest {
         assertEquals(checkExpense, expenseController.getSortedExpensesPerson());
     }
 
+    /**
+     * Test for the method getSortedExpensesDate
+     */
     @Test
     public void getSortedDate() {
         expenseController.add(expense1);
