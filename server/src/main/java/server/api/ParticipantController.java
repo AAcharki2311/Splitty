@@ -80,7 +80,6 @@ public class ParticipantController {
         } catch(NoSuchElementException e){
             return ResponseEntity.badRequest().build();
         }
-
     }
 
     /**
