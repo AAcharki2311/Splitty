@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import commons.Event;
 //import javafx.beans.property.SimpleStringProperty;
 import commons.Expense;
-import javafx.collections.FXCollections;
+// import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 // import javafx.fxml.Initializable;
 import javafx.fxml.Initializable;
