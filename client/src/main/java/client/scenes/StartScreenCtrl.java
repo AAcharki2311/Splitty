@@ -148,7 +148,9 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             } else{
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
-                for(Event e : allEvents){ namesOfAllEvents.add(e.getName()); }
+                for(Event e : allEvents){
+                    namesOfAllEvents.add(e.getName());
+                }
                 if(!namesOfAllEvents.contains(name)){
                     Event newEvent = new Event(name);
                     newEvent = server.addEvent(newEvent);
