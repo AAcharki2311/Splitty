@@ -15,7 +15,7 @@
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="144.0" layoutX="42.0" layoutY="218.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="111.0" layoutX="358.0" layoutY="78.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="277.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="284.0" layoutX="42.0" layoutY="78.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="299.0" />
-   <Label fx:id="eventName" layoutX="268.0" layoutY="16.0">
+   <Label fx:id="eventName" alignment="CENTER" layoutX="169.0" layoutY="16.0" maxHeight="40.0" maxWidth="270.0" prefHeight="40.0" prefWidth="270.0" style="-fx-alignment: center;" textAlignment="CENTER">
       <font>
          <Font name="Verdana Pro Cond Black" size="30.0" />
       </font>
@@ -30,7 +30,7 @@
          <Font name="Verdana Pro Cond Black" size="17.0" />
       </font></Label>
    <Button fx:id="settleDebtsBtn" layoutX="430.0" layoutY="277.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Settle Debts" />
-   <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="imageview" fitHeight="38.0" fitWidth="139.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/logo-no-background.png" />
       </image>
@@ -56,4 +56,9 @@
    </ImageView>
    <Button fx:id="editBtn1" layoutX="263.0" layoutY="86.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickEditExpense" text="Edit" />
    <Button fx:id="addBtn1" layoutX="263.0" layoutY="148.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickAddExpense" text="Add" />
+   <Label fx:id="editEventNameLabel" alignment="CENTER" layoutX="171.0" layoutY="54.0" onMouseClicked="#editEventName" prefHeight="18.0" prefWidth="270.0" text="edit event name" textFill="#002fff" underline="true">
+      <font>
+         <Font name="System Italic" size="12.0" />
+      </font>
+   </Label>
 </AnchorPane>

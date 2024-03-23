@@ -13,8 +13,9 @@ public interface WriteEventNamesInterface {
     /**
      * Writes the event name to the JSON file
      * @param eventName The name of the event
+     * @param id The id of the event
      */
-    public default void writeEventName(String eventName){
+    public default void writeEventName(String eventName, String id){
         try {
             ObjectMapper mapper = new ObjectMapper();
             List<String> eventNames = readEventsFromJson();
@@ -22,6 +23,13 @@ public interface WriteEventNamesInterface {
             if(eventNames.contains(eventName)){
                 eventNames.remove(eventName);
             }
+
+            for(String n : eventNames){
+                if(n.contains("id: " + id)){
+                    eventNames.remove(n);
+                }
+            }
+
             eventNames.add(eventName);
             while (eventNames.size() > 4) {
                 eventNames.remove(0);
@@ -49,4 +57,6 @@ public interface WriteEventNamesInterface {
             throw new RuntimeException(e);
         }
     }
+
+
 }
