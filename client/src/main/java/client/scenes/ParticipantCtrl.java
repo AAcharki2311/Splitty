@@ -5,6 +5,7 @@ import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 
 import client.utils.LanguageSwitchInterface;
+import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
@@ -14,11 +15,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     private final MainCtrl mc;
@@ -46,6 +51,8 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     private long eventid;
     @FXML
     private Label labelEventName;
+    @FXML
+    private Text message;
 
     /**
      * Constructor of the AddParticipantCtrl
@@ -84,13 +91,15 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
      * This method gets all the information from the textfields and prints it to the console
      */
     public void submit() {
+        String errormessage = "";
         try{
             var e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
-            if(validate(name, email, iban, bic)){
+            boolean duplicate = checkDuplicate(name, email);
+            if(validate(name, email, iban, bic) && !duplicate){
                 Participant p = new Participant(e, name, email, iban, bic);
                 pcu.addParticipant(p);
                 System.out.println("New Participant added: " +
@@ -101,11 +110,32 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
                         p.getBic());
                 clickBack();
             } else {
+                if(duplicate){
+                    errormessage = "Name or email already exists";
+                } else{
+                    errormessage = "Please fill in all fields correctly";
+                }
                 throw new Exception("Exception message");
             }
         } catch (Exception e){
             System.out.println("Something went wrong");
+            message.setText(errormessage);
         }
+    }
+
+    /**
+     * This method checks if the name + email is a duplicate
+     * @param name the name of the participant
+     * @param email the email of the participant
+     * @return true if it is a duplicate, false if it is not a duplicate
+     */
+    public boolean checkDuplicate(String name, String email){
+        List<Participant> allParticipants = pcu.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid)
+                .collect(Collectors.toList());
+        List<String> namesOfAllParticipants = allParticipants.stream().map(Participant::getName).toList();
+        List<String> emailsOfAllParticipants = allParticipants.stream().map(Participant::getEmail).toList();
+        return namesOfAllParticipants.contains(name) || emailsOfAllParticipants.contains(email);
     }
 
     /**

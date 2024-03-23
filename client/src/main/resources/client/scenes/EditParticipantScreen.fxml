@@ -11,6 +11,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditParticipantCtrl">
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="219.0" layoutX="54.0" layoutY="148.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="543.0" />
@@ -60,4 +61,9 @@
          <Font name="System Bold" size="12.0" />
       </font>
    </Button>
+   <Text fx:id="message" fill="#0d5575" layoutX="188.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="275.0">
+      <font>
+         <Font name="Calibri Bold" size="14.0" />
+      </font>
+   </Text>
 </AnchorPane>

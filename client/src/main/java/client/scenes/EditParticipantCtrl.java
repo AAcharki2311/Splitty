@@ -14,12 +14,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
@@ -56,6 +60,9 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     private long eventid;
     @FXML
     private Label labelEventName;
+    @FXML
+    private Text message;
+    private Participant selectedParticipant;
 
     /**
      * Constructor of the EditParticipantCtrl
@@ -81,6 +88,20 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
+        comboBoxParticipants.setOnAction(event -> {
+            String nameParticipant = comboBoxParticipants.getValue();
+            if(nameParticipant == null){
+                System.out.println("No participant selected");
+                return;
+            }
+            selectedParticipant = partServer.getAllParticipants()
+                    .stream().filter(participant -> participant.getName().equals(nameParticipant)).findAny().get();
+
+            TextFieldName.setText(selectedParticipant.getName());
+            TextFieldEmail.setText(selectedParticipant.getEmail());
+            TextFieldIBAN.setText(selectedParticipant.getIban());
+            TextFieldBIC.setText(selectedParticipant.getBic());
+        });
     }
 
 
@@ -95,6 +116,11 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      * Method of the save button, it gets all user input and when pressed, it shows the eventoverview screen
      */
     public void submitEdit() {
+        String errormessage = "";
+        if(comboBoxParticipants.getValue() == null){
+            System.out.println("No participant selected");
+            return;
+        }
         try{
             var e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
@@ -102,18 +128,25 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
             if(validate(name, email, iban, bic)){
-                Participant p = new Participant(e, name, email, iban, bic);
-                System.out.println("New Participant added: " +
-                        p.getName() + " " +
-                        p.getEmail() + " " +
-                        p.getIban() + " " +
-                        p.getBic());
-                clickBack();
+                Participant newParticipant = new Participant(e, name, email, iban, bic);
+                int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to update?", "Update Confirmation",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                        new String[]{"UPDATE", "GO BACK"}, "default");
+
+                if(choice == JOptionPane.OK_OPTION){
+                    partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
+                    JOptionPane.showMessageDialog(null, "Participant Updated");
+                    clickBack();
+                } else{
+                    System.out.println("Operation cancelled by the user. Participant remains unchanged.");
+                }
             } else {
+                errormessage = "Please fill in all fields correctly";
                 throw new Exception("Exception message");
             }
         } catch (Exception e){
             System.out.println("Something went wrong");
+            message.setText(errormessage);
         }
     }
 
@@ -174,9 +207,27 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     }
 
     /**
-     * Method of the delete button, when pressed, it deletes the expense
+     * Method of the delete button, when pressed, it deletes the participant
      */
     public void delete(){
         System.out.println("Delete button pressed");
+        String name = comboBoxParticipants.getValue();
+        if(name == null){
+            System.out.println("No participant selected");
+            return;
+        }
+        int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete?", "Delete Confirmation",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                new String[]{"DELETE", "GO BACK"}, "default");
+
+        if(choice == JOptionPane.OK_OPTION){
+            Optional<Participant> p = partServer.getAllParticipants()
+                    .stream().filter(participant -> participant.getName().equals(name)).findAny();
+            partServer.deleteParticipantByID(p.get().getId());
+            JOptionPane.showMessageDialog(null, "Participant deleted");
+            update(String.valueOf(eventid));
+        } else{
+            System.out.println("Operation cancelled by the user. Participant remains unchanged.");
+        }
     }
 }
