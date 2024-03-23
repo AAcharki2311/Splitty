@@ -1,6 +1,8 @@
 package server.api;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Event;
@@ -103,6 +105,12 @@ public class EventController {
         }
         eventRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @MessageMapping("/events") // /app/events
+    @SendTo("/topic/events")
+    public Event addEventWS(Event e) {
+        return add(e).getBody();
     }
 
     private boolean isNullOrEmpty(String s) {

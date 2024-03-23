@@ -7,10 +7,17 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.*;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 // import java.util.List;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -82,7 +89,7 @@ public class EventServerUtils {
 
     /**
      * Javadoc
-     * @param id
+     * @param id The id of the event to delete
      * @return sdf
      */
     public boolean deleteEventByID(long id) {
@@ -92,5 +99,36 @@ public class EventServerUtils {
                 .accept(APPLICATION_JSON)
                 .delete();
         return response.getStatus() == 204;
+    }
+
+    private StompSession session = connect("ws://localhost:8080/websocket");
+
+    private StompSession connect(String url) {
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try {
+            return stomp.connectAsync(url, new StompSessionHandlerAdapter() {
+            }).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        throw new IllegalStateException();
+    }
+
+    public void registerForEventUpdates(String destination, Consumer<Event> consumer) {
+        session.subscribe(destination, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return Event.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                consumer.accept((Event) payload);
+            }
+        });
     }
 }

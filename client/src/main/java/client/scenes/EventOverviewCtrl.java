@@ -138,6 +138,9 @@ public class EventOverviewCtrl implements Initializable {
             }
             mc.showEventOverview(Long.toString(eventid));
         });
+        server.registerForEventUpdates("topic/events", q -> {
+            System.out.println("Recieved to add:"+q.toString());
+        });
 
         colName.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getName()));
 
