@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
 import commons.Participant;
@@ -17,7 +18,9 @@ import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
     private final MainCtrl mc;
@@ -49,6 +52,7 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     //    here must go an array with names of participants
     private ArrayList<String> names = new ArrayList<>();
     private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
     private long eventid;
     @FXML
     private Label labelEventName;
@@ -58,12 +62,14 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader represent the ReadJSON
+     * @param partServer represent the ParticipantsServerUtil
      */
     @Inject
-    public EditParticipantCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public EditParticipantCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.partServer = partServer;
     }
 
     /**
@@ -75,7 +81,6 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
-//        update(String.valueOf(eventid));
     }
 
 
@@ -158,14 +163,14 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
 
         labelEventName.setText(server.getEventByID(eid).getName());
 
-//        ParticipantsServerUtil participantsServerUtil = new ParticipantsServerUtil();
-//        List<Participant> participants = participantsServerUtil.getAllParticipants();
-//        names.clear();
-//        for (Participant p : participants) {
-//            names.add(p.getName());
-//        }
-//        comboBoxParticipants.getItems().clear();
-//        comboBoxParticipants.getItems().addAll(names);
+        List<Participant> listAllParticipants = partServer.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
+        names.clear();
+        for (Participant p : listAllParticipants) {
+            names.add(p.getName());
+        }
+        comboBoxParticipants.getItems().clear();
+        comboBoxParticipants.getItems().addAll(names);
     }
 
     /**
