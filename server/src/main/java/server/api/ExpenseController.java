@@ -71,7 +71,6 @@ public class ExpenseController {
      *
      * @return list of expenses sorted by title
      */
-    @GetMapping(path = {"", "/"})
     public List<Expense> getSortedExpensesTitle() {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(Expense::getTitle));
@@ -83,7 +82,6 @@ public class ExpenseController {
      *
      * @return list of expenses sorted by creditor's name
      */
-    @GetMapping(path = {"", "/"})
     public List<Expense> getSortedExpensesPerson() {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(expense -> expense.getCreditor().getName()));
@@ -95,7 +93,6 @@ public class ExpenseController {
      *
      * @return list of expenses sorted by date
      */
-    @GetMapping(path = {"", "/"})
     public List<Expense> getSortedExpensesDate() {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(Expense::getDate));
