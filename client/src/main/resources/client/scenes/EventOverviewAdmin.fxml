@@ -45,9 +45,9 @@
          <Font name="Calibri Bold" size="20.0" />
       </font>
    </Text>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="240.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="370.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="370.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="417.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="251.0" />
-   <TableView fx:id="tableExp" layoutX="42.0" layoutY="114.0" prefHeight="220.0" prefWidth="370.0" style="-fx-border-radius: 3px; -fx-border-color: #0D5575;">
+   <TableView fx:id="tableExp" layoutX="42.0" layoutY="115.0" prefHeight="220.0" prefWidth="370.0" style="-fx-border-radius: 3px; -fx-border-color: #0D5575;">
       <columns>
          <TableColumn fx:id="colDate" editable="false" prefWidth="68.0" text="Date" />
          <TableColumn fx:id="colAm" editable="false" prefWidth="64.5" text="Amount" />

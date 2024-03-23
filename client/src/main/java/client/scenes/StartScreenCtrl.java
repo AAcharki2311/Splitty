@@ -36,11 +36,11 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     @FXML
     private ImageView imgHome;
     /** NEEDED FOR LANGUAGE SWITCH **/
-    private final ReadJSON jsonReader;
     private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     @FXML
     private ImageView imageviewFlag;
     /** PAGE **/
+    private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
     @FXML
