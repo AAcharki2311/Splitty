@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 
 import client.utils.LanguageSwitchInterface;
@@ -41,6 +42,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private Label nameText;
     private final EventServerUtils server;
+    private final ParticipantsServerUtil pcu;
     private long eventid;
     @FXML
     private Label labelEventName;
@@ -50,12 +52,14 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
      * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader represent the ReadJSON
+     *                   @param pcu represent the ParticipantsServerUtil
      */
     @Inject
-    public ParticipantCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public ParticipantCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil pcu) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.pcu = pcu;
     }
 
     /**
@@ -88,7 +92,9 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
             String bic = TextFieldBIC.getText();
             if(validate(name, email, iban, bic)){
                 Participant p = new Participant(e, name, email, iban, bic);
+                pcu.addParticipant(p);
                 System.out.println("New Participant added: " +
+                        p.getEvent().getName() + " " +
                         p.getName() + " " +
                         p.getEmail() + " " +
                         p.getIban() + " " +

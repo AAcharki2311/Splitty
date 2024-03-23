@@ -1,10 +1,12 @@
 package server.api;
 
 import commons.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Participant;
+import server.database.EventRepository;
 import server.database.ParticipantRepository;
 import java.util.*;
 
@@ -13,6 +15,9 @@ import java.util.*;
 public class ParticipantController {
     private final Random random;
     private final ParticipantRepository participantRepository;
+    @Autowired
+    private EventRepository eventRepository;
+
 
     /**
      * Constructor for the controller of the participants
@@ -63,8 +68,19 @@ public class ParticipantController {
         isNullOrEmpty(participant.getIban())) {
             return ResponseEntity.badRequest().build();
         }
-        Participant postedParticipant = participantRepository.save(participant);
-        return ResponseEntity.ok(postedParticipant);
+
+        try{
+            Event event = eventRepository.findById(participant.getEvent().getId()).get();
+            if(event == null) {
+                throw new NoSuchElementException();
+            }
+            participant.setEvent(event);
+            Participant postedParticipant = participantRepository.save(participant);
+            return ResponseEntity.ok(postedParticipant);
+        } catch(NoSuchElementException e){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     /**
