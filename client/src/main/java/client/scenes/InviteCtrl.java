@@ -19,12 +19,10 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class InviteCtrl implements Initializable, LanguageSwitchInterface {
-
-    private MainCtrl mc;
+    private final MainCtrl mc;
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
-    private long inviteCode;
     @FXML
     private Label labelEventName;
     @FXML
@@ -80,7 +78,6 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
         imageviewSend.setFitHeight(13);
         imageviewSend.setFitWidth(13);
         sendButton.setGraphic(imageviewSend);
-
     }
 
     /**
@@ -150,9 +147,7 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
 
         labelEventName.setText(server.getEventByID(eid).getName());
 
-        this.inviteCode = eventid;
-        long stringEventIdU = inviteCode;
-        String stringInviteCode = String.valueOf(stringEventIdU);
+        String stringInviteCode = String.valueOf(eventid);
         switch (stringInviteCode.length()){
             case 1:
                 integerInviteCode.setText("00000" + stringInviteCode);

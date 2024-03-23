@@ -5,6 +5,7 @@ import client.utils.LanguageSwitchInterface;
 import client.utils.WriteEventNamesInterface;
 import commons.Event;
 import jakarta.inject.Inject;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -61,6 +63,21 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     private Text message;
     @FXML
     private Label recentEventLabel;
+    @FXML
+    private ImageView warningImageview;
+
+    /**
+     * Constructor of the StartScreenCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param server server
+     */
+    @Inject
+    public StartScreenCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+        this.mc = mc;
+        this.jsonReader = jsonReader;
+        this.server = server;
+    }
 
     /**
      * This method sets the image for the imageview and adds the items to the comboboxes
@@ -71,12 +88,10 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<String> eventNames = readEventsFromJson();
-        if(eventNames.size() > 0){
+        if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
-            for(String element : tempList){
-                text = text + element + "\n\n";
-            }
+            for(String element : tempList) text = text + element + "\n\n";
             recentEventLabel.setText(text);
         } else{
             recentEventLabel.setText("No Recent Events");
@@ -100,6 +115,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
+
     }
 
     /**
@@ -121,39 +137,38 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         imageviewFlag.setImage(imageFlag);
     }
 
-
-    /**
-     * Constructor of the StartScreenCtrl
-     * @param mc represent the MainCtrl
-     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
-     * @param server server
-     */
-    @Inject
-    public StartScreenCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
-        this.mc = mc;
-        this.jsonReader = jsonReader;
-        this.server = server;
-    }
-
     /**
      * Method of the create event button, when pressed, it shows the eventoverview screen
      */
     public void createEvent() {
         try {
             String name = eventName.getText();
-            Event test = new Event(name);
-            test = server.addEvent(test);
-            System.out.println("Event created: " + test.id + " " + test.name);
-            writeEventName("name: " + test.name + " - id: " + (test.id));
-            mc.showEventOverview(String.valueOf(test.id));
+            if(name.isBlank()){
+                throw new IllegalArgumentException("Name can not be empty");
+            } else{
+                List<Event> allEvents = server.getAllEvents();
+                List<String> namesOfAllEvents = new ArrayList<>();
+                for(Event e : allEvents){
+                    namesOfAllEvents.add(e.getName());
+                }
+                if(!namesOfAllEvents.contains(name)){
+                    Event newEvent = new Event(name);
+                    newEvent = server.addEvent(newEvent);
+                    System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
+                    writeEventName("name: " + newEvent.name + " - id: " + (newEvent.id));
+                    mc.showEventOverview(String.valueOf(newEvent.id));
+                } else {
+                    throw new IllegalArgumentException("Name must be unique");
+                }
+            }
         }
         catch (Exception e){
-            message.setText("Name cannot be empty");
+            message.setText(e.getMessage());
         }
     }
 
     /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     * Method of the Join button, when pressed, it shows the eventoverview screen
      */
     public void openEvent() {
         try {
@@ -165,14 +180,14 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                     writeEventName("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid);
                     message.setText("");
                 } catch(Exception e){
-                    throw new Exception();
+                    throw new IllegalArgumentException("This Id does not exist");
                 }
             } else{
-                throw new Exception("Exception message");
+                throw new IllegalArgumentException("This Id is incorrect");
             }
         }
         catch (Exception e){
-            message.setText("This Id is incorrect");
+            message.setText(e.getMessage());
         }
     }
 
@@ -201,21 +216,21 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     }
 
     /**
-     * Javadoc
+     * Method of the back button, when pressed, it shows the start screen
      */
     public void clickBack(){
         // does nothing as Start Screen has no back
     }
 
     /**
-     * Javadoc
+     * Method of the home button, when pressed, it shows the start screen
      */
     public void clickHome(){
         mc.showStart();
     }
 
     /**
-     * Javadoc
+     * Method of the settings button, when pressed, it shows the *settings screen*
      */
     public void clickSettings(){
         // mc.showSettings();
@@ -240,13 +255,18 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             }
 
             System.out.println("Download Complete...");
+            warningImageview.setImage(new Image("images/notifications/Slide5.png"));
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.play();
 
         } catch (Exception e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            String error = "Please restart the application and try again later.";
-            errorAlert.setHeaderText("Error while downloading file.");
-            errorAlert.setContentText(error);
-            errorAlert.showAndWait();
+            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.play();
 
             System.out.println(e.getMessage());
         }
@@ -274,16 +294,13 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
      */
     public void reset() {
         List<String> eventNames = readEventsFromJson();
-        if(eventNames.size() > 0){
+        if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
-            for(String element : tempList){
-                text = text + element + "\n\n";
-            }
+            for(String element : tempList) text = text + element + "\n\n";
             recentEventLabel.setText(text);
         } else{
             recentEventLabel.setText("No Recent Events");
         }
     }
-
 }
