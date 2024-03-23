@@ -31,6 +31,27 @@ public class PaymentTest {
         assertEquals(d, p.getDate());
     }
 
+    @Test
+    void emptyConstructor(){
+        Payment p = new Payment();
+        assertNotNull(p);
+    }
+
+    @Test
+    void getId(){
+        Date d = new Date(2024-11-10);
+        Payment p = new Payment(SOME_EVENT, SOME_PAYER, SOME_RECIVER, 9.65, d);
+        assertNotNull(p.getId());
+    }
+
+    @Test
+    void setId(){
+        Date d = new Date(2024-11-10);
+        Payment p = new Payment(SOME_EVENT, SOME_PAYER, SOME_RECIVER, 9.65, d);
+        p.setId(5);
+        assertEquals(5, p.getId());
+    }
+
     /**
      * test getter and setters
      */
