@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -23,8 +24,8 @@ public class ExpenseControllerTest {
     private Expense expense1;
     private Expense expense2;
     private Event eventTest = new Event("event");
-    private Participant participantTest1 = new Participant(eventTest, "nameTest1", "emailTest", "ibanTest", "bicTest");
-    private Participant participantTest2 = new Participant(eventTest, "nameTest2", "emailTest", "ibanTest", "bicTest");
+    private Participant participantTest1 = new Participant(eventTest, "b", "emailTest", "ibanTest", "bicTest");
+    private Participant participantTest2 = new Participant(eventTest, "a", "emailTest", "ibanTest", "bicTest");
     private Date dateTest1 = new Date();
     private Date dateTest2 = new Date();
 
@@ -36,8 +37,8 @@ public class ExpenseControllerTest {
         random = new server.api.ExpenseControllerTest.MyRandom();
         expenseRepository = new TestExpenseRepository();
         expenseController = new ExpenseController(random, expenseRepository);
-        expense1 = new Expense(eventTest, participantTest1, 1.0, dateTest1, "titleTest1", "tahTest1");
-        expense2 = new Expense(eventTest, participantTest2, 1.5, dateTest2, "titleTest2", "tagTest2");
+        expense1 = new Expense(eventTest, participantTest1, 1.0, dateTest1, "b", "tahTest1");
+        expense2 = new Expense(eventTest, participantTest2, 1.5, dateTest2, "a", "tagTest2");
     }
 
     /**
@@ -48,6 +49,7 @@ public class ExpenseControllerTest {
         expenseController.add(expense1);
         expenseController.add(expense2);
         List<Expense> list = expenseController.getExpenses();
+        System.out.println(list);
         assertEquals(expense1, list.get(0));
         assertEquals(expense2, list.get(1));
     }
@@ -75,6 +77,36 @@ public class ExpenseControllerTest {
         long id = -1;
         ResponseEntity<Expense> responseEntity1 = expenseController.getById(id);
         assertEquals(BAD_REQUEST, responseEntity1.getStatusCode());
+    }
+
+    @Test
+    public void getSortedTitleTest() {
+        expenseController.add(expense1);
+        expenseController.add(expense2);
+        List<Expense> checkExpense = new ArrayList<>();
+        checkExpense.add(expense2);
+        checkExpense.add(expense1);
+        assertEquals(checkExpense, expenseController.getSortedExpensesTitle());
+    }
+
+    @Test
+    public void getSortedPersonTest() {
+        expenseController.add(expense1);
+        expenseController.add(expense2);
+        List<Expense> checkExpense = new ArrayList<>();
+        checkExpense.add(expense2);
+        checkExpense.add(expense1);
+        assertEquals(checkExpense, expenseController.getSortedExpensesPerson());
+    }
+
+    @Test
+    public void getSortedDate() {
+        expenseController.add(expense1);
+        expenseController.add(expense2);
+        List<Expense> checkExpense = new ArrayList<>();
+        checkExpense.add(expense1);
+        checkExpense.add(expense2);
+        assertEquals(checkExpense, expenseController.getSortedExpensesDate());
     }
 
     @SuppressWarnings("serial")
