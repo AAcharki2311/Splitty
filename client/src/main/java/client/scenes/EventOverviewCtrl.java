@@ -4,38 +4,44 @@ import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
 import commons.Event;
+import commons.Participant;
 import jakarta.inject.Inject;
-// import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.text.Text;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-
 import java.util.*;
 
 public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface {
+    /** BASIS **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
+    private final EventServerUtils server;
+    /** MENU **/
     @FXML
-    private ComboBox comboboxLanguage;
-    private List<String> languages = new ArrayList<>(Arrays.asList("dutch", "english", "french"));
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgArrow;
+    @FXML
+    private ImageView imgHome;
     @FXML
     private ImageView imageviewFlag;
     @FXML
-    private Label partictext;
+    private ComboBox comboboxLanguage;
+    /** PAGE **/
+    private long eventid;
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     @FXML
-    private Label expenstext;
+    private Text partictext;
+    @FXML
+    private Text expenstext;
     @FXML
     private Label showExpensOfText;
-    @FXML
-    private Label particNameLabel;
     @FXML
     private Button editBtn;
     @FXML
@@ -60,11 +66,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private ComboBox<String> comboBoxOne;
     private String[] names = {"John", "Chris", "Anna"}; //Names of the participants
     @FXML
-    private Label eventName;
-    private final EventServerUtils server;
-    private long eventid;
+    private Text eventName;
+    /** TABLE PARTICIPANTS **/
     @FXML
-    private Label editEventNameLabel;
+    private TableView<Participant> tablePart;
+    @FXML
+    private TableColumn<Participant, String> colName;
+    @FXML
+    private Button editEventNameLabel;
 
     /**
      * Constructor of the EventoverviewCtrl
@@ -87,8 +96,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboBoxOne.getItems().addAll(names);
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
+
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             languageChange(comboboxLanguage);
@@ -101,6 +109,11 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
             }
             mc.showEventOverview(Long.toString(eventid));
         });
+
+        imageview.setImage(new Image("images/logo-no-background.png"));
+        imgSet.setImage(new Image("images/settings.png"));
+        imgArrow.setImage(new Image("images/arrow.png"));
+        imgHome.setImage(new Image("images/home.png"));
     }
 
     /**
@@ -135,13 +148,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      */
     public void clickInvite() {
         mc.showInvite(String.valueOf(eventid));
-    }
-
-    /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
-     */
-    public void clickBack() {
-        mc.showStart();
     }
 
     /**
@@ -220,14 +226,28 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         long eid = Long.parseLong(id);
         this.eventid = eid;
         Event x = server.getEventByID(eid);
-        System.out.println("reached");
-        System.out.println(x.getId() + " " + x.getName());
         eventName.setText(x.getName());
 
         String particText = "";
         for(String name : names){
             particText += name + ", ";
         }
-        particNameLabel.setText(particText);
+        // particNameLabel.setText(particText);
+    }
+
+    /**
+     * Used to get back to the Start Screen
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickHome() throws IOException {
+        mc.showStart();
+    }
+
+    /**
+     * Used to get back to the Screen before this
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickBack() throws IOException {
+        mc.showStart();
     }
 }
