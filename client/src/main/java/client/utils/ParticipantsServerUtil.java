@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -63,6 +64,15 @@ public class ParticipantsServerUtil {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<Participant>() {});
+    }
+
+    /**
+     * @return a list of all participants sorted by name
+     */
+    public List<Participant> getParticipantSortedName() {
+        List<Participant> participantList = getAllParticipants();
+        participantList.sort(Comparator.comparing(Participant::getName));
+        return participantList;
     }
 
     /**
