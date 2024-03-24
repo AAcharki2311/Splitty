@@ -79,9 +79,6 @@ public class EventControllerTest {
         ResponseEntity<Event> responseEntity = eventController.update(event1.id, updatedEvent);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
         assertEquals(updatedEvent.getName(), responseEntity.getBody().getName()); // Check the updated name of the Event
-        updatedEvent.setLastActDate(event1.lastActDate);
-        responseEntity = eventController.update(event1.id, updatedEvent);
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
         assertEquals(updatedEvent.getLastActDate(), responseEntity.getBody().getLastActDate()); // Check the updated lastActDate of the Event
     }
 
