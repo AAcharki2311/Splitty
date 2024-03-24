@@ -53,6 +53,19 @@ public class ParticipantsServerUtil {
     }
 
     /**
+     * @param eventID the event of the participant to find
+     *           participant found at: https://localhost:8080/api/participants/event/eventId
+     * @return the found participant with given id
+     */
+    public Participant getParticipantByEvent(long eventID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/event/"+eventID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Participant>() {});
+    }
+
+    /**
      * @param id the id of the participant to update
      *           participant found at: https://localhost:8080/api/participants/id
      * @param participant the updated participant, replaces the original at id
