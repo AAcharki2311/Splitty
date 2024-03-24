@@ -5,7 +5,6 @@ import commons.Payment;
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.database.PaymentRepository;
 
 import java.util.List;
 import java.util.Random;
@@ -16,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PaymentControllerTest {
     public int nextInt;
     private PaymentControllerTest.MyRandom random;
-    private PaymentRepository paymentRepository;
+    private TestPaymentRepository paymentRepository;
     private PaymentController paymentController;
     private Payment payment1;
     private Payment payment2;
-    private Participant debitor;
+    private Participant debtor;
     private Participant creditor;
     private Event eventTest = new Event("event");
     private Date dateTest = new Date(2000,1,1);
@@ -30,11 +29,12 @@ public class PaymentControllerTest {
      */
     @BeforeEach
     public void setup() {
-
+        random = new PaymentControllerTest.MyRandom();
+        paymentRepository = new TestPaymentRepository();
         paymentController = new PaymentController(random,paymentRepository);
-        payment1 = new Payment(eventTest,debitor,creditor,100.0,dateTest);
-        payment2 = new Payment(eventTest,debitor,creditor,100.0,dateTest);
-        debitor = new Participant(eventTest, "nameTest1","emailTest1","ibanTest1","bicTest1");
+        payment1 = new Payment(eventTest, debtor,creditor,100.0,dateTest);
+        payment2 = new Payment(eventTest, debtor,creditor,100.0,dateTest);
+        debtor = new Participant(eventTest, "nameTest1","emailTest1","ibanTest1","bicTest1");
         creditor = new Participant(eventTest, "nameTest2","emailTest2","ibanTest2","bicTest2");
     }
 
