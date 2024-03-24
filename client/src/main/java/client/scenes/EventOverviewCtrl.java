@@ -76,11 +76,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private TableColumn<Participant, String> colName;
     @FXML
     private TableColumn<Participant, String> colEmail;
-    private Label eventName;
-    private final EventServerUtils server;
-    private long eventid;
     @FXML
-    private Label editEventNameLabel;
+    private Button editEventNameLabel;
 
     /**
      * Constructor of the EventoverviewCtrl
