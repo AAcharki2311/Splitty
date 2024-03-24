@@ -44,6 +44,8 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     private Button cancelBtn;
     @FXML
     private Label nameText;
+    @FXML
+    private Label fillUserInfo;
     private final EventServerUtils server;
     private final ParticipantsServerUtil pcu;
     private long eventid;
@@ -51,6 +53,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     private Label labelEventName;
     @FXML
     private Text message;
+    private Participant userParticipant;
 
     /**
      * Constructor of the AddParticipantCtrl
@@ -76,6 +79,14 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
+    }
+
+    /**
+     * Method to get the user participant
+     * @param userParticipant the user participant
+     */
+    public void setUserParticipant(Participant userParticipant) {
+        this.userParticipant = userParticipant;
     }
 
     /**
@@ -140,9 +151,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
      */
     public boolean validate(String name, String email, String iban, String bic){
         if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
-                !email.matches(".*@.+\\..+") ||
-                    !iban.matches("^[a-zA-Z]{2}.*") ||
-                        !bic.matches("^[a-zA-Z]{6}.*")){
+                !email.matches(".*@.+\\..+")){
                     return false;
                 }
         return true;
@@ -173,5 +182,18 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
         System.out.println(eid + " " + server.getEventByID(eid).getName());
 
         labelEventName.setText(server.getEventByID(eid).getName());
+
+    }
+
+    /**
+     * Fills the user information in the textfields
+     */
+    public void fillUser(){
+        if(userParticipant != null){
+            TextFieldName.setText(userParticipant.getName());
+            TextFieldEmail.setText(userParticipant.getEmail());
+            TextFieldIBAN.setText(userParticipant.getIban());
+            TextFieldBIC.setText(userParticipant.getBic());
+        }
     }
 }

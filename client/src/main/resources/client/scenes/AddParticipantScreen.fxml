@@ -53,4 +53,9 @@
          <Font name="Calibri Bold" size="14.0" />
       </font>
    </Text>
+   <Label fx:id="fillUserInfo" layoutX="56.0" layoutY="318.0" onMouseClicked="#fillUser" prefHeight="14.0" prefWidth="137.0" style="-fx-alignment: center;" text="Fill with user information " textFill="#000dff" underline="true">
+      <font>
+         <Font name="Century Gothic Italic" size="10.0" />
+      </font>
+   </Label>
 </AnchorPane>
