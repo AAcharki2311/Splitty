@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Participant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,15 @@ public class PaymentController {
     public PaymentController(Random random, PaymentRepository paymentRepository) {
         this.random = random;
         this.paymentRepository = paymentRepository;
+    }
+
+    /**
+     * Method to get all the payments in the repository (unsorted)
+     *
+     * @return all the payments in the current repository
+     */
+    public List<Payment> getPayments() {
+        return paymentRepository.findAll();
     }
 
     /**
