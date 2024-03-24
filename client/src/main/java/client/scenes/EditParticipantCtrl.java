@@ -104,7 +104,6 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
             TextFieldIBAN.setText(selectedParticipant.getIban());
             TextFieldBIC.setText(selectedParticipant.getBic());
         });
-
     }
 
 
@@ -223,9 +222,7 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
                 new String[]{"Delete", "Cancel"}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
-            Optional<Participant> p = partServer.getAllParticipants()
-                    .stream().filter(participant -> participant.getName().equals(name)).findAny();
-            partServer.deleteParticipantByID(p.get().getId());
+            partServer.deleteParticipantByID(selectedParticipant.getId());
 
             JOptionPane.showMessageDialog(null, "Participant deleted");
             update(String.valueOf(eventid));
