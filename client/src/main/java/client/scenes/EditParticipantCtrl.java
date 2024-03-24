@@ -163,9 +163,7 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      */
     public boolean validate(String name, String email, String iban, String bic){
         if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
-                !email.matches(".*@.+\\..+") ||
-                !iban.matches("^[a-zA-Z]{2}.*") ||
-                !bic.matches("^[a-zA-Z]{6}.*")){
+                !email.matches(".*@.+\\..+")){
             return false;
         }
         return true;
