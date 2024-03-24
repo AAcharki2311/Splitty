@@ -27,28 +27,33 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entity entity
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> S saveAndFlush(S entity) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entities entities
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entities entities
      */
     public void deleteAllInBatch(Iterable<Payment> entities) {
 
     }
 
+
     /**
-     * Auto-generated method for a temporary repository
+     * @param longs longs
      */
     public void deleteAllByIdInBatch(Iterable<Long> longs) {
 
@@ -62,21 +67,24 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param aLong long
+     * @return payment
      */
     public Payment getOne(Long aLong) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param aLong the id of the payment to find
+     * @return payment with id
      */
     public Payment getById(Long aLong) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param id the id of the payment to find
+     * @return payment with desired id
      */
     public Payment getReferenceById(Long id) {
         call("getReferenceById");
@@ -84,56 +92,76 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param <S> payment
+     * @return optional payment
      */
     public <S extends Payment> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> List<S> findAll(Example<S> example) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param sort sort by
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param pageable pageable
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param <S> payment
+     * @return the number of payments
      */
     public <S extends Payment> long count(Example<S> example) {
-        return 0;
+        return payments.size();
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param <S> payment
+     * @return false
      */
     public <S extends Payment> boolean exists(Example<S> example) {
         return false;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param example example
+     * @param queryFunction queryFunction
+     * @param <S> payment
+     * @param <R> payment
+     * @return null
      */
     public <S extends Payment, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entity entity to save
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> S save(S entity) {
         call("save");
@@ -142,35 +170,40 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entities entities
+     * @param <S> payment
+     * @return null
      */
     public <S extends Payment> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param id the id of the payment to find
+     * @return payment with the given id
      */
     private Optional<Payment> find(Long id) {
         return payments.stream().filter(q -> q.getId() == id).findFirst();
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param aLong the id to find
+     * @return payment with desired id
      */
     public Optional<Payment> findById(Long aLong) {
         return find(aLong);
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param aLong id
+     * @return false
      */
     public boolean existsById(Long aLong) {
         return false;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @return list of all payments
      */
     public List<Payment> findAll() {
         calledMethods.add("findAll");
@@ -178,42 +211,43 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param longs ids to find
+     * @return null
      */
     public List<Payment> findAllById(Iterable<Long> longs) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @return the number of payments
      */
     public long count() {
         return payments.size();
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param aLong the id of the payment to delete
      */
     public void deleteById(Long aLong) {
 
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entity the payment to delete
      */
     public void delete(Payment entity) {
 
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param longs the ids of the payments to delete
      */
     public void deleteAllById(Iterable<? extends Long> longs) {
 
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param entities the payments to delete
      */
     public void deleteAll(Iterable<? extends Payment> entities) {
 
@@ -227,14 +261,16 @@ public class TestPaymentRepository implements PaymentRepository {
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param sort sort by
+     * @return null
      */
     public List<Payment> findAll(Sort sort) {
         return null;
     }
 
     /**
-     * Auto-generated method for a temporary repository
+     * @param pageable pageable
+     * @return null
      */
     public Page<Payment> findAll(Pageable pageable) {
         return null;
