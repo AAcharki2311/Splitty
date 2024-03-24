@@ -87,6 +87,10 @@ public class AdminLoginCtrl implements Initializable, LanguageSwitchInterface {
         this.jsonReader = jsonReader;
         this.server = server;
         System.out.println("Your random password is: " + pw);
+
+        server.registerForEventUpdates("topic/events", q -> {
+            System.out.println("Recieved to add:"+q.toString());
+        });
     }
 
     /**
