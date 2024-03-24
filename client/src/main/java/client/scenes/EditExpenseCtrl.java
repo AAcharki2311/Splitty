@@ -1,8 +1,6 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
+import client.utils.*;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
@@ -11,17 +9,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.text.Text;
 import javax.swing.*;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
+    /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
+    private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
+    private final ExpensesServerUtils expServer;
+    private long eventid;
+    private Expense selectedExpense;
+    /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
@@ -43,6 +48,8 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private Label howToSplitText;
     @FXML
+    private Label labelEventName;
+    @FXML
     private Button cancelBtn;
     @FXML
     private Button deleteBtn;
@@ -55,32 +62,37 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private RadioButton splitRBtn;
     @FXML
-    private ComboBox<String> comboBoxName;
-    private String[] names = {"John", "Chris", "Anna"};     //    here must go an array with names
+    private Text message;
+    /** Combobox with Participant Info **/
     @FXML
-    private ComboBox<String> comboBoxExpensesTitle;
-    private String[] namesOfExpenses = {"Expense1", "Expense2", "Expense3"};    //    here must go an array with names of expenses
+    private ComboBox<String> comboBoxName;
     @FXML
     private ComboBox<String> comboBoxNamePaid;
+    private ArrayList<String> names = new ArrayList<>();
+    /** Combobox with Expense title **/
+    @FXML
+    private ComboBox<String> comboBoxExpensesTitle;
+    private ArrayList<String> namesOfExpenses = new ArrayList<>();
+    /** Combobox with Currency **/
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
-    private final EventServerUtils server;
-    private long eventid;
-    @FXML
-    private Label labelEventName;
 
     /**
      * Constructor of the EditExpenseCtrl
      * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param partServer represent the ParticipantsServerUtil
+     * @param expServer represent the ExpensesServerUtils
      */
     @Inject
-    public EditExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public EditExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer, ExpensesServerUtils expServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.partServer = partServer;
+        this.expServer = expServer;
     }
 
     /**
@@ -92,69 +104,49 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
-        comboBoxName.getItems().addAll(names);
-        comboBoxExpensesTitle.getItems().addAll(namesOfExpenses);
-        comboBoxNamePaid.getItems().addAll(names);
+
         comboBoxCurr.getItems().addAll(curNames);
-    }
 
-    /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
-     */
-    public void clickBack() {
-        mc.showEventOverview(String.valueOf(eventid));
-    }
-
-    /**
-     * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventoverview screen
-     */
-    public void submitEdit() {
-        try{
-            var e = server.getEventByID(eventid);
-            String title = titleTextField.getText();
-            Double money = Double.parseDouble(moneyField.getText());
-            LocalDate localDate = dateField.getValue();
-            Date date = java.sql.Date.valueOf(localDate);
-            String tag = "-";
-            var p = new Participant();
-//            ParticipantsServerUtil participantsServerUtil = new ParticipantsServerUtil();
-//            var p = participantsServerUtil.getParticipantByID(1);
-            if(validate(title, money, comboBoxNamePaid, comboBoxCurr, comboBoxName, comboBoxExpensesTitle, splitRBtn)){
-                Expense exp = new Expense(e, p, money, date, title, tag);
-                System.out.println("New Expense added: " +
-                        exp.getTitle() + " " +
-                        exp.getAmount() + " " +
-                        exp.getDate());
-                clickBack();
-            } else {
-                throw new Exception("Exception message");
+        comboBoxName.setOnAction(event -> {
+            String nameParticipant = comboBoxName.getValue();
+            if(nameParticipant == null){
+                message.setText("No participant selected");
+                return;
             }
-        } catch (Exception e){
-            System.out.println("Something went wrong");
-        }
-    }
 
-    /**
-     * This method checks if the input is correct
-     * @param title the title of the expense
-     * @param money the amount of money
-     * @param comboBoxNamePaid the name of the person who paid
-     * @param comboBoxCurr the currency of the expense
-     * @param comboBoxName the name of the expense
-     * @param comboBoxExpensesTitle the title of the expense
-     * @param splitRBtn the radio button that indicates if the expense is split
-     * @return true if the input is correct, false if the input is incorrect
-     */
-    public boolean validate(String title, double money, ComboBox comboBoxNamePaid, ComboBox comboBoxCurr, ComboBox comboBoxName, ComboBox comboBoxExpensesTitle, RadioButton splitRBtn){
-        if(title.isBlank() || money < 0 ||
-                comboBoxNamePaid.getValue() == null ||
-                comboBoxCurr.getValue() == null ||
-                comboBoxName.getValue() == null ||
-                comboBoxExpensesTitle.getValue() == null ||
-                !splitRBtn.isSelected()){
-            return false;
-        }
-        return true;
+            List<Expense> listAllExpense = expServer.getExpenses()
+                    .stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
+
+            List<Expense> listExpenseOfParticipant = listAllExpense.stream()
+                    .filter(expense -> expense.getCreditor().getName().equals(nameParticipant))
+                    .collect(Collectors.toList());
+
+            namesOfExpenses = (ArrayList<String>) listExpenseOfParticipant.stream().map(Expense::getTitle).collect(Collectors.toList());
+            comboBoxExpensesTitle.getItems().clear();
+            comboBoxExpensesTitle.getItems().addAll(namesOfExpenses);
+        });
+
+        comboBoxExpensesTitle.setOnAction(event -> {
+            String nameParticipant = comboBoxName.getValue();
+            String title = comboBoxExpensesTitle.getValue();
+            if(title == null){
+                message.setText("No expense selected");
+                return;
+            }
+
+            selectedExpense = expServer.getExpenses().stream()
+                    .filter(expense -> expense.getCreditor().getName().equals(nameParticipant)
+                            && expense.getTitle().equals(title))
+                    .findAny().get();
+
+            comboBoxNamePaid.setValue(selectedExpense.getCreditor().getName());
+            titleTextField.setText(selectedExpense.getTitle());
+            moneyField.setText(String.valueOf(selectedExpense.getAmount()));
+            Date date = selectedExpense.getDate();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            dateField.setValue(localDate);
+            splitRBtn.setSelected(true);
+        });
     }
 
     /**
@@ -181,41 +173,120 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
-     * Updates the page with the right information
-     * @param id the id of the event
+     * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventoverview screen
      */
-    public void update(String id){
-        long eid = Long.parseLong(id);
-        this.eventid = eid;
-        System.out.println("reached");
-        System.out.println(eid + " " + server.getEventByID(eid).getName());
+    public void submitEdit() {
+        String partName = comboBoxName.getValue();
+        String expTitle = comboBoxExpensesTitle.getValue();
+        String changePartName = comboBoxNamePaid.getValue();
+        if(partName == null || changePartName == null){
+            message.setText("No participant selected");
+            return;
+        }
+        if(expTitle == null){
+            message.setText("No expense selected");
+            return;
+        }
 
-        labelEventName.setText(server.getEventByID(eid).getName());
+        try{
+            var e = server.getEventByID(eventid);
 
+            List<Participant> listAllParticipants = partServer.getAllParticipants()
+                    .stream().filter(participant -> participant.getEvent().getId() == eventid)
+                    .collect(Collectors.toList());
+
+            var p = listAllParticipants.stream().filter(participant -> participant.getName().equals(changePartName)).findAny().get();
+
+            String title = titleTextField.getText();
+            Double money = Double.parseDouble(moneyField.getText());
+            Date date = java.sql.Date.valueOf(dateField.getValue());
+            String tag = "none";
+
+            if(validate(title, money, comboBoxCurr, splitRBtn)){
+                Expense exp = new Expense(e, p, money, date, title, tag);
+
+                int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to update?", "Update Confirmation",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                        new String[]{"Update", "Cancel"}, "default");
+
+                if(choice == JOptionPane.OK_OPTION){
+//                    expServer.updateExpenseByID(selectedExpense.getId(),exp);
+                    JOptionPane.showMessageDialog(null, "Expense Updated");
+                    clickBack();
+                }
+            } else {
+                message.setText("Please fill in all fields correctly");
+            }
+        } catch (Exception e){
+            message.setText("Please fill in all fields correctly");
+        }
+    }
+
+    /**
+     * This method checks if the input is correct
+     * @param title the title of the expense
+     * @param money the amount of money
+     * @param comboBoxCurr the currency of the expense
+     * @param splitRBtn the radio button that indicates if the expense is split
+     * @return true if the input is correct, false if the input is incorrect
+     */
+    public boolean validate(String title, double money, ComboBox comboBoxCurr, RadioButton splitRBtn){
+        return !title.isBlank() && !(money < 0) &&
+                comboBoxCurr.getValue() != null &&
+                splitRBtn.isSelected();
     }
 
     /**
      * Method of the delete button, when pressed, it deletes the expense
      */
     public void delete(){
-        System.out.println("Delete button pressed");
-        String name = null;
-        if(name == null){
-            System.out.println("No expense selected");
+        String partName = comboBoxName.getValue();
+        String expTitle = comboBoxExpensesTitle.getValue();
+        if(partName == null){
+            message.setText("No participant selected");
             return;
         }
+        if(expTitle == null){
+            message.setText("No expense selected");
+            return;
+        }
+
         int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete?", "Delete Confirmation",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                 new String[]{"DELETE", "GO BACK"}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
-//            Optional<Expense> e = partServer.getAllExpense()
-//                    .stream().filter(expense -> expense.getName().equals(name)).findAny();
-//            partServer.deleteExpenseByID(e.get().getId());
+            expServer.deleteExpenseByID(selectedExpense.getId());
             JOptionPane.showMessageDialog(null, "Expense deleted");
             update(String.valueOf(eventid));
-        } else{
-            System.out.println("Operation cancelled by the user. Expense remains unchanged.");
         }
+    }
+
+    /**
+     * Updates the page with the right information
+     * @param id the id of the event
+     */
+    public void update(String id){
+        long eid = Long.parseLong(id);
+        this.eventid = eid;
+
+        labelEventName.setText(server.getEventByID(eid).getName());
+
+        List<Participant> listAllParticipants = partServer.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
+        names.clear();
+        for (Participant p : listAllParticipants) {names.add(p.getName());}
+        comboBoxName.getItems().clear();
+        comboBoxName.getItems().addAll(names);
+        comboBoxNamePaid.getItems().clear();
+        comboBoxNamePaid.getItems().addAll(names);
+        comboBoxExpensesTitle.setValue(null);
+    }
+
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
+    public void clickBack() {
+        mc.showEventOverview(String.valueOf(eventid));
     }
 }
