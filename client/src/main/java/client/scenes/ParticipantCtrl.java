@@ -24,8 +24,14 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
+    /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
+    private final EventServerUtils server;
+    private final ParticipantsServerUtil pcu;
+    private long eventid;
+    private Participant userParticipant;
+    /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
@@ -41,19 +47,13 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private Label fillInfoText;
     @FXML
-    private Button cancelBtn;
-    @FXML
     private Label nameText;
-    @FXML
-    private Label fillUserInfo;
-    private final EventServerUtils server;
-    private final ParticipantsServerUtil pcu;
-    private long eventid;
     @FXML
     private Label labelEventName;
     @FXML
+    private Button cancelBtn;
+    @FXML
     private Text message;
-    private Participant userParticipant;
 
     /**
      * Constructor of the AddParticipantCtrl
@@ -82,25 +82,24 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
-     * Method to get the user participant
-     * @param userParticipant the user participant
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
      */
-    public void setUserParticipant(Participant userParticipant) {
-        this.userParticipant = userParticipant;
-    }
-
-    /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
-     */
-    public void clickBack() throws IOException {
-        mc.showEventOverview(String.valueOf(eventid));
+    @Override
+    public void langueageswitch(String taal) {
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key32").toString());
+        fillInfoText.setText(h.get("key30").toString());
+        nameText.setText(h.get("key31").toString());
+        cancelBtn.setText(h.get("key26").toString());
     }
 
     /**
      * This method gets all the information from the textfields and prints it to the console
      */
     public void submit() {
-        String errormessage = "";
+        String errormessage = "Something went wrong";
         try{
             var e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
@@ -118,10 +117,9 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
                 } else{
                     errormessage = "Please fill in all fields correctly";
                 }
-                throw new Exception("Exception message");
+                throw new Exception();
             }
         } catch (Exception e){
-            System.out.println("Something went wrong");
             message.setText(errormessage);
         }
     }
@@ -136,8 +134,8 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
         List<Participant> allParticipants = pcu.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid)
                 .collect(Collectors.toList());
-        List<String> namesOfAllParticipants = allParticipants.stream().map(Participant::getName).toList();
-        List<String> emailsOfAllParticipants = allParticipants.stream().map(Participant::getEmail).toList();
+        List<String> namesOfAllParticipants = allParticipants.stream().map(Participant::getName).collect(Collectors.toList());
+        List<String> emailsOfAllParticipants = allParticipants.stream().map(Participant::getEmail).collect(Collectors.toList());
         return namesOfAllParticipants.contains(name) || emailsOfAllParticipants.contains(email);
     }
 
@@ -150,25 +148,8 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
-                !email.matches(".*@.+\\..+")){
-                    return false;
-                }
-        return true;
-    }
-
-    /**
-     * This method translates each label. It changes the text to the corresponding key with the translated text
-     * @param taal the language that the user wants to switch to
-     */
-    @Override
-    public void langueageswitch(String taal) {
-        String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key32").toString());
-        fillInfoText.setText(h.get("key30").toString());
-        nameText.setText(h.get("key31").toString());
-        cancelBtn.setText(h.get("key26").toString());
+        return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
+                email.contains("@") && email.contains(".");
     }
 
     /**
@@ -180,13 +161,11 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
         this.eventid = eid;
         System.out.println("reached");
         System.out.println(eid + " " + server.getEventByID(eid).getName());
-
         labelEventName.setText(server.getEventByID(eid).getName());
-
     }
 
     /**
-     * Fills the user information in the textfields
+     * Fills the user information in the text fields
      */
     public void fillUser(){
         if(userParticipant != null){
@@ -195,5 +174,20 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
             TextFieldIBAN.setText(userParticipant.getIban());
             TextFieldBIC.setText(userParticipant.getBic());
         }
+    }
+
+    /**
+     * Method to get the user participant
+     * @param userParticipant the user participant
+     */
+    public void setUserParticipant(Participant userParticipant) {
+        this.userParticipant = userParticipant;
+    }
+
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
+    public void clickBack() throws IOException {
+        mc.showEventOverview(String.valueOf(eventid));
     }
 }
