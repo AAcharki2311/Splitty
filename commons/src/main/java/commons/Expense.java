@@ -1,4 +1,5 @@
 package commons;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -11,6 +12,8 @@ import java.util.*;
 /**
  * This class represents an expense object
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "expense")
 public class Expense {

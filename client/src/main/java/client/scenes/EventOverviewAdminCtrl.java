@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.ExpensesServerUtils;
+import client.utils.ParticipantsServerUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import commons.Event;
@@ -9,6 +10,7 @@ import commons.Expense;
 import commons.Participant;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EventOverviewAdminCtrl implements Initializable {
@@ -34,6 +37,7 @@ public class EventOverviewAdminCtrl implements Initializable {
     private final EventServerUtils server;
     private final MainCtrl mc;
     private final ExpensesServerUtils expServer;
+    private final ParticipantsServerUtil expPart;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -72,6 +76,7 @@ public class EventOverviewAdminCtrl implements Initializable {
     private TableColumn<Participant, String> colName;
     @FXML
     private TableColumn<Participant, String> colEmail;
+    private ObservableList<Participant> partdata;
 
     /**
      * Constructer for the AdminEvent Controller
@@ -80,10 +85,11 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @param expServer the connection with the ExpensesServerUtils class
      */
     @Inject
-    public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer, MainCtrl m) {
+    public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, MainCtrl m) {
         this.mc = m;
         this.server = server;
         this.expServer = expServer;
+        this.expPart = expPart;
         this.eventid = 0;
     }
 
@@ -100,12 +106,14 @@ public class EventOverviewAdminCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-        colDate.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getDate())));
+        colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
-        colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
+        // colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
-        // refresh();
+        colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
+        colEmail.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getEmail()));
+        refresh();
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
@@ -171,9 +179,14 @@ public class EventOverviewAdminCtrl implements Initializable {
      */
     public void refresh(){
         var expenses = expServer.getExpenses();
-//        List<Expense> upexpenses = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
-//        expdata = FXCollections.observableList(expenses);
-//        tableExp.setItems(expdata);
+        List<Expense> upexpenses = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        expdata = FXCollections.observableList(expenses);
+        tableExp.setItems(expdata);
+
+        // var participants = expPart.getAllParticipants();
+        // List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        // partdata = FXCollections.observableList(participants);
+        // tablePart.setItems(partdata);
     }
 
     /**

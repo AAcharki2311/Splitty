@@ -51,7 +51,7 @@
       <columns>
          <TableColumn fx:id="colDate" editable="false" prefWidth="68.0" text="Date" />
          <TableColumn fx:id="colAm" editable="false" prefWidth="64.5" text="Amount" />
-         <TableColumn fx:id="colPart" editable="false" prefWidth="92.5" text="Particpant" />
+         <TableColumn fx:id="colPart" editable="false" prefWidth="92.5" text="Participant" />
          <TableColumn fx:id="colTitle" editable="false" prefWidth="75.0" text="Title" />
          <TableColumn fx:id="colTag" editable="false" prefWidth="75.0" text="Tag" />
       </columns>
