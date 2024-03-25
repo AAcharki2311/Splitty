@@ -25,15 +25,6 @@ public class PaymentController {
     }
 
     /**
-     * Method to get all the payments in the repository (unsorted)
-     *
-     * @return all the payments in the current repository
-     */
-    public List<Payment> getPayments() {
-        return paymentRepository.findAll();
-    }
-
-    /**
      * Method to create a payment and add it to the repository
      *
      * @param payment the payment that will be added
