@@ -100,6 +100,7 @@ public class ParticipantController {
         }
         currentParticipant.setName(participant.getName());
         currentParticipant.setEmail(participant.getEmail());
+        // Update also the other attributes?
 
         Participant newParticipant = participantRepository.save(currentParticipant);
         return ResponseEntity.ok(newParticipant);

@@ -2,6 +2,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.util.Comparator;
 import java.util.List;
 
 import commons.Expense;
@@ -63,5 +64,32 @@ public class ExpensesServerUtils {
                 .delete();
         return response.getStatus() == 204;
 
+    }
+
+    /**
+     * @return list of expenses sorted by title
+     */
+    public List<Expense> getSortedExpensesTitle() {
+        List<Expense> expenseList = getExpenses();
+        expenseList.sort(Comparator.comparing(Expense::getTitle));
+        return expenseList;
+    }
+
+    /**
+     * @return list of expenses sorted by creditor's name
+     */
+    public List<Expense> getSortedExpensesPerson() {
+        List<Expense> expenseList = getExpenses();
+        expenseList.sort(Comparator.comparing(expense -> expense.getCreditor().getName()));
+        return expenseList;
+    }
+
+    /**
+     * @return list of expenses sorted by date
+     */
+    public List<Expense> getSortedExpensesDate() {
+        List<Expense> expenseList = getExpenses();
+        expenseList.sort(Comparator.comparing(Expense::getDate));
+        return expenseList;
     }
 }

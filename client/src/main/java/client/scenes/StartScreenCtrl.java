@@ -36,11 +36,11 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     @FXML
     private ImageView imgHome;
     /** NEEDED FOR LANGUAGE SWITCH **/
-    private final ReadJSON jsonReader;
     private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     @FXML
     private ImageView imageviewFlag;
     /** PAGE **/
+    private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
     @FXML
@@ -151,7 +151,9 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
             } else{
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
-                for(Event e : allEvents){ namesOfAllEvents.add(e.getName()); }
+                for(Event e : allEvents){
+                    namesOfAllEvents.add(e.getName());
+                }
                 if(!namesOfAllEvents.contains(name)){
                     Event newEvent = new Event(name);
                     newEvent = server.addEvent(newEvent);

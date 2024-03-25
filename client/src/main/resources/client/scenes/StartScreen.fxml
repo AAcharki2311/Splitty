@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -16,37 +15,33 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartScreenCtrl">
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="158.0" layoutX="275.0" layoutY="137.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="310.0" />
-   <Group layoutY="362.0">
-      <children>
-         <Rectangle fill="#0d5575" height="38.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
-          <ComboBox fx:id="comboboxLanguage" layoutX="84.0" layoutY="4.0" prefHeight="26.0" prefWidth="160.0" />
-          <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-              <image>
-                  <Image url="@../../images/br-circle-01.png" />
-              </image>
-          </ImageView>
-          <Text fill="#c8d0d3" layoutX="249.0" layoutY="22.0" onMouseClicked="#downloadTemplate" strokeType="OUTSIDE" strokeWidth="0.0" text="Download template" textAlignment="RIGHT" wrappingWidth="100.01446533203125">
-              <font>
-                  <Font name="Calibri Italic" size="12.0" />
-              </font>
-          </Text>
-         <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../images/settings.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="imgHome" fitHeight="26.0" fitWidth="39.0" layoutX="659.4000244140625" layoutY="5.0" onMouseClicked="#clickHome" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.2;">
-            <image>
-               <Image url="@../../images/home.png" />
-            </image>
-         </ImageView>
-         <ImageView fx:id="imgArrow" fitHeight="26.0" fitWidth="26.0" layoutX="624.7000122070312" layoutY="5.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.1;">
-            <image>
-               <Image url="@../../images/arrow.png" />
-            </image>
-         </ImageView>
-      </children>
-   </Group>
+   <Rectangle fill="#0d5575" height="38.0" layoutY="362.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
+    <ComboBox fx:id="comboboxLanguage" layoutX="90.0" layoutY="367.0" prefHeight="26.0" prefWidth="160.0" />
+    <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../images/br-circle-01.png" />
+        </image>
+    </ImageView>
+    <Text fill="#c8d0d3" layoutX="250.0" layoutY="390.0" onMouseClicked="#downloadTemplate" strokeType="OUTSIDE" strokeWidth="0.0" text="Download template" textAlignment="RIGHT" wrappingWidth="100.01446533203125">
+        <font>
+            <Font name="Calibri Italic" size="12.0" />
+        </font>
+    </Text>
+   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/settings.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgHome" fitHeight="26.0" fitWidth="39.0" layoutX="662.0" layoutY="367.0" onMouseClicked="#clickHome" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.2;">
+      <image>
+         <Image url="@../../images/home.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgArrow" fitHeight="26.0" fitWidth="26.0" layoutX="626.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.1;">
+      <image>
+         <Image url="@../../images/arrow.png" />
+      </image>
+   </ImageView>
     <Text fx:id="welcometext" fill="#0d5575" layoutX="287.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Splitty23!">
         <font>
             <Font name="Calibri Bold" size="16.0" />
