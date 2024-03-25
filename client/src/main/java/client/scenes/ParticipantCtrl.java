@@ -5,6 +5,7 @@ import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 
 import client.utils.LanguageSwitchInterface;
+import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
@@ -101,7 +102,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
     public void submit() {
         String errormessage = "Something went wrong";
         try{
-            var e = server.getEventByID(eventid);
+            Event e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
@@ -109,6 +110,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
             boolean duplicate = checkDuplicate(name, email);
             if(validate(name, email, iban, bic) && !duplicate){
                 Participant p = new Participant(e, name, email, iban, bic);
+                p.setEvent(e);
                 pcu.addParticipant(p);
                 clickBack();
             } else {
