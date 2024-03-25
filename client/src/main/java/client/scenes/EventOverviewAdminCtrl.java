@@ -83,6 +83,7 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @param m the main controller
      * @param server the connection with the EventServerUtils class
      * @param expServer the connection with the ExpensesServerUtils class
+     * @param expPart the connection with the ParticipantServerUtils class
      */
     @Inject
     public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, MainCtrl m) {
