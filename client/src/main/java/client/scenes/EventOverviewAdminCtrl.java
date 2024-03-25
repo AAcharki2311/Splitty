@@ -2,24 +2,31 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.ExpensesServerUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
-
 
 public class EventOverviewAdminCtrl implements Initializable {
 
@@ -37,6 +44,8 @@ public class EventOverviewAdminCtrl implements Initializable {
     @FXML
     private ImageView imageviewFlag;
     /** PAGE **/
+    @FXML
+    private ImageView imgMessage;
     private long eventid;
     @FXML
     private Text eventname;
@@ -165,5 +174,30 @@ public class EventOverviewAdminCtrl implements Initializable {
 //        List<Expense> upexpenses = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
 //        expdata = FXCollections.observableList(expenses);
 //        tableExp.setItems(expdata);
+    }
+
+    /**
+     * Method to download a JSON file from an event. It saves the file in src/main/resources/JSONfiles
+     * @throws IOException
+     */
+    public void clickDownload() throws IOException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Event x = server.getEventByID(eventid);
+            objectMapper.writeValue(new File("src/main/resources/JSONfiles/Event"+eventid+".json"), x);
+            imgMessage.setImage(new Image("images/notifications/Slide5.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> imgMessage.setImage(null));
+            pause.play();
+
+            return;
+        }
+        catch (Exception e){
+            imgMessage.setImage(new Image("images/notifications/Slide4.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> imgMessage.setImage(null));
+            pause.play();
+            return;
+        }
     }
 }

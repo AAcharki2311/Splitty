@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Event;
 import jakarta.inject.Inject;
 import javafx.animation.PauseTransition;
@@ -16,6 +17,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
@@ -143,7 +147,27 @@ public class AdminDashboardCtrl implements Initializable {
      * @throws IOException
      */
     public void clickImport() throws IOException {
-        String file = inputimport.getText();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String file = inputimport.getText();
+            Event x = objectMapper.readValue(new File("src/main/resources/JSONfiles/"+file+".json"), Event.class);
+
+
+
+            imgMessage.setImage(new Image("images/notifications/Slide5.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> imgMessage.setImage(null));
+            pause.play();
+            refresh();
+            return;
+        }
+        catch (Exception e){
+            imgMessage.setImage(new Image("images/notifications/Slide4.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> imgMessage.setImage(null));
+            pause.play();
+            return;
+        }
     }
 
     /**
