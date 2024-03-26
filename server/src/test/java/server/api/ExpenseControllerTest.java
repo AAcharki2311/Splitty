@@ -5,6 +5,7 @@ import commons.Event;
 import commons.Participant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -76,6 +77,33 @@ public class ExpenseControllerTest {
         long id = -1;
         ResponseEntity<Expense> responseEntity1 = expenseController.getById(id);
         assertEquals(BAD_REQUEST, responseEntity1.getStatusCode());
+    }
+
+    /**
+     * Test for the update method
+     */
+    @Test
+    public void updateTest() {
+        expenseController.add(expense1);
+        Expense updatedExpense = new Expense(eventTest, participantTest1, 4.5, dateTest2, "titleUpdate","tagUpdate");
+        ResponseEntity<Expense> responseEntity = expenseController.update(expense1.getId(), updatedExpense);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
+        assertEquals(updatedExpense.getEvent(), responseEntity.getBody().getEvent()); // Check the updated event of the Expense
+        assertEquals(updatedExpense.getAmount(), responseEntity.getBody().getAmount()); // Check the updated amount of the Expense
+        assertEquals(updatedExpense.getDate(), responseEntity.getBody().getDate()); // Check the updated date of the Expense
+        assertEquals(updatedExpense.getTitle(), responseEntity.getBody().getTitle()); // Check the updated title of the Expense
+        assertEquals(updatedExpense.getTag(), responseEntity.getBody().getTag()); // Check the updated tag of the Expense
+    }
+
+    /**
+     * Test for the delete method
+     */
+    @Test
+    public void deleteTest() {
+        expenseController.add(expense1);
+        ResponseEntity<Void> responseEntity = expenseController.delete(expense1.getId());
+        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode()); // Check status code
+        assertNull(responseEntity.getBody()); // Check that the object is null
     }
 
     /**
