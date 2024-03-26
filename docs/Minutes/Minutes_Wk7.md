@@ -20,5 +20,5 @@ Ta feedback:
 •   Focus on basic requirements 
 •   Write more tests
 
-Chair in meeting in week 7: Anne-Sophie
-Minute taker in week 7: Eelco
+Chair in meeting in week 8: Anne-Sophie
+Minute taker in week 8: Eelco
