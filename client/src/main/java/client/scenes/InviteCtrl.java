@@ -12,15 +12,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.fxml.FXML;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class InviteCtrl implements Initializable, LanguageSwitchInterface {
+    /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
+    private final EventServerUtils server;
+    private long eventid;
+    /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
@@ -41,8 +44,6 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
     private Button sendButton;
     @FXML
     private Button cancelBtn;
-    private final EventServerUtils server;
-    private long eventid;
 
     /**
      * Constructor of the InviteCtrl
@@ -81,6 +82,21 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
+     */
+    @Override
+    public void langueageswitch(String taal) {
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        inviteText.setText(h.get("key33").toString());
+        orText.setText(h.get("key34").toString());
+        inviteCodeText.setText(h.get("key35").toString());
+        addEmailText.setText(h.get("key36").toString());
+        cancelBtn.setText(h.get("key26").toString());
+    }
+
+    /**
      * This method copies the invite code to the clipboard
      */
     public void copyToClipboard() {
@@ -111,28 +127,6 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
         imageviewSend.setFitHeight(13);
         imageviewSend.setFitWidth(13);
         sendButton.setGraphic(imageviewSend);
-    }
-
-    /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
-     */
-    public void clickBack() throws IOException {
-        mc.showEventOverview(String.valueOf(eventid));
-    }
-
-    /**
-     * This method translates each label. It changes the text to the corresponding key with the translated text
-     * @param taal the language that the user wants to switch to
-     */
-    @Override
-    public void langueageswitch(String taal) {
-        String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        inviteText.setText(h.get("key33").toString());
-        orText.setText(h.get("key34").toString());
-        inviteCodeText.setText(h.get("key35").toString());
-        addEmailText.setText(h.get("key36").toString());
-        cancelBtn.setText(h.get("key26").toString());
     }
 
     /**
@@ -168,5 +162,12 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
                 integerInviteCode.setText(stringInviteCode);
                 break;
         }
+    }
+
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
+    public void clickBack() throws IOException {
+        mc.showEventOverview(String.valueOf(eventid));
     }
 }

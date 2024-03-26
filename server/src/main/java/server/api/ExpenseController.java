@@ -95,6 +95,47 @@ public class ExpenseController {
     }
 
     /**
+     * Method to update a expense from its id
+     *
+     * @param id id of the expense to update
+     * @param expense expense with the new parameters
+     * @return the response from the action
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Expense> update(@PathVariable("id") long id, @RequestBody Expense expense) {
+        if (!expenseRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        Expense currentExpense = expenseRepository.findById(id).orElse(null);
+        if (currentExpense == null) {
+            return ResponseEntity.notFound().build();
+        }
+        currentExpense.setEvent(expense.getEvent());
+        currentExpense.setAmount(expense.getAmount());
+        currentExpense.setDate(expense.getDate());
+        currentExpense.setTitle(expense.getTitle());
+        currentExpense.setTag(expense.getTag());
+
+        Expense newExpense = expenseRepository.save(currentExpense);
+        return ResponseEntity.ok(newExpense);
+    }
+
+    /**
+     * Method to delete an expense from its id
+     *
+     * @param id id of the expense to delete
+     * @return the response from the action
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
+        if (!expenseRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        expenseRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
      * Method to have a list of all the expenses sorted by their title
      *
      * @return list of expenses sorted by title

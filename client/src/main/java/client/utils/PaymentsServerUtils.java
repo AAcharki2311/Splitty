@@ -6,6 +6,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import org.glassfish.jersey.client.ClientConfig;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -47,5 +48,23 @@ public class PaymentsServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<Payment>() {});
+    }
+
+    /**
+     * @return a list of payments sorted by date
+     */
+    public List<Payment> getSortedPaymentsDate() {
+        List<Payment> paymentsList = getPayments();
+        paymentsList.sort(Comparator.comparing(Payment::getDate));
+        return paymentsList;
+    }
+
+    /**
+     * @return a list of payments sorted by payer
+     */
+    public List<Payment> getSortedPaymentsPayer() {
+        List<Payment> paymentsList = getPayments();
+        paymentsList.sort(Comparator.comparing(payment -> payment.getPayer().getName()));
+        return paymentsList;
     }
 }

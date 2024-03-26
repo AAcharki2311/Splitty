@@ -13,6 +13,19 @@ class ExpenseTest {
 
 
     @Test
+    void emptyConstructor(){
+        Expense e = new Expense();
+        assertNotNull(e);
+    }
+
+    @Test
+    void getId() {
+        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
+        assertNotNull(e.getId());
+    }
+
+
+    @Test
     public void checkConstructor() {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
         assertEquals(SOME_EVENT, e.event);

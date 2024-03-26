@@ -15,21 +15,35 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
 import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
+    /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
+    private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
+    private long eventid;
+    private Participant selectedParticipant;
+    /** PAGE FXML **/
     @FXML
     private ImageView imageview;
+    @FXML
+    private Label changeTheParticipantOfText;
+    @FXML
+    private Label titleOfScreen;
+    @FXML
+    private Label fillInfoText;
+    @FXML
+    private Label nameText;
+    @FXML
+    private Label labelEventName;
     @FXML
     private TextField TextFieldName;
     @FXML
@@ -39,28 +53,15 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     @FXML
     private TextField TextFieldBIC;
     @FXML
-    private Label changeTheParticipantOfText;
-    @FXML
-    private Label titleOfScreen;
-    @FXML
-    private Label fillInfoText;
+    private Text message;
     @FXML
     private Button cancelBtn;
     @FXML
     private Button deleteBtn;
-    @FXML
-    private Label nameText;
+    /** Combobox with Participant Info **/
     @FXML
     private ComboBox<String> comboBoxParticipants;
     private ArrayList<String> names = new ArrayList<>();
-    private final EventServerUtils server;
-    private final ParticipantsServerUtil partServer;
-    private long eventid;
-    @FXML
-    private Label labelEventName;
-    @FXML
-    private Text message;
-    private Participant selectedParticipant;
 
     /**
      * Constructor of the EditParticipantCtrl
@@ -106,12 +107,20 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
         });
     }
 
-
     /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
      */
-    public void clickBack() {
-        mc.showEventOverview(String.valueOf(eventid));
+    @Override
+    public void langueageswitch(String taal) {
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key28").toString());
+        changeTheParticipantOfText.setText(h.get("key29").toString());
+        fillInfoText.setText(h.get("key30").toString());
+        nameText.setText(h.get("key31").toString());
+        cancelBtn.setText(h.get("key26").toString());
+        deleteBtn.setText(h.get("key40").toString());
     }
 
     /**
@@ -140,15 +149,13 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
                     JOptionPane.showMessageDialog(null, "Participant Updated");
                     clickBack();
-                } else{
-                    System.out.println("Operation cancelled by the user. Participant remains unchanged.");
                 }
             } else {
                 message.setText("Please fill in all fields correctly");
                 throw new Exception();
             }
         } catch (Exception e){
-            System.out.println("Something went wrong");
+            message.setText("Something went wrong");
         }
     }
 
@@ -161,27 +168,8 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
-                !email.matches(".*@.+\\..+")){
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * This method translates each label. It changes the text to the corresponding key with the translated text
-     * @param taal the language that the user wants to switch to
-     */
-    @Override
-    public void langueageswitch(String taal) {
-        String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key28").toString());
-        changeTheParticipantOfText.setText(h.get("key29").toString());
-        fillInfoText.setText(h.get("key30").toString());
-        nameText.setText(h.get("key31").toString());
-        cancelBtn.setText(h.get("key26").toString());
-        deleteBtn.setText(h.get("key40").toString());
+        return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
+                email.contains("@") && email.contains(".");
     }
 
     /**
@@ -191,18 +179,11 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     public void update(String id){
         long eid = Long.parseLong(id);
         this.eventid = eid;
-        System.out.println("reached");
-        System.out.println(eid + " " + server.getEventByID(eid).getName());
-
         labelEventName.setText(server.getEventByID(eid).getName());
 
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
-
-        names.clear();
-        for (Participant p : listAllParticipants) {
-            names.add(p.getName());
-        }
+        names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
         comboBoxParticipants.getItems().clear();
         comboBoxParticipants.getItems().addAll(names);
     }
@@ -212,22 +193,26 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      */
     public void delete(){
         String name = comboBoxParticipants.getValue();
-
         if(name == null){
             message.setText("No participant selected");
             return;
         }
+
         int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete?", "Delete Confirmation",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                 new String[]{"Delete", "Cancel"}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
             partServer.deleteParticipantByID(selectedParticipant.getId());
-
             JOptionPane.showMessageDialog(null, "Participant deleted");
             update(String.valueOf(eventid));
-        } else{
-            System.out.println("Operation cancelled by the user. Participant remains unchanged.");
         }
+    }
+
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
+    public void clickBack() {
+        mc.showEventOverview(String.valueOf(eventid));
     }
 }

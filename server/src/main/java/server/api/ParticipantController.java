@@ -77,9 +77,15 @@ public class ParticipantController {
             participant.setEvent(event);
             Participant postedParticipant = participantRepository.save(participant);
             return ResponseEntity.ok(postedParticipant);
-        } catch(NoSuchElementException e){
-            return ResponseEntity.badRequest().build();
+        } catch(NullPointerException e) {
+            try {
+                Participant postedParticipant = participantRepository.save(participant);
+                return ResponseEntity.ok(postedParticipant);
+            } catch (Exception ex) {
+                return ResponseEntity.badRequest().build();
+            }
         }
+
     }
 
     /**
@@ -100,6 +106,7 @@ public class ParticipantController {
         }
         currentParticipant.setName(participant.getName());
         currentParticipant.setEmail(participant.getEmail());
+        // Update also the other attributes?
 
         Participant newParticipant = participantRepository.save(currentParticipant);
         return ResponseEntity.ok(newParticipant);

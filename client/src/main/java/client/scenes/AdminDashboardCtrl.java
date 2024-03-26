@@ -1,37 +1,28 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
-// import client.utils.ServerUtils;
-import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
 import commons.Event;
 import jakarta.inject.Inject;
-// import javafx.beans.property.SimpleLongProperty;
-// import javafx.beans.property.SimpleLongProperty;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-// import javafx.scene.control.Label;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-// import org.w3c.dom.Text;
-
+import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
-// import java.text.SimpleDateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-// import java.util.Date;
 import java.util.*;
 
-public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterface {
+public class AdminDashboardCtrl implements Initializable {
 
     /** BASIS **/
     private final EventServerUtils server;
@@ -43,14 +34,11 @@ public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterfac
     private ImageView imgArrow;
     @FXML
     private ImageView imgHome;
-    /** NEEDED FOR LANGUAGE SWITCH **/
-    private final ReadJSON jsonReader;
-    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     @FXML
     private ImageView imageviewFlag;
-    @FXML
-    private ComboBox comboboxLanguage;
     /** PAGE **/
+    @FXML
+    private ImageView imgMessage;
     @FXML
     private TextField inputid;
     @FXML
@@ -75,12 +63,10 @@ public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterfac
      * Constructor for the AdminDashboardCtrl
      * @param mc the main controller
      * @param server server
-     * @param jsonReader jsonreader
      */
     @Inject
-    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc) {
         this.mc = mc;
-        this.jsonReader = jsonReader;
         this.server = server;
     }
     /**
@@ -102,22 +88,8 @@ public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterfac
         colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
         refresh();
 
-        comboboxLanguage.getItems().addAll(languages);
-        comboboxLanguage.setOnAction(event -> {
-            languageChange(comboboxLanguage);
-            comboboxLanguage.setPromptText("Current language: " + comboboxLanguage.getSelectionModel().getSelectedItem());
-
-            try {
-                mc.ltest();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            mc.showAdminDashboard();
-        });
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
-
+        imageviewFlag.setImage(new Image("images/br-circle-01.png"));
+        imageview.setImage(new Image("images/logo-no-background.png"));
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
@@ -143,9 +115,26 @@ public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterfac
      * Goes to a specific event page
      * @throws IOException
      */
-    public void clickEvent() throws IOException {
+    public void clickEvent() throws IOException, InterruptedException {
         String eid = inputid.getText();
+        if (eid.equals(null) || eid.equals("")){
+            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(e -> imgMessage.setImage(null));
+            pause.play();
+            return;
+        }
         // if statement to check if the event does exist
+        try {
+            Event test = server.getEventByID(Long.parseLong(eid));
+        }
+        catch (Exception e){
+            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> imgMessage.setImage(null));
+            pause.play();
+            return;
+        }
         mc.showAdminEvent(eid);
     }
 
@@ -164,25 +153,5 @@ public class AdminDashboardCtrl implements Initializable, LanguageSwitchInterfac
         var events = server.getAllEvents();
         data = FXCollections.observableList(events);
         table.setItems(data);
-    }
-
-    /**
-     * Javadoc
-     * @param taal the language that the user wants to switch to
-     * @throws NullPointerException
-     */
-    @Override
-    public void langueageswitch(String taal) throws NullPointerException{
-        String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        comboboxLanguage.setPromptText("Current language: " + taal);
-//        welcometext.setText(h.get("key1").toString());
-//        pleasetext.setText(h.get("key2").toString());
-//        joinBTN.setText(h.get("key3").toString());
-//        createBTN.setText(h.get("key4").toString());
-//        loginBTN.setText(h.get("key5").toString());
-//        recentviewedtext.setText(h.get("key6").toString());
-        Image imageFlag = new Image(h.get("key0").toString());
-        imageviewFlag.setImage(imageFlag);
     }
 }
