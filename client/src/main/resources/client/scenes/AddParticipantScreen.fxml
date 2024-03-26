@@ -10,6 +10,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ParticipantCtrl">
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="237.0" layoutX="57.0" layoutY="96.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="543.0" />
@@ -47,4 +48,14 @@
    <TextField fx:id="TextFieldIBAN" layoutX="203.0" layoutY="216.0" prefHeight="25.0" prefWidth="225.0" promptText="NL12 3456 7890 1234 56" />
    <TextField fx:id="TextFieldBIC" layoutX="203.0" layoutY="256.0" prefHeight="25.0" prefWidth="225.0" promptText="ABCDEFGH" />
    <TextField fx:id="TextFieldName" layoutX="203.0" layoutY="131.0" prefHeight="25.0" prefWidth="225.0" promptText="fakename" />
+   <Text fx:id="message" fill="#0d5575" layoutX="178.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="275.0">
+      <font>
+         <Font name="Calibri Bold" size="14.0" />
+      </font>
+   </Text>
+   <Label fx:id="fillUserInfo" layoutX="56.0" layoutY="318.0" onMouseClicked="#fillUser" prefHeight="14.0" prefWidth="137.0" style="-fx-alignment: center;" text="Fill with user information " textFill="#000dff" underline="true">
+      <font>
+         <Font name="Century Gothic Italic" size="10.0" />
+      </font>
+   </Label>
 </AnchorPane>

@@ -1,8 +1,6 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
+import client.utils.*;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
@@ -11,12 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     private final MainCtrl mc;
@@ -49,26 +46,35 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     private RadioButton splitRBtn;
     @FXML
     private ComboBox<String> comboBoxNamePaid;
-    private String[] names = {"John", "Chris", "Anna"};     //    here must go an array with names
+    private ArrayList<String> names = new ArrayList<>();
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
     private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
+    private final ExpensesServerUtils expServer;
     private long eventid;
     @FXML
     private Label labelEventName;
+    @FXML
+    private Text message;
+    private Participant selectedParticipant;
 
     /**
      * Constructor of the AddExpenseCtrl
      * @param server represent the EventServerUtils
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param partServer represent the ParticipantsServerUtil
+     * @param expServer represent the ExpensesServerUtils
      */
     @Inject
-    public AddExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public AddExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer, ExpensesServerUtils expServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.partServer = partServer;
+        this.expServer = expServer;
     }
 
     /**
@@ -80,7 +86,21 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
-        comboBoxNamePaid.getItems().addAll(names);
+
+        comboBoxNamePaid.setOnAction(event -> {
+            String nameParticipant = comboBoxNamePaid.getValue();
+            if(nameParticipant == null){
+                message.setText("No participant selected");
+                return;
+            }
+
+            List<Participant> listAllParticipants = partServer.getAllParticipants()
+                    .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
+
+            selectedParticipant = listAllParticipants.stream().filter(participant -> participant.getName().equals(nameParticipant)).findAny().get();
+
+        });
+
         comboBoxCurr.getItems().addAll(curNames);
     }
 
@@ -94,45 +114,70 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     /**
      * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventovervie screen
      */
-    public void submitEdit() {
+    public void submit() {
+        String errormessage = "";
         try{
+            if(comboBoxNamePaid.getValue() == null){
+                errormessage = "No participant selected";
+                throw new Exception();
+            }
+
             var e = server.getEventByID(eventid);
+            var p = selectedParticipant;
+
+            if(moneyField.getText().isBlank() || dateField.getValue() == null){
+                errormessage = "Please fill in all fields correctly";
+                throw new Exception();
+            }
+
             String title = titleTextField.getText();
             Double money = Double.parseDouble(moneyField.getText());
-            LocalDate localDate = dateField.getValue();
-            Date date = java.sql.Date.valueOf(localDate);
-            String tag = "-";
-            var p = new Participant();
-//            ParticipantsServerUtil participantsServerUtil = new ParticipantsServerUtil();
-//            var p = participantsServerUtil.getParticipantByID(1);
-            if(validate(title, money, comboBoxNamePaid, comboBoxCurr, splitRBtn)){
+            Date date = java.sql.Date.valueOf(dateField.getValue());
+            String tag = "none";
+
+            boolean duplicate = checkDuplicate(selectedParticipant.getName(), title);
+            if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
                 Expense exp = new Expense(e, p, money, date, title, tag);
-                System.out.println("New Expense added: " +
-                        exp.getTitle() + " " +
-                        exp.getAmount() + " " +
-                        exp.getDate());
+                expServer.addExpense(exp);
                 clickBack();
             } else {
-                throw new Exception("Exception message");
+                if(duplicate){
+                    errormessage = "Expense title for this participant already exists";
+                } else{
+                    errormessage = "Please fill in all fields correctly";
+                }
+                throw new Exception();
             }
         } catch (Exception e){
             System.out.println("Something went wrong");
+            message.setText(errormessage);
         }
+    }
+
+    /**
+     * This method checks if the name + title is a duplicate
+     * @param name the name of the participant
+     * @param title the title of the expense
+     * @return true if it is a duplicate, false if it is not a duplicate
+     */
+    public boolean checkDuplicate(String name, String title){
+        List<Expense> allExpenses = expServer.getExpenses().stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
+        List<String> namesOfAllParticipants = allExpenses.stream().map(Expense::getCreditor).map(Participant::getName).toList();
+        List<String> titlesOfExpense = allExpenses.stream().map(Expense::getTitle).toList();
+        return namesOfAllParticipants.contains(name) || titlesOfExpense.contains(title);
     }
 
     /**
      * This method checks if the input is correct
      * @param title the title of the expense
      * @param money the amount of money
-     * @param comboBoxNamePaid the name of the person who paid
+     * @param date the date of expense
      * @param comboBoxCurr the currency of the expense
      * @param splitRBtn the radio button that indicates if the expense is split
      * @return true if the input is correct, false if the input is incorrect
      */
-    public boolean validate(String title, double money, ComboBox comboBoxNamePaid, ComboBox comboBoxCurr, RadioButton splitRBtn){
-        if(title.isBlank() || money < 0 ||
-                comboBoxNamePaid.getValue() == null ||
-                comboBoxCurr.getValue() == null ||
+    public boolean validate(String title, double money, Date date, ComboBox comboBoxCurr, RadioButton splitRBtn){
+        if(title.isBlank() || money < 0 || date == null || comboBoxCurr.getValue() == null ||
                 !splitRBtn.isSelected()){
             return false;
         }
@@ -169,6 +214,16 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
         System.out.println(eid + " " + server.getEventByID(eid).getName());
 
         labelEventName.setText(server.getEventByID(eid).getName());
+
+        List<Participant> listAllParticipants = partServer.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
+
+        names.clear();
+        for (Participant p : listAllParticipants) {
+            names.add(p.getName());
+        }
+        comboBoxNamePaid.getItems().clear();
+        comboBoxNamePaid.getItems().addAll(names);
 
     }
 }

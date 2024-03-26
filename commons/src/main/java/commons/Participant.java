@@ -148,6 +148,14 @@ public class Participant {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
+
+    /**
+     * Setter for the event of this participant
+     * @param event the new event of this participant
+     */
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 }
 
 

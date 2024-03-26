@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javax.swing.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
@@ -198,5 +199,23 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
      */
     public void delete(){
         System.out.println("Delete button pressed");
+        String name = null;
+        if(name == null){
+            System.out.println("No expense selected");
+            return;
+        }
+        int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete?", "Delete Confirmation",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                new String[]{"DELETE", "GO BACK"}, "default");
+
+        if(choice == JOptionPane.OK_OPTION){
+//            Optional<Expense> e = partServer.getAllExpense()
+//                    .stream().filter(expense -> expense.getName().equals(name)).findAny();
+//            partServer.deleteExpenseByID(e.get().getId());
+            JOptionPane.showMessageDialog(null, "Expense deleted");
+            update(String.valueOf(eventid));
+        } else{
+            System.out.println("Operation cancelled by the user. Expense remains unchanged.");
+        }
     }
 }

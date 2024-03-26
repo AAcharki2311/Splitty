@@ -1,21 +1,20 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.LanguageSwitchInterface;
-import client.utils.WriteEventNamesInterface;
+import client.utils.*;
 import commons.Event;
+import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import client.utils.ReadJSON;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +26,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     @FXML
     private ComboBox comboboxLanguage;
     private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
     private final MainCtrl mc;
     /** MENU **/
     @FXML
@@ -65,15 +65,18 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     private Label recentEventLabel;
     @FXML
     private ImageView warningImageview;
+    private Participant userParticipant;
 
     /**
      * Constructor of the StartScreenCtrl
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      * @param server server
+     * @param partServer participant server
      */
     @Inject
-    public StartScreenCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer, MainCtrl mc, ReadJSON jsonReader) {
+        this.partServer = partServer;
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
@@ -156,6 +159,16 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                     newEvent = server.addEvent(newEvent);
                     System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
                     writeEventName(("name: " + newEvent.name + " - id: " + (newEvent.id)), String.valueOf(newEvent.id));
+
+                    if (userParticipant != null){
+                        int choice = JOptionPane.showOptionDialog(null,"Do you want to add yourself as a participant of this event?",
+                                "Add User To Event", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                                new String[]{"Yes", "No"}, "default");
+                        if(choice == JOptionPane.OK_OPTION){
+                            userParticipant.setEvent(newEvent);
+                            partServer.addParticipant(userParticipant);
+                        }
+                    }
                     mc.showEventOverview(String.valueOf(newEvent.id));
                 } else {
                     throw new IllegalArgumentException("Name must be unique");
@@ -287,6 +300,53 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
         }
         myScanner.close();
         return text;
+    }
+
+    /**
+     * Shows the popup screen
+     */
+    public void showPopup() {
+        while(true){
+            JTextField textFieldName = new JTextField();
+            JTextField textFieldEmail = new JTextField();
+            JTextField textFieldIBAN = new JTextField();
+            JTextField textFieldBIC = new JTextField();
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel("Enter your information or skip for now"));
+            panel.add(new JLabel("Name: "));
+            panel.add(textFieldName);
+            panel.add(new JLabel("Email: "));
+            panel.add(textFieldEmail);
+            panel.add(new JLabel("IBAN: "));
+            panel.add(textFieldIBAN);
+            panel.add(new JLabel("BIC: "));
+            panel.add(textFieldBIC);
+            Object[] options = {"OK", "Skip"};
+
+            int result = JOptionPane.showOptionDialog(null, panel, "Enter your information",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String name = textFieldName.getText();
+                String email = textFieldEmail.getText();
+                String iban = textFieldIBAN.getText();
+                String bic = textFieldBIC.getText();
+                if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
+                        !email.matches(".*@.+\\..+")){
+                    JOptionPane.showMessageDialog(null, "Fields are empty or incorrect");
+                } else{
+                    this.userParticipant = new Participant(null, name, email, iban, bic);
+                    mc.setParticipant(userParticipant);
+                    break;
+                }
+            } else {
+                if(userParticipant != null) break;
+                this.userParticipant = null;
+                break;
+            }
+
+        }
     }
 
     /**

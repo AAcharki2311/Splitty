@@ -173,4 +173,20 @@ public class Expense {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
+    /**
+     * Setter for the event
+     * @param event the event to set
+     */
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    /**
+     * Setter for the creditor
+     * @param participant the participant to set
+     */
+    public void setCreditor(Participant participant) {
+        this.participant = participant;
+    }
 }

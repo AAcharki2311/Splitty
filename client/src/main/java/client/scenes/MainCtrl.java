@@ -1,10 +1,10 @@
 package client.scenes;
 
+import commons.Participant;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -224,5 +224,13 @@ public class MainCtrl {
         primaryStage.setTitle("Admin Event view");
         primaryStage.setScene(aeventScene);
         eventOverviewAdminCtrl.update(id);
+    }
+
+    /**
+     * Sets the participant
+     * @param p the participant
+     */
+    public void setParticipant(Participant p){
+        participantCtrl.setUserParticipant(p);
     }
 }
