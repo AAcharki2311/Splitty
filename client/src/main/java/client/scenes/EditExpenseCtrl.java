@@ -210,7 +210,12 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
                         new String[]{"Update", "Cancel"}, "default");
 
                 if(choice == JOptionPane.OK_OPTION){
-//                    expServer.updateExpenseByID(selectedExpense.getId(),exp);
+                    if(!(selectedExpense.getCreditor().equals(exp.getCreditor()))){
+                        expServer.deleteExpenseByID(selectedExpense.getId());
+                        expServer.addExpense(exp);
+                    }else{
+                        expServer.updateExpenseByID(selectedExpense.getId(),exp);
+                    }
                     JOptionPane.showMessageDialog(null, "Expense Updated");
                     clickBack();
                 }

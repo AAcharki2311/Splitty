@@ -110,7 +110,7 @@ public class ExpenseController {
         if (currentExpense == null) {
             return ResponseEntity.notFound().build();
         }
-        currentExpense.setEvent(expense.getEvent());
+
         currentExpense.setAmount(expense.getAmount());
         currentExpense.setDate(expense.getDate());
         currentExpense.setTitle(expense.getTitle());

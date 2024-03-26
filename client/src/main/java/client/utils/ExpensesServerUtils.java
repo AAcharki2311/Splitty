@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import commons.Expense;
+import commons.Participant;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -64,6 +65,20 @@ public class ExpensesServerUtils {
                 .delete();
         return response.getStatus() == 204;
 
+    }
+
+    /**
+     * @param id the id of the expense to update
+     *           expense found at: https://localhost:8080/api/expenses/id
+     * @param expense the updated expense, replaces the original at id
+     * @return the new updated expense
+     */
+    public Expense updateExpenseByID(long id, Expense expense) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/"+id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(expense,APPLICATION_JSON), Expense.class);
     }
 
     /**

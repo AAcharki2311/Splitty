@@ -106,6 +106,9 @@ public class ParticipantController {
         }
         currentParticipant.setName(participant.getName());
         currentParticipant.setEmail(participant.getEmail());
+        currentParticipant.setBic(participant.getBic());
+        currentParticipant.setIban(participant.getIban());
+
         // Update also the other attributes?
 
         Participant newParticipant = participantRepository.save(currentParticipant);
