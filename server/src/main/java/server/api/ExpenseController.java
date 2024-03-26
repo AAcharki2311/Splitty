@@ -84,10 +84,14 @@ public class ExpenseController {
             expense.setCreditor(participant);
             Expense postedExpense = expenseRepository.save(expense);
             return ResponseEntity.ok(postedExpense);
-        } catch(NoSuchElementException e){
-            return ResponseEntity.badRequest().build();
+        } catch(NullPointerException e) {
+            try {
+            Expense postedExpense = expenseRepository.save(expense);
+            return ResponseEntity.ok(postedExpense);
+            } catch (Exception ex) {
+                return ResponseEntity.badRequest().build();
+            }
         }
-
     }
 
     /**
