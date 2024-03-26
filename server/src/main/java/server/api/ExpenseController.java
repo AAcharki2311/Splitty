@@ -1,10 +1,16 @@
 package server.api;
 
+import commons.Event;
+import commons.Participant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Expense;
+import server.database.EventRepository;
 import server.database.ExpenseRepository;
+import server.database.ParticipantRepository;
+
 import java.util.*;
 
 @RestController
@@ -12,6 +18,11 @@ import java.util.*;
 public class ExpenseController {
     private final Random random;
     private final ExpenseRepository expenseRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private ParticipantRepository participantRepository;
+
 
     /**
      * Constructor for the controller of the expenses
@@ -62,8 +73,25 @@ public class ExpenseController {
         isNullOrEmpty(expense.getTitle()) || expense.getEvent() == null) {
             return ResponseEntity.badRequest().build();
         }
-        Expense postedExpense = expenseRepository.save(expense);
-        return ResponseEntity.ok(postedExpense);
+
+        try{
+            Event event = eventRepository.findById(expense.getEvent().getId()).get();
+            Participant participant = participantRepository.findById(expense.getCreditor().getId()).get();
+            if(event == null || participant == null) {
+                throw new NoSuchElementException();
+            }
+            expense.setEvent(event);
+            expense.setCreditor(participant);
+            Expense postedExpense = expenseRepository.save(expense);
+            return ResponseEntity.ok(postedExpense);
+        } catch(NullPointerException e) {
+            try {
+            Expense postedExpense = expenseRepository.save(expense);
+            return ResponseEntity.ok(postedExpense);
+            } catch (Exception ex) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
     }
 
     /**
@@ -82,7 +110,7 @@ public class ExpenseController {
         if (currentExpense == null) {
             return ResponseEntity.notFound().build();
         }
-        currentExpense.setEvent(expense.getEvent());
+
         currentExpense.setAmount(expense.getAmount());
         currentExpense.setDate(expense.getDate());
         currentExpense.setTitle(expense.getTitle());

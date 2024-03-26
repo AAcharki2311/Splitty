@@ -10,14 +10,20 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
+    /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
+    private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
+    private final ExpensesServerUtils expServer;
+    private long eventid;
+    private Participant selectedParticipant;
+    /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
@@ -35,30 +41,27 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private Label howToSplitText;
     @FXML
+    private Label labelEventName;
+    @FXML
+    private Text message;
+    @FXML
     private Button cancelBtn;
+    @FXML
+    private RadioButton splitRBtn;
     @FXML
     private TextField titleTextField;
     @FXML
     private TextField moneyField;
     @FXML
     private DatePicker dateField;
-    @FXML
-    private RadioButton splitRBtn;
+    /** Combobox with Participant Info **/
     @FXML
     private ComboBox<String> comboBoxNamePaid;
     private ArrayList<String> names = new ArrayList<>();
+    /** Combobox with Currency **/
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
-    private final EventServerUtils server;
-    private final ParticipantsServerUtil partServer;
-    private final ExpensesServerUtils expServer;
-    private long eventid;
-    @FXML
-    private Label labelEventName;
-    @FXML
-    private Text message;
-    private Participant selectedParticipant;
 
     /**
      * Constructor of the AddExpenseCtrl
@@ -86,29 +89,36 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
-
         comboBoxNamePaid.setOnAction(event -> {
             String nameParticipant = comboBoxNamePaid.getValue();
             if(nameParticipant == null){
                 message.setText("No participant selected");
                 return;
             }
-
             List<Participant> listAllParticipants = partServer.getAllParticipants()
                     .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
-
             selectedParticipant = listAllParticipants.stream().filter(participant -> participant.getName().equals(nameParticipant)).findAny().get();
-
         });
-
         comboBoxCurr.getItems().addAll(curNames);
     }
 
     /**
-     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
      */
-    public void clickBack() {
-        mc.showEventOverview(String.valueOf(eventid));
+    @Override
+    public void langueageswitch(String taal) {
+        String langfile = "language" + taal + ".json";
+        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key27").toString());
+        fillInfoText.setText(h.get("key19").toString());
+        whoPaidText.setText(h.get("key20").toString());
+        titleText.setText(h.get("key21").toString());
+        howMuchText.setText(h.get("key22").toString());
+        whenText.setText(h.get("key23").toString());
+        howToSplitText.setText(h.get("key24").toString());
+        splitRBtn.setText(h.get("key25").toString());
+        cancelBtn.setText(h.get("key26").toString());
     }
 
     /**
@@ -149,7 +159,6 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
                 throw new Exception();
             }
         } catch (Exception e){
-            System.out.println("Something went wrong");
             message.setText(errormessage);
         }
     }
@@ -162,9 +171,9 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
      */
     public boolean checkDuplicate(String name, String title){
         List<Expense> allExpenses = expServer.getExpenses().stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
-        List<String> namesOfAllParticipants = allExpenses.stream().map(Expense::getCreditor).map(Participant::getName).toList();
-        List<String> titlesOfExpense = allExpenses.stream().map(Expense::getTitle).toList();
-        return namesOfAllParticipants.contains(name) || titlesOfExpense.contains(title);
+        List<String> namesOfAllParticipants = allExpenses.stream().map(Expense::getCreditor).map(Participant::getName).collect(Collectors.toList());
+        List<String> titlesOfExpense = allExpenses.stream().map(Expense::getTitle).collect(Collectors.toList());
+        return namesOfAllParticipants.contains(name) && titlesOfExpense.contains(title);
     }
 
     /**
@@ -177,30 +186,8 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String title, double money, Date date, ComboBox comboBoxCurr, RadioButton splitRBtn){
-        if(title.isBlank() || money < 0 || date == null || comboBoxCurr.getValue() == null ||
-                !splitRBtn.isSelected()){
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * This method translates each label. It changes the text to the corresponding key with the translated text
-     * @param taal the language that the user wants to switch to
-     */
-    @Override
-    public void langueageswitch(String taal) {
-        String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key27").toString());
-        fillInfoText.setText(h.get("key19").toString());
-        whoPaidText.setText(h.get("key20").toString());
-        titleText.setText(h.get("key21").toString());
-        howMuchText.setText(h.get("key22").toString());
-        whenText.setText(h.get("key23").toString());
-        howToSplitText.setText(h.get("key24").toString());
-        splitRBtn.setText(h.get("key25").toString());
-        cancelBtn.setText(h.get("key26").toString());
+        return !title.isBlank() && !(money < 0) && date != null && comboBoxCurr.getValue() != null &&
+                splitRBtn.isSelected();
     }
 
     /**
@@ -210,20 +197,19 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
     public void update(String id){
         long eid = Long.parseLong(id);
         this.eventid = eid;
-        System.out.println("reached");
-        System.out.println(eid + " " + server.getEventByID(eid).getName());
-
         labelEventName.setText(server.getEventByID(eid).getName());
 
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
-
-        names.clear();
-        for (Participant p : listAllParticipants) {
-            names.add(p.getName());
-        }
+        names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
         comboBoxNamePaid.getItems().clear();
         comboBoxNamePaid.getItems().addAll(names);
+    }
 
+    /**
+     * Method of the cancel button, when pressed, it shows the eventoverview screen
+     */
+    public void clickBack() {
+        mc.showEventOverview(String.valueOf(eventid));
     }
 }

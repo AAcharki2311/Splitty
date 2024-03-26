@@ -67,6 +67,20 @@ public class ExpensesServerUtils {
     }
 
     /**
+     * @param id the id of the expense to update
+     *           expense found at: https://localhost:8080/api/expenses/id
+     * @param expense the updated expense, replaces the original at id
+     * @return the new updated expense
+     */
+    public Expense updateExpenseByID(long id, Expense expense) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/"+id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(expense,APPLICATION_JSON), Expense.class);
+    }
+
+    /**
      * @return list of expenses sorted by title
      */
     public List<Expense> getSortedExpensesTitle() {
