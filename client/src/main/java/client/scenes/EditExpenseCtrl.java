@@ -204,7 +204,6 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
 
             if(validate(title, money, comboBoxCurr, splitRBtn)){
                 Expense exp = new Expense(e, p, money, date, title, tag);
-
                 int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to update?", "Update Confirmation",
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                         new String[]{"Update", "Cancel"}, "default");

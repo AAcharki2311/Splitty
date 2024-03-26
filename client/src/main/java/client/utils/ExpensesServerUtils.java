@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import commons.Expense;
-import commons.Participant;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
