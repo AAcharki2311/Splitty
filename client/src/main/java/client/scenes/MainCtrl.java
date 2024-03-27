@@ -22,6 +22,8 @@ public class MainCtrl {
     private Scene aloginScene;
     private Scene adashScene;
     private Scene aeventScene;
+    private Scene settleScene;
+    /**CONTROLLERS**/
     private StartScreenCtrl startCtrl;
     private EventOverviewCtrl eventOCtrl;
     private InviteCtrl inviteCtrl;
@@ -31,6 +33,7 @@ public class MainCtrl {
     private AddExpenseCtrl addExpenseCtrl;
     private EventOverviewAdminCtrl eventOverviewAdminCtrl;
     private AdminDashboardCtrl adminDashboardCtrl;
+    private SettleDebtsCtrl settleDebtsCtrl;
 
     /**
      * Initializes all the controllers
@@ -45,6 +48,7 @@ public class MainCtrl {
      * @param alogin controller for the admin login screen
      * @param adash controller for the admin dashboard screen
      * @param aevent controller for the admin event view screen
+     * @param settle controller for the settle debts screen
      * @throws IOException if something is wrong with the JSON file
      */
     public void initialize(Stage primaryStage,
@@ -53,7 +57,7 @@ public class MainCtrl {
                            Pair <AddExpenseCtrl, Parent> addExpense, Pair <ParticipantCtrl, Parent> participant,
                            Pair <EditParticipantCtrl, Parent> editParticipant, Pair <EditExpenseCtrl, Parent> editExpense,
                            Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash,
-                           Pair <EventOverviewAdminCtrl, Parent> aevent) throws IOException {
+                           Pair <EventOverviewAdminCtrl, Parent> aevent, Pair <SettleDebtsCtrl, Parent> settle) throws IOException {
         this.primaryStage = primaryStage;
         this.startScene = new Scene(start.getValue());
         this.eventOverviewScene = new Scene(eventO.getValue());
@@ -62,6 +66,7 @@ public class MainCtrl {
         this.participantScene = new Scene(participant.getValue());
         this.editParticipantScene = new Scene(editParticipant.getValue());
         this.editExpenseScene = new Scene(editExpense.getValue());
+        this.settleScene = new Scene(settle.getValue());
 
         this.startCtrl = start.getKey();
         this.eventOCtrl = eventO.getKey();
@@ -70,6 +75,7 @@ public class MainCtrl {
         this.editParticipantCtrl = editParticipant.getKey();
         this.editExpenseCtrl = editExpense.getKey();
         this.addExpenseCtrl = addExpense.getKey();
+        this.settleDebtsCtrl = settle.getKey();
 
         ltest();
 
@@ -128,6 +134,7 @@ public class MainCtrl {
         this.editParticipantCtrl.langueageswitch(languageToTranslate);
         this.editExpenseCtrl.langueageswitch(languageToTranslate);
         this.addExpenseCtrl.langueageswitch(languageToTranslate);
+        this.settleDebtsCtrl.langueageswitch(languageToTranslate);
 
     }
 
@@ -222,6 +229,16 @@ public class MainCtrl {
         primaryStage.setScene(editExpenseScene);
         editExpenseCtrl.update(id);
         editExpenseCtrl.setComboBoxExpenses(expense);
+    }
+
+    /**
+     * Shows the settle debts screen
+     * @param id the id of the event
+     */
+    public void showSettleDebts (String id) {
+        primaryStage.setTitle("Settle Debts");
+        primaryStage.setScene(settleScene);
+        settleDebtsCtrl.update(id);
     }
 
     /**

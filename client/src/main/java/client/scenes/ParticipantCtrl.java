@@ -150,7 +150,7 @@ public class ParticipantCtrl implements Initializable, LanguageSwitchInterface {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        boolean ibanTrue = iban.matches("^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$");
+        boolean ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
         return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
                 email.contains("@") && email.contains(".") && ibanTrue;
     }

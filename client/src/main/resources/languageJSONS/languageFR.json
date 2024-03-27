@@ -45,6 +45,10 @@
     "key43": "Participant",
     "key44": "Titre",
     "key45": "Tag",
-    "key46": "Nom"
+    "key46": "Nom",
+    "key47": "La somme totale de toutes les dépenses :",
+    "key48": "Voir la part par personne :",
+    "key49": "payé :",
+    "key50": "doit payer :"
 
 }

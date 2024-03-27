@@ -91,7 +91,7 @@
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <Button fx:id="settleDebtsBtn" layoutX="475.0" layoutY="304.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="187.0" style="-fx-background-color: #0D5575;" text="Settle Debts" textFill="#f4fdff">
+   <Button fx:id="settleDebtsBtn" layoutX="475.0" layoutY="304.0" mnemonicParsing="false" onAction="#clickSettleDebts" prefHeight="25.0" prefWidth="187.0" style="-fx-background-color: #0D5575;" text="Settle Debts" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>

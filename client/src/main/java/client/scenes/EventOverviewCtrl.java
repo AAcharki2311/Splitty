@@ -151,11 +151,15 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         });
 
         tableExp.setOnMouseClicked(event -> {
-            Expense selectedItem = tableExp.getSelectionModel().getSelectedItem();
-            if(selectedItem.getTitle() == null){
+            try{
+                Expense selectedItem = tableExp.getSelectionModel().getSelectedItem();
+                if(selectedItem.getTitle() == null){
+                    return;
+                }
+                mc.showEditExpenseByRow(String.valueOf(eventid), selectedItem);
+            } catch (NullPointerException e){
                 return;
             }
-            mc.showEditExpenseByRow(String.valueOf(eventid), selectedItem);
         });
 
         comboBoxOne.setOnAction(event -> {
@@ -282,6 +286,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      */
     public void clickEditExpense() {
         mc.showEditExpense(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the settle debts button, when pressed, it shows the settle debts screen
+     */
+    public void clickSettleDebts() {
+        mc.showSettleDebts(String.valueOf(eventid));
     }
 
     /**
