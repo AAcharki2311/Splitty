@@ -198,6 +198,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         deleteAllBtn.setText(h.get("key15").toString());
         showExpensOfText.setText(h.get("key37").toString());
         editEventNameLabel.setText(h.get("key38").toString());
+        colDate.setText(h.get("key41").toString());
+        colPart.setText(h.get("key43").toString());
+        colAm.setText(h.get("key42").toString());
+        colTitle.setText(h.get("key44").toString());
+        colTag.setText(h.get("key45").toString());
+        colName.setText(h.get("key46").toString());
+
     }
 
     /**

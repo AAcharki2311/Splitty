@@ -37,7 +37,13 @@
     "key35": "Your Invite Code",
     "key36": "ADD MEMBER THROUGH EMAIL",
     "key37": "show expenses of: ",
-    "key38": "edit event name",
+    "key38": "Edit event name",
     "key39": "Delete expense",
-    "key40": "Delete pariticpant"
+    "key40": "Delete pariticpant",
+    "key41": "Date",
+    "key42": "Amount",
+    "key43": "Participant",
+    "key44": "Title",
+    "key45": "Tag",
+    "key46": "Name"
 }

@@ -11,7 +11,7 @@
     "key9": "Modifier",
     "key10": "Ajouter",
     "key11": "Régler les dettes",
-    "key12": "Envoyer une invitation",
+    "key12": "Invitation",
     "key13": "Tous",
     "key14": "XX",
     "key15": "Supprimer Tout",
@@ -37,8 +37,14 @@
     "key35": "Votre Invite Code",
     "key36": "AJOUTER UN MEMBRE PAR EMAIL",
     "key37": "afficher les dépenses de: ",
-    "key38": "modifier le nom de l'event",
+    "key38": "Modifier event nom",
     "key39": "Supprimer dépense",
-    "key40": "Supprimer participant"
+    "key40": "Supprimer participant",
+    "key41": "Date",
+    "key42": "Montant",
+    "key43": "Participant",
+    "key44": "Titre",
+    "key45": "Tag",
+    "key46": "Nom"
 
 }
