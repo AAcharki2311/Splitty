@@ -14,8 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -23,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -109,7 +108,7 @@ public class EventOverviewAdminCtrl implements Initializable {
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
-        // colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
+        colPart.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getCreditor().getName())));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
         colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
@@ -123,7 +122,7 @@ public class EventOverviewAdminCtrl implements Initializable {
     }
 
     /**
-     * Goes to a specific event page
+     * Goes back to the Admin Dashboard scene
      * @throws IOException
      */
     public void clickDashboard() throws IOException {
@@ -131,24 +130,35 @@ public class EventOverviewAdminCtrl implements Initializable {
     }
 
     /**
-     * Imports a json file and adds it
+     * If a user clicks on delete event a pop-up shows up asking if the user is really sure.
+     * If the user clicks yes the event gets deleted from the database and the user gets directed
+     * back to the Admin Dashboard page
      * @throws IOException
      */
     public void clickDelete() throws IOException {
         // delete event from the database
         Event x = server.getEventByID(eventid);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + x.name + "?", ButtonType.YES, ButtonType.NO);
-        alert.showAndWait();
 
-        if (alert.getResult() == ButtonType.YES) {
-            //do stuff
-            server.deleteEventByID(eventid);
-            mc.showAdminDashboard();
+        while(true){
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel("Are you sure you want to delete " + x.name + "?"));
+            panel.add(new JLabel("This action is not reversible"));
+            Object[] options = {"Yes", "No"};
+
+            int result = JOptionPane.showOptionDialog(null, panel, "Delete event",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                server.deleteEventByID(eventid);
+                mc.showAdminDashboard();
+            }
+            break;
         }
     }
 
     /**
-     * javadoc
+     * This method updates the page with the right information for an event.
      * @param id id
      */
     public void update(String id) {
@@ -157,6 +167,7 @@ public class EventOverviewAdminCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         // get the information from the database
         eventname.setText(x.getName());
+        refresh();
     }
 
     /**
@@ -179,15 +190,15 @@ public class EventOverviewAdminCtrl implements Initializable {
      * Used to refresh the table data to get updated data
      */
     public void refresh(){
-        var expenses = expServer.getExpenses();
+        List<Expense> expenses = expServer.getExpenses();
         List<Expense> upexpenses = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
-        expdata = FXCollections.observableList(expenses);
+        expdata = FXCollections.observableList(upexpenses);
         tableExp.setItems(expdata);
 
-        // var participants = expPart.getAllParticipants();
-        // List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
-        // partdata = FXCollections.observableList(participants);
-        // tablePart.setItems(partdata);
+        var participants = expPart.getAllParticipants();
+        List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        partdata = FXCollections.observableList(uppart);
+        tablePart.setItems(partdata);
     }
 
     /**
@@ -203,7 +214,6 @@ public class EventOverviewAdminCtrl implements Initializable {
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-
             return;
         }
         catch (Exception e){

@@ -37,7 +37,7 @@
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <TextField fx:id="inputimport" layoutX="512.0" layoutY="136.0" prefHeight="25.0" prefWidth="146.0" />
+   <TextField fx:id="inputimport" layoutX="512.0" layoutY="136.0" prefHeight="25.0" prefWidth="146.0" promptText="File must be in ../JSONfiles" />
    <TextField fx:id="inputid" layoutX="512.0" layoutY="270.0" prefHeight="25.0" prefWidth="146.0" />
    <Text fill="#0d5575" layoutX="510.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Import from JSON file" wrappingWidth="145.5234375">
       <font>
