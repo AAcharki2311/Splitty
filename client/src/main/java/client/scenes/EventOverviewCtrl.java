@@ -223,6 +223,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         comboBoxOne.setValue(null);
     }
 
+    /**
+     * Method of the delete all button, when pressed, it deletes all expenses
+     */
     public void deleteAll(){
         int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete all expenses?", "Delete Confirmation",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
