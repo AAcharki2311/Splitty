@@ -22,15 +22,17 @@
          <Font name="Calibri Bold" size="20.0" />
       </font>
    </Text>
-   <Button fx:id="allBtn" layoutX="227.0" layoutY="304.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" text="All" />
-   <Button fx:id="fromNameBtn" layoutX="269.0" layoutY="304.0" maxHeight="25.0" maxWidth="79.0" minHeight="25.0" minWidth="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="From" />
-   <Button fx:id="includingNameBtn" layoutX="327.0" layoutY="304.0" maxHeight="25.0" maxWidth="101.0" minHeight="25.0" minWidth="79.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Including" />
+   <Button fx:id="allBtn" layoutX="246.0" layoutY="304.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" onAction="#showAllExpenses" text="All" />
+   <Button fx:id="deleteAllBtn" layoutX="327.0" layoutY="304.0" maxHeight="26.0" maxWidth="118.0" minHeight="25.0" minWidth="79.0" mnemonicParsing="false" onAction="#deleteAll" prefHeight="26.0" prefWidth="118.0" style="-fx-background-color: #ff0000; -fx-border-color: red;" text="delete" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font></Button>
    <Label fx:id="showExpensOfText" contentDisplay="RIGHT" layoutX="55.0" layoutY="290.0" prefHeight="16.0" prefWidth="150.0" style="-fx-alignment: center;" text="Show expenses of: " textAlignment="RIGHT" textFill="#0d5575">
       <font>
          <Font size="11.0" />
       </font>
    </Label>
-   <ComboBox fx:id="comboBoxOne" layoutX="55.0" layoutY="304.0" prefWidth="150.0" promptText="Names" />
+   <ComboBox fx:id="comboBoxOne" layoutX="55.0" layoutY="304.0" prefHeight="26.0" prefWidth="146.0" promptText="Names" />
    <ComboBox fx:id="comboboxLanguage" layoutX="90.0" layoutY="367.0" prefHeight="26.0" prefWidth="160.0" />
    <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
       <image>
