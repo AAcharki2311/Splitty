@@ -190,8 +190,8 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
     }
 
     /**
-     *
-     * @param participant
+     * This method sets all fields to the information of the participant
+     * @param participant the participant
      */
     public void setComboBoxParticipants(Participant participant){
         comboBoxParticipants.setValue(participant.getName());
