@@ -1,5 +1,6 @@
 package client.scenes;
 
+import commons.Expense;
 import commons.Participant;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -209,6 +210,18 @@ public class MainCtrl {
         primaryStage.setTitle("Edit Expense");
         primaryStage.setScene(editExpenseScene);
         editExpenseCtrl.update(id);
+    }
+
+    /**
+     * Shows the edit expense screen when clicked on Row
+     * @param id the id of the event
+     * @param expense the selected expense
+     */
+    public void showEditExpenseByRow(String id, Expense expense) {
+        primaryStage.setTitle("Edit Expense");
+        primaryStage.setScene(editExpenseScene);
+        editExpenseCtrl.update(id);
+        editExpenseCtrl.setComboBoxExpenses(expense);
     }
 
     /**

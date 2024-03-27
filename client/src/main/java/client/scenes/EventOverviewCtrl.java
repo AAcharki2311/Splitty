@@ -1,10 +1,8 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ParticipantsServerUtil;
-import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
+import client.utils.*;
 import commons.Event;
+import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,6 +17,8 @@ import javafx.scene.text.Text;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +28,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private final ReadJSON jsonReader;
     private final EventServerUtils server;
     private final ParticipantsServerUtil partServer;
+    private final ExpensesServerUtils expServer;
+
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -48,6 +50,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private Text expenstext;
     @FXML
     private Label showExpensOfText;
+    @FXML
+    private Button editEventNameLabel;
     @FXML
     private Button editBtn;
     @FXML
@@ -79,8 +83,21 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     @FXML
     private TableColumn<Participant, String> colName;
     private ObservableList<Participant> partdata;
+    /** TABLE EXPENSES **/
     @FXML
-    private Button editEventNameLabel;
+    private TableView<Expense> tableExp;
+    @FXML
+    private TableColumn<Expense, String> colDate;
+    @FXML
+    private TableColumn<Expense, String> colAm;
+    @FXML
+    private TableColumn<Expense, String> colPart;
+    @FXML
+    private TableColumn<Expense, String> colTitle;
+    @FXML
+    private TableColumn<Expense, String> colTag;
+    private ObservableList<Expense> expdata;
+
 
     /**
      * Constructor of the EventoverviewCtrl
@@ -88,13 +105,15 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      * @param server server
      * @param partServer participant server
+     * @param expServer expenses server
      */
     @Inject
-    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer) {
+    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer, ExpensesServerUtils expServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
         this.partServer = partServer;
+        this.expServer = expServer;
     }
 
     /**
@@ -121,9 +140,21 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
 
         colName.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getName()));
 
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
+        colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
+        colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
+        colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
+        colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
+
         tablePart.setOnMouseClicked(event -> {
             Participant selectedItem = tablePart.getSelectionModel().getSelectedItem();
             mc.showEditParticipantByRow(String.valueOf(eventid), selectedItem);
+        });
+
+        tableExp.setOnMouseClicked(event -> {
+            Expense selectedItem = tableExp.getSelectionModel().getSelectedItem();
+            mc.showEditExpenseByRow(String.valueOf(eventid), selectedItem);
         });
 
 
@@ -244,6 +275,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         this.eventid = eid;
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
+
+        var expenses = expServer.getExpenses().stream().filter(expense -> expense.getEvent().equals(x)).collect(Collectors.toList());
+        expdata = FXCollections.observableList(expenses);
+        tableExp.setItems(expdata);
 
         var participants = partServer.getAllParticipants().stream().filter(participant -> participant.getEvent().equals(x)).collect(Collectors.toList());
         partdata = FXCollections.observableList(participants);
