@@ -8,13 +8,13 @@ import java.util.Properties;
 public class ReadURL implements ReadURLInterface {
     /**
      * This method reads the config file and returns the server url
+     * @param configFilePath the path to the config file
      * @return server url
      */
     @Override
-    public String readServerUrl() {
+    public String readServerUrl(String configFilePath) {
         try{
             Properties appProps = new Properties();
-            String configFilePath = "src/main/resources/configfile.properties";
 
             FileInputStream inputStream = new FileInputStream(configFilePath);
             appProps.load(inputStream);
@@ -29,13 +29,13 @@ public class ReadURL implements ReadURLInterface {
 
     /**
      * This method reads the config file and returns the server url
+     * @param configFilePath the path to the config file
      * @param url the url that the user wants to switch to
      */
     @Override
-    public void writeServerUrl(String url) {
+    public void writeServerUrl(String url, String configFilePath) {
         try {
             Properties appProps = new Properties();
-            String configFilePath = "src/main/resources/configfile.properties";
             FileInputStream inputStream = new FileInputStream(configFilePath);
             appProps.load(inputStream);
             inputStream.close();

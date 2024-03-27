@@ -24,7 +24,7 @@ public class ExpensesServerUtils {
     @Inject
     public ExpensesServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl() + "/api/expenses";
+        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/expenses";
     }
 
     /**

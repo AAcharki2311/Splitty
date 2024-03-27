@@ -24,7 +24,7 @@ public class PaymentsServerUtils {
     @Inject
     public PaymentsServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl() + "/api/payments";
+        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
     }
     /**
      * @return list of all payments

@@ -23,7 +23,7 @@ public class ParticipantsServerUtil {
     @Inject
     public ParticipantsServerUtil(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl() + "/api/participants";
+        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/participants";
     }
 
 

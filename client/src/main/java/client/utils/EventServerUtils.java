@@ -25,7 +25,7 @@ public class EventServerUtils {
     @Inject
     public EventServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl() + "/api/events";
+        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
     }
 
     /**
