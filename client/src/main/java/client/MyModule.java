@@ -16,6 +16,8 @@
 package client;
 
 import client.scenes.*;
+import client.utils.ReadJSON;
+import client.utils.ReadJSONInterface;
 import client.utils.ReadURL;
 import client.utils.ReadURLInterface;
 import com.google.inject.Binder;
@@ -43,5 +45,6 @@ public class MyModule implements Module {
         binder.bind(EventOverviewAdminCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SettleDebtsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ReadURLInterface.class).to(ReadURL.class);
+        binder.bind(ReadJSONInterface.class).to(ReadJSON.class);
     }
 }
