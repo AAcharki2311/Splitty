@@ -1,5 +1,6 @@
 package client.utils;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class ReadURL implements ReadURLInterface {
             String url = appProps.getProperty("serverurl");
             return url;
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading config file. Please check if the file exists and if the url is correct!");
             throw new RuntimeException(e);
         }
     }
@@ -38,9 +40,8 @@ public class ReadURL implements ReadURLInterface {
             Properties appProps = new Properties();
             FileInputStream inputStream = new FileInputStream(configFilePath);
             appProps.load(inputStream);
-            inputStream.close();
-
             appProps.setProperty("serverurl", url);
+            inputStream.close();
 
             FileOutputStream outputStream = new FileOutputStream(configFilePath);
             appProps.store(outputStream, null);

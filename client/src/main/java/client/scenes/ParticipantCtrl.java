@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -110,6 +111,13 @@ public class ParticipantCtrl implements Initializable {
                 Participant p = new Participant(e, name, email, iban, bic);
                 p.setEvent(e);
                 pcu.addParticipant(p);
+                String message = "Participant added:\n" +
+                        "_______________" + "\n" +
+                        "Name: " + p.getName() + "\n" +
+                        "Email: " + p.getEmail() + "\n" +
+                        "IBAN: " + p.getIban() + "\n" +
+                        "BIC: " + p.getBic();
+                JOptionPane.showMessageDialog(null, message);
                 clickBack();
             } else {
                 if(duplicate){

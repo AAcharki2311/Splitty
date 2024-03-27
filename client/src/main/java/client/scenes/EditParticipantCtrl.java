@@ -145,7 +145,13 @@ public class EditParticipantCtrl implements Initializable {
 
                 if(choice == JOptionPane.OK_OPTION){
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
-                    JOptionPane.showMessageDialog(null, "Participant Updated");
+                    String message = "Participant Updated:\n" +
+                            "_______________" + "\n" +
+                            "Name: " + newParticipant.getName() + "\n" +
+                            "Email: " + newParticipant.getEmail() + "\n" +
+                            "IBAN: " + newParticipant.getIban() + "\n" +
+                            "BIC: " + newParticipant.getBic();
+                    JOptionPane.showMessageDialog(null, message);
                     clickBack();
                 }
             } else {
@@ -217,7 +223,19 @@ public class EditParticipantCtrl implements Initializable {
             partServer.deleteParticipantByID(selectedParticipant.getId());
             JOptionPane.showMessageDialog(null, "Participant deleted");
             update(String.valueOf(eventid));
+            setEverythingEmpty();
         }
+    }
+
+    /**
+     * This method sets all fields to empty
+     */
+    public void setEverythingEmpty(){
+        comboBoxParticipants.setValue(null);
+        TextFieldName.setText(null);
+        TextFieldEmail.setText(null);
+        TextFieldIBAN.setText(null);
+        TextFieldBIC.setText(null);
     }
 
     /**

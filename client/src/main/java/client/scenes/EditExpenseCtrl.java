@@ -214,9 +214,17 @@ public class EditExpenseCtrl implements Initializable {
                     }else{
                         expServer.updateExpenseByID(selectedExpense.getId(),exp);
                     }
-                    JOptionPane.showMessageDialog(null, "Expense Updated");
+                    String message = "Expense Updated:\n" +
+                            "_______________" + "\n" +
+                            "Creditor: " + exp.getCreditor().getName() + "\n" +
+                            "Title: " + exp.getTitle() + "\n" +
+                            "Amount: " + exp.getAmount() + "\n" +
+                            "Date: " + exp.getDate();
+                    JOptionPane.showMessageDialog(null, message);
                     clickBack();
                 }
+            } else if(money < 0){
+                message.setText("Amount cannot be negative");
             } else {
                 message.setText("Please fill in all fields correctly");
             }
@@ -262,7 +270,21 @@ public class EditExpenseCtrl implements Initializable {
             expServer.deleteExpenseByID(selectedExpense.getId());
             JOptionPane.showMessageDialog(null, "Expense deleted");
             update(String.valueOf(eventid));
+            setEverythingEmpty();
         }
+    }
+
+    /**
+     * This method sets all fields to empty
+     */
+    public void setEverythingEmpty(){
+        comboBoxName.setValue(null);
+        comboBoxExpensesTitle.setValue(null);
+        comboBoxNamePaid.setValue(null);
+        titleTextField.setText(null);
+        moneyField.setText(null);
+        dateField.setValue(null);
+        splitRBtn.setSelected(false);
     }
 
     /**
