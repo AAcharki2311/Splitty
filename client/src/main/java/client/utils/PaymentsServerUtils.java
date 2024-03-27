@@ -1,6 +1,7 @@
 package client.utils;
 
 import commons.Payment;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -13,9 +14,18 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class PaymentsServerUtils {
 
-    static ReadURL readURL = new ReadURL();
-    private static final String SERVER = readURL.readServerUrl() + "/api/payments";
+    private final ReadURL readURL;
+    private final String SERVER;
 
+    /**
+     * PaymentsServerUtils constructor
+     * @param readURL readURL object
+     */
+    @Inject
+    public PaymentsServerUtils(ReadURL readURL){
+        this.readURL = readURL;
+        this.SERVER = readURL.readServerUrl() + "/api/payments";
+    }
     /**
      * @return list of all payments
      */

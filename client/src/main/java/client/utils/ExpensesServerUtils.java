@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import commons.Expense;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -14,8 +15,17 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
 public class ExpensesServerUtils {
-    static ReadURL readURL = new ReadURL();
-    private static final String SERVER = readURL.readServerUrl() + "/api/expenses";
+    private final ReadURL readURL;
+    private final String SERVER;
+    /**
+     * ExpensesServerUtils constructor
+     * @param readURL readURL object
+     */
+    @Inject
+    public ExpensesServerUtils(ReadURL readURL){
+        this.readURL = readURL;
+        this.SERVER = readURL.readServerUrl() + "/api/expenses";
+    }
 
     /**
      * @return list of all expenses

@@ -5,11 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ReadURL {
+public class ReadURL implements ReadURLInterface {
     /**
      * This method reads the config file and returns the server url
      * @return server url
      */
+    @Override
     public String readServerUrl() {
         try{
             Properties appProps = new Properties();
@@ -30,6 +31,7 @@ public class ReadURL {
      * This method reads the config file and returns the server url
      * @param url the url that the user wants to switch to
      */
+    @Override
     public void writeServerUrl(String url) {
         try {
             Properties appProps = new Properties();
