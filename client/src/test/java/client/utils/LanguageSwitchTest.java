@@ -58,7 +58,7 @@ class LanguageSwitchTest {
     }
 
     @Test
-    void ExceptionThrown() {
+    void exceptionThrown() {
         assertThrows(RuntimeException.class, () -> {
             languageSwitch.languageChange("Fake path", "Dutch");
         });
