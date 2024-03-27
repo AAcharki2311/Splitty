@@ -149,11 +149,17 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
 
         tablePart.setOnMouseClicked(event -> {
             Participant selectedItem = tablePart.getSelectionModel().getSelectedItem();
+            if(selectedItem.getName() == null){
+                return;
+            }
             mc.showEditParticipantByRow(String.valueOf(eventid), selectedItem);
         });
 
         tableExp.setOnMouseClicked(event -> {
             Expense selectedItem = tableExp.getSelectionModel().getSelectedItem();
+            if(selectedItem.getTitle() == null){
+                return;
+            }
             mc.showEditExpenseByRow(String.valueOf(eventid), selectedItem);
         });
 
