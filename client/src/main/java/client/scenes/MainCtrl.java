@@ -190,6 +190,18 @@ public class MainCtrl {
     }
 
     /**
+     * Shows the edit participant screen when clicked on Row
+     * @param id the id of the event
+     * @param participant the selected participant
+     */
+    public void showEditParticipantByRow(String id, Participant participant) {
+        primaryStage.setTitle("Edit Participant");
+        primaryStage.setScene(editParticipantScene);
+        editParticipantCtrl.update(id);
+        editParticipantCtrl.setComboBoxParticipants(participant);
+    }
+
+    /**
      * Shows the edit expense screen
      * @param id the id of the event
      */

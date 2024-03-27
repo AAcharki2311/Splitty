@@ -1,11 +1,15 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
 import client.utils.LanguageSwitchInterface;
 import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,12 +20,14 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface {
     /** BASIS **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
     private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -64,7 +70,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private ImageView imageview;
     @FXML
     private ComboBox<String> comboBoxOne;
-    private String[] names = {"John", "Chris", "Anna"}; //Names of the participants
+    private ArrayList<String> names = new ArrayList<>(); //Names of the participants
     @FXML
     private Text eventName;
     /** TABLE PARTICIPANTS **/
@@ -72,6 +78,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private TableView<Participant> tablePart;
     @FXML
     private TableColumn<Participant, String> colName;
+    private ObservableList<Participant> partdata;
     @FXML
     private Button editEventNameLabel;
 
@@ -80,12 +87,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      * @param server server
+     * @param partServer participant server
      */
     @Inject
-    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.partServer = partServer;
     }
 
     /**
@@ -109,6 +118,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
             }
             mc.showEventOverview(Long.toString(eventid));
         });
+
+        colName.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getName()));
+
+        tablePart.setOnMouseClicked(event -> {
+            Participant selectedItem = tablePart.getSelectionModel().getSelectedItem();
+            mc.showEditParticipantByRow(String.valueOf(eventid), selectedItem);
+        });
+
 
         imageview.setImage(new Image("images/logo-no-background.png"));
         imgSet.setImage(new Image("images/settings.png"));
@@ -228,11 +245,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
-        String particText = "";
-        for(String name : names){
-            particText += name + ", ";
-        }
-        // particNameLabel.setText(particText);
+        var participants = partServer.getAllParticipants().stream().filter(participant -> participant.getEvent().equals(x)).collect(Collectors.toList());
+        partdata = FXCollections.observableList(participants);
+        tablePart.setItems(partdata);
     }
 
     /**
