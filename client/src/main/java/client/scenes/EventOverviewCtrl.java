@@ -101,9 +101,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
             }
             mc.showEventOverview(Long.toString(eventid));
         });
-        server.registerForEventUpdates("topic/events", q -> {
-            System.out.println("Recieved to add:"+q.toString());
-        });
     }
 
     /**

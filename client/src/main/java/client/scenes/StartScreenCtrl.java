@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, WriteEventNamesInterface {
+public class  StartScreenCtrl implements Initializable, LanguageSwitchInterface, WriteEventNamesInterface {
     @FXML
     private ComboBox comboboxLanguage;
     private final EventServerUtils server;
@@ -177,6 +177,9 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                 try{
                     server.getEventByID(Long.parseLong(eid));
                     mc.showEventOverview(eid);
+                    server.registerForEventUpdates(Long.parseLong(eid), q -> {
+                        System.out.println("Recieved a websocket message: "+q);
+                    });
                     writeEventName(("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid), eid);
                     message.setText("");
                 } catch(Exception e){

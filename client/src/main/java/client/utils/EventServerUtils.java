@@ -106,17 +106,23 @@ public class EventServerUtils {
         throw new IllegalStateException();
     }
 
-    public void registerForEventUpdates(String destination, Consumer<Event> consumer) {
-        session.subscribe(destination, new StompFrameHandler() {
+    public void registerForEventUpdates(long eventID, Consumer<String> consumer) {
+        session.subscribe("/api/events/topic/events", new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return Event.class;
+                return String.class;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((Event) payload);
+                consumer.accept((String) payload);
             }
         });
+        System.out.println("Subscribed to "+'"'+"/topic/events");
+    }
+
+    public void send(String dest, Object o) {
+        session.send(dest, o);
+        System.out.println("A message was sent:"+o);
     }
 }

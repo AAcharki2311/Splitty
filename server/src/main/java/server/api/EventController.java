@@ -109,8 +109,9 @@ public class EventController {
 
     @MessageMapping("/events") // /app/events
     @SendTo("/topic/events")
-    public Event addEventWS(Event e) {
-        return add(e).getBody();
+    public String sendConfirmationMessage() {
+        System.out.println("A message will be sent");
+        return "A message was sent from sendConfirmationMessage";
     }
 
     private boolean isNullOrEmpty(String s) {
