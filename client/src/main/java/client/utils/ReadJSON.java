@@ -18,7 +18,7 @@ public class ReadJSON implements ReadJSONInterface{
         try {
             map = mapper.readValue(Paths.get(filePath).toFile(), HashMap.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         return map;
     }
