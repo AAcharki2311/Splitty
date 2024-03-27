@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, WriteEventNamesInterface {
+public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
     @FXML
     private ComboBox comboboxLanguage;
     private final EventServerUtils server;
@@ -66,6 +66,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
     @FXML
     private ImageView warningImageview;
     private Participant userParticipant;
+    private WriteEventNames writeEventNames;
 
     /**
      * Constructor of the StartScreenCtrl
@@ -73,13 +74,15 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      * @param server server
      * @param partServer participant server
+     * @param writeEventNames the WriteEventNames class
      */
     @Inject
-    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer, MainCtrl mc, ReadJSON jsonReader) {
+    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer, MainCtrl mc, ReadJSON jsonReader, WriteEventNames writeEventNames) {
         this.partServer = partServer;
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.writeEventNames = writeEventNames;
     }
 
     /**
@@ -90,7 +93,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<String> eventNames = readEventsFromJson();
+        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
         if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
@@ -158,7 +161,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                     Event newEvent = new Event(name);
                     newEvent = server.addEvent(newEvent);
                     System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
-                    writeEventName(("name: " + newEvent.name + " - id: " + (newEvent.id)), String.valueOf(newEvent.id));
+                    String filepath = "src/main/resources/recentEvents.json";
+                    writeEventNames.writeEventName(filepath, ("name: " + newEvent.name + " - id: " + (newEvent.id)), String.valueOf(newEvent.id));
 
                     if (userParticipant != null){
                         int choice = JOptionPane.showOptionDialog(null,"Do you want to add yourself as a participant of this event?",
@@ -190,7 +194,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
                 try{
                     server.getEventByID(Long.parseLong(eid));
                     mc.showEventOverview(eid);
-                    writeEventName(("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid), eid);
+                    String filepath = "src/main/resources/recentEvents.json";
+                    writeEventNames.writeEventName(filepath, ("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid), eid);
                     message.setText("");
                 } catch(Exception e){
                     throw new IllegalArgumentException("This Id does not exist");
@@ -353,7 +358,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface, 
      * Method to reset the recent event label
      */
     public void reset() {
-        List<String> eventNames = readEventsFromJson();
+        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
         if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
