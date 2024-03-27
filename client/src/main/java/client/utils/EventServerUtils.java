@@ -14,7 +14,8 @@ import java.util.List;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventServerUtils {
-    private static final String SERVER = "http://localhost:8080/api/events";
+    static ReadURL readURL = new ReadURL();
+    private static final String SERVER = readURL.readServerUrl() + "/api/events";
 
     /**
      * Javadoc

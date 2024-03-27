@@ -13,7 +13,8 @@ import java.util.List;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ParticipantsServerUtil {
-    private static final String SERVER = "http://localhost:8080/api/participants";
+    static ReadURL readURL = new ReadURL();
+    private static final String SERVER = readURL.readServerUrl() + "/api/participants";
 
     /**
      * @param participant the participant to add

@@ -13,7 +13,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class PaymentsServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/api/payments";
+    static ReadURL readURL = new ReadURL();
+    private static final String SERVER = readURL.readServerUrl() + "/api/payments";
 
     /**
      * @return list of all payments

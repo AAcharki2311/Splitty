@@ -14,8 +14,8 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
 public class ExpensesServerUtils {
-
-    private static final String SERVER = "http://localhost:8080/api/expenses";
+    static ReadURL readURL = new ReadURL();
+    private static final String SERVER = readURL.readServerUrl() + "/api/expenses";
 
     /**
      * @return list of all expenses
