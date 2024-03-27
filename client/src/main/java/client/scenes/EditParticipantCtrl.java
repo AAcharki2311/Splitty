@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
+public class EditParticipantCtrl implements Initializable {
     /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -111,7 +111,6 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language that the user wants to switch to
      */
-    @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
         HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);

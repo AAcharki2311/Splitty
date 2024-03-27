@@ -41,6 +41,7 @@ public class MyModule implements Module {
         binder.bind(AdminDashboardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EventOverviewAdminCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SettleDebtsCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(LanguageSwitchInterface.class).to(LanguageSwitch.class);
         binder.bind(WriteEventNamesInterface.class).to(WriteEventNames.class);
         binder.bind(ReadURLInterface.class).to(ReadURL.class);
         binder.bind(ReadJSONInterface.class).to(ReadJSON.class);

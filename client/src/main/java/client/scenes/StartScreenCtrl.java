@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
+public class StartScreenCtrl implements Initializable {
     @FXML
     private ComboBox comboboxLanguage;
     private final EventServerUtils server;
@@ -67,6 +67,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
     private ImageView warningImageview;
     private Participant userParticipant;
     private WriteEventNames writeEventNames;
+    private LanguageSwitch languageSwitch;
 
     /**
      * Constructor of the StartScreenCtrl
@@ -75,14 +76,18 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
      * @param server server
      * @param partServer participant server
      * @param writeEventNames the WriteEventNames class
+     * @param languageSwitch the LanguageSwitch class
      */
     @Inject
-    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer, MainCtrl mc, ReadJSON jsonReader, WriteEventNames writeEventNames) {
+    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer,
+                           MainCtrl mc, ReadJSON jsonReader,
+                           WriteEventNames writeEventNames, LanguageSwitch languageSwitch) {
         this.partServer = partServer;
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
         this.writeEventNames = writeEventNames;
+        this.languageSwitch = languageSwitch;
     }
 
     /**
@@ -104,7 +109,9 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
         }
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
-            languageChange(comboboxLanguage);
+            String path = "src/main/resources/configfile.properties";
+            String language = comboboxLanguage.getValue().toString();
+            languageSwitch.languageChange(path, language);
             comboboxLanguage.setPromptText("Current language: " + comboboxLanguage.getSelectionModel().getSelectedItem());
 
             try {
@@ -128,7 +135,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitchInterface {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language that the user wants to switch to
      */
-    @Override
     public void langueageswitch(String taal) throws NullPointerException{
         String langfile = "language" + taal + ".json";
         HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
