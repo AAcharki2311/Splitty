@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-public class ReadJSON implements ReadJSONInterface {
+public class ReadJSON{
     /**
      * This method reads a JSON file and returns a HashMap
      * @param filePath the path to the JSON file
