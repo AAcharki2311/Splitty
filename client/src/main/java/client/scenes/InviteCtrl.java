@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

@@ -1,6 +1,5 @@
 package client.utils;
 
-import javafx.scene.control.ComboBox;
 
 public interface LanguageSwitchInterface {
 

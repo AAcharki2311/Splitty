@@ -1,6 +1,5 @@
 package client.utils;
 
-import javafx.scene.control.ComboBox;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.EventServerUtils;
 import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
