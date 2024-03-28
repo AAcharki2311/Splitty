@@ -208,6 +208,7 @@ public class AdminDashboardCtrl implements Initializable {
         if (i == 0){
             String json = objectMapper.writeValueAsString(objects.get(0));
             Event newEvent = server.addEvent(myObject);
+            newEvent.setId(myObject.getId());
         }
         else if (i == 1){
             String json = objectMapper.writeValueAsString(objects.get(1));
