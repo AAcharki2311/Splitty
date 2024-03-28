@@ -1,40 +1,12 @@
 package client.utils;
 
-import javafx.scene.control.ComboBox;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public interface LanguageSwitchInterface {
 
     /**
-     * This method is used to switch the language of the application
-     * @param taal the language that the user wants to switch to
-     */
-    public void langueageswitch(String taal);
-
-    /**
      * This method is used to change the language of the application
-     * @param comboboxLanguage the combobox that contains the languages
+     * @param configFilePath the path to the configuration file
+     * @param language the selected language
      */
-    public default void languageChange(ComboBox comboboxLanguage){
-        String selectedOption = String.valueOf(comboboxLanguage.getSelectionModel().getSelectedItem());
-        try {
-            Properties appProps = new Properties();
-            String configFilePath = "src/main/resources/configfile.properties";
-            FileInputStream inputStream = new FileInputStream(configFilePath);
-            appProps.load(inputStream);
-            inputStream.close();
-
-            appProps.setProperty("language", selectedOption);
-
-            FileOutputStream outputStream = new FileOutputStream(configFilePath);
-            appProps.store(outputStream, null);
-            outputStream.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    void languageChange(String configFilePath, String language);
 }

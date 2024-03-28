@@ -1,6 +1,7 @@
 package client.utils;
 
 import commons.Participant;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 
 import jakarta.ws.rs.client.Entity;
@@ -13,7 +14,18 @@ import java.util.List;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ParticipantsServerUtil {
-    private static final String SERVER = "http://localhost:8080/api/participants";
+    private final ReadURL readURL;
+    private final String SERVER;
+    /**
+     * ParticipantsServerUtil constructor
+     * @param readURL readURL object
+     */
+    @Inject
+    public ParticipantsServerUtil(ReadURL readURL){
+        this.readURL = readURL;
+        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/participants";
+    }
+
 
     /**
      * @param participant the participant to add

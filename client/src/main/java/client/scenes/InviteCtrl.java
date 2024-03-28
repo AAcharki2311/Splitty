@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.EventServerUtils;
 import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
 import jakarta.inject.Inject;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,7 +16,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class InviteCtrl implements Initializable, LanguageSwitchInterface {
+public class InviteCtrl implements Initializable {
     /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -85,7 +84,6 @@ public class InviteCtrl implements Initializable, LanguageSwitchInterface {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language that the user wants to switch to
      */
-    @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
         HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);

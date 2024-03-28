@@ -10,11 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+
+import javax.swing.*;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
+public class AddExpenseCtrl implements Initializable {
     /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -106,7 +108,6 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language that the user wants to switch to
      */
-    @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
         HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
@@ -125,7 +126,7 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
      * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventovervie screen
      */
     public void submit() {
-        String errormessage = "";
+        String errormessage = "Please fill in all fields correctly";
         try{
             if(comboBoxNamePaid.getValue() == null){
                 errormessage = "No participant selected";
@@ -149,10 +150,19 @@ public class AddExpenseCtrl implements Initializable, LanguageSwitchInterface {
             if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
                 Expense exp = new Expense(e, p, money, date, title, tag);
                 expServer.addExpense(exp);
+                String message = "Expense added:\n" +
+                        "_______________" + "\n" +
+                        "Creditor: " + exp.getCreditor().getName() + "\n" +
+                        "Title: " + exp.getTitle() + "\n" +
+                        "Amount: " + exp.getAmount() + "\n" +
+                        "Date: " + exp.getDate();
+                JOptionPane.showMessageDialog(null, message);
                 clickBack();
             } else {
                 if(duplicate){
                     errormessage = "Expense title for this participant already exists";
+                }else if(money < 0){
+                    errormessage = "Amount cannot be negative";
                 } else{
                     errormessage = "Please fill in all fields correctly";
                 }
