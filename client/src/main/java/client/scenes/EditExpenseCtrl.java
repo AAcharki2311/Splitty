@@ -17,7 +17,7 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
+public class EditExpenseCtrl implements Initializable {
     /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -153,7 +153,6 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language that the user wants to switch to
      */
-    @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
         HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
@@ -215,9 +214,17 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
                     }else{
                         expServer.updateExpenseByID(selectedExpense.getId(),exp);
                     }
-                    JOptionPane.showMessageDialog(null, "Expense Updated");
+                    String message = "Expense Updated:\n" +
+                            "_______________" + "\n" +
+                            "Creditor: " + exp.getCreditor().getName() + "\n" +
+                            "Title: " + exp.getTitle() + "\n" +
+                            "Amount: " + exp.getAmount() + "\n" +
+                            "Date: " + exp.getDate();
+                    JOptionPane.showMessageDialog(null, message);
                     clickBack();
                 }
+            } else if(money < 0){
+                message.setText("Amount cannot be negative");
             } else {
                 message.setText("Please fill in all fields correctly");
             }
@@ -263,7 +270,21 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
             expServer.deleteExpenseByID(selectedExpense.getId());
             JOptionPane.showMessageDialog(null, "Expense deleted");
             update(String.valueOf(eventid));
+            setEverythingEmpty();
         }
+    }
+
+    /**
+     * This method sets all fields to empty
+     */
+    public void setEverythingEmpty(){
+        comboBoxName.setValue(null);
+        comboBoxExpensesTitle.setValue(null);
+        comboBoxNamePaid.setValue(null);
+        titleTextField.setText(null);
+        moneyField.setText(null);
+        dateField.setValue(null);
+        splitRBtn.setSelected(false);
     }
 
     /**

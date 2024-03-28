@@ -1,6 +1,7 @@
 package client.utils;
 
 import commons.Event;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -14,7 +15,18 @@ import java.util.List;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventServerUtils {
-    private static final String SERVER = "http://localhost:8080/api/events";
+    private final ReadURL readURL;
+    private final String SERVER;
+
+    /**
+     * EventServerUtils constructor
+     * @param readURL readURL object
+     */
+    @Inject
+    public EventServerUtils(ReadURL readURL){
+        this.readURL = readURL;
+        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
+    }
 
     /**
      * Javadoc

@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.EventServerUtils;
 import client.utils.ParticipantsServerUtil;
 import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
@@ -23,7 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class EditParticipantCtrl implements Initializable, LanguageSwitchInterface {
+public class EditParticipantCtrl implements Initializable {
     /** INIT **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
@@ -111,7 +110,6 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language that the user wants to switch to
      */
-    @Override
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
         HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
@@ -147,7 +145,13 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
 
                 if(choice == JOptionPane.OK_OPTION){
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
-                    JOptionPane.showMessageDialog(null, "Participant Updated");
+                    String message = "Participant Updated:\n" +
+                            "_______________" + "\n" +
+                            "Name: " + newParticipant.getName() + "\n" +
+                            "Email: " + newParticipant.getEmail() + "\n" +
+                            "IBAN: " + newParticipant.getIban() + "\n" +
+                            "BIC: " + newParticipant.getBic();
+                    JOptionPane.showMessageDialog(null, message);
                     clickBack();
                 }
             } else {
@@ -219,7 +223,19 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
             partServer.deleteParticipantByID(selectedParticipant.getId());
             JOptionPane.showMessageDialog(null, "Participant deleted");
             update(String.valueOf(eventid));
+            setEverythingEmpty();
         }
+    }
+
+    /**
+     * This method sets all fields to empty
+     */
+    public void setEverythingEmpty(){
+        comboBoxParticipants.setValue(null);
+        TextFieldName.setText(null);
+        TextFieldEmail.setText(null);
+        TextFieldIBAN.setText(null);
+        TextFieldBIC.setText(null);
     }
 
     /**
