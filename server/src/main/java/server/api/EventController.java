@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Participant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -109,9 +110,9 @@ public class EventController {
 
     @MessageMapping("/events") // /app/events
     @SendTo("/topic/events")
-    public String sendConfirmationMessage() {
-        System.out.println("A message will be sent");
-        return "A message was sent from sendConfirmationMessage";
+    public Participant sendConfirmationMessage(Participant p) {
+        System.out.println("An Event will be sent");
+        return p;
     }
 
     private boolean isNullOrEmpty(String s) {

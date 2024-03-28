@@ -118,19 +118,34 @@ public class EventServerUtils {
         throw new IllegalStateException();
     }
 
-    public void registerForEventUpdates(long eventID, Consumer<String> consumer) {
-        session.subscribe("/api/events/topic/events", new StompFrameHandler() {
+    public <T> void registerForEventUpdates(String dest, Class<T> type, Consumer<T> consumer) {
+        session.subscribe(dest, new StompFrameHandler() {
+
+            /**
+             * Invoked before {@link #handleFrame(StompHeaders, Object)} to determine the
+             * type of Object the payload should be converted to.
+             *
+             * @param headers the headers of a message
+             */
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return String.class;
+                return type;
             }
 
+            /**
+             * Handle a STOMP frame with the payload converted to the target type returned
+             * from {@link #getPayloadType(StompHeaders)}.
+             *
+             * @param headers the headers of the frame
+             * @param payload the payload, or {@code null} if there was no payload
+             */
+            @SuppressWarnings("unchecked")
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((String) payload);
+                consumer.accept((T) payload);
             }
         });
-        System.out.println("Subscribed to "+'"'+"/topic/events");
+        System.out.println("Subscribed to "+'"'+dest+'"');
     }
 
     public void send(String dest, Object o) {

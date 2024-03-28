@@ -200,8 +200,9 @@ public class StartScreenCtrl implements Initializable {
                 try{
                     server.getEventByID(Long.parseLong(eid));
                     mc.showEventOverview(eid);
-                    server.registerForEventUpdates(Long.parseLong(eid), q -> {
-                        System.out.println("Recieved a websocket message: "+q);
+
+                    server.registerForEventUpdates("/topic/events", Participant.class, q -> {
+                        System.out.println("[Websocket] Received: "+q);
                     });
                     String filepath = "src/main/resources/recentEvents.json";
                     writeEventNames.writeEventName(filepath, ("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid), eid);
