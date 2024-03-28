@@ -1,11 +1,13 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ReadJSON;
-import client.utils.LanguageSwitchInterface;
+import client.utils.*;
 import commons.Event;
+import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,13 +17,19 @@ import javafx.scene.text.Text;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface {
     /** BASIS **/
     private final MainCtrl mc;
     private final ReadJSON jsonReader;
     private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
+    private final ExpensesServerUtils expServer;
+
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -43,6 +51,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     @FXML
     private Label showExpensOfText;
     @FXML
+    private Button editEventNameLabel;
+    @FXML
     private Button editBtn;
     @FXML
     private Button addBtn;
@@ -57,14 +67,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     @FXML
     private Button allBtn;
     @FXML
-    private Button fromNameBtn;
-    @FXML
-    private Button includingNameBtn;
+    private Button deleteAllBtn;
     @FXML
     private ImageView imageview;
     @FXML
     private ComboBox<String> comboBoxOne;
-    private String[] names = {"John", "Chris", "Anna"}; //Names of the participants
+    private ArrayList<String> names = new ArrayList<>(); //Names of the participants
     @FXML
     private Text eventName;
     /** TABLE PARTICIPANTS **/
@@ -72,20 +80,37 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
     private TableView<Participant> tablePart;
     @FXML
     private TableColumn<Participant, String> colName;
+    private ObservableList<Participant> partdata;
+    /** TABLE EXPENSES **/
     @FXML
-    private Button editEventNameLabel;
+    private TableView<Expense> tableExp;
+    @FXML
+    private TableColumn<Expense, String> colDate;
+    @FXML
+    private TableColumn<Expense, String> colAm;
+    @FXML
+    private TableColumn<Expense, String> colPart;
+    @FXML
+    private TableColumn<Expense, String> colTitle;
+    @FXML
+    private TableColumn<Expense, String> colTag;
+    private ObservableList<Expense> expdata;
 
     /**
      * Constructor of the EventoverviewCtrl
      * @param mc represent the MainCtrl
      * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
      * @param server server
+     * @param partServer participant server
+     * @param expServer expenses server
      */
     @Inject
-    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public EventOverviewCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer, ExpensesServerUtils expServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.partServer = partServer;
+        this.expServer = expServer;
     }
 
     /**
@@ -95,8 +120,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        comboBoxOne.getItems().addAll(names);
-
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             languageChange(comboboxLanguage);
@@ -108,6 +131,45 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
                 throw new RuntimeException(e);
             }
             mc.showEventOverview(Long.toString(eventid));
+        });
+
+        colName.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getName()));
+
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
+        colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
+        colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
+        colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
+        colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
+
+        tablePart.setOnMouseClicked(event -> {
+            Participant selectedItem = tablePart.getSelectionModel().getSelectedItem();
+            if(selectedItem.getName() == null){
+                return;
+            }
+            mc.showEditParticipantByRow(String.valueOf(eventid), selectedItem);
+        });
+
+        tableExp.setOnMouseClicked(event -> {
+            try{
+                Expense selectedItem = tableExp.getSelectionModel().getSelectedItem();
+                if(selectedItem.getTitle() == null){
+                    return;
+                }
+                mc.showEditExpenseByRow(String.valueOf(eventid), selectedItem);
+            } catch (NullPointerException e){
+                return;
+            }
+        });
+
+        comboBoxOne.setOnAction(event -> {
+            String name = comboBoxOne.getValue();
+            if(name == null){
+                return;
+            } else {
+                Participant participant = partServer.getAllParticipants().stream().filter(participant1 -> participant1.getName().equals(name)).findAny().get();
+                showExpensesOnly(participant);
+            }
         });
 
         imageview.setImage(new Image("images/logo-no-background.png"));
@@ -137,10 +199,58 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         settleDebtsBtn.setText(h.get("key11").toString());
         sendInviteBtn.setText(h.get("key12").toString());
         allBtn.setText(h.get("key13").toString());
-        fromNameBtn.setText(h.get("key14").toString());
-        includingNameBtn.setText(h.get("key15").toString());
+        deleteAllBtn.setText(h.get("key15").toString());
         showExpensOfText.setText(h.get("key37").toString());
         editEventNameLabel.setText(h.get("key38").toString());
+        colDate.setText(h.get("key41").toString());
+        colPart.setText(h.get("key43").toString());
+        colAm.setText(h.get("key42").toString());
+        colTitle.setText(h.get("key44").toString());
+        colTag.setText(h.get("key45").toString());
+        colName.setText(h.get("key46").toString());
+
+    }
+
+    /**
+     * Method of the only button, when pressed, it shows only the expenses of the given participant
+     * @param participant the participant
+     */
+    public void showExpensesOnly(Participant participant){
+        Event x = server.getEventByID(eventid);
+        var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
+        var expensesOnlyParticipant = allExpenses.stream().filter(e -> e.getCreditor().getName().equals(participant.getName())).collect(Collectors.toList());
+        expdata = FXCollections.observableList(expensesOnlyParticipant);
+        tableExp.setItems(expdata);
+    }
+
+    /**
+     * Method of the only button, when pressed, it shows all the expenses
+     */
+    public void showAllExpenses(){
+        Event x = server.getEventByID(eventid);
+        var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
+        expdata = FXCollections.observableList(allExpenses);
+        tableExp.setItems(expdata);
+        comboBoxOne.setValue(null);
+    }
+
+    /**
+     * Method of the delete all button, when pressed, it deletes all expenses
+     */
+    public void deleteAll(){
+        int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete all expenses?", "Delete Confirmation",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                new String[]{"Delete", "Cancel"}, "default");
+
+        if(choice == JOptionPane.OK_OPTION){
+            Event x = server.getEventByID(eventid);
+            var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
+            for(Expense e : allExpenses){
+                expServer.deleteExpenseByID(e.getId());
+            }
+            JOptionPane.showMessageDialog(null, "All Expenses Deleted");
+            update(String.valueOf(eventid));
+        }
     }
 
     /**
@@ -176,6 +286,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
      */
     public void clickEditExpense() {
         mc.showEditExpense(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the settle debts button, when pressed, it shows the settle debts screen
+     */
+    public void clickSettleDebts() {
+        mc.showSettleDebts(String.valueOf(eventid));
     }
 
     /**
@@ -228,11 +345,17 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitchInterface
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
-        String particText = "";
-        for(String name : names){
-            particText += name + ", ";
-        }
-        // particNameLabel.setText(particText);
+        List<Participant> listAllParticipants = partServer.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
+        names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
+        comboBoxOne.getItems().clear();
+        comboBoxOne.getItems().addAll(names);
+
+        showAllExpenses();
+
+        var participants = partServer.getAllParticipants().stream().filter(participant -> participant.getEvent().equals(x)).collect(Collectors.toList());
+        partdata = FXCollections.observableList(participants);
+        tablePart.setItems(partdata);
     }
 
     /**

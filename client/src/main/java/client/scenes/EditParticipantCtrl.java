@@ -168,8 +168,9 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
+        boolean ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
         return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
-                email.contains("@") && email.contains(".");
+                email.contains("@") && email.contains(".") && ibanTrue;
     }
 
     /**
@@ -186,6 +187,18 @@ public class EditParticipantCtrl implements Initializable, LanguageSwitchInterfa
         names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
         comboBoxParticipants.getItems().clear();
         comboBoxParticipants.getItems().addAll(names);
+    }
+
+    /**
+     * This method sets all fields to the information of the participant
+     * @param participant the participant
+     */
+    public void setComboBoxParticipants(Participant participant){
+        comboBoxParticipants.setValue(participant.getName());
+        TextFieldName.setText(participant.getName());
+        TextFieldEmail.setText(participant.getEmail());
+        TextFieldIBAN.setText(participant.getIban());
+        TextFieldBIC.setText(participant.getBic());
     }
 
     /**

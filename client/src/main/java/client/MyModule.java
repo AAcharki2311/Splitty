@@ -39,6 +39,6 @@ public class MyModule implements Module {
         binder.bind(AdminLoginCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminDashboardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EventOverviewAdminCtrl.class).in(Scopes.SINGLETON);
-
+        binder.bind(SettleDebtsCtrl.class).in(Scopes.SINGLETON);
     }
 }

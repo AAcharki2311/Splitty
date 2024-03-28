@@ -267,6 +267,20 @@ public class EditExpenseCtrl implements Initializable, LanguageSwitchInterface {
     }
 
     /**
+     * This method sets all fields to the information of the expense
+     * @param expense the expense
+     */
+    public void setComboBoxExpenses(Expense expense){
+        comboBoxName.setValue(expense.getCreditor().getName());
+        comboBoxExpensesTitle.setValue(expense.getTitle());
+        comboBoxNamePaid.setValue(expense.getCreditor().getName());
+        titleTextField.setText(expense.getTitle());
+        moneyField.setText(String.valueOf(expense.getAmount()));
+        dateField.setValue(expense.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        splitRBtn.setSelected(true);
+    }
+
+    /**
      * Updates the page with the right information
      * @param id the id of the event
      */
