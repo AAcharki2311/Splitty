@@ -90,6 +90,7 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @param server the connection with the EventServerUtils class
      * @param expServer the connection with the ExpensesServerUtils class
      * @param expPart the connection with the ParticipantServerUtils class
+     * @param expPay the connection with the PaymentServerUtils class
      */
     @Inject
     public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer,

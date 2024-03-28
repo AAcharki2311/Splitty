@@ -41,9 +41,12 @@ public class Event {
     }
 
     /**
-     * The constructor for Event
+     * The constructor for Event if all information is already known
      *
      * @param name The name for the event
+     * @param id the id of the event
+     * @param creationDate the creation date of the Event
+     * @param lastActDate the last activity date of the Event
      */
     public Event(long id, String name, Date creationDate, Date lastActDate) {
         this.name = name;
