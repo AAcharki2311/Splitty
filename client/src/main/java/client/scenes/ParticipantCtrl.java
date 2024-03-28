@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,7 @@ public class ParticipantCtrl implements Initializable {
     private final EventServerUtils server;
     private final ParticipantsServerUtil pcu;
     private long eventid;
+    private boolean ibanTrue;
     private Participant userParticipant;
     /** PAGE FXML **/
     @FXML
@@ -122,8 +122,14 @@ public class ParticipantCtrl implements Initializable {
             } else {
                 if(duplicate){
                     errormessage = "Name or email already exists";
-                } else{
-                    errormessage = "Please fill in all fields correctly";
+                } else if(name.isBlank()){
+                    errormessage = "Name is not correct";
+                } else if(!(email.contains("@") && email.contains("."))) {
+                    errormessage = "Email is not correct";
+                } else if(!(ibanTrue)){
+                    errormessage = "IBAN is not correct";
+                }else if(bic.isBlank()){
+                    errormessage = "Bic is not correct";
                 }
                 throw new Exception();
             }
@@ -156,7 +162,7 @@ public class ParticipantCtrl implements Initializable {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        boolean ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
+        ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
         return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
                 email.contains("@") && email.contains(".") && ibanTrue;
     }
@@ -196,7 +202,7 @@ public class ParticipantCtrl implements Initializable {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
     }
 }

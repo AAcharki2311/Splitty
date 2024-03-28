@@ -4,14 +4,23 @@ import client.utils.*;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 import javax.swing.*;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -77,6 +86,7 @@ public class EditExpenseCtrl implements Initializable {
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
+    private ArrayList<Expense> changedExpenses = new ArrayList<>();
 
     /**
      * Constructor of the EditExpenseCtrl
@@ -87,7 +97,8 @@ public class EditExpenseCtrl implements Initializable {
      * @param expServer represent the ExpensesServerUtils
      */
     @Inject
-    public EditExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer, ExpensesServerUtils expServer) {
+    public EditExpenseCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader, ParticipantsServerUtil partServer,
+                           ExpensesServerUtils expServer) {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
@@ -203,11 +214,13 @@ public class EditExpenseCtrl implements Initializable {
 
             if(validate(title, money, comboBoxCurr, splitRBtn)){
                 Expense exp = new Expense(e, p, money, date, title, tag);
+
                 int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to update?", "Update Confirmation",
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                         new String[]{"Update", "Cancel"}, "default");
 
                 if(choice == JOptionPane.OK_OPTION){
+                    changedExpenses.add(selectedExpense);
                     if(!(selectedExpense.getCreditor().equals(exp.getCreditor()))){
                         expServer.deleteExpenseByID(selectedExpense.getId());
                         expServer.addExpense(exp);
@@ -267,6 +280,7 @@ public class EditExpenseCtrl implements Initializable {
                 new String[]{"DELETE", "GO BACK"}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
+            changedExpenses.add(selectedExpense);
             expServer.deleteExpenseByID(selectedExpense.getId());
             JOptionPane.showMessageDialog(null, "Expense deleted");
             update(String.valueOf(eventid));
@@ -323,9 +337,97 @@ public class EditExpenseCtrl implements Initializable {
     }
 
     /**
+     * Method of the see button, when pressed, it shows the changed expenses
+     */
+    public void showChangedExpenses(){
+        changedExpenses = (ArrayList<Expense>) changedExpenses.stream().filter(e -> e.getEvent().getId() == eventid).collect(Collectors.toList());
+        if(changedExpenses.isEmpty()){
+            JOptionPane.showMessageDialog(null, "No expenses have been changed");
+        } else {
+            TableView<Expense> tableView = setupTable();
+
+            Stage newStage = new Stage();
+            newStage.setTitle("Changed Expenses");
+            StackPane secondaryLayout = new StackPane();
+            secondaryLayout.getChildren().addAll(tableView);
+            Scene secondscene = new Scene(secondaryLayout, 500, 500);
+            newStage.setScene(secondscene);
+            newStage.show();
+
+            tableView.setOnMouseClicked(event -> {
+                try{
+                    Expense selectedItem = tableView.getSelectionModel().getSelectedItem();
+                    if(selectedItem.getTitle() == null){return;}
+
+                    int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to reset this expense?", "Reset Confirmation",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                            new String[]{"Reset", "Cancel"}, "default");
+
+                    if(choice == JOptionPane.OK_OPTION) {
+                        long id = selectedItem.getId();
+                        try{
+                            changedExpenses.add(expServer.getExpenseByID(id));
+                            expServer.updateExpenseByID(id, selectedItem);
+                        } catch (Exception e){
+                            expServer.addExpense(selectedItem);
+                        }
+                        changedExpenses.remove(selectedItem);
+                        JOptionPane.showMessageDialog(null, "Expense reset");
+                        newStage.close();
+                        clickBack();
+                    }
+                } catch (NullPointerException e){
+                    return;
+                }
+            });
+        }
+
+    }
+
+    /**
+     * This method sets up the table with the changed expenses
+     * @return the tableview with the changed expenses
+     */
+    public TableView setupTable() {
+        ObservableList<Expense> data = FXCollections.observableArrayList(changedExpenses);
+        TableView<Expense> tableView = new TableView<>();
+        tableView.setItems(data);
+
+        TableColumn<Expense, String> colDate = new TableColumn<>("Date");
+        TableColumn<Expense, String> colAm = new TableColumn<>("Amount");
+        TableColumn<Expense, String> colPart = new TableColumn<>("Participant");
+        TableColumn<Expense, String> colTitle = new TableColumn<>("Title");
+
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
+        colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
+        colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
+        colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
+
+        tableView.getColumns().addAll(colDate, colAm, colPart, colTitle);
+        return tableView;
+    }
+
+    /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
     public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
+    }
+
+    /**
+     * This method sets the changed expenses
+     * @return the changed expenses
+     */
+    public ArrayList<Expense> getChangedExpenses() {
+        return changedExpenses;
+    }
+
+    /**
+     * This method sets the changed expenses
+     * @param changedExpenses the changed expenses
+     */
+    public void setChangedExpenses(ArrayList<Expense> changedExpenses) {
+        this.changedExpenses = changedExpenses;
     }
 }

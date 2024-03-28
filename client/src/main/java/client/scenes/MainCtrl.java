@@ -2,12 +2,21 @@ package client.scenes;
 
 import commons.Expense;
 import commons.Participant;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class MainCtrl {
@@ -88,7 +97,133 @@ public class MainCtrl {
         this.adminDashboardCtrl = adash.getKey();
 
         showStart();
+        setUpKeyboardShortcuts();
         primaryStage.show();
+    }
+
+    /**
+     * Sets up the keyboard shortcuts
+     */
+    public void setUpKeyboardShortcuts() {
+        if(primaryStage != null){
+            startScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            eventOverviewScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            inviteScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            expenseScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            participantScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            editParticipantScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            editExpenseScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+            settleScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
+        }
+    }
+
+    /**
+     * Method to handle the key press
+     * @param keyEvent the key event
+     */
+    public void handleKeyPress(KeyEvent keyEvent) {
+        if(keyEvent.isAltDown()) {
+            Scene currentScene = primaryStage.getScene();
+            switch (keyEvent.getCode()) {
+                case A:
+                    if (currentScene == eventOverviewScene) eventOCtrl.clickAddParticipant();
+                    break;
+                case C:
+                    if (currentScene == startScene) startCtrl.createEvent();
+                    break;
+                case E:
+                    if (currentScene == eventOverviewScene) eventOCtrl.clickEditParticipant();
+                    break;
+                case F:
+                    if (currentScene == eventOverviewScene) eventOCtrl.clickSettleDebts();
+                    break;
+                case I:
+                    if (currentScene == eventOverviewScene) eventOCtrl.clickInvite();
+                    break;
+                case J:
+                    if (currentScene == startScene) startCtrl.openEvent();
+                    break;
+                case K:
+                    if (currentScene == eventOverviewScene) eventOCtrl.clickAddExpense();
+                    break;
+                case L:
+                    if (currentScene == eventOverviewScene) eventOCtrl.clickEditExpense();
+                    break;
+                case S:
+                    TableView<String> tableView = setupTable();
+
+                    Stage newStage = new Stage();
+                    newStage.setTitle("Shortcuts");
+
+                    StackPane secondaryLayout = new StackPane();
+                    secondaryLayout.getChildren().addAll(tableView);
+
+                    Scene secondscene = new Scene(secondaryLayout, 285, 300);
+                    newStage.setScene(secondscene);
+                    newStage.show();
+                    break;
+                case Y:
+                    System.exit(0);
+                case SLASH:
+                    keySlashMethod(currentScene);
+                    break;
+                default:
+                    break;
+            }
+            keyEvent.consume();
+        }
+    }
+
+    private TableView<String> setupTable() {
+        ObservableList<String> data = FXCollections.observableArrayList(
+                "Alt + A, Add participant, Event Overview",
+                "Alt + C, Create event, Start",
+                "Alt + E, Edit participant, Event Overview",
+                "Alt + F, Settle debts, Event Overview",
+                "Alt + I, Invite, Event Overview",
+                "Alt + J, Join event, Start",
+                "Alt + K, Add expense, Event Overview",
+                "Alt + L, Edit expense, Event Overview",
+                "Alt + S, Show shortcuts, All",
+                "Alt + Y, Close application, All",
+                "Alt + /, Go back, All"
+        );
+
+        TableView<String> tableView = new TableView<>();
+        tableView.setItems(data);
+
+        TableColumn<String, String> colShortcut = new TableColumn<>("Shortcut");
+        TableColumn<String, String> colAction = new TableColumn<>("Action");
+        TableColumn<String, String> colPage = new TableColumn<>("Page");
+
+        colShortcut.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[0].trim()));
+        colAction.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[1].trim()));
+        colPage.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[2].trim()));
+
+        tableView.getColumns().addAll(colShortcut, colAction, colPage);
+        return tableView;
+    }
+
+    /**
+     * Method to handle the key press for the slash key
+     * @param currentScene the current scene
+     */
+    private void keySlashMethod(Scene currentScene) {
+        if(currentScene == eventOverviewScene) {
+            eventOCtrl.clickBack();
+        } else if (currentScene == inviteScene) {
+            inviteCtrl.clickBack();
+        } else if (currentScene == expenseScene) {
+            addExpenseCtrl.clickBack();
+        } else if (currentScene == participantScene) {
+            participantCtrl.clickBack();
+        } else if (currentScene == editParticipantScene) {
+            editParticipantCtrl.clickBack();
+        } else if (currentScene == editExpenseScene) {
+            editExpenseCtrl.clickBack();
+        } else if (currentScene == settleScene) {
+            settleDebtsCtrl.clickBack();
+        }
     }
 
     /**
@@ -274,5 +409,21 @@ public class MainCtrl {
      */
     public void setParticipant(Participant p){
         participantCtrl.setUserParticipant(p);
+    }
+
+    /**
+     * Sets the changed expenses
+     * @param tempList the list of changed expenses
+     */
+    public void setTempList(ArrayList<Expense> tempList) {
+        editExpenseCtrl.setChangedExpenses(tempList);
+    }
+
+    /**
+     * Gets the changed expenses
+     * @return the list of changed expenses
+     */
+    public ArrayList<Expense> getTempList() {
+        return editExpenseCtrl.getChangedExpenses();
     }
 }

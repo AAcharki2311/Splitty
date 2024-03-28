@@ -250,9 +250,12 @@ public class EventOverviewCtrl implements Initializable {
         if(choice == JOptionPane.OK_OPTION){
             Event x = server.getEventByID(eventid);
             var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
+            ArrayList<Expense> tempList = mc.getTempList();
             for(Expense e : allExpenses){
+                tempList.add(e);
                 expServer.deleteExpenseByID(e.getId());
             }
+            mc.setTempList(tempList);
             JOptionPane.showMessageDialog(null, "All Expenses Deleted");
             update(String.valueOf(eventid));
         }
@@ -373,9 +376,8 @@ public class EventOverviewCtrl implements Initializable {
 
     /**
      * Used to get back to the Screen before this
-     * @throws IOException if something went wrong with showing the start screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showStart();
     }
 }

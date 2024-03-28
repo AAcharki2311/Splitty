@@ -57,7 +57,7 @@
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>
    </Label>
-   <Label fx:id="partName" layoutX="96.0" layoutY="178.0" prefHeight="18.0" prefWidth="74.0" text="NAME" textAlignment="CENTER">
+   <Label fx:id="partName" layoutX="96.0" layoutY="178.0" prefHeight="18.0" prefWidth="74.0" textAlignment="CENTER">
       <font>
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>

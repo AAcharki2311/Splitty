@@ -15,8 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
-import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -232,7 +230,7 @@ public class SettleDebtsCtrl implements Initializable {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
     }
 }

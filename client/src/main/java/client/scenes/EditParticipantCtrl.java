@@ -29,6 +29,7 @@ public class EditParticipantCtrl implements Initializable {
     private final EventServerUtils server;
     private final ParticipantsServerUtil partServer;
     private long eventid;
+    private boolean ibanTrue;
     private Participant selectedParticipant;
     /** PAGE FXML **/
     @FXML
@@ -125,11 +126,12 @@ public class EditParticipantCtrl implements Initializable {
      * Method of the save button, it gets all user input and when pressed, it shows the eventoverview screen
      */
     public void submitEdit() {
-        if(comboBoxParticipants.getValue() == null){
-            message.setText("No participant selected");
-            return;
-        }
+        String errormessage = "Something went wrong";
         try{
+            if(comboBoxParticipants.getValue() == null){
+                errormessage = "No participant selected";
+                throw new Exception();
+            }
             var e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
@@ -155,11 +157,12 @@ public class EditParticipantCtrl implements Initializable {
                     clickBack();
                 }
             } else {
-                message.setText("Please fill in all fields correctly");
+                if(!(ibanTrue)) errormessage = "IBAN is not correct";
+                if(!(email.contains("@") && email.contains(".")))  errormessage = "Please fill in all fields correctly";
                 throw new Exception();
             }
         } catch (Exception e){
-            message.setText("Something went wrong");
+            message.setText(errormessage);
         }
     }
 
@@ -172,7 +175,7 @@ public class EditParticipantCtrl implements Initializable {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        boolean ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
+        ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
         return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
                 email.contains("@") && email.contains(".") && ibanTrue;
     }

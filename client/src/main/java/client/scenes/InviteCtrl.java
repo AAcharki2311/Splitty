@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.fxml.FXML;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -165,7 +164,7 @@ public class InviteCtrl implements Initializable {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
     }
 }
