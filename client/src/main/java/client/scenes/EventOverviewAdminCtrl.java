@@ -3,11 +3,16 @@ package client.scenes;
 import client.utils.EventServerUtils;
 import client.utils.ExpensesServerUtils;
 import client.utils.ParticipantsServerUtil;
+import client.utils.PaymentsServerUtils;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import commons.Payment;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -27,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,6 +43,7 @@ public class EventOverviewAdminCtrl implements Initializable {
     private final MainCtrl mc;
     private final ExpensesServerUtils expServer;
     private final ParticipantsServerUtil expPart;
+    private final PaymentsServerUtils expPay;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -85,11 +92,13 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @param expPart the connection with the ParticipantServerUtils class
      */
     @Inject
-    public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, MainCtrl m) {
+    public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer,
+                                  ParticipantsServerUtil expPart, PaymentsServerUtils expPay, MainCtrl m) {
         this.mc = m;
         this.server = server;
         this.expServer = expServer;
         this.expPart = expPart;
+        this.expPay = expPay;
         this.eventid = 0;
     }
 
@@ -206,22 +215,55 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @throws IOException
      */
     public void clickDownload() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Create instances of Events and all data
+        Event event = server.getEventByID(eventid);
+        List<Participant> participants = expPart.getAllParticipants();
+        List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        // List<Payment> payments = expPay.getPayments();
+        List<Payment> uppay = null;
+        // List<Payment> uppay = payments.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        List<Expense> expenses = expServer.getExpenses();
+        List<Expense> upexp = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Event x = server.getEventByID(eventid);
-            objectMapper.writeValue(new File("src/main/resources/JSONfiles/Event"+eventid+".json"), x);
+            List<Object> jsonDataObject = new ArrayList<>();
+            jsonDataObject.add(event);
+            jsonDataObject.add(uppart);
+            jsonDataObject.add(uppay);
+            jsonDataObject.add(upexp);
+            writer.writeValue(new File("src/main/resources/JSONfiles/Event"+eventid+".json"), jsonDataObject);
             imgMessage.setImage(new Image("images/notifications/Slide5.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            return;
-        }
-        catch (Exception e){
+
+        } catch (IOException e) {
             imgMessage.setImage(new Image("images/notifications/Slide4.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            return;
+            e.printStackTrace();
         }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class DataWrapper {
+        private Event event;
+        private List<Participant> parts;
+        private List<Expense> exps;
+        private List<Payment> pays;
+
+        public DataWrapper(Event event, List<Participant> parts, List<Payment> pays, List<Expense> exps) {
+            this.event = event;
+            this.parts = parts;
+            this.exps = exps;
+            this.pays = pays;
+        }
+
+        // Getters and setters (omitted for brevity)
     }
 }

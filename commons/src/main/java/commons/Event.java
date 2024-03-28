@@ -1,4 +1,5 @@
 package commons;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,10 +13,13 @@ import java.util.*;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty ("id")
     public long id;
-
+    @JsonProperty ("name")
     public String name;
+    @JsonProperty ("creationDate")
     public Date creationDate;
+    @JsonProperty ("lastActDate")
     public Date lastActDate;
 
     /**
@@ -34,6 +38,18 @@ public class Event {
         this.name = name;
         creationDate = new Date();
         lastActDate = new Date();
+    }
+
+    /**
+     * The constructor for Event
+     *
+     * @param name The name for the event
+     */
+    public Event(long id, String name, Date creationDate, Date lastActDate) {
+        this.name = name;
+        this.id = id;
+        this.creationDate = creationDate;
+        this.lastActDate = lastActDate;
     }
 
     /**

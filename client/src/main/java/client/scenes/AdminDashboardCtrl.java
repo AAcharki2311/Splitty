@@ -1,8 +1,15 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import client.utils.ExpensesServerUtils;
+import client.utils.ParticipantsServerUtil;
+import client.utils.PaymentsServerUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Event;
+import commons.Expense;
+import commons.Participant;
+import commons.Payment;
 import jakarta.inject.Inject;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +37,9 @@ public class AdminDashboardCtrl implements Initializable {
     /** BASIS **/
     private final EventServerUtils server;
     private final MainCtrl mc;
+    private final ExpensesServerUtils expServer;
+    private final ParticipantsServerUtil expPart;
+    private final PaymentsServerUtils expPay;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -65,13 +74,20 @@ public class AdminDashboardCtrl implements Initializable {
 
     /**
      * Constructor for the AdminDashboardCtrl
-     * @param mc the main controller
-     * @param server server
+     *
+     * @param server    server
+     * @param mc        the main controller
+     * @param expServer
+     * @param expPart
+     * @param expPay
      */
     @Inject
-    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc) {
+    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, PaymentsServerUtils expPay) {
         this.mc = mc;
         this.server = server;
+        this.expServer = expServer;
+        this.expPart = expPart;
+        this.expPay = expPay;
     }
     /**
      * text
@@ -148,10 +164,75 @@ public class AdminDashboardCtrl implements Initializable {
      */
     public void clickImport() throws IOException {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String file = inputimport.getText();
-            Event x = objectMapper.readValue(new File("src/main/resources/JSONfiles/"+file+".json"), Event.class);
 
+            ObjectMapper objectMapper = new ObjectMapper();
+            // Read JSON file and deserialize into array of objects
+            String file = inputimport.getText();
+            List<Object> objects = Arrays.asList(objectMapper.readValue(new File("src/main/resources/JSONfiles/"+file+".json"), Object[].class));
+
+            // Print each object
+            try {
+                Event myObject = objectMapper.readValue(objectMapper.writeValueAsString(objects.get(0)), Event.class);
+                // System.out.println(objects.size());
+                for (int i = 0; i < objects.size(); i++){
+                    if (i == 0){
+                        String json = objectMapper.writeValueAsString(objects.get(0));
+                        // System.out.println("PART 1:" + json);
+                        Event newEvent = server.addEvent(myObject);
+                    }
+                    else if (i == 1){
+                        String json = objectMapper.writeValueAsString(objects.get(1));
+                        // System.out.println("PART 2:" + json);
+                        List<Participant> parts = objectMapper.readValue(json, new TypeReference<List<Participant>>(){});
+                        for (Participant part : parts){
+                            // System.out.println("PARTICIPANT: " + part);
+                            Participant newPart = expPart.addParticipant(part);
+                            // System.out.println(newPart.toString());
+                            // adding a participant does not work?
+                        }
+                    }
+                    else if (i == 2){
+                        String json = objectMapper.writeValueAsString(objects.get(2));
+                        // System.out.println("PART 2:" + json);
+                        List<Payment> payms = objectMapper.readValue(json, new TypeReference<List<Payment>>(){});
+                        if (payms == null){
+
+                        }
+                        else {
+                            for (Payment parm : payms){
+                                System.out.println("PAYMENT: " + parm);
+                                Payment newPay = expPay.addPayments(parm);
+                                // System.out.println(newPay.toString());
+                            }
+                        }
+                    }
+                    else if (i == 3){
+                        String json = objectMapper.writeValueAsString(objects.get(3));
+                        // System.out.println("PART 3:" + json);
+                        List<Expense> expenses = objectMapper.readValue(json, new TypeReference<List<Expense>>(){});
+                        if (expenses == null){
+                            // System.out.println("Expenses is null?");
+
+                        }
+                        else {
+                            for (Expense exp : expenses){
+                                // System.out.println("EXPENSE: " + exp);
+                                Expense newExp = expServer.addExpense(exp);
+                                // System.out.println("NEW EXP: " + newExp.toString());
+                            }
+                        }
+                    }
+                }
+                // System.out.println("PRINTING IS OKAY");
+            }
+            catch (Exception e){
+                imgMessage.setImage(new Image("images/notifications/Slide4.png"));
+                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+                pause.setOnFinished(p -> imgMessage.setImage(null));
+                pause.play();
+                return;
+                // System.out.println("SOMETHING WRONG WHILE PRINTING");
+            }
 
 
             imgMessage.setImage(new Image("images/notifications/Slide5.png"));

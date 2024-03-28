@@ -1,6 +1,6 @@
 [ {
   "id" : 9,
-  "name" : "testediteventname",
+  "name" : "TESTJSON",
   "creationDate" : 1709757523499,
   "lastActDate" : 1709757523499
 }, [ {
@@ -63,55 +63,5 @@
     "email" : "test@gmail.com",
     "iban" : "IBAN",
     "bic" : "BIC"
-  }
-}, {
-  "id" : 2,
-  "event" : {
-    "id" : 9,
-    "name" : "testediteventname",
-    "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
-  },
-  "amount" : 24.0,
-  "date" : 1709757523499,
-  "title" : "title",
-  "tag" : "tag",
-  "creditor" : {
-    "id" : 1,
-    "event" : {
-      "id" : 9,
-      "name" : "testediteventname",
-      "creationDate" : 1709757523499,
-      "lastActDate" : 1709757523499
-    },
-    "name" : "name",
-    "email" : "test@gmail.com",
-    "iban" : "IBAN",
-    "bic" : "BIC"
-  }
-}, {
-  "id" : 3,
-  "event" : {
-    "id" : 9,
-    "name" : "testediteventname",
-    "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
-  },
-  "amount" : 3456.0,
-  "date" : 1710370800000,
-  "title" : "Title",
-  "tag" : "none",
-  "creditor" : {
-    "id" : 3,
-    "event" : {
-      "id" : 9,
-      "name" : "testediteventname",
-      "creationDate" : 1709757523499,
-      "lastActDate" : 1709757523499
-    },
-    "name" : "wesh",
-    "email" : "sdaga",
-    "iban" : "Dfgf",
-    "bic" : "BZ"
   }
 } ] ]
