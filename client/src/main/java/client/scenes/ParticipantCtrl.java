@@ -117,7 +117,7 @@ public class ParticipantCtrl implements Initializable {
                         "Email: " + p.getEmail() + "\n" +
                         "IBAN: " + p.getIban() + "\n" +
                         "BIC: " + p.getBic();
-                server.send("/topic/events", p);
+                server.send("/app/events/"+eventid, p);
                 JOptionPane.showMessageDialog(null, message);
                 clickBack();
             } else {

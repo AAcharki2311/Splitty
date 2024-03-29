@@ -350,6 +350,14 @@ public class EventOverviewCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
+//        server.unsubscribeFromAll();
+//        System.out.println("[Websocket] Unsubscribed from update");
+//        server.registerForEventUpdates("/topic/events/"+id, Participant.class, p -> {
+//            System.out.println("[Websocket] Received: "+p);
+//            partdata.add(p);
+//            tablePart.setItems(partdata);
+//        });
+
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
         names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());

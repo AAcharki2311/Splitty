@@ -2,8 +2,10 @@ package server.api;
 
 import commons.Participant;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Event;
@@ -108,10 +110,10 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @MessageMapping("/events") // /app/events
-    @SendTo("/topic/events")
-    public Participant sendConfirmationMessage(Participant p) {
-        System.out.println("An Event will be sent");
+    @MessageMapping("/events/{id}") // /app/events/{id}
+    @SendTo("/topic/events/{id}")
+    public Participant sendConfirmationMessage(Participant p, @DestinationVariable("id") String id) {
+        System.out.println("[Websocket] Received and sending to id("+id+"):\n"+p);
         return p;
     }
 
