@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Event;
@@ -110,6 +109,14 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
+
+    /**
+     * Method that receives and sends participants via the websocket
+     *
+     * @param p The Participant received
+     * @param id The id of the event from which received
+     * @return The Participant that was received
+     */
     @MessageMapping("/events/{id}") // /app/events/{id}
     @SendTo("/topic/events/{id}")
     public Participant sendConfirmationMessage(Participant p, @DestinationVariable("id") String id) {

@@ -103,6 +103,12 @@ public class EventServerUtils {
 
     private StompSession session = connect("ws://localhost:8080/websocket");
 
+    /**
+     * Method that instantiates a websocket connection to the server
+     *
+     * @param url the url of the websocket endpoint
+     * @return the connected session
+     */
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
@@ -120,6 +126,14 @@ public class EventServerUtils {
         throw new IllegalStateException();
     }
 
+    /**
+     * Method that registers for the messages on a channel
+     *
+     * @param dest the channel url to subscribe to
+     * @param type the class to received messages of
+     * @param consumer the consumer that will accept the messages
+     * @param <T> The class to receive messages of
+     */
     public <T> void registerForEventUpdates(String dest, Class<T> type, Consumer<T> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
 
@@ -150,6 +164,12 @@ public class EventServerUtils {
         System.out.println("Subscribed to "+'"'+dest+'"');
     }
 
+    /**
+     * Method for sending objects to the specified url
+     *
+     * @param dest the url
+     * @param o the object to send
+     */
     public void send(String dest, Object o) {
         session.send(dest, o);
         System.out.println("A message was sent:"+o);
