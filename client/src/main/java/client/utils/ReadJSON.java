@@ -12,9 +12,9 @@ public class ReadJSON implements ReadJSONInterface{
      * @return a HashMap with the data from the JSON file
      */
     @Override
-    public HashMap<String, Object> readJsonToMap(String filePath) {
+    public HashMap<String, String> readJsonToMap(String filePath) {
         ObjectMapper mapper = new ObjectMapper();
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         try {
             map = mapper.readValue(Paths.get(filePath).toFile(), HashMap.class);
         } catch (IOException e) {

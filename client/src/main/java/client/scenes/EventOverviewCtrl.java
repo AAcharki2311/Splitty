@@ -30,6 +30,7 @@ public class EventOverviewCtrl implements Initializable {
     private final ParticipantsServerUtil partServer;
     private final ExpensesServerUtils expServer;
     private LanguageSwitch languageSwitch;
+    private HashMap<String, String> h;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -129,7 +130,7 @@ public class EventOverviewCtrl implements Initializable {
             String path = "src/main/resources/configfile.properties";
             String language = comboboxLanguage.getValue().toString();
             languageSwitch.languageChange(path, language);
-            comboboxLanguage.setPromptText("Current language: " + comboboxLanguage.getSelectionModel().getSelectedItem());
+            comboboxLanguage.setPromptText(h.get("key53") + comboboxLanguage.getSelectionModel().getSelectedItem());
 
             try {
                 mc.ltest();
@@ -170,9 +171,7 @@ public class EventOverviewCtrl implements Initializable {
 
         comboBoxOne.setOnAction(event -> {
             String name = comboBoxOne.getValue();
-            if(name == null){
-                return;
-            } else {
+            if(name != null){
                 Participant participant = partServer.getAllParticipants().stream().filter(participant1 -> participant1.getName().equals(name)).findAny().get();
                 showExpensesOnly(participant);
             }
@@ -190,30 +189,29 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        comboboxLanguage.setPromptText("Current language: " + taal);
-        Image imageFlag = new Image(h.get("key0").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        comboboxLanguage.setPromptText(h.get("key53") + taal);
+        Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
-
-        partictext.setText(h.get("key7").toString());
-        expenstext.setText(h.get("key8").toString());
-        editBtn.setText(h.get("key9").toString());
-        addBtn.setText(h.get("key10").toString());
-        editBtn1.setText(h.get("key9").toString());
-        addBtn1.setText(h.get("key10").toString());
-        settleDebtsBtn.setText(h.get("key11").toString());
-        sendInviteBtn.setText(h.get("key12").toString());
-        allBtn.setText(h.get("key13").toString());
-        deleteAllBtn.setText(h.get("key15").toString());
-        showExpensOfText.setText(h.get("key37").toString());
-        editEventNameLabel.setText(h.get("key38").toString());
-        colDate.setText(h.get("key41").toString());
-        colPart.setText(h.get("key43").toString());
-        colAm.setText(h.get("key42").toString());
-        colTitle.setText(h.get("key44").toString());
-        colTag.setText(h.get("key45").toString());
-        colName.setText(h.get("key46").toString());
-
+        comboBoxOne.setPromptText(h.get("key7"));
+        partictext.setText(h.get("key7"));
+        expenstext.setText(h.get("key8"));
+        editBtn.setText(h.get("key9"));
+        addBtn.setText(h.get("key10"));
+        editBtn1.setText(h.get("key9"));
+        addBtn1.setText(h.get("key10"));
+        settleDebtsBtn.setText(h.get("key11"));
+        sendInviteBtn.setText(h.get("key12"));
+        allBtn.setText(h.get("key13"));
+        deleteAllBtn.setText(h.get("key15"));
+        showExpensOfText.setText(h.get("key37"));
+        editEventNameLabel.setText(h.get("key38"));
+        colDate.setText(h.get("key41"));
+        colPart.setText(h.get("key43"));
+        colAm.setText(h.get("key42"));
+        colTitle.setText(h.get("key44"));
+        colTag.setText(h.get("key45"));
+        colName.setText(h.get("key46"));
     }
 
     /**
@@ -243,9 +241,9 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the delete all button, when pressed, it deletes all expenses
      */
     public void deleteAll(){
-        int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete all expenses?", "Delete Confirmation",
+        int choice = JOptionPane.showOptionDialog(null,h.get("key65"), h.get("key66"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                new String[]{"Delete", "Cancel"}, "default");
+                new String[]{h.get("key67"), h.get("key26")}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
             Event x = server.getEventByID(eventid);
@@ -256,7 +254,7 @@ public class EventOverviewCtrl implements Initializable {
                 expServer.deleteExpenseByID(e.getId());
             }
             mc.setTempList(tempList);
-            JOptionPane.showMessageDialog(null, "All Expenses Deleted");
+            JOptionPane.showMessageDialog(null, h.get("key69"));
             update(String.valueOf(eventid));
         }
     }
@@ -311,21 +309,19 @@ public class EventOverviewCtrl implements Initializable {
         String newName = "";
 
         while(true){
-            newName = JOptionPane.showInputDialog("Enter the new name of the event");
+            newName = JOptionPane.showInputDialog(h.get("key70"));
             if (newName == null || newName.equals(oldName)) {
-                System.out.println("Operation cancelled by the user. Name remains unchanged.");
-                return;
+               return;
             } else if (newName.isBlank()) {
-                JOptionPane.showMessageDialog(null, "Name cannot be empty.");
+                JOptionPane.showMessageDialog(null, h.get("key54"));
             } else if(checkDuplicateName(newName)){
-                JOptionPane.showMessageDialog(null, "Not allowed. Duplicate name detected.");
+                JOptionPane.showMessageDialog(null, h.get("key71"));
             } else {
                 Event x = server.getEventByID(eventid);
                 x.setName(newName);
                 server.updateEventByID(eventid, x);
 
                 eventName.setText(server.getEventByID(eventid).getName());
-                System.out.println("Name of event(id " + eventid + ") changed from " + oldName + " to " + newName);
                 break;
             }
         }

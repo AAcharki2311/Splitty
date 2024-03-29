@@ -32,6 +32,7 @@ public class ParticipantCtrl implements Initializable {
     private long eventid;
     private boolean ibanTrue;
     private Participant userParticipant;
+    private HashMap<String, String> h;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
@@ -49,6 +50,8 @@ public class ParticipantCtrl implements Initializable {
     private Label fillInfoText;
     @FXML
     private Label nameText;
+    @FXML
+    private Label fillUserInfo;
     @FXML
     private Label labelEventName;
     @FXML
@@ -88,18 +91,20 @@ public class ParticipantCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key32").toString());
-        fillInfoText.setText(h.get("key30").toString());
-        nameText.setText(h.get("key31").toString());
-        cancelBtn.setText(h.get("key26").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key32"));
+        fillInfoText.setText(h.get("key30"));
+        nameText.setText(h.get("key31"));
+        cancelBtn.setText(h.get("key26"));
+        fillUserInfo.setText(h.get("key51"));
+        TextFieldName.setPromptText(h.get("key31"));
     }
 
     /**
      * This method gets all the information from the textfields and prints it to the console
      */
     public void submit() {
-        String errormessage = "Something went wrong";
+        String errormessage = h.get("key80");
         try{
             Event e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
@@ -111,9 +116,9 @@ public class ParticipantCtrl implements Initializable {
                 Participant p = new Participant(e, name, email, iban, bic);
                 p.setEvent(e);
                 pcu.addParticipant(p);
-                String message = "Participant added:\n" +
+                String message = "Participant:\n" +
                         "_______________" + "\n" +
-                        "Name: " + p.getName() + "\n" +
+                        h.get("key31") + ": " + p.getName() + "\n" +
                         "Email: " + p.getEmail() + "\n" +
                         "IBAN: " + p.getIban() + "\n" +
                         "BIC: " + p.getBic();
@@ -121,15 +126,15 @@ public class ParticipantCtrl implements Initializable {
                 clickBack();
             } else {
                 if(duplicate){
-                    errormessage = "Name or email already exists";
+                    errormessage = h.get("key75");
                 } else if(name.isBlank()){
-                    errormessage = "Name is not correct";
+                    errormessage = h.get("key76");
                 } else if(!(email.contains("@") && email.contains("."))) {
-                    errormessage = "Email is not correct";
+                    errormessage = h.get("key77");
                 } else if(!(ibanTrue)){
-                    errormessage = "IBAN is not correct";
+                    errormessage = h.get("key78");
                 }else if(bic.isBlank()){
-                    errormessage = "Bic is not correct";
+                    errormessage = h.get("key79");
                 }
                 throw new Exception();
             }
@@ -174,8 +179,6 @@ public class ParticipantCtrl implements Initializable {
     public void update(String id){
         long eid = Long.parseLong(id);
         this.eventid = eid;
-        System.out.println("reached");
-        System.out.println(eid + " " + server.getEventByID(eid).getName());
         labelEventName.setText(server.getEventByID(eid).getName());
     }
 

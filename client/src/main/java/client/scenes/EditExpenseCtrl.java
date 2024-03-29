@@ -35,6 +35,7 @@ public class EditExpenseCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private long eventid;
     private Expense selectedExpense;
+    private HashMap<String, String> h;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
@@ -121,7 +122,7 @@ public class EditExpenseCtrl implements Initializable {
         comboBoxName.setOnAction(event -> {
             String nameParticipant = comboBoxName.getValue();
             if(nameParticipant == null){
-                message.setText("No participant selected");
+                message.setText(h.get("key83"));
                 return;
             }
 
@@ -141,7 +142,7 @@ public class EditExpenseCtrl implements Initializable {
             String nameParticipant = comboBoxName.getValue();
             String title = comboBoxExpensesTitle.getValue();
             if(title == null){
-                message.setText("No expense selected");
+                message.setText(h.get("key92"));
                 return;
             }
 
@@ -166,20 +167,22 @@ public class EditExpenseCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key16").toString());
-        changeTheExpenseOfText.setText(h.get("key17").toString());
-        calledText.setText(h.get("key18").toString());
-        fillInfoText.setText(h.get("key19").toString());
-        whoPaidText.setText(h.get("key20").toString());
-        titleText.setText(h.get("key21").toString());
-        howMuchText.setText(h.get("key22").toString());
-        whenText.setText(h.get("key23").toString());
-        howToSplitText.setText(h.get("key24").toString());
-        splitRBtn.setText(h.get("key25").toString());
-        cancelBtn.setText(h.get("key26").toString());
-        deleteBtn.setText(h.get("key39").toString());
-
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key16"));
+        changeTheExpenseOfText.setText(h.get("key17"));
+        calledText.setText(h.get("key18"));
+        fillInfoText.setText(h.get("key19"));
+        whoPaidText.setText(h.get("key20"));
+        titleText.setText(h.get("key21"));
+        howMuchText.setText(h.get("key22"));
+        whenText.setText(h.get("key23"));
+        howToSplitText.setText(h.get("key24"));
+        splitRBtn.setText(h.get("key25"));
+        cancelBtn.setText(h.get("key26"));
+        deleteBtn.setText(h.get("key39"));
+        comboBoxNamePaid.setPromptText(h.get("key7"));
+        comboBoxName.setPromptText(h.get("key7"));
+        comboBoxExpensesTitle.setPromptText(h.get("key8"));
     }
 
     /**
@@ -190,11 +193,11 @@ public class EditExpenseCtrl implements Initializable {
         String expTitle = comboBoxExpensesTitle.getValue();
         String changePartName = comboBoxNamePaid.getValue();
         if(partName == null || changePartName == null){
-            message.setText("No participant selected");
+            message.setText(h.get("key83"));
             return;
         }
         if(expTitle == null){
-            message.setText("No expense selected");
+            message.setText(h.get("key92"));
             return;
         }
 
@@ -208,16 +211,16 @@ public class EditExpenseCtrl implements Initializable {
             var p = listAllParticipants.stream().filter(participant -> participant.getName().equals(changePartName)).findAny().get();
 
             String title = titleTextField.getText();
-            Double money = Double.parseDouble(moneyField.getText());
+            double money = Double.parseDouble(moneyField.getText());
             Date date = java.sql.Date.valueOf(dateField.getValue());
             String tag = "none";
 
             if(validate(title, money, comboBoxCurr, splitRBtn)){
                 Expense exp = new Expense(e, p, money, date, title, tag);
 
-                int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to update?", "Update Confirmation",
+                int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                        new String[]{"Update", "Cancel"}, "default");
+                        new String[]{"Update", h.get("key26")}, "default");
 
                 if(choice == JOptionPane.OK_OPTION){
                     changedExpenses.add(selectedExpense);
@@ -227,22 +230,22 @@ public class EditExpenseCtrl implements Initializable {
                     }else{
                         expServer.updateExpenseByID(selectedExpense.getId(),exp);
                     }
-                    String message = "Expense Updated:\n" +
+                    String message = h.get("key8") + " Updated:\n" +
                             "_______________" + "\n" +
                             "Creditor: " + exp.getCreditor().getName() + "\n" +
-                            "Title: " + exp.getTitle() + "\n" +
-                            "Amount: " + exp.getAmount() + "\n" +
-                            "Date: " + exp.getDate();
+                            h.get("key44") + ": " + exp.getTitle() + "\n" +
+                            h.get("key42") + ": " + exp.getAmount() + "\n" +
+                            h.get("key41") + ": " + exp.getDate();
                     JOptionPane.showMessageDialog(null, message);
                     clickBack();
                 }
             } else if(money < 0){
-                message.setText("Amount cannot be negative");
+                message.setText(h.get("key93"));
             } else {
-                message.setText("Please fill in all fields correctly");
+                message.setText(h.get("key84"));
             }
         } catch (Exception e){
-            message.setText("Please fill in all fields correctly");
+            message.setText(h.get("key84"));
         }
     }
 
@@ -267,22 +270,22 @@ public class EditExpenseCtrl implements Initializable {
         String partName = comboBoxName.getValue();
         String expTitle = comboBoxExpensesTitle.getValue();
         if(partName == null){
-            message.setText("No participant selected");
+            message.setText(h.get("key83"));
             return;
         }
         if(expTitle == null){
-            message.setText("No expense selected");
+            message.setText(h.get("key92"));
             return;
         }
 
-        int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete?", "Delete Confirmation",
+        int choice = JOptionPane.showOptionDialog(null,h.get("key82"), h.get("key66"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                new String[]{"DELETE", "GO BACK"}, "default");
+                new String[]{h.get("key67"), h.get("key26")}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
             changedExpenses.add(selectedExpense);
             expServer.deleteExpenseByID(selectedExpense.getId());
-            JOptionPane.showMessageDialog(null, "Expense deleted");
+            JOptionPane.showMessageDialog(null, h.get("key91"));
             update(String.valueOf(eventid));
             setEverythingEmpty();
         }
@@ -342,12 +345,12 @@ public class EditExpenseCtrl implements Initializable {
     public void showChangedExpenses(){
         changedExpenses = (ArrayList<Expense>) changedExpenses.stream().filter(e -> e.getEvent().getId() == eventid).collect(Collectors.toList());
         if(changedExpenses.isEmpty()){
-            JOptionPane.showMessageDialog(null, "No expenses have been changed");
+            JOptionPane.showMessageDialog(null, h.get("key90"));
         } else {
             TableView<Expense> tableView = setupTable();
 
             Stage newStage = new Stage();
-            newStage.setTitle("Changed Expenses");
+            newStage.setTitle(h.get("key89"));
             StackPane secondaryLayout = new StackPane();
             secondaryLayout.getChildren().addAll(tableView);
             Scene secondscene = new Scene(secondaryLayout, 500, 500);
@@ -359,9 +362,9 @@ public class EditExpenseCtrl implements Initializable {
                     Expense selectedItem = tableView.getSelectionModel().getSelectedItem();
                     if(selectedItem.getTitle() == null){return;}
 
-                    int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to reset this expense?", "Reset Confirmation",
+                    int choice = JOptionPane.showOptionDialog(null,h.get("key87"), h.get("key88"),
                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                            new String[]{"Reset", "Cancel"}, "default");
+                            new String[]{"Reset", h.get("key26")}, "default");
 
                     if(choice == JOptionPane.OK_OPTION) {
                         long id = selectedItem.getId();
@@ -372,7 +375,7 @@ public class EditExpenseCtrl implements Initializable {
                             expServer.addExpense(selectedItem);
                         }
                         changedExpenses.remove(selectedItem);
-                        JOptionPane.showMessageDialog(null, "Expense reset");
+                        JOptionPane.showMessageDialog(null, (h.get("key8") + " reset"));
                         newStage.close();
                         clickBack();
                     }
@@ -381,7 +384,6 @@ public class EditExpenseCtrl implements Initializable {
                 }
             });
         }
-
     }
 
     /**
@@ -393,10 +395,10 @@ public class EditExpenseCtrl implements Initializable {
         TableView<Expense> tableView = new TableView<>();
         tableView.setItems(data);
 
-        TableColumn<Expense, String> colDate = new TableColumn<>("Date");
-        TableColumn<Expense, String> colAm = new TableColumn<>("Amount");
-        TableColumn<Expense, String> colPart = new TableColumn<>("Participant");
-        TableColumn<Expense, String> colTitle = new TableColumn<>("Title");
+        TableColumn<Expense, String> colDate = new TableColumn<>(h.get("key41"));
+        TableColumn<Expense, String> colAm = new TableColumn<>(h.get("key42"));
+        TableColumn<Expense, String> colPart = new TableColumn<>(h.get("key43"));
+        TableColumn<Expense, String> colTitle = new TableColumn<>(h.get("key44"));
 
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));

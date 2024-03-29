@@ -85,12 +85,12 @@ public class InviteCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        inviteText.setText(h.get("key33").toString());
-        orText.setText(h.get("key34").toString());
-        inviteCodeText.setText(h.get("key35").toString());
-        addEmailText.setText(h.get("key36").toString());
-        cancelBtn.setText(h.get("key26").toString());
+        HashMap<String, String> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+        inviteText.setText(h.get("key33"));
+        orText.setText(h.get("key34"));
+        inviteCodeText.setText(h.get("key35"));
+        addEmailText.setText(h.get("key36"));
+        cancelBtn.setText(h.get("key26"));
     }
 
     /**
@@ -133,8 +133,6 @@ public class InviteCtrl implements Initializable {
     public void update(String id){
         long eid = Long.parseLong(id);
         this.eventid = eid;
-        System.out.println("reached");
-        System.out.println(eid + " " + server.getEventByID(eid).getName());
 
         labelEventName.setText(server.getEventByID(eid).getName());
 
