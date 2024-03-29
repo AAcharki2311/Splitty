@@ -86,8 +86,6 @@ public class MainCtrl {
         this.addExpenseCtrl = addExpense.getKey();
         this.settleDebtsCtrl = settle.getKey();
 
-        ltest();
-
 //__________________ADMIN PAGES____________________________________________________________________________
 
         this.aloginScene = new Scene(alogin.getValue());
@@ -95,6 +93,8 @@ public class MainCtrl {
         this.aeventScene = new Scene(aevent.getValue());
         this.eventOverviewAdminCtrl = aevent.getKey();
         this.adminDashboardCtrl = adash.getKey();
+
+        ltest();
 
         showStart();
         setUpKeyboardShortcuts();
@@ -228,12 +228,12 @@ public class MainCtrl {
 
     /**
      * Method to change the language
+     * @param configFilePath the path to the config file
      * @return the language to be used
      * @throws IOException if someting is wrong with the JSON file
      */
-    public String setLanguage() throws IOException {
+    public String setLanguage(String configFilePath) throws IOException {
         Properties appProps = new Properties();
-        String configFilePath = "src/main/resources/configfile.properties";
 
         FileInputStream inputStream = new FileInputStream(configFilePath);
         appProps.load(inputStream);
@@ -260,7 +260,7 @@ public class MainCtrl {
      * @throws IOException if something is wrong with the JSON file
      */
     public void ltest() throws IOException {
-        String languageToTranslate = setLanguage();
+        String languageToTranslate = setLanguage("src/main/resources/configfile.properties");
 
         this.startCtrl.langueageswitch(languageToTranslate);
         this.eventOCtrl.langueageswitch(languageToTranslate);
@@ -270,7 +270,6 @@ public class MainCtrl {
         this.editExpenseCtrl.langueageswitch(languageToTranslate);
         this.addExpenseCtrl.langueageswitch(languageToTranslate);
         this.settleDebtsCtrl.langueageswitch(languageToTranslate);
-
     }
 
     /**
@@ -410,7 +409,6 @@ public class MainCtrl {
     public void setParticipant(Participant p){
         participantCtrl.setUserParticipant(p);
     }
-
     /**
      * Sets the changed expenses
      * @param tempList the list of changed expenses
