@@ -64,6 +64,8 @@ public class StartScreenCtrl implements Initializable {
     @FXML
     private Label recentEventLabel;
     @FXML
+    private Button addUserInfoBtn;
+    @FXML
     private ImageView warningImageview;
     private Participant userParticipant;
     private WriteEventNames writeEventNames;
@@ -145,6 +147,7 @@ public class StartScreenCtrl implements Initializable {
         createBTN.setText(h.get("key4").toString());
         loginBTN.setText(h.get("key5").toString());
         recentviewedtext.setText(h.get("key6").toString());
+        addUserInfoBtn.setText(h.get("key14").toString());
         Image imageFlag = new Image(h.get("key0").toString());
         imageviewFlag.setImage(imageFlag);
     }
