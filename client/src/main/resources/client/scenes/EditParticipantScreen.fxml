@@ -22,11 +22,11 @@
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
-   <ComboBox fx:id="comboBoxParticipants" layoutX="499.0" layoutY="151.0" prefHeight="26.0" prefWidth="138.0" promptText="name particpant" />
-   <Label fx:id="emailText" layoutX="90.0" layoutY="189.0" prefHeight="16.0" prefWidth="30.0" text="Email" />
-   <Label fx:id="nameText" layoutX="90.0" layoutY="153.0" text="Name" />
-   <Label fx:id="ibanText" layoutX="90.0" layoutY="229.0" text="IBAN" />
-   <Label fx:id="bicText" layoutX="90.0" layoutY="269.0" text="BIC" />
+   <ComboBox fx:id="comboBoxParticipants" layoutX="499.0" layoutY="151.0" prefHeight="26.0" prefWidth="138.0" promptText="Name participant" />
+   <Label fx:id="emailText" layoutX="90.0" layoutY="189.0" prefHeight="16.0" prefWidth="30.0" text="Email" textFill="#0d5575" />
+   <Label fx:id="nameText" layoutX="90.0" layoutY="153.0" text="Name" textFill="#0d5575" />
+   <Label fx:id="ibanText" layoutX="90.0" layoutY="229.0" text="IBAN" textFill="#0d5575" />
+   <Label fx:id="bicText" layoutX="90.0" layoutY="269.0" text="BIC" textFill="#0d5575" />
    <TextField fx:id="TextFieldEmail" layoutX="150.0" layoutY="189.0" prefHeight="25.0" prefWidth="275.0" promptText="fakeemail@gmail.com" />
    <TextField fx:id="TextFieldIBAN" layoutX="150.0" layoutY="229.0" prefHeight="25.0" prefWidth="275.0" promptText="NL12 3456 7890 1234 56" />
    <TextField fx:id="TextFieldBIC" layoutX="150.0" layoutY="269.0" prefHeight="25.0" prefWidth="275.0" promptText="ABCDEFGH" />

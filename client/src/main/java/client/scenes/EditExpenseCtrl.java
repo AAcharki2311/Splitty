@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -36,17 +37,26 @@ public class EditExpenseCtrl implements Initializable {
     private long eventid;
     private Expense selectedExpense;
     private HashMap<String, String> h;
+    /**
+     * MENU
+     **/
+    @FXML
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgArrow;
+    @FXML
+    private ImageView imgHome;
+    @FXML
+    private ImageView imageviewFlag;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
-    private Label titleOfScreen;
+    private Text titleOfScreen;
     @FXML
-    private Label changeTheExpenseOfText;
+    private Text changeTheExpenseOfText;
     @FXML
-    private Label calledText;
-    @FXML
-    private Label fillInfoText;
+    private Text fillInfoText;
     @FXML
     private Label whoPaidText;
     @FXML
@@ -58,7 +68,7 @@ public class EditExpenseCtrl implements Initializable {
     @FXML
     private Label howToSplitText;
     @FXML
-    private Label labelEventName;
+    private Text labelEventName;
     @FXML
     private Button cancelBtn;
     @FXML
@@ -114,8 +124,11 @@ public class EditExpenseCtrl implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
+        imageview.setImage(new Image("images/logo-no-background.png"));
+        imageviewFlag.setImage(new Image("images/br-circle-01.png"));
+        imgSet.setImage(new Image("images/settings.png"));
+        imgArrow.setImage(new Image("images/arrow.png"));
+        imgHome.setImage(new Image("images/home.png"));
 
         comboBoxCurr.getItems().addAll(curNames);
 
@@ -170,7 +183,7 @@ public class EditExpenseCtrl implements Initializable {
         h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
         titleOfScreen.setText(h.get("key16"));
         changeTheExpenseOfText.setText(h.get("key17"));
-        calledText.setText(h.get("key18"));
+        // calledText.setText(h.get("key18"));
         fillInfoText.setText(h.get("key19"));
         whoPaidText.setText(h.get("key20"));
         titleText.setText(h.get("key21"));
@@ -183,6 +196,8 @@ public class EditExpenseCtrl implements Initializable {
         comboBoxNamePaid.setPromptText(h.get("key7"));
         comboBoxName.setPromptText(h.get("key7"));
         comboBoxExpensesTitle.setPromptText(h.get("key8"));
+        Image imageFlag = new Image(h.get("key0"));
+        imageviewFlag.setImage(imageFlag);
     }
 
     /**
@@ -431,5 +446,20 @@ public class EditExpenseCtrl implements Initializable {
      */
     public void setChangedExpenses(ArrayList<Expense> changedExpenses) {
         this.changedExpenses = changedExpenses;
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * Used to get back to the Start Screen
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickHome() throws IOException {
+        mc.showStart();
     }
 }

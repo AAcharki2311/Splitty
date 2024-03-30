@@ -138,6 +138,8 @@ public class EditParticipantCtrl implements Initializable {
         deleteBtn.setText(h.get("key40"));
         comboBoxParticipants.setPromptText(h.get("key7"));
         TextFieldName.setPromptText(h.get("key31"));
+        Image imageFlag = new Image(h.get("key0"));
+        imageviewFlag.setImage(imageFlag);
     }
 
     /**

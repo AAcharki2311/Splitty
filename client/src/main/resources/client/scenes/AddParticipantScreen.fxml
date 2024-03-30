@@ -17,7 +17,7 @@
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="42.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
    <TextField fx:id="TextFieldBIC" layoutX="150.0" layoutY="269.0" prefHeight="25.0" prefWidth="275.0" promptText="ABCDEFGH" />
    <Label fx:id="emailText" layoutX="90.0" layoutY="189.0" prefHeight="16.0" prefWidth="30.0" text="Email" textFill="#0d5575" />
-   <Label fx:id="nameText" layoutX="89.0" layoutY="153.0" text="Name" textFill="#0d5575" />
+   <Label fx:id="nameText" layoutX="90.0" layoutY="153.0" text="Name" textFill="#0d5575" />
    <Label fx:id="ibanText" layoutX="90.0" layoutY="229.0" text="IBAN" textFill="#0d5575" />
    <Label fx:id="bicText" layoutX="90.0" layoutY="269.0" text="BIC" textFill="#0d5575" />
    <TextField fx:id="TextFieldEmail" layoutX="150.0" layoutY="189.0" prefHeight="25.0" prefWidth="275.0" promptText="email@gmail.com" />
