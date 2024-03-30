@@ -92,5 +92,11 @@
     "key90": "No expenses have been changed",
     "key91": "Expense deleted",
     "key92": "No expense selected",
-    "key93": "Amount cannot be negative"
+    "key93": "Amount cannot be negative",
+    "key94": "Please type the ID",
+    "key95": "Please type the event name",
+    "key96": "Welcome Admin",
+    "key97": "Login",
+    "key98": "Please fill in the password",
+    "key99": "Go back"
 }

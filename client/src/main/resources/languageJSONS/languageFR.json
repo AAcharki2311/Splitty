@@ -92,5 +92,11 @@
     "key90": "Aucune dépense n'a été modifiée",
     "key91": "Dépense supprimée",
     "key92": "Aucune dépense sélectionnée",
-    "key93": "Le montant ne peut pas être négatif"
+    "key93": "Le montant ne peut pas être négatif",
+    "key94": "Please type the ID",
+    "key95": "Please type the event name",
+    "key96": "Welcome Admin",
+    "key97": "Login",
+    "key98": "Please fill in the password",
+    "key99": "Go back"
 }

@@ -2,14 +2,14 @@
   "id" : 9,
   "name" : "TES TEST TEST",
   "creationDate" : 1709757523499,
-  "lastActDate" : 1709757523499
+  "lastActDate" : 1711803836290
 }, [ {
   "id" : 1,
   "event" : {
     "id" : 9,
-    "name" : "testediteventname",
+    "name" : "TES TEST TEST",
     "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
+    "lastActDate" : 1711803836290
   },
   "name" : "name",
   "email" : "test@gmail.com",
@@ -19,9 +19,9 @@
   "id" : 2,
   "event" : {
     "id" : 9,
-    "name" : "testediteventname",
+    "name" : "TES TEST TEST",
     "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
+    "lastActDate" : 1711803836290
   },
   "name" : "name2",
   "email" : "test@gmail.com",
@@ -31,9 +31,9 @@
   "id" : 3,
   "event" : {
     "id" : 9,
-    "name" : "testediteventname",
+    "name" : "TES TEST TEST",
     "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
+    "lastActDate" : 1711803836290
   },
   "name" : "wesh",
   "email" : "sdaga",
@@ -43,9 +43,9 @@
   "id" : 1,
   "event" : {
     "id" : 9,
-    "name" : "testediteventname",
+    "name" : "TES TEST TEST",
     "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
+    "lastActDate" : 1711803836290
   },
   "amount" : 25.0,
   "date" : 1709757523499,
@@ -55,9 +55,9 @@
     "id" : 1,
     "event" : {
       "id" : 9,
-      "name" : "testediteventname",
+      "name" : "TES TEST TEST",
       "creationDate" : 1709757523499,
-      "lastActDate" : 1709757523499
+      "lastActDate" : 1711803836290
     },
     "name" : "name",
     "email" : "test@gmail.com",
@@ -68,9 +68,9 @@
   "id" : 2,
   "event" : {
     "id" : 9,
-    "name" : "testediteventname",
+    "name" : "TES TEST TEST",
     "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
+    "lastActDate" : 1711803836290
   },
   "amount" : 24.0,
   "date" : 1709757523499,
@@ -80,9 +80,9 @@
     "id" : 1,
     "event" : {
       "id" : 9,
-      "name" : "testediteventname",
+      "name" : "TES TEST TEST",
       "creationDate" : 1709757523499,
-      "lastActDate" : 1709757523499
+      "lastActDate" : 1711803836290
     },
     "name" : "name",
     "email" : "test@gmail.com",
@@ -93,9 +93,9 @@
   "id" : 3,
   "event" : {
     "id" : 9,
-    "name" : "testediteventname",
+    "name" : "TES TEST TEST",
     "creationDate" : 1709757523499,
-    "lastActDate" : 1709757523499
+    "lastActDate" : 1711803836290
   },
   "amount" : 3456.0,
   "date" : 1710370800000,
@@ -105,9 +105,9 @@
     "id" : 3,
     "event" : {
       "id" : 9,
-      "name" : "testediteventname",
+      "name" : "TES TEST TEST",
       "creationDate" : 1709757523499,
-      "lastActDate" : 1709757523499
+      "lastActDate" : 1711803836290
     },
     "name" : "wesh",
     "email" : "sdaga",

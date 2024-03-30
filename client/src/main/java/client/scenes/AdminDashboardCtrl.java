@@ -204,6 +204,14 @@ public class AdminDashboardCtrl implements Initializable {
         }
     }
 
+    /**
+     * Extracted method of click import to reduce cyclomatic complexity
+     * @param i the number from the counter
+     * @param objectMapper the object mapper
+     * @param objects the list with the information from the Json file
+     * @param myObject the Event which the Json file is about
+     * @throws JsonProcessingException
+     */
     private void extracted(int i, ObjectMapper objectMapper, List<Object> objects, Event myObject) throws JsonProcessingException {
         if (i == 0){
             String json = objectMapper.writeValueAsString(objects.get(0));
