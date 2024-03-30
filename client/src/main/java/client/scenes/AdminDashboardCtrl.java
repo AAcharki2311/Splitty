@@ -1,9 +1,6 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ExpensesServerUtils;
-import client.utils.ParticipantsServerUtil;
-import client.utils.PaymentsServerUtils;
+import client.utils.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -41,6 +39,8 @@ public class AdminDashboardCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private final ParticipantsServerUtil expPart;
     private final PaymentsServerUtils expPay;
+    private final ReadJSON jsonReader;
+    private HashMap<String, String> h;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -68,27 +68,39 @@ public class AdminDashboardCtrl implements Initializable {
     @FXML
     private TableColumn<Event, String> colDate2;
     @FXML
-    private Text output;
-    @FXML
     private ImageView imageview;
     private ObservableList<Event> data;
+    @FXML
+    private Text welcomeText;
+    @FXML
+    private Text title1Text;
+    @FXML
+    private Text title2Text;
+    @FXML
+    private Text title3Text;
+    @FXML
+    private Button importBtn;
+    @FXML
+    private Button showBtn;
 
     /**
      * Constructor for the AdminDashboardCtrl
      *
-     * @param server    server
-     * @param mc        the main controller
+     * @param server     server
+     * @param mc         the main controller
      * @param expServer
      * @param expPart
      * @param expPay
+     * @param jsonReader
      */
     @Inject
-    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, PaymentsServerUtils expPay) {
+    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, PaymentsServerUtils expPay, ReadJSON jsonReader) {
         this.mc = mc;
         this.server = server;
         this.expServer = expServer;
         this.expPart = expPart;
         this.expPay = expPay;
+        this.jsonReader = jsonReader;
     }
     /**
      * text
@@ -247,11 +259,47 @@ public class AdminDashboardCtrl implements Initializable {
     }
 
     /**
-     * javadoc
+     * Refreshes the data in the tables
      */
     public void refresh(){
         var events = server.getAllEvents();
         data = FXCollections.observableList(events);
         table.setItems(data);
+    }
+
+    /**
+     * Changes the text on the page to the appropriate language
+     * @param taal the language to change to
+     */
+    public void langueageswitch(String taal) {
+        try {
+            System.out.println(taal);
+            String langfile = "language" + taal + ".json";
+            h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+            welcomeText.setText(h.get("key96"));
+            title1Text.setText(h.get("key102"));
+            title2Text.setText(h.get("key103"));
+            title3Text.setText(h.get("key104"));
+            colName.setText(h.get("key31"));
+            colDate1.setText(h.get("key100"));
+            colDate2.setText(h.get("key101"));
+            inputid.setPromptText(h.get("key94"));
+            inputimport.setPromptText(h.get("key105"));
+            importBtn.setText(h.get("key106"));
+            showBtn.setText(h.get("key107"));
+            Image imageFlag = new Image(h.get("key0"));
+            imageviewFlag.setImage(imageFlag);
+        }
+        catch (Exception e) {
+            // System.out.println("error");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
     }
 }

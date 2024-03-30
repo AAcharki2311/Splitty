@@ -14,8 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.apache.commons.lang3.RandomStringUtils;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -76,17 +74,23 @@ public class AdminLoginCtrl implements Initializable {
 
     /**
      * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language to switch to
      */
-    public void langueageswitch(String taal) throws NullPointerException, IOException {
-        System.out.println(taal);
-        String langfile = "language" + taal + ".json";
-        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
-        welcomeText.setText(h.get("key96"));
-        backText.setText(h.get("key99"));
-        pwText.setText(h.get("key98"));
-        loginText.setText(h.get("key97"));
-        Image imageFlag = new Image(h.get("key0"));
-        imageviewFlag.setImage(imageFlag);
+    public void langueageswitch(String taal) {
+        try {
+            System.out.println(taal);
+            String langfile = "language" + taal + ".json";
+            h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+            welcomeText.setText(h.get("key96"));
+            backText.setText(h.get("key99"));
+            pwText.setText(h.get("key98"));
+            loginText.setText(h.get("key97"));
+            Image imageFlag = new Image(h.get("key0"));
+            imageviewFlag.setImage(imageFlag);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

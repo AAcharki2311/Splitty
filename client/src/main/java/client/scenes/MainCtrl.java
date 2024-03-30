@@ -176,6 +176,9 @@ public class MainCtrl {
         }
     }
 
+    /**
+     * Shows the keyboard combo's
+     */
     public void help() {
         TableView<String> tableView = setupTable();
 
@@ -302,9 +305,9 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showEventOverview(String id) {
+        eventOCtrl.update(id);
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
-        eventOCtrl.update(id);
     }
 
     /**
@@ -398,20 +401,29 @@ public class MainCtrl {
         try {
             String taal = setLanguage("src/main/resources/configfile.properties");
             adminLoginCtrl.langueageswitch(taal);
-            primaryStage.setTitle("Admin Login");
-            primaryStage.setScene(aloginScene);
         }
         catch (Exception e){
+            e.printStackTrace();
         }
+        primaryStage.setTitle("Admin Login");
+        primaryStage.setScene(aloginScene);
     }
 
     /**
      * Shows the admin dashboard screen
      */
     public void showAdminDashboard() {
+        try {
+            String taal = setLanguage("src/main/resources/configfile.properties");
+            adminDashboardCtrl.langueageswitch(taal);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        adminDashboardCtrl.refresh();
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
-        adminDashboardCtrl.refresh();
+
     }
 
     /**
@@ -419,9 +431,9 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showAdminEvent(String id){
+        eventOverviewAdminCtrl.update(id);
         primaryStage.setTitle("Admin Event view");
         primaryStage.setScene(aeventScene);
-        eventOverviewAdminCtrl.update(id);
     }
 
     /**

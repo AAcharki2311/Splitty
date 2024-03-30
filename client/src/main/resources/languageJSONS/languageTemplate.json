@@ -103,5 +103,13 @@
     "key96": "Welcome Admin",
     "key97": "Login",
     "key98": "Please fill in the password",
-    "key99": "Go back"
+    "key99": "Go back",
+    "key100": "Creation date",
+    "key101": "Last activity",
+    "key102": "Import from JSON file",
+    "key103": "File must be in client/resources/JSONfiles",
+    "key104": "Show event data",
+    "key105": "Please type the file name",
+    "key106": "Import",
+    "key107": "Show event"
 }
