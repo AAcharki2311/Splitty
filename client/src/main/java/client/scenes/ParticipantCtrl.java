@@ -45,6 +45,7 @@ public class ParticipantCtrl implements Initializable {
     private ImageView imgHome;
     @FXML
     private ImageView imgArrow;
+    @FXML
     private TextField TextFieldName;
     @FXML
     private TextField TextFieldEmail;
@@ -124,37 +125,45 @@ public class ParticipantCtrl implements Initializable {
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
-            boolean duplicate = checkDuplicate(name, email);
-            if(validate(name, email, iban, bic) && !duplicate){
-                Participant p = new Participant(e, name, email, iban, bic);
-                p.setEvent(e);
-                pcu.addParticipant(p);
-                String message = "Participant:\n" +
-                        "_______________" + "\n" +
-                        h.get("key31") + ": " + p.getName() + "\n" +
-                        "Email: " + p.getEmail() + "\n" +
-                        "IBAN: " + p.getIban() + "\n" +
-                        "BIC: " + p.getBic();
-                JOptionPane.showMessageDialog(null, message);
-                clickBack();
-            } else {
-                if(duplicate){
-                    errormessage = h.get("key75");
-                } else if(name.isBlank()){
-                    errormessage = h.get("key76");
-                } else if(!(email.contains("@") && email.contains("."))) {
-                    errormessage = h.get("key77");
-                } else if(!(ibanTrue)){
-                    errormessage = h.get("key78");
-                }else if(bic.isBlank()){
-                    errormessage = h.get("key79");
-                }
-                throw new Exception();
-            }
+            // boolean duplicate = checkDuplicate(name, email);
+            Participant p = new Participant(e, name, email, iban, bic);
+            // p.setEvent(e);
+            System.out.println(p.toString());
+            pcu.addParticipant(p);
+//            if(!duplicate){
+//                Participant p = new Participant(e, name, email, iban, bic);
+//                p.setEvent(e);
+//                pcu.addParticipant(p);
+//                String message = "Participant:\n" +
+//                        "_______________" + "\n" +
+//                        h.get("key31") + ": " + p.getName() + "\n" +
+//                        "Email: " + p.getEmail() + "\n" +
+//                        "IBAN: " + p.getIban() + "\n" +
+//                        "BIC: " + p.getBic();
+//                JOptionPane.showMessageDialog(null, message);
+//                clickBack();
+//            } else {
+//                System.out.println("Something wrong");
+//                if(duplicate){
+//                    errormessage = h.get("key75");
+//                } else if(name.isBlank()){
+//                    errormessage = h.get("key76");
+//                } else if(!(email.contains("@") && email.contains("."))) {
+//                    errormessage = h.get("key77");
+//                } else if(!(ibanTrue)){
+//                    errormessage = h.get("key78");
+//                }else if(bic.isBlank()){
+//                    errormessage = h.get("key79");
+//                }
+//                throw new Exception();
+//               }
+            System.out.println("correct");
         } catch (Exception e){
-            message.setText(errormessage);
+            //message.setText(errormessage);
+            System.out.println("wrong");
         }
     }
+
 
     /**
      * This method checks if the name + email is a duplicate
