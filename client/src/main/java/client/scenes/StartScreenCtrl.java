@@ -200,8 +200,9 @@ public class StartScreenCtrl implements Initializable {
                 try{
                     server.getEventByID(Long.parseLong(eid));
                     mc.showEventOverview(eid);
+                    String dest = "/topic/events/"+eid;
+                    System.out.println("Destination: "+dest);
 
-                    System.out.println("[Websocket] Unsubscribed from openEvent");
                     new Thread() {
                         /**
                          * This method is run by the thread when it executes. Subclasses of {@code
@@ -218,7 +219,7 @@ public class StartScreenCtrl implements Initializable {
                          */
                         @Override
                         public void run() {
-                            server.registerForEventUpdates("/topic/events/1", Participant.class, q -> {
+                            server.registerForEventUpdates(dest, Participant.class, q -> {
                                 System.out.println("[Websocket] Received: "+q);
 
                             });
