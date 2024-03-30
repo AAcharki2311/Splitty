@@ -44,7 +44,7 @@
    <Label fx:id="nameText" layoutX="93.0" layoutY="136.0" text="Name" />
    <Label fx:id="ibanText" layoutX="93.0" layoutY="216.0" text="IBAN" />
    <Label fx:id="bicText" layoutX="93.0" layoutY="256.0" text="BIC" />
-   <TextField fx:id="TextFieldEmail" layoutX="203.0" layoutY="176.0" prefHeight="25.0" prefWidth="225.0" promptText="fakeemail@gmail.com" />
+   <TextField fx:id="TextFieldEmail" layoutX="203.0" layoutY="176.0" prefHeight="25.0" prefWidth="225.0" promptText="email@gmail.com" />
    <TextField fx:id="TextFieldIBAN" layoutX="203.0" layoutY="216.0" prefHeight="25.0" prefWidth="225.0" promptText="NL12 3456 7890 1234 56" />
    <TextField fx:id="TextFieldBIC" layoutX="203.0" layoutY="256.0" prefHeight="25.0" prefWidth="225.0" promptText="ABCDEFGH" />
    <TextField fx:id="TextFieldName" layoutX="203.0" layoutY="131.0" prefHeight="25.0" prefWidth="225.0" promptText="fakename" />
@@ -53,7 +53,7 @@
          <Font name="Calibri Bold" size="14.0" />
       </font>
    </Text>
-   <Label fx:id="fillUserInfo" layoutX="56.0" layoutY="318.0" onMouseClicked="#fillUser" prefHeight="14.0" prefWidth="137.0" style="-fx-alignment: center;" text="Fill with user information " textFill="#000dff" underline="true">
+   <Label fx:id="fillUserInfo" layoutX="65.0" layoutY="318.0" onMouseClicked="#fillUser" prefHeight="15.0" prefWidth="200.0" style="-fx-alignment: left;" text="Fill with user information " textFill="#000dff" underline="true" wrapText="true">
       <font>
          <Font name="Century Gothic Italic" size="10.0" />
       </font>

@@ -18,7 +18,7 @@ class ReadJSONTest {
 
     @Test
     void readJsonToMap() {
-        HashMap<String, Object> map = readJSON.readJsonToMap(TEST_CONFIG_PATH);
+        HashMap<String, String> map = readJSON.readJsonToMap(TEST_CONFIG_PATH);
         assertNotNull(map);
         assertFalse(map.isEmpty());
     }

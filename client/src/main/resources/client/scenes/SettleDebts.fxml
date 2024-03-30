@@ -57,7 +57,7 @@
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>
    </Label>
-   <Label fx:id="partName" layoutX="96.0" layoutY="178.0" prefHeight="18.0" prefWidth="74.0" text="NAME" textAlignment="CENTER">
+   <Label fx:id="partName" layoutX="96.0" layoutY="178.0" prefHeight="18.0" prefWidth="74.0" textAlignment="CENTER">
       <font>
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>
@@ -73,12 +73,12 @@
       </font>
    </Label>
    <PieChart fx:id="pieChart" layoutX="181.0" layoutY="173.0" prefHeight="150.0" prefWidth="200.0" />
-   <Label fx:id="payedAmount" layoutX="95.0" layoutY="230.0" prefHeight="18.0" prefWidth="74.0" text="65" textAlignment="CENTER">
+   <Label fx:id="payedAmount" layoutX="95.0" layoutY="230.0" prefHeight="18.0" prefWidth="74.0" text="0" textAlignment="CENTER">
       <font>
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>
    </Label>
-   <Label fx:id="owedAmount" layoutX="96.0" layoutY="291.0" prefHeight="18.0" prefWidth="74.0" text="65" textAlignment="CENTER">
+   <Label fx:id="owedAmount" layoutX="96.0" layoutY="291.0" prefHeight="18.0" prefWidth="74.0" text="0" textAlignment="CENTER">
       <font>
          <Font name="Verdana Pro Cond Black" size="14.0" />
       </font>

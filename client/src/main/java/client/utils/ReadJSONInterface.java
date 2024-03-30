@@ -9,6 +9,6 @@ public interface ReadJSONInterface {
      * @param filePath the path to the JSON file
      * @return a HashMap with the data from the JSON file
      */
-    HashMap<String, Object> readJsonToMap(String filePath) throws IOException;
+    HashMap<String, String> readJsonToMap(String filePath) throws IOException;
 
 }

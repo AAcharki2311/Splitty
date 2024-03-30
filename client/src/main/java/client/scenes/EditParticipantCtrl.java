@@ -29,7 +29,9 @@ public class EditParticipantCtrl implements Initializable {
     private final EventServerUtils server;
     private final ParticipantsServerUtil partServer;
     private long eventid;
+    private boolean ibanTrue;
     private Participant selectedParticipant;
+    private HashMap<String, String> h;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
@@ -90,7 +92,7 @@ public class EditParticipantCtrl implements Initializable {
         comboBoxParticipants.setOnAction(event -> {
             String nameParticipant = comboBoxParticipants.getValue();
             if(nameParticipant == null){
-                message.setText("No participant selected");
+                message.setText(h.get("key83"));
                 return;
             }
 
@@ -112,24 +114,27 @@ public class EditParticipantCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key28").toString());
-        changeTheParticipantOfText.setText(h.get("key29").toString());
-        fillInfoText.setText(h.get("key30").toString());
-        nameText.setText(h.get("key31").toString());
-        cancelBtn.setText(h.get("key26").toString());
-        deleteBtn.setText(h.get("key40").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key28"));
+        changeTheParticipantOfText.setText(h.get("key29"));
+        fillInfoText.setText(h.get("key30"));
+        nameText.setText(h.get("key31"));
+        cancelBtn.setText(h.get("key26"));
+        deleteBtn.setText(h.get("key40"));
+        comboBoxParticipants.setPromptText(h.get("key7"));
+        TextFieldName.setPromptText(h.get("key31"));
     }
 
     /**
      * Method of the save button, it gets all user input and when pressed, it shows the eventoverview screen
      */
     public void submitEdit() {
-        if(comboBoxParticipants.getValue() == null){
-            message.setText("No participant selected");
-            return;
-        }
+        String errormessage = h.get("key80");
         try{
+            if(comboBoxParticipants.getValue() == null){
+                errormessage = h.get("key83");
+                throw new Exception();
+            }
             var e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
@@ -139,15 +144,15 @@ public class EditParticipantCtrl implements Initializable {
             if(validate(name, email, iban, bic)){
                 Participant newParticipant = new Participant(e, name, email, iban, bic);
 
-                int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to update?", "Update Confirmation",
+                int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                        new String[]{"Update", "Cancel"}, "default");
+                        new String[]{"Update", h.get("key26")}, "default");
 
                 if(choice == JOptionPane.OK_OPTION){
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
                     String message = "Participant Updated:\n" +
                             "_______________" + "\n" +
-                            "Name: " + newParticipant.getName() + "\n" +
+                            h.get("key31") + ": " + newParticipant.getName() + "\n" +
                             "Email: " + newParticipant.getEmail() + "\n" +
                             "IBAN: " + newParticipant.getIban() + "\n" +
                             "BIC: " + newParticipant.getBic();
@@ -155,11 +160,12 @@ public class EditParticipantCtrl implements Initializable {
                     clickBack();
                 }
             } else {
-                message.setText("Please fill in all fields correctly");
+                if(!(ibanTrue)) errormessage = h.get("key78");
+                if(!(email.contains("@") && email.contains(".")))  errormessage = h.get("key84");
                 throw new Exception();
             }
         } catch (Exception e){
-            message.setText("Something went wrong");
+            message.setText(errormessage);
         }
     }
 
@@ -172,7 +178,7 @@ public class EditParticipantCtrl implements Initializable {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        boolean ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
+        ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
         return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
                 email.contains("@") && email.contains(".") && ibanTrue;
     }
@@ -211,17 +217,17 @@ public class EditParticipantCtrl implements Initializable {
     public void delete(){
         String name = comboBoxParticipants.getValue();
         if(name == null){
-            message.setText("No participant selected");
+            message.setText(h.get("key83"));
             return;
         }
 
-        int choice = JOptionPane.showOptionDialog(null,"Are you sure you want to delete?", "Delete Confirmation",
+        int choice = JOptionPane.showOptionDialog(null,h.get("key82"), h.get("key66"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                new String[]{"Delete", "Cancel"}, "default");
+                new String[]{h.get("key67"), h.get("key26")}, "default");
 
         if(choice == JOptionPane.OK_OPTION){
             partServer.deleteParticipantByID(selectedParticipant.getId());
-            JOptionPane.showMessageDialog(null, "Participant deleted");
+            JOptionPane.showMessageDialog(null, h.get("key81"));
             update(String.valueOf(eventid));
             setEverythingEmpty();
         }

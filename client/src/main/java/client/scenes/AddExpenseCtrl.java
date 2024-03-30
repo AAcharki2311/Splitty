@@ -25,6 +25,7 @@ public class AddExpenseCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private long eventid;
     private Participant selectedParticipant;
+    private HashMap<String, String> h;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
@@ -94,7 +95,7 @@ public class AddExpenseCtrl implements Initializable {
         comboBoxNamePaid.setOnAction(event -> {
             String nameParticipant = comboBoxNamePaid.getValue();
             if(nameParticipant == null){
-                message.setText("No participant selected");
+                message.setText(h.get("key83"));
                 return;
             }
             List<Participant> listAllParticipants = partServer.getAllParticipants()
@@ -110,26 +111,27 @@ public class AddExpenseCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key27").toString());
-        fillInfoText.setText(h.get("key19").toString());
-        whoPaidText.setText(h.get("key20").toString());
-        titleText.setText(h.get("key21").toString());
-        howMuchText.setText(h.get("key22").toString());
-        whenText.setText(h.get("key23").toString());
-        howToSplitText.setText(h.get("key24").toString());
-        splitRBtn.setText(h.get("key25").toString());
-        cancelBtn.setText(h.get("key26").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key27"));
+        fillInfoText.setText(h.get("key19"));
+        whoPaidText.setText(h.get("key20"));
+        titleText.setText(h.get("key21"));
+        howMuchText.setText(h.get("key22"));
+        whenText.setText(h.get("key23"));
+        howToSplitText.setText(h.get("key24"));
+        splitRBtn.setText(h.get("key25"));
+        cancelBtn.setText(h.get("key26"));
+        comboBoxNamePaid.setPromptText(h.get("key7"));
     }
 
     /**
      * Method of the OK button, when pressed, it checks the texfields and creates an entity and shows eventovervie screen
      */
     public void submit() {
-        String errormessage = "Please fill in all fields correctly";
+        String errormessage = h.get("key84");
         try{
             if(comboBoxNamePaid.getValue() == null){
-                errormessage = "No participant selected";
+                errormessage = h.get("key83");
                 throw new Exception();
             }
 
@@ -137,7 +139,7 @@ public class AddExpenseCtrl implements Initializable {
             var p = selectedParticipant;
 
             if(moneyField.getText().isBlank() || dateField.getValue() == null){
-                errormessage = "Please fill in all fields correctly";
+                errormessage = h.get("key84");
                 throw new Exception();
             }
 
@@ -150,21 +152,21 @@ public class AddExpenseCtrl implements Initializable {
             if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
                 Expense exp = new Expense(e, p, money, date, title, tag);
                 expServer.addExpense(exp);
-                String message = "Expense added:\n" +
+                String message = h.get("key8") + ":\n" +
                         "_______________" + "\n" +
                         "Creditor: " + exp.getCreditor().getName() + "\n" +
-                        "Title: " + exp.getTitle() + "\n" +
-                        "Amount: " + exp.getAmount() + "\n" +
-                        "Date: " + exp.getDate();
+                        h.get("key44") + ": " + exp.getTitle() + "\n" +
+                        h.get("key42") + ": " + exp.getAmount() + "\n" +
+                        h.get("key41") + ": " + exp.getDate();
                 JOptionPane.showMessageDialog(null, message);
                 clickBack();
             } else {
                 if(duplicate){
-                    errormessage = "Expense title for this participant already exists";
+                    errormessage = h.get("key68");
                 }else if(money < 0){
-                    errormessage = "Amount cannot be negative";
+                    errormessage = h.get("key93");
                 } else{
-                    errormessage = "Please fill in all fields correctly";
+                    errormessage = h.get("key84");
                 }
                 throw new Exception();
             }
