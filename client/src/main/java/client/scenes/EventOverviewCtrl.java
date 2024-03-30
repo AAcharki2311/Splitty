@@ -376,4 +376,11 @@ public class EventOverviewCtrl implements Initializable {
     public void clickBack() {
         mc.showStart();
     }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
 }

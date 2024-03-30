@@ -69,12 +69,12 @@
    </Button>
    <Text fx:id="expText" fill="#0d5575" layoutX="154.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expenses" textAlignment="CENTER" wrappingWidth="145.5234375">
       <font>
-         <Font size="13.0" />
+         <Font name="System Bold" size="13.0" />
       </font>
    </Text>
    <Text fx:id="parText" fill="#0d5575" layoutX="470.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Participants" textAlignment="CENTER" wrappingWidth="145.5234375">
       <font>
-         <Font size="13.0" />
+         <Font name="System Bold" size="13.0" />
       </font>
    </Text>
    <Button fx:id="jsonBtn" layoutX="459.0" layoutY="45.0" mnemonicParsing="false" onAction="#clickDownload" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Download JSON" textFill="#f4fdff">
