@@ -106,5 +106,10 @@
     "key104": "Data van event",
     "key105": "Vul de bestandsnaam in",
     "key106": "Importeren",
-    "key107": "Laat event zien"
+    "key107": "Laat event zien",
+    "key108": "Download JSON",
+    "key109": "Verwijder event",
+    "key110": "Email",
+    "key111": "Weet je zeker dat je het event wil verwijderen met de naam ",
+    "key112": "Deze actie is onomkeerbaar"
 }

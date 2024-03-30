@@ -273,7 +273,6 @@ public class AdminDashboardCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         try {
-            System.out.println(taal);
             String langfile = "language" + taal + ".json";
             h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
             welcomeText.setText(h.get("key96"));

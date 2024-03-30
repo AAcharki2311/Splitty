@@ -1,9 +1,6 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ExpensesServerUtils;
-import client.utils.ParticipantsServerUtil;
-import client.utils.PaymentsServerUtils;
+import client.utils.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -33,6 +31,7 @@ import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -44,6 +43,8 @@ public class EventOverviewAdminCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private final ParticipantsServerUtil expPart;
     private final PaymentsServerUtils expPay;
+    private final ReadJSON jsonReader;
+    private HashMap<String, String> h;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -61,6 +62,15 @@ public class EventOverviewAdminCtrl implements Initializable {
     private Text eventname;
     @FXML
     private ImageView imageview;
+    @FXML
+    private Button jsonBtn;
+    @FXML
+    private Button deleteBtn;
+    @FXML
+    private Text expText;
+    @FXML
+    private Text parText;
+    private String taal;
     /** TABLE EXPENSES **/
     @FXML
     private TableView<Expense> tableExp;
@@ -86,20 +96,23 @@ public class EventOverviewAdminCtrl implements Initializable {
 
     /**
      * Constructer for the AdminEvent Controller
-     * @param m the main controller
-     * @param server the connection with the EventServerUtils class
-     * @param expServer the connection with the ExpensesServerUtils class
-     * @param expPart the connection with the ParticipantServerUtils class
-     * @param expPay the connection with the PaymentServerUtils class
+     *
+     * @param server     the connection with the EventServerUtils class
+     * @param expServer  the connection with the ExpensesServerUtils class
+     * @param expPart    the connection with the ParticipantServerUtils class
+     * @param expPay     the connection with the PaymentServerUtils class
+     * @param m          the main controller
+     * @param jsonReader
      */
     @Inject
     public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer,
-                                  ParticipantsServerUtil expPart, PaymentsServerUtils expPay, MainCtrl m) {
+                                  ParticipantsServerUtil expPart, PaymentsServerUtils expPay, MainCtrl m, ReadJSON jsonReader) {
         this.mc = m;
         this.server = server;
         this.expServer = expServer;
         this.expPart = expPart;
         this.expPay = expPay;
+        this.jsonReader = jsonReader;
         this.eventid = 0;
     }
 
@@ -146,15 +159,18 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @throws IOException
      */
     public void clickDelete() throws IOException {
+        String langfile = "language" + taal + ".json";
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+
         // delete event from the database
         Event x = server.getEventByID(eventid);
 
         while(true){
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Are you sure you want to delete " + x.name + "?"));
-            panel.add(new JLabel("This action is not reversible"));
-            Object[] options = {"Yes", "No"};
+            panel.add(new JLabel(h.get("key111") + x.name + "?"));
+            panel.add(new JLabel(h.get("key112")));
+            Object[] options = {h.get("key57"), h.get("key58")};
 
             int result = JOptionPane.showOptionDialog(null, panel, "Delete event",
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
@@ -251,6 +267,41 @@ public class EventOverviewAdminCtrl implements Initializable {
         }
     }
 
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language to switch to
+     */
+    public void langueageswitch(String taal) {
+        try {
+            this.taal = taal;
+            String langfile = "language" + taal + ".json";
+            h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+            Image imageFlag = new Image(h.get("key0"));
+            imageviewFlag.setImage(imageFlag);
+            jsonBtn.setText(h.get("key108"));
+            deleteBtn.setText(h.get("key109"));
+            colDate.setText(h.get("key41"));
+            colAm.setText(h.get("key42"));
+            colPart.setText(h.get("key43"));
+            colTitle.setText(h.get("key44"));
+            colTag.setText(h.get("key45"));
+            colName.setText(h.get("key46"));
+            colEmail.setText(h.get("key110"));
+            expText.setText(h.get("key8"));
+            parText.setText(h.get("key7"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class DataWrapper {
         private Event event;
@@ -264,7 +315,5 @@ public class EventOverviewAdminCtrl implements Initializable {
             this.exps = exps;
             this.pays = pays;
         }
-
-        // Getters and setters (omitted for brevity)
     }
 }

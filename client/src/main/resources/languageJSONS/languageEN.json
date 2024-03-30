@@ -2,8 +2,8 @@
     "key0": "images/br-circle-01.png",
     "key1": "Welcome to Splitty23!",
     "key2": "Please make a choice",
-    "key3": "Join Event",
-    "key4": "Create Event",
+    "key3": "Join event",
+    "key4": "Create event",
     "key5": "Log in as Admin",
     "key6": "Recently Viewed",
     "key7": "Participants",
@@ -106,5 +106,10 @@
     "key104": "Show event data",
     "key105": "Please type the file name",
     "key106": "Import",
-    "key107": "Show event"
+    "key107": "Show event",
+    "key108": "Download JSON",
+    "key109": "Delete event",
+    "key110": "Email",
+    "key111": "Are you sure you want to delete ",
+    "key112": "This action is not reversible"
 }

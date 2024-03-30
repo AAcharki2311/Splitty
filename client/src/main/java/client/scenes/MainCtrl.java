@@ -431,6 +431,13 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showAdminEvent(String id){
+        try {
+            String taal = setLanguage("src/main/resources/configfile.properties");
+            eventOverviewAdminCtrl.langueageswitch(taal);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         eventOverviewAdminCtrl.update(id);
         primaryStage.setTitle("Admin Event view");
         primaryStage.setScene(aeventScene);

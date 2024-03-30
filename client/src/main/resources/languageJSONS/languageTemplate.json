@@ -111,5 +111,10 @@
     "key104": "Show event data",
     "key105": "Please type the file name",
     "key106": "Import",
-    "key107": "Show event"
+    "key107": "Show event",
+    "key108": "Download JSON",
+    "key109": "Delete event",
+    "key110": "Email",
+    "key111": "Are you sure you want to delete ",
+    "key112": "This action is not reversible"
 }
