@@ -15,8 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
-import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -35,9 +33,12 @@ public class SettleDebtsCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private long eventid;
     private Participant selectedParticipant;
+    private HashMap<String, String> h;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
+    @FXML
+    private Label titleOfScreen;
     @FXML
     private Label labelEventName;
     @FXML
@@ -114,7 +115,7 @@ public class SettleDebtsCtrl implements Initializable {
         comboBoxPart.setOnAction(event -> {
             String nameParticipant = comboBoxPart.getValue();
             if(nameParticipant == null){
-                message.setText("Please select a Participant");
+                message.setText(h.get("key74"));
                 return;
             }
 
@@ -144,15 +145,17 @@ public class SettleDebtsCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        sumLabel.setText(h.get("key47").toString());
-        shareLabel.setText(h.get("key48").toString());
-        payedLabel.setText(h.get("key49").toString());
-        owedLabel.setText(h.get("key50").toString());
-        cancelBtn.setText(h.get("key26").toString());
-        colDate.setText(h.get("key41").toString());
-        colAm.setText(h.get("key42").toString());
-        colTitle.setText(h.get("key44").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key11"));
+        sumLabel.setText(h.get("key47"));
+        shareLabel.setText(h.get("key48"));
+        payedLabel.setText(h.get("key49"));
+        owedLabel.setText(h.get("key50"));
+        cancelBtn.setText(h.get("key26"));
+        colDate.setText(h.get("key41"));
+        colAm.setText(h.get("key42"));
+        colTitle.setText(h.get("key44"));
+        comboBoxPart.setPromptText(h.get("key7"));
     }
 
     /**
@@ -221,10 +224,10 @@ public class SettleDebtsCtrl implements Initializable {
         double hasToPay = total / amountOfParticipants;
         double owed = hasToPay - payed;
         if(owed <= 0){
-            message.setText("You don't owe anything!");
+            message.setText(h.get("key72"));
             return 0;
         } else{
-            message.setText("You owe " + owed + " to the group!");
+            message.setText(h.get("key73") + owed + "!");
             return owed;
         }
     }
@@ -232,7 +235,7 @@ public class SettleDebtsCtrl implements Initializable {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
     }
 }

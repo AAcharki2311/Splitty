@@ -128,6 +128,14 @@ class ParticipantTest {
         assertTrue(actual.contains("Max@gmail.com"));
         assertTrue(actual.contains("NL99ABNA0123456789"));
         assertTrue(actual.contains("RABONL2U"));
+    }
 
+    @Test
+    void setEvent(){
+        Event e = new Event("TestEvent");
+        Event newEvent = new Event("newEvent");
+        Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+        a.setEvent(newEvent);
+        assertEquals(a.getEvent(), newEvent);
     }
 }
