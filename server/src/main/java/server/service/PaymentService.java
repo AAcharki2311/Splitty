@@ -78,11 +78,20 @@ public class PaymentService {
     }
 
     /**
-     * @return list of all payments sorted by the payer
+     * @return list of all payments sorted by the payer's name
      */
     public List<Payment> getSortedPaymentsPayer() {
         List<Payment> paymentsList = paymentRepository.findAll();
         paymentsList.sort(Comparator.comparing(payment -> payment.getPayer().getName()));
+        return paymentsList;
+    }
+
+    /**
+     * @return list of all payments sorted by the payer's email
+     */
+    public List<Payment> getSortedPaymentsPayerEmail() {
+        List<Payment> paymentsList = paymentRepository.findAll();
+        paymentsList.sort(Comparator.comparing(payment -> payment.getPayer().getEmail()));
         return paymentsList;
     }
 
@@ -96,11 +105,38 @@ public class PaymentService {
     }
 
     /**
+     * @return list of all payments sorted by the receiver's email
+     */
+    public List<Payment> getSortedPaymentsReceiverEmail() {
+        List<Payment> paymentsList = paymentRepository.findAll();
+        paymentsList.sort(Comparator.comparing(payment -> payment.getReceiv().getEmail()));
+        return paymentsList;
+    }
+
+    /**
      * @return list of all payments sorted by name of the related event
      */
     public List<Payment> getSortedPaymentsEvent() {
         List<Payment> paymentsList = paymentRepository.findAll();
         paymentsList.sort(Comparator.comparing(payment -> payment.getEvent().getName()));
+        return paymentsList;
+    }
+
+    /**
+     * @return list of all payments sorted by the id of the related event
+     */
+    public List<Payment> getSortedPaymentsEventId() {
+        List<Payment> paymentsList = paymentRepository.findAll();
+        paymentsList.sort(Comparator.comparing(payment -> payment.getEvent().getId()));
+        return paymentsList;
+    }
+
+    /**
+     * @return list of all payments sorted by the creation date of the related event
+     */
+    public List<Payment> getSortedPaymentsEventDate() {
+        List<Payment> paymentsList = paymentRepository.findAll();
+        paymentsList.sort(Comparator.comparing(payment -> payment.getEvent().getCreationDate()));
         return paymentsList;
     }
 
