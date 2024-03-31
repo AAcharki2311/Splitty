@@ -24,6 +24,7 @@ public class ParticipantController {
      *
      * @param random variable random
      * @param participantRepository repository for participants
+     * @param eventRepository repository for events
      */
     public ParticipantController(Random random, ParticipantRepository participantRepository, EventRepository eventRepository) {
         this.random = random;
