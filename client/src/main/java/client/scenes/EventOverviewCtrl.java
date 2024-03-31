@@ -418,4 +418,32 @@ public class EventOverviewCtrl implements Initializable {
     public void clickSettings() {
         mc.help();
     }
+
+    public void putParticipant(Participant p) {
+        for (Participant participant:
+             partdata) {
+            if (participant.equals(p)) {
+                return;
+            }
+            if(participant.getId() == p.getId()){
+                participant.setEvent(p.getEvent());
+                participant.setEmail(p.getEmail());
+                participant.setName(p.getName());
+                participant.setBic(p.getBic());
+                participant.setIban(p.getIban());
+                names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
+                comboBoxOne.getItems().clear();
+                comboBoxOne.getItems().addAll(names);
+                return;
+            }
+        }
+        partdata.add(p);
+        names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
+        comboBoxOne.getItems().clear();
+        comboBoxOne.getItems().addAll(names);
+    }
+
+    public long getCurrentEventID() {
+        return eventid;
+    }
 }

@@ -238,9 +238,12 @@ public class StartScreenCtrl implements Initializable {
                          */
                         @Override
                         public void run() {
-                            server.registerForEventUpdates(dest, Participant.class, q -> {
-                                System.out.println("[Websocket] Received: "+q);
-
+                            server.registerForObjectUpdates(dest, Participant.class, p -> {
+                                System.out.println("[Websocket] Received: "+p);
+                                if(p.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
+                                    System.out.println("[Websocket] ID's match thus adding...");
+                                    mc.getEventOCtrl().putParticipant(p);
+                                }
                             });
                             System.out.println("[Websocket] Open event subscription done");
                         }

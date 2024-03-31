@@ -465,4 +465,8 @@ public class MainCtrl {
     public ArrayList<Expense> getTempList() {
         return editExpenseCtrl.getChangedExpenses();
     }
+
+    public EventOverviewCtrl getEventOCtrl() {
+        return eventOCtrl;
+    }
 }

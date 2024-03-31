@@ -158,6 +158,8 @@ public class ParticipantCtrl implements Initializable {
 //                throw new Exception();
 //               }
             System.out.println("correct");
+            server.send("/app/events/"+e.getId(), p);
+            clickBack();
         } catch (Exception e){
             //message.setText(errormessage);
             System.out.println("wrong");
