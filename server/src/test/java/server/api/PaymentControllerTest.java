@@ -42,10 +42,10 @@ public class PaymentControllerTest {
      * Test for the add and get methods
      */
     @Test
-    public void addAndGetTest() {
+    public void addTest() {
         paymentController.add(payment1);
         paymentController.add(payment2);
-        List<Payment> list = paymentController.getPayments();
+        List<Payment> list = paymentRepository.findAll();
         assertEquals(payment1, list.get(0));
         assertEquals(payment2, list.get(1));
     }
