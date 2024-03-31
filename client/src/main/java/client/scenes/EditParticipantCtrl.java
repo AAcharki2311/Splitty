@@ -174,6 +174,7 @@ public class EditParticipantCtrl implements Initializable {
                             "IBAN: " + newParticipant.getIban() + "\n" +
                             "BIC: " + newParticipant.getBic();
                     JOptionPane.showMessageDialog(null, message);
+                    server.send("/app/events/"+eventid, newParticipant);
                     clickBack();
                 }
             } else {
