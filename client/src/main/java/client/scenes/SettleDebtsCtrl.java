@@ -35,19 +35,31 @@ public class SettleDebtsCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private long eventid;
     private Participant selectedParticipant;
+    private HashMap<String, String> h;
+    /**
+     * MENU
+     **/
+    @FXML
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgArrow;
+    @FXML
+    private ImageView imgHome;
+    @FXML
+    private ImageView imageviewFlag;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
-    private Label labelEventName;
+    private Text titleOfScreen;
     @FXML
-    private Label sumLabel;
+    private Text labelEventName;
+    @FXML
+    private Text sumLabel;
     @FXML
     private Label total;
     @FXML
     private Label shareLabel;
-    @FXML
-    private Label partName;
     @FXML
     private Label payedLabel;
     @FXML
@@ -56,8 +68,6 @@ public class SettleDebtsCtrl implements Initializable {
     private Label owedLabel;
     @FXML
     private Label owedAmount;
-    @FXML
-    private Button cancelBtn;
     @FXML
     private Text message;
     /** Combobox with Participant Info **/
@@ -103,8 +113,11 @@ public class SettleDebtsCtrl implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
+        imageview.setImage(new Image("images/logo-no-background.png"));
+        imageviewFlag.setImage(new Image("images/br-circle-01.png"));
+        imgSet.setImage(new Image("images/settings.png"));
+        imgArrow.setImage(new Image("images/arrow.png"));
+        imgHome.setImage(new Image("images/home.png"));
 
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
@@ -114,7 +127,7 @@ public class SettleDebtsCtrl implements Initializable {
         comboBoxPart.setOnAction(event -> {
             String nameParticipant = comboBoxPart.getValue();
             if(nameParticipant == null){
-                message.setText("Please select a Participant");
+                message.setText(h.get("key74"));
                 return;
             }
 
@@ -122,7 +135,6 @@ public class SettleDebtsCtrl implements Initializable {
                     .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
 
             selectedParticipant = listAllParticipants.stream().filter(participant -> participant.getName().equals(nameParticipant)).findAny().get();
-            partName.setText(selectedParticipant.getName());
 
             Event x = server.getEventByID(eventid);
             var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
@@ -144,15 +156,18 @@ public class SettleDebtsCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        sumLabel.setText(h.get("key47").toString());
-        shareLabel.setText(h.get("key48").toString());
-        payedLabel.setText(h.get("key49").toString());
-        owedLabel.setText(h.get("key50").toString());
-        cancelBtn.setText(h.get("key26").toString());
-        colDate.setText(h.get("key41").toString());
-        colAm.setText(h.get("key42").toString());
-        colTitle.setText(h.get("key44").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key11"));
+        sumLabel.setText(h.get("key47"));
+        shareLabel.setText(h.get("key48"));
+        payedLabel.setText(h.get("key49"));
+        owedLabel.setText(h.get("key50"));
+        colDate.setText(h.get("key41"));
+        colAm.setText(h.get("key42"));
+        colTitle.setText(h.get("key44"));
+        comboBoxPart.setPromptText(h.get("key7"));
+        Image imageFlag = new Image(h.get("key0"));
+        imageviewFlag.setImage(imageFlag);
     }
 
     /**
@@ -221,10 +236,10 @@ public class SettleDebtsCtrl implements Initializable {
         double hasToPay = total / amountOfParticipants;
         double owed = hasToPay - payed;
         if(owed <= 0){
-            message.setText("You don't owe anything!");
+            message.setText(h.get("key72"));
             return 0;
         } else{
-            message.setText("You owe " + owed + " to the group!");
+            message.setText(h.get("key73") + owed + "!");
             return owed;
         }
     }
@@ -232,7 +247,22 @@ public class SettleDebtsCtrl implements Initializable {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * Used to get back to the Start Screen
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickHome() throws IOException {
+        mc.showStart();
     }
 }

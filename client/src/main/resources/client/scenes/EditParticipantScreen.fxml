@@ -8,62 +8,79 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="375.0" prefWidth="656.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditParticipantCtrl">
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="219.0" layoutX="54.0" layoutY="148.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="543.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="49.0" layoutX="55.0" layoutY="90.0" stroke="#116f9a" strokeType="INSIDE" strokeWidth="2.0" width="542.0" />
-   <Label fx:id="labelEventName" layoutX="237.0" layoutY="16.0" maxHeight="38.0" maxWidth="370.0" prefHeight="38.0" prefWidth="359.0">
-      <font>
-         <Font name="Verdana Pro Cond Black" size="30.0" />
-      </font>
-   </Label>
-   <Label fx:id="titleOfScreen" alignment="CENTER_RIGHT" layoutX="212.0" layoutY="54.0" prefHeight="36.0" prefWidth="386.0" text="Add a Participant" textFill="WHITE">
-      <font>
-         <Font name="Century Gothic" size="28.0" />
-      </font>
-   </Label>
-   <Button fx:id="okBtn" layoutX="491.0" layoutY="325.0" mnemonicParsing="false" onAction="#submitEdit" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #06c926; -fx-border-color: white;" text="OK" textFill="WHITE" />
-   <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditParticipantCtrl">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="42.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
+   <Rectangle fill="#0d5575" height="38.0" layoutY="362.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="468.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
+   <ImageView fx:id="imageview" fitHeight="25.0" fitWidth="174.0" layoutX="43.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
-   <Circle fx:id="backBtn" fill="#ff6159" layoutX="642.0" layoutY="14.0" onMouseClicked="#clickBack" radius="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
-   <Button fx:id="cancelBtn" layoutX="491.0" layoutY="280.0" mnemonicParsing="false" onAction="#clickBack" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #ff0000; -fx-border-color: white;" text="Cancel" textAlignment="CENTER" textFill="#e8e8e8">
-      <font>
-         <Font name="System Bold" size="12.0" />
-      </font></Button>
-   <Label fx:id="fillInfoText" layoutX="62.0" layoutY="151.0" prefHeight="14.0" prefWidth="528.0" style="-fx-alignment: center;" text="Fill in the information of your new participant" textFill="#868686">
-      <font>
-         <Font name="Century Gothic" size="10.0" />
-      </font>
-   </Label>
-   <ComboBox fx:id="comboBoxParticipants" layoutX="352.0" layoutY="103.0" prefHeight="26.0" prefWidth="138.0" promptText="name particpant" />
-   <Label fx:id="changeTheParticipantOfText" layoutX="67.0" layoutY="107.0" prefHeight="18.0" prefWidth="270.0" text="Change the participant called">
-      <font>
-         <Font name="Verdana Pro Cond Black" size="14.0" />
-      </font>
-   </Label>
-   <Label fx:id="emailText" layoutX="91.0" layoutY="226.0" prefHeight="16.0" prefWidth="30.0" text="Email" />
-   <Label fx:id="nameText" layoutX="91.0" layoutY="186.0" text="Name" />
-   <Label fx:id="ibanText" layoutX="91.0" layoutY="266.0" text="IBAN" />
-   <Label fx:id="bicText" layoutX="91.0" layoutY="306.0" text="BIC" />
-   <TextField fx:id="TextFieldEmail" layoutX="201.0" layoutY="226.0" prefHeight="25.0" prefWidth="225.0" promptText="fakeemail@gmail.com" />
-   <TextField fx:id="TextFieldIBAN" layoutX="201.0" layoutY="266.0" prefHeight="25.0" prefWidth="225.0" promptText="NL12 3456 7890 1234 56" />
-   <TextField fx:id="TextFieldBIC" layoutX="201.0" layoutY="306.0" prefHeight="25.0" prefWidth="225.0" promptText="ABCDEFGH" />
-   <TextField fx:id="TextFieldName" layoutX="201.0" layoutY="181.0" prefHeight="25.0" prefWidth="225.0" promptText="fakename" />
-   <Button fx:id="deleteBtn" layoutX="491.0" layoutY="180.0" mnemonicParsing="false" onAction="#delete" prefHeight="55.0" prefWidth="86.0" style="-fx-background-color: #ff0000; -fx-border-color: red;" text="Delete participant" textAlignment="CENTER" textFill="#e8e8e8" wrapText="true">
-      <font>
-         <Font name="System Bold" size="12.0" />
-      </font>
-   </Button>
-   <Text fx:id="message" fill="#0d5575" layoutX="188.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="275.0">
+   <ComboBox fx:id="comboBoxParticipants" layoutX="499.0" layoutY="151.0" prefHeight="26.0" prefWidth="138.0" promptText="Name participant" />
+   <Label fx:id="emailText" layoutX="90.0" layoutY="189.0" prefHeight="16.0" prefWidth="30.0" text="Email" textFill="#0d5575" />
+   <Label fx:id="nameText" layoutX="90.0" layoutY="153.0" text="Name" textFill="#0d5575" />
+   <Label fx:id="ibanText" layoutX="90.0" layoutY="229.0" text="IBAN" textFill="#0d5575" />
+   <Label fx:id="bicText" layoutX="90.0" layoutY="269.0" text="BIC" textFill="#0d5575" />
+   <TextField fx:id="TextFieldEmail" layoutX="150.0" layoutY="189.0" prefHeight="25.0" prefWidth="275.0" promptText="fakeemail@gmail.com" />
+   <TextField fx:id="TextFieldIBAN" layoutX="150.0" layoutY="229.0" prefHeight="25.0" prefWidth="275.0" promptText="NL12 3456 7890 1234 56" />
+   <TextField fx:id="TextFieldBIC" layoutX="150.0" layoutY="269.0" prefHeight="25.0" prefWidth="275.0" promptText="ABCDEFGH" />
+   <TextField fx:id="TextFieldName" layoutX="150.0" layoutY="149.0" prefHeight="25.0" prefWidth="275.0" promptText="fakename" />
+   <Text fx:id="message" fill="#0d5575" layoutX="150.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="275.0">
       <font>
          <Font name="Calibri Bold" size="14.0" />
       </font>
    </Text>
+   <Text fx:id="labelEventName" fill="#0d5575" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Eventname" wrappingWidth="700.0">
+      <font>
+         <Font name="Calibri Bold" size="20.0" />
+      </font>
+   </Text>
+   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" onMouseClicked="#clickSettings" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/settings.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/br-circle-01.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgArrow" fitHeight="26.0" fitWidth="26.0" layoutX="626.0" layoutY="367.0" onMouseClicked="#clickBack" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.1;">
+      <image>
+         <Image url="@../../images/arrow.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgHome" fitHeight="26.0" fitWidth="39.0" layoutX="662.0" layoutY="367.0" onMouseClicked="#clickHome" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.2;">
+      <image>
+         <Image url="@../../images/home.png" />
+      </image>
+   </ImageView>
+   <Text fx:id="fillInfoText" fill="#0d5575" layoutX="42.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please edit the information of your participant" textAlignment="CENTER" wrappingWidth="408.0" />
+   <Text fx:id="titleOfScreen" fill="#0d5575" layoutX="468.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Edit a participant" wrappingWidth="200.0">
+      <font>
+         <Font name="Calibri" size="18.0" />
+      </font>
+   </Text>
+   <Button fx:id="cancelBtn" layoutX="525.0" layoutY="195.0" mnemonicParsing="false" onAction="#clickBack" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: red;" text="Cancel" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
+   <Text fx:id="changeTheParticipantOfText" fill="#0d5575" layoutX="467.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change the participant:" textAlignment="CENTER" wrappingWidth="200.0" />
+   <Button fx:id="okBtn" layoutX="526.0" layoutY="231.0" mnemonicParsing="false" onAction="#submitEdit" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: #06c926;" text="Ok" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
+   <Button fx:id="deleteBtn" layoutX="526.0" layoutY="267.0" mnemonicParsing="false" onAction="#delete" prefHeight="47.0" prefWidth="85.0" style="-fx-background-color: red;" text="Delete participant" textAlignment="CENTER" textFill="#f4fdff" wrapText="true">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
 </AnchorPane>

@@ -1,21 +1,22 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
-import client.utils.ExpensesServerUtils;
-import client.utils.ParticipantsServerUtil;
+import client.utils.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import commons.Payment;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -23,11 +24,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,6 +42,9 @@ public class EventOverviewAdminCtrl implements Initializable {
     private final MainCtrl mc;
     private final ExpensesServerUtils expServer;
     private final ParticipantsServerUtil expPart;
+    private final PaymentsServerUtils expPay;
+    private final ReadJSON jsonReader;
+    private HashMap<String, String> h;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -55,6 +62,15 @@ public class EventOverviewAdminCtrl implements Initializable {
     private Text eventname;
     @FXML
     private ImageView imageview;
+    @FXML
+    private Button jsonBtn;
+    @FXML
+    private Button deleteBtn;
+    @FXML
+    private Text expText;
+    @FXML
+    private Text parText;
+    private String taal;
     /** TABLE EXPENSES **/
     @FXML
     private TableView<Expense> tableExp;
@@ -80,17 +96,23 @@ public class EventOverviewAdminCtrl implements Initializable {
 
     /**
      * Constructer for the AdminEvent Controller
-     * @param m the main controller
-     * @param server the connection with the EventServerUtils class
-     * @param expServer the connection with the ExpensesServerUtils class
-     * @param expPart the connection with the ParticipantServerUtils class
+     *
+     * @param server     the connection with the EventServerUtils class
+     * @param expServer  the connection with the ExpensesServerUtils class
+     * @param expPart    the connection with the ParticipantServerUtils class
+     * @param expPay     the connection with the PaymentServerUtils class
+     * @param m          the main controller
+     * @param jsonReader
      */
     @Inject
-    public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, MainCtrl m) {
+    public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer,
+                                  ParticipantsServerUtil expPart, PaymentsServerUtils expPay, MainCtrl m, ReadJSON jsonReader) {
         this.mc = m;
         this.server = server;
         this.expServer = expServer;
         this.expPart = expPart;
+        this.expPay = expPay;
+        this.jsonReader = jsonReader;
         this.eventid = 0;
     }
 
@@ -109,7 +131,7 @@ public class EventOverviewAdminCtrl implements Initializable {
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
-        // colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
+        colPart.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getCreditor().getName())));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
         colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
@@ -123,7 +145,7 @@ public class EventOverviewAdminCtrl implements Initializable {
     }
 
     /**
-     * Goes to a specific event page
+     * Goes back to the Admin Dashboard scene
      * @throws IOException
      */
     public void clickDashboard() throws IOException {
@@ -131,24 +153,38 @@ public class EventOverviewAdminCtrl implements Initializable {
     }
 
     /**
-     * Imports a json file and adds it
+     * If a user clicks on delete event a pop-up shows up asking if the user is really sure.
+     * If the user clicks yes the event gets deleted from the database and the user gets directed
+     * back to the Admin Dashboard page
      * @throws IOException
      */
     public void clickDelete() throws IOException {
+        String langfile = "language" + taal + ".json";
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+
         // delete event from the database
         Event x = server.getEventByID(eventid);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + x.name + "?", ButtonType.YES, ButtonType.NO);
-        alert.showAndWait();
 
-        if (alert.getResult() == ButtonType.YES) {
-            //do stuff
-            server.deleteEventByID(eventid);
-            mc.showAdminDashboard();
+        while(true){
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel(h.get("key111") + x.name + "?"));
+            panel.add(new JLabel(h.get("key112")));
+            Object[] options = {h.get("key57"), h.get("key58")};
+
+            int result = JOptionPane.showOptionDialog(null, panel, "Delete event",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                server.deleteEventByID(eventid);
+                mc.showAdminDashboard();
+            }
+            break;
         }
     }
 
     /**
-     * javadoc
+     * This method updates the page with the right information for an event.
      * @param id id
      */
     public void update(String id) {
@@ -157,6 +193,7 @@ public class EventOverviewAdminCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         // get the information from the database
         eventname.setText(x.getName());
+        refresh();
     }
 
     /**
@@ -179,15 +216,15 @@ public class EventOverviewAdminCtrl implements Initializable {
      * Used to refresh the table data to get updated data
      */
     public void refresh(){
-        var expenses = expServer.getExpenses();
+        List<Expense> expenses = expServer.getExpenses();
         List<Expense> upexpenses = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
-        expdata = FXCollections.observableList(expenses);
+        expdata = FXCollections.observableList(upexpenses);
         tableExp.setItems(expdata);
 
-        // var participants = expPart.getAllParticipants();
-        // List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
-        // partdata = FXCollections.observableList(participants);
-        // tablePart.setItems(partdata);
+        var participants = expPart.getAllParticipants();
+        List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        partdata = FXCollections.observableList(uppart);
+        tablePart.setItems(partdata);
     }
 
     /**
@@ -195,23 +232,88 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @throws IOException
      */
     public void clickDownload() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Create instances of Events and all data
+        Event event = server.getEventByID(eventid);
+        List<Participant> participants = expPart.getAllParticipants();
+        List<Participant> uppart = participants.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        // List<Payment> payments = expPay.getPayments();
+        List<Payment> uppay = null;
+        // List<Payment> uppay = payments.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+        List<Expense> expenses = expServer.getExpenses();
+        List<Expense> upexp = expenses.stream().filter(x -> x.getEvent().getId() == eventid).toList();
+
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Event x = server.getEventByID(eventid);
-            objectMapper.writeValue(new File("src/main/resources/JSONfiles/Event"+eventid+".json"), x);
+            List<Object> jsonDataObject = new ArrayList<>();
+            jsonDataObject.add(event);
+            jsonDataObject.add(uppart);
+            jsonDataObject.add(uppay);
+            jsonDataObject.add(upexp);
+            writer.writeValue(new File("src/main/resources/JSONfiles/Event"+eventid+".json"), jsonDataObject);
             imgMessage.setImage(new Image("images/notifications/Slide5.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
 
-            return;
-        }
-        catch (Exception e){
+        } catch (IOException e) {
             imgMessage.setImage(new Image("images/notifications/Slide4.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            return;
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language to switch to
+     */
+    public void langueageswitch(String taal) {
+        try {
+            this.taal = taal;
+            String langfile = "language" + taal + ".json";
+            h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+            Image imageFlag = new Image(h.get("key0"));
+            imageviewFlag.setImage(imageFlag);
+            jsonBtn.setText(h.get("key108"));
+            deleteBtn.setText(h.get("key109"));
+            colDate.setText(h.get("key41"));
+            colAm.setText(h.get("key42"));
+            colPart.setText(h.get("key43"));
+            colTitle.setText(h.get("key44"));
+            colTag.setText(h.get("key45"));
+            colName.setText(h.get("key46"));
+            colEmail.setText(h.get("key110"));
+            expText.setText(h.get("key8"));
+            parText.setText(h.get("key7"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class DataWrapper {
+        private Event event;
+        private List<Participant> parts;
+        private List<Expense> exps;
+        private List<Payment> pays;
+
+        public DataWrapper(Event event, List<Participant> parts, List<Payment> pays, List<Expense> exps) {
+            this.event = event;
+            this.parts = parts;
+            this.exps = exps;
+            this.pays = pays;
         }
     }
 }

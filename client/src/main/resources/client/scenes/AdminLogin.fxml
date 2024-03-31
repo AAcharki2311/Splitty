@@ -13,23 +13,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminLoginCtrl">
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="158.0" layoutX="195.0" layoutY="146.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="310.0" />
-    <Text fill="#0d5575" layoutX="286.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Admin!">
+    <Text fx:id="welcomeText" fill="#0d5575" layoutX="197.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Admin!" textAlignment="CENTER" wrappingWidth="310.0">
         <font>
             <Font name="Calibri" size="18.0" />
         </font>
     </Text>
-    <Button layoutX="397.0" layoutY="220.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #0D5575;" text="Login" textFill="#f4fdff">
+    <Button fx:id="loginText" layoutX="397.0" layoutY="220.0" mnemonicParsing="false" onAction="#clickLogin" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #0D5575;" text="Login" textFill="#f4fdff">
         <font>
             <Font name="Calibri" size="12.0" />
         </font>
     </Button>
-   <Button layoutX="310.0" layoutY="257.0" mnemonicParsing="false" onAction="#clickStart" prefHeight="18.0" prefWidth="79.0" style="-fx-background-color: #0D5575;" text="Go back" textFill="#f4fdff">
+   <Button fx:id="backText" layoutX="310.0" layoutY="257.0" mnemonicParsing="false" onAction="#clickStart" prefHeight="18.0" prefWidth="79.0" style="-fx-background-color: #0D5575;" text="Go back" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
    <PasswordField fx:id="inputpw" layoutX="248.0" layoutY="220.0" prefHeight="25.0" prefWidth="144.0" />
-   <Label fx:id="pwtext" alignment="CENTER" layoutX="200.0" layoutY="187.0" prefHeight="18.0" prefWidth="300.0" text="Please fill in the password" textAlignment="JUSTIFY" textFill="#0d5575">
+   <Label fx:id="pwText" alignment="CENTER" layoutX="200.0" layoutY="187.0" prefHeight="18.0" prefWidth="300.0" text="Please fill in the password" textAlignment="JUSTIFY" textFill="#0d5575">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
@@ -45,7 +45,7 @@
          <Image url="@../../images/home.png" />
       </image>
    </ImageView>
-   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" onMouseClicked="#clickSettings" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/settings.png" />
       </image>

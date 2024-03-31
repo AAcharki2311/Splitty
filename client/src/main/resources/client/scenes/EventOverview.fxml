@@ -22,26 +22,26 @@
          <Font name="Calibri Bold" size="20.0" />
       </font>
    </Text>
-   <Button fx:id="allBtn" layoutX="246.0" layoutY="304.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" onAction="#showAllExpenses" style="-fx-background-color: #0D5575;" text="All" textFill="WHITE" />
-   <Button fx:id="deleteAllBtn" layoutX="327.0" layoutY="304.0" maxHeight="26.0" maxWidth="118.0" minHeight="25.0" minWidth="79.0" mnemonicParsing="false" onAction="#deleteAll" prefHeight="26.0" prefWidth="118.0" style="-fx-background-color: #ff0000; -fx-border-color: red;" text="Delete" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+   <Button fx:id="allBtn" layoutX="48.0" layoutY="304.0" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="40.0" mnemonicParsing="false" onAction="#showAllExpenses" style="-fx-background-color: #0D5575;" text="All" textFill="WHITE" />
+   <Button fx:id="deleteAllBtn" layoutX="359.0" layoutY="304.0" maxHeight="26.0" maxWidth="118.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#deleteAll" prefHeight="26.0" prefWidth="87.0" style="-fx-background-color: #ff0000; -fx-border-color: red;" text="Delete" textAlignment="CENTER" textFill="WHITE" wrapText="true">
       <font>
          <Font name="System Bold" size="12.0" />
       </font></Button>
-   <Label fx:id="showExpensOfText" contentDisplay="RIGHT" layoutX="55.0" layoutY="290.0" prefHeight="16.0" prefWidth="150.0" style="-fx-alignment: center;" text="Show expenses of: " textAlignment="RIGHT" textFill="#0d5575">
+   <Label fx:id="showExpensOfText" contentDisplay="RIGHT" layoutX="49.0" layoutY="290.0" prefHeight="16.0" prefWidth="150.0" style="-fx-alignment: center;" text="Show expenses of: " textFill="#0d5575">
       <font>
          <Font size="11.0" />
       </font>
    </Label>
-   <ComboBox fx:id="comboBoxOne" layoutX="55.0" layoutY="304.0" prefHeight="26.0" prefWidth="146.0" promptText="participants" />
+   <ComboBox fx:id="comboBoxOne" layoutX="90.0" layoutY="304.0" prefHeight="26.0" prefWidth="108.0" promptText="participants" />
    <ComboBox fx:id="comboboxLanguage" layoutX="90.0" layoutY="367.0" prefHeight="26.0" prefWidth="160.0" />
    <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/br-circle-01.png" />
       </image>
    </ImageView>
-   <Button fx:id="editBtn1" layoutX="266.0" layoutY="90.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickEditExpense" prefHeight="26.0" prefWidth="87.0" style="-fx-background-color: #0D5575;" text="Edit" textFill="WHITE" />
-   <Button fx:id="addBtn1" layoutX="363.0" layoutY="90.0" maxHeight="26.0" maxWidth="87.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickAddExpense" prefHeight="26.0" prefWidth="87.0" style="-fx-background-color: #0D5575;" text="Add" textFill="WHITE" />
-   <Text fx:id="expenstext" fill="#0d5575" layoutX="57.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expenses" textAlignment="CENTER" wrappingWidth="145.5234375">
+   <Button fx:id="editBtn1" layoutX="283.0" layoutY="304.0" maxHeight="26.0" maxWidth="72.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickEditExpense" prefHeight="26.0" prefWidth="87.0" style="-fx-background-color: #0D5575;" text="Edit" textFill="WHITE" />
+   <Button fx:id="addBtn1" layoutX="206.0" layoutY="304.0" maxHeight="26.0" maxWidth="87.0" minHeight="26.0" minWidth="70.0" mnemonicParsing="false" onAction="#clickAddExpense" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #0D5575;" text="Add" textFill="WHITE" />
+   <Text fx:id="expenstext" fill="#0d5575" layoutX="42.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expenses" textAlignment="CENTER" wrappingWidth="408.0">
       <font>
          <Font name="System Bold" size="13.0" />
       </font>
@@ -51,7 +51,7 @@
          <Font name="System Bold" size="13.0" />
       </font>
    </Text>
-   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" onMouseClicked="#clickSettings" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/settings.png" />
       </image>
@@ -66,11 +66,6 @@
          <Image url="@../../images/home.png" />
       </image>
    </ImageView>
-   <ImageView fx:id="imageview" fitHeight="106.0" fitWidth="214.0" layoutX="21.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../../images/logo-no-background.png" />
-      </image>
-   </ImageView>
    <Button fx:id="addBtn" layoutX="477.0" layoutY="274.0" mnemonicParsing="false" onAction="#clickAddParticipant" prefHeight="25.0" prefWidth="95.0" style="-fx-background-color: #0D5575;" text="Add" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
@@ -81,7 +76,7 @@
          <TableColumn fx:id="colName" editable="false" prefWidth="198.0" text="Name" />
       </columns>
    </TableView>
-   <Button fx:id="sendInviteBtn" layoutX="568.0" layoutY="47.0" mnemonicParsing="false" onAction="#clickInvite" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: #0D5575;" text="Send Invites" textFill="#f4fdff">
+   <Button fx:id="sendInviteBtn" layoutX="568.0" layoutY="47.0" mnemonicParsing="false" onAction="#clickInvite" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: #0D5575;" text="Send invites" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
@@ -91,7 +86,7 @@
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <Button fx:id="settleDebtsBtn" layoutX="475.0" layoutY="304.0" mnemonicParsing="false" onAction="#clickSettleDebts" prefHeight="25.0" prefWidth="187.0" style="-fx-background-color: #0D5575;" text="Settle Debts" textFill="#f4fdff">
+   <Button fx:id="settleDebtsBtn" layoutX="475.0" layoutY="304.0" mnemonicParsing="false" onAction="#clickSettleDebts" prefHeight="25.0" prefWidth="187.0" style="-fx-background-color: #0D5575;" text="Statistics" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
@@ -105,9 +100,14 @@
          <TableColumn fx:id="colTag" editable="false" prefWidth="75.0" text="Tag" />
       </columns>
    </TableView>
-   <Button fx:id="editEventNameLabel" layoutX="444.0" layoutY="47.0" mnemonicParsing="false" onAction="#editEventName" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: #0D5575;" text="Edit Event name" textFill="#f4fdff" wrapText="true">
+   <Button fx:id="editEventNameLabel" layoutX="444.0" layoutY="47.0" mnemonicParsing="false" onAction="#editEventName" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: #0D5575;" text="Edit event name" textFill="#f4fdff" wrapText="true">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
+   <ImageView fx:id="imageview" fitHeight="25.0" fitWidth="174.0" layoutX="43.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/logo-no-background.png" />
+      </image>
+   </ImageView>
 </AnchorPane>

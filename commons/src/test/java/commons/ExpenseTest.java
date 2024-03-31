@@ -125,4 +125,21 @@ class ExpenseTest {
         assertNotEquals(e, e2);
         assertNotEquals(e.hashCode(), e2.hashCode());
     }
+
+    @Test
+    void setEvent() {
+        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
+        Event newEvent = new Event("newEvent");
+        e.setEvent(newEvent);
+        assertEquals(newEvent, e.getEvent());
+    }
+
+    @Test
+    void setCreditor() {
+        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
+        Participant newCreditor = new Participant(SOME_EVENT, "John",
+                "John@gmail.com", "NL99INGB0123456789", "RABONL2U");
+        e.setCreditor(newCreditor);
+        assertEquals(newCreditor, e.getCreditor());
+    }
 }

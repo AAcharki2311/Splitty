@@ -1,8 +1,13 @@
 package client.scenes;
 
-import client.utils.EventServerUtils;
+import client.utils.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Event;
+import commons.Expense;
+import commons.Participant;
+import commons.Payment;
 import jakarta.inject.Inject;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -18,7 +24,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +36,11 @@ public class AdminDashboardCtrl implements Initializable {
     /** BASIS **/
     private final EventServerUtils server;
     private final MainCtrl mc;
+    private final ExpensesServerUtils expServer;
+    private final ParticipantsServerUtil expPart;
+    private final PaymentsServerUtils expPay;
+    private final ReadJSON jsonReader;
+    private HashMap<String, String> h;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -58,20 +68,39 @@ public class AdminDashboardCtrl implements Initializable {
     @FXML
     private TableColumn<Event, String> colDate2;
     @FXML
-    private Text output;
-    @FXML
     private ImageView imageview;
     private ObservableList<Event> data;
+    @FXML
+    private Text welcomeText;
+    @FXML
+    private Text title1Text;
+    @FXML
+    private Text title2Text;
+    @FXML
+    private Text title3Text;
+    @FXML
+    private Button importBtn;
+    @FXML
+    private Button showBtn;
 
     /**
      * Constructor for the AdminDashboardCtrl
-     * @param mc the main controller
-     * @param server server
+     *
+     * @param server     server
+     * @param mc         the main controller
+     * @param expServer
+     * @param expPart
+     * @param expPay
+     * @param jsonReader
      */
     @Inject
-    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc) {
+    public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, PaymentsServerUtils expPay, ReadJSON jsonReader) {
         this.mc = mc;
         this.server = server;
+        this.expServer = expServer;
+        this.expPart = expPart;
+        this.expPay = expPay;
+        this.jsonReader = jsonReader;
     }
     /**
      * text
@@ -148,10 +177,27 @@ public class AdminDashboardCtrl implements Initializable {
      */
     public void clickImport() throws IOException {
         try {
+
             ObjectMapper objectMapper = new ObjectMapper();
             String file = inputimport.getText();
-            Event x = objectMapper.readValue(new File("src/main/resources/JSONfiles/"+file+".json"), Event.class);
-
+            List<Object> objects = Arrays.asList(objectMapper.readValue(
+                    new File("src/main/resources/JSONfiles/"+file+".json"),
+                    Object[].class));
+            
+            try {
+                Event myObject = objectMapper.readValue(objectMapper.writeValueAsString(objects.get(0)), Event.class);
+                for (int i = 0; i < objects.size(); i++){
+                    extracted(i, objectMapper, objects, myObject);
+                }
+            }
+            catch (Exception e){
+                imgMessage.setImage(new Image("images/notifications/Slide4.png"));
+                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+                pause.setOnFinished(p -> imgMessage.setImage(null));
+                pause.play();
+                return;
+                // System.out.println("SOMETHING WRONG WHILE PRINTING");
+            }
 
 
             imgMessage.setImage(new Image("images/notifications/Slide5.png"));
@@ -171,11 +217,88 @@ public class AdminDashboardCtrl implements Initializable {
     }
 
     /**
-     * javadoc
+     * Extracted method of click import to reduce cyclomatic complexity
+     * @param i the number from the counter
+     * @param objectMapper the object mapper
+     * @param objects the list with the information from the Json file
+     * @param myObject the Event which the Json file is about
+     * @throws JsonProcessingException
+     */
+    private void extracted(int i, ObjectMapper objectMapper, List<Object> objects, Event myObject) throws JsonProcessingException {
+        if (i == 0){
+            String json = objectMapper.writeValueAsString(objects.get(0));
+            Event newEvent = server.addEvent(myObject);
+            newEvent.setId(myObject.getId());
+        }
+        else if (i == 1){
+            String json = objectMapper.writeValueAsString(objects.get(1));
+            List<Participant> parts = objectMapper.readValue(json, new TypeReference<List<Participant>>(){});
+            for (Participant part : parts){
+                Participant newPart = expPart.addParticipant(part);
+            }
+        }
+        else if (i == 2){
+            String json = objectMapper.writeValueAsString(objects.get(2));
+            List<Payment> payms = objectMapper.readValue(json, new TypeReference<List<Payment>>(){});
+            if (payms != null){
+                for (Payment parm : payms){
+                    System.out.println("PAYMENT: " + parm);
+                    Payment newPay = expPay.addPayments(parm);
+                }
+            }
+        }
+        else if (i == 3){
+            String json = objectMapper.writeValueAsString(objects.get(3));
+            List<Expense> expenses = objectMapper.readValue(json, new TypeReference<List<Expense>>(){});
+            if (expenses != null){
+                for (Expense exp : expenses){
+                    Expense newExp = expServer.addExpense(exp);
+                }
+            }
+        }
+    }
+
+    /**
+     * Refreshes the data in the tables
      */
     public void refresh(){
         var events = server.getAllEvents();
         data = FXCollections.observableList(events);
         table.setItems(data);
+    }
+
+    /**
+     * Changes the text on the page to the appropriate language
+     * @param taal the language to change to
+     */
+    public void langueageswitch(String taal) {
+        try {
+            String langfile = "language" + taal + ".json";
+            h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
+            welcomeText.setText(h.get("key96"));
+            title1Text.setText(h.get("key102"));
+            title2Text.setText(h.get("key103"));
+            title3Text.setText(h.get("key104"));
+            colName.setText(h.get("key31"));
+            colDate1.setText(h.get("key100"));
+            colDate2.setText(h.get("key101"));
+            inputid.setPromptText(h.get("key94"));
+            inputimport.setPromptText(h.get("key105"));
+            importBtn.setText(h.get("key106"));
+            showBtn.setText(h.get("key107"));
+            Image imageFlag = new Image(h.get("key0"));
+            imageviewFlag.setImage(imageFlag);
+        }
+        catch (Exception e) {
+            // System.out.println("error");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
     }
 }

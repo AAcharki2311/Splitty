@@ -5,6 +5,7 @@ import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -28,17 +29,17 @@ public class StartScreenCtrl implements Initializable {
     private final EventServerUtils server;
     private final ParticipantsServerUtil partServer;
     private final MainCtrl mc;
+    private HashMap<String, String> h;
     /** MENU **/
     @FXML
     private ImageView imgSet;
-    @FXML
-    private ImageView imgArrow;
     @FXML
     private ImageView imgHome;
     /** NEEDED FOR LANGUAGE SWITCH **/
     private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
     @FXML
     private ImageView imageviewFlag;
+    private String language;
     /** PAGE **/
     private final ReadJSON jsonReader;
     @FXML
@@ -64,10 +65,13 @@ public class StartScreenCtrl implements Initializable {
     @FXML
     private Label recentEventLabel;
     @FXML
+    private Button addUserInfoBtn;
+    @FXML
     private ImageView warningImageview;
     private Participant userParticipant;
     private WriteEventNames writeEventNames;
     private LanguageSwitch languageSwitch;
+
 
     /**
      * Constructor of the StartScreenCtrl
@@ -88,6 +92,7 @@ public class StartScreenCtrl implements Initializable {
         this.server = server;
         this.writeEventNames = writeEventNames;
         this.languageSwitch = languageSwitch;
+        this.language = "English";
     }
 
     /**
@@ -102,17 +107,17 @@ public class StartScreenCtrl implements Initializable {
         if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
-            for(String element : tempList) text = text + element + "\n\n";
+            for(String element : tempList) text = text + element + "";
             recentEventLabel.setText(text);
         } else{
-            recentEventLabel.setText("No Recent Events");
+            recentEventLabel.setText(h.get("key52"));
         }
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
-            String language = comboboxLanguage.getValue().toString();
+            this.language = comboboxLanguage.getValue().toString();
             languageSwitch.languageChange(path, language);
-            comboboxLanguage.setPromptText("Current language: " + comboboxLanguage.getSelectionModel().getSelectedItem());
+            comboboxLanguage.setPromptText(h.get("key53") + comboboxLanguage.getSelectionModel().getSelectedItem());
 
             try {
                 mc.ltest();
@@ -126,9 +131,7 @@ public class StartScreenCtrl implements Initializable {
         imageview.setImage(image);
 
         imgSet.setImage(new Image("images/settings.png"));
-        imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
-
     }
 
     /**
@@ -137,16 +140,19 @@ public class StartScreenCtrl implements Initializable {
      */
     public void langueageswitch(String taal) throws NullPointerException{
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        comboboxLanguage.setPromptText("Current language: " + taal);
-        welcometext.setText(h.get("key1").toString());
-        pleasetext.setText(h.get("key2").toString());
-        joinBTN.setText(h.get("key3").toString());
-        createBTN.setText(h.get("key4").toString());
-        loginBTN.setText(h.get("key5").toString());
-        recentviewedtext.setText(h.get("key6").toString());
-        Image imageFlag = new Image(h.get("key0").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        comboboxLanguage.setPromptText(h.get("key53") + taal);
+        welcometext.setText(h.get("key1"));
+        pleasetext.setText(h.get("key2"));
+        joinBTN.setText(h.get("key3"));
+        createBTN.setText(h.get("key4"));
+        loginBTN.setText(h.get("key5"));
+        recentviewedtext.setText(h.get("key6"));
+        addUserInfoBtn.setText(h.get("key14"));
+        Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
+        eventJoin.setPromptText(h.get("key94"));
+        eventName.setPromptText(h.get("key95"));
     }
 
     /**
@@ -156,7 +162,11 @@ public class StartScreenCtrl implements Initializable {
         try {
             String name = eventName.getText();
             if(name.isBlank()){
-                throw new IllegalArgumentException("Name can not be empty");
+                warningImageview.setImage(new Image("images/notifications/Slide3.png"));
+                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+                pause.setOnFinished(p -> warningImageview.setImage(null));
+                pause.play();
+                // throw new IllegalArgumentException(h.get("key54"));
             } else{
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
@@ -166,14 +176,13 @@ public class StartScreenCtrl implements Initializable {
                 if(!namesOfAllEvents.contains(name)){
                     Event newEvent = new Event(name);
                     newEvent = server.addEvent(newEvent);
-                    System.out.println("Event created: " + newEvent.id + " " + newEvent.name);
                     String filepath = "src/main/resources/recentEvents.json";
-                    writeEventNames.writeEventName(filepath, ("name: " + newEvent.name + " - id: " + (newEvent.id)), String.valueOf(newEvent.id));
+                    writeEventNames.writeEventName(filepath, (newEvent.name + "\nID: " + (newEvent.id)), String.valueOf(newEvent.id));
 
                     if (userParticipant != null){
-                        int choice = JOptionPane.showOptionDialog(null,"Do you want to add yourself as a participant of this event?",
-                                "Add User To Event", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                                new String[]{"Yes", "No"}, "default");
+                        int choice = JOptionPane.showOptionDialog(null, h.get("key55"),
+                                h.get("key56"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                                new String[]{h.get("key57"), h.get("key58")}, "default");
                         if(choice == JOptionPane.OK_OPTION){
                             userParticipant.setEvent(newEvent);
                             partServer.addParticipant(userParticipant);
@@ -181,12 +190,20 @@ public class StartScreenCtrl implements Initializable {
                     }
                     mc.showEventOverview(String.valueOf(newEvent.id));
                 } else {
-                    throw new IllegalArgumentException("Name must be unique");
+                    warningImageview.setImage(new Image("images/notifications/Slide2.png"));
+                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
+                    pause.setOnFinished(p -> warningImageview.setImage(null));
+                    pause.play();
+                    throw new IllegalArgumentException(h.get("key59"));
                 }
             }
         }
         catch (Exception e){
             message.setText(e.getMessage());
+            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> warningImageview.setImage(null));
+            pause.play();
         }
     }
 
@@ -198,7 +215,9 @@ public class StartScreenCtrl implements Initializable {
             String eid = eventJoin.getText();
             if(checkNumber(eid)){
                 try{
-                    server.getEventByID(Long.parseLong(eid));
+                    Event x = server.getEventByID(Long.parseLong(eid));
+                    x.setLastActDate(new Date());
+                    server.addEvent(x);
                     mc.showEventOverview(eid);
                     String dest = "/topic/events/"+eid;
                     System.out.println("Destination: "+dest);
@@ -228,17 +247,29 @@ public class StartScreenCtrl implements Initializable {
                     }.start();
 
                     String filepath = "src/main/resources/recentEvents.json";
-                    writeEventNames.writeEventName(filepath, ("name: " + server.getEventByID(Long.parseLong(eid)).getName() + " - id: " + eid), eid);
+                    writeEventNames.writeEventName(filepath, (server.getEventByID(Long.parseLong(eid)).getName() + "\nID: " + eid), eid);
                     message.setText("");
                 } catch(Exception e){
-                    throw new IllegalArgumentException("This Id does not exist");
+                    warningImageview.setImage(new Image("images/notifications/Slide1.png"));
+                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
+                    pause.setOnFinished(p -> warningImageview.setImage(null));
+                    pause.play();
+                    throw new IllegalArgumentException(h.get("key60"));
                 }
             } else{
-                throw new IllegalArgumentException("This Id is incorrect");
+                warningImageview.setImage(new Image("images/notifications/Slide2.png"));
+                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+                pause.setOnFinished(p -> warningImageview.setImage(null));
+                pause.play();
+                throw new IllegalArgumentException(h.get("key61"));
             }
         }
         catch (Exception e){
             message.setText(e.getMessage());
+            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+            pause.setOnFinished(p -> warningImageview.setImage(null));
+            pause.play();
         }
     }
 
@@ -266,12 +297,6 @@ public class StartScreenCtrl implements Initializable {
         mc.showAdminLogin();
     }
 
-    /**
-     * Method of the back button, when pressed, it shows the start screen
-     */
-    public void clickBack(){
-        // does nothing as Start Screen has no back
-    }
 
     /**
      * Method of the home button, when pressed, it shows the start screen
@@ -281,11 +306,10 @@ public class StartScreenCtrl implements Initializable {
     }
 
     /**
-     * Method of the settings button, when pressed, it shows the *settings screen*
+     * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings(){
-        // mc.showSettings();
-        mc.showAdminLogin();
+        mc.help();
     }
 
     /**
@@ -305,7 +329,6 @@ public class StartScreenCtrl implements Initializable {
                 printWriter.print(readFile("src/main/resources/languageJSONS/languageTemplate.json"));
             }
 
-            System.out.println("Download Complete...");
             warningImageview.setImage(new Image("images/notifications/Slide5.png"));
             FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
             fadeOut.setFromValue(1.0);
@@ -351,8 +374,8 @@ public class StartScreenCtrl implements Initializable {
             JTextField textFieldBIC = new JTextField();
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Enter your information or skip for now"));
-            panel.add(new JLabel("Name: "));
+            panel.add(new JLabel(h.get("key62")));
+            panel.add(new JLabel(h.get("key31")));
             panel.add(textFieldName);
             panel.add(new JLabel("Email: "));
             panel.add(textFieldEmail);
@@ -362,7 +385,7 @@ public class StartScreenCtrl implements Initializable {
             panel.add(textFieldBIC);
             Object[] options = {"OK", "Skip"};
 
-            int result = JOptionPane.showOptionDialog(null, panel, "Enter your information",
+            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
             if (result == JOptionPane.OK_OPTION) {
@@ -372,7 +395,7 @@ public class StartScreenCtrl implements Initializable {
                 String bic = textFieldBIC.getText();
                 if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
                         !email.matches(".*@.+\\..+")){
-                    JOptionPane.showMessageDialog(null, "Fields are empty or incorrect");
+                    JOptionPane.showMessageDialog(null, h.get("key64"));
                 } else{
                     this.userParticipant = new Participant(null, name, email, iban, bic);
                     mc.setParticipant(userParticipant);
@@ -383,7 +406,6 @@ public class StartScreenCtrl implements Initializable {
                 this.userParticipant = null;
                 break;
             }
-
         }
     }
 
@@ -398,7 +420,7 @@ public class StartScreenCtrl implements Initializable {
             for(String element : tempList) text = text + element + "\n\n";
             recentEventLabel.setText(text);
         } else{
-            recentEventLabel.setText("No Recent Events");
+            recentEventLabel.setText(h.get("key52").toString());
         }
     }
 }

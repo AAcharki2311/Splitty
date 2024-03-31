@@ -31,10 +31,20 @@ public class ParticipantCtrl implements Initializable {
     private final EventServerUtils server;
     private final ParticipantsServerUtil pcu;
     private long eventid;
+    private boolean ibanTrue;
     private Participant userParticipant;
+    private HashMap<String, String> h;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
+    @FXML
+    private ImageView imageviewFlag;
+    @FXML
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgHome;
+    @FXML
+    private ImageView imgArrow;
     @FXML
     private TextField TextFieldName;
     @FXML
@@ -44,13 +54,15 @@ public class ParticipantCtrl implements Initializable {
     @FXML
     private TextField TextFieldBIC;
     @FXML
-    private Label titleOfScreen;
+    private Text titleOfScreen;
     @FXML
-    private Label fillInfoText;
+    private Text fillInfoText;
     @FXML
     private Label nameText;
     @FXML
-    private Label labelEventName;
+    private Label fillUserInfo;
+    @FXML
+    private Text labelEventName;
     @FXML
     private Button cancelBtn;
     @FXML
@@ -78,8 +90,11 @@ public class ParticipantCtrl implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
+        imageview.setImage(new Image("images/logo-no-background.png"));
+        imageviewFlag.setImage(new Image("images/br-circle-01.png"));
+        imgSet.setImage(new Image("images/settings.png"));
+        imgArrow.setImage(new Image("images/arrow.png"));
+        imgHome.setImage(new Image("images/home.png"));
     }
 
     /**
@@ -88,50 +103,67 @@ public class ParticipantCtrl implements Initializable {
      */
     public void langueageswitch(String taal) {
         String langfile = "language" + taal + ".json";
-        HashMap<String, Object> h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
-        titleOfScreen.setText(h.get("key32").toString());
-        fillInfoText.setText(h.get("key30").toString());
-        nameText.setText(h.get("key31").toString());
-        cancelBtn.setText(h.get("key26").toString());
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        titleOfScreen.setText(h.get("key32"));
+        fillInfoText.setText(h.get("key30"));
+        nameText.setText(h.get("key31"));
+        cancelBtn.setText(h.get("key26"));
+        fillUserInfo.setText(h.get("key51"));
+        Image imageFlag = new Image(h.get("key0"));
+        imageviewFlag.setImage(imageFlag);
+        // TextFieldName.setPromptText(h.get("key31"));
     }
 
     /**
      * This method gets all the information from the textfields and prints it to the console
      */
     public void submit() {
-        String errormessage = "Something went wrong";
+        String errormessage = h.get("key80");
         try{
             Event e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
-            boolean duplicate = checkDuplicate(name, email);
-            if(validate(name, email, iban, bic) && !duplicate){
-                Participant p = new Participant(e, name, email, iban, bic);
-                p.setEvent(e);
-                pcu.addParticipant(p);
-                String message = "Participant added:\n" +
-                        "_______________" + "\n" +
-                        "Name: " + p.getName() + "\n" +
-                        "Email: " + p.getEmail() + "\n" +
-                        "IBAN: " + p.getIban() + "\n" +
-                        "BIC: " + p.getBic();
-                server.send("/app/events/"+eventid, p);
-                JOptionPane.showMessageDialog(null, message);
-                clickBack();
-            } else {
-                if(duplicate){
-                    errormessage = "Name or email already exists";
-                } else{
-                    errormessage = "Please fill in all fields correctly";
-                }
-                throw new Exception();
-            }
+            // boolean duplicate = checkDuplicate(name, email);
+            Participant p = new Participant(e, name, email, iban, bic);
+            // p.setEvent(e);
+            System.out.println(p.toString());
+            pcu.addParticipant(p);
+//            if(!duplicate){
+//                Participant p = new Participant(e, name, email, iban, bic);
+//                p.setEvent(e);
+//                pcu.addParticipant(p);
+//                String message = "Participant:\n" +
+//                        "_______________" + "\n" +
+//                        h.get("key31") + ": " + p.getName() + "\n" +
+//                        "Email: " + p.getEmail() + "\n" +
+//                        "IBAN: " + p.getIban() + "\n" +
+//                        "BIC: " + p.getBic();
+//                JOptionPane.showMessageDialog(null, message);
+//                clickBack();
+//            } else {
+//                System.out.println("Something wrong");
+//                if(duplicate){
+//                    errormessage = h.get("key75");
+//                } else if(name.isBlank()){
+//                    errormessage = h.get("key76");
+//                } else if(!(email.contains("@") && email.contains("."))) {
+//                    errormessage = h.get("key77");
+//                } else if(!(ibanTrue)){
+//                    errormessage = h.get("key78");
+//                }else if(bic.isBlank()){
+//                    errormessage = h.get("key79");
+//                }
+//                throw new Exception();
+//               }
+            System.out.println("correct");
         } catch (Exception e){
-            message.setText(errormessage);
+            //message.setText(errormessage);
+            System.out.println("wrong");
         }
     }
+
 
     /**
      * This method checks if the name + email is a duplicate
@@ -157,7 +189,7 @@ public class ParticipantCtrl implements Initializable {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String name, String email, String iban, String bic){
-        boolean ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
+        ibanTrue = iban.matches("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$");
         return !name.isBlank() && !email.isBlank() && !iban.isBlank() && !bic.isBlank() &&
                 email.contains("@") && email.contains(".") && ibanTrue;
     }
@@ -169,8 +201,6 @@ public class ParticipantCtrl implements Initializable {
     public void update(String id){
         long eid = Long.parseLong(id);
         this.eventid = eid;
-        System.out.println("reached");
-        System.out.println(eid + " " + server.getEventByID(eid).getName());
         labelEventName.setText(server.getEventByID(eid).getName());
     }
 
@@ -197,7 +227,22 @@ public class ParticipantCtrl implements Initializable {
     /**
      * Method of the cancel button, when pressed, it shows the eventoverview screen
      */
-    public void clickBack() throws IOException {
+    public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * Used to get back to the Start Screen
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickHome() throws IOException {
+        mc.showStart();
     }
 }
