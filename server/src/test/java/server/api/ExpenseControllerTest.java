@@ -49,7 +49,7 @@ public class ExpenseControllerTest {
     public void addAndGetTest() {
         expenseController.add(expense1);
         expenseController.add(expense2);
-        List<Expense> list = expenseController.getExpenses();
+        List<Expense> list = expenseController.getExpenses().getBody();
         assertEquals(expense1, list.get(0));
         assertEquals(expense2, list.get(1));
     }
@@ -116,7 +116,9 @@ public class ExpenseControllerTest {
         List<Expense> checkExpense = new ArrayList<>();
         checkExpense.add(expense2);
         checkExpense.add(expense1);
-        assertEquals(checkExpense, expenseController.getSortedExpensesTitle());
+        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesTitle();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
+        assertEquals(checkExpense, responseEntity.getBody()); // Check request body
     }
 
     /**
@@ -129,7 +131,9 @@ public class ExpenseControllerTest {
         List<Expense> checkExpense = new ArrayList<>();
         checkExpense.add(expense2);
         checkExpense.add(expense1);
-        assertEquals(checkExpense, expenseController.getSortedExpensesPerson());
+        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesPerson();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
+        assertEquals(checkExpense, responseEntity.getBody()); // Check request body
     }
 
     /**
@@ -142,7 +146,9 @@ public class ExpenseControllerTest {
         List<Expense> checkExpense = new ArrayList<>();
         checkExpense.add(expense1);
         checkExpense.add(expense2);
-        assertEquals(checkExpense, expenseController.getSortedExpensesDate());
+        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesDate();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
+        assertEquals(checkExpense, responseEntity.getBody()); // Check request body
     }
 
     @SuppressWarnings("serial")

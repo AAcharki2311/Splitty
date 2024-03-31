@@ -41,8 +41,12 @@ public class ExpenseController {
      * @return all the expenses in the current repository
      */
     @GetMapping(path = {"", "/"})
-    public List<Expense> getExpenses() {
-        return expenseRepository.findAll();
+    public ResponseEntity<List<Expense>> getExpenses() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        if(allExpenses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allExpenses);
     }
 
     /**
@@ -140,10 +144,13 @@ public class ExpenseController {
      *
      * @return list of expenses sorted by title
      */
-    public List<Expense> getSortedExpensesTitle() {
+    public ResponseEntity<List<Expense>> getSortedExpensesTitle() {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(Expense::getTitle));
-        return allExpenses;
+        if(allExpenses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allExpenses);
     }
 
     /**
@@ -151,10 +158,13 @@ public class ExpenseController {
      *
      * @return list of expenses sorted by creditor's name
      */
-    public List<Expense> getSortedExpensesPerson() {
+    public ResponseEntity<List<Expense>> getSortedExpensesPerson() {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(expense -> expense.getCreditor().getName()));
-        return allExpenses;
+        if(allExpenses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allExpenses);
     }
 
     /**
@@ -162,10 +172,13 @@ public class ExpenseController {
      *
      * @return list of expenses sorted by date
      */
-    public List<Expense> getSortedExpensesDate() {
+    public ResponseEntity<List<Expense>> getSortedExpensesDate() {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(Expense::getDate));
-        return allExpenses;
+        if(allExpenses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allExpenses);
     }
 
     private boolean isNullOrEmpty(String s) {

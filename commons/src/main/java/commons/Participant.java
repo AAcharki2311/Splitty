@@ -68,6 +68,14 @@ public class Participant {
     }
 
     /**
+     * Setter for the id of the participant
+     * @param id id of the participant
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Setter for the name of a participant, this can be used if someone made a spelling error
      * @param name the new name of the participant
      */
