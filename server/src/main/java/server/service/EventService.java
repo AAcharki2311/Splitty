@@ -12,6 +12,11 @@ import java.util.Optional;
 public class EventService {
     private final EventRepository eventRepository;
 
+    /**
+     * The constructor for the class
+     *
+     * @param eventRepository the repository of Event
+     */
     @Autowired
     public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
