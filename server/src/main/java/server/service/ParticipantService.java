@@ -16,7 +16,7 @@ public class ParticipantService {
     /**
      * The constructor for the class
      *
-     * @param participantRepository the repository of Event
+     * @param participantRepository the repository of Participant
      */
     @Autowired
     public ParticipantService(ParticipantRepository participantRepository) {
@@ -24,40 +24,40 @@ public class ParticipantService {
     }
 
     /**
-     * Method to get all the events in the repository
+     * Method to get all the participants in the repository
      *
-     * @return all the events in the current repository
+     * @return all the participants in the current repository
      */
     public List<Participant> getParticipants() {
         return participantRepository.findAll();
     }
 
     /**
-     * Method to find an event from its id
+     * Method to find a participant from its id
      *
-     * @param id id of the event to find
-     * @return the event with that specific id (if there is one)
+     * @param id id of the participant to find
+     * @return the participant with that specific id (if there is one)
      */
     public Optional<Participant> getById(long id) {
         return participantRepository.findById(id);
     }
 
     /**
-     * Method to add an event to the repository
+     * Method to add a participant to the repository
      *
-     * @param participant the event that will be added
-     * @return the added event
+     * @param participant the participant that will be added
+     * @return the added participant
      */
     public Participant add(Participant participant) {
         return participantRepository.save(participant); // I still need to add some validation here
     }
 
     /**
-     * Method to update an event from its id
+     * Method to update a participant from its id
      *
-     * @param id id of the event to update
-     * @param updatedParticipant event with the new parameters
-     * @return the updated event if there are no errors
+     * @param id id of the participant to update
+     * @param updatedParticipant participant with the new parameters
+     * @return the updated participant if there are no errors
      */
     public Optional<Participant> update(long id, Participant updatedParticipant) {
         if(participantRepository.existsById(id)) {
@@ -72,8 +72,8 @@ public class ParticipantService {
     /**
      * Method to delete a participant from its id
      *
-     * @param id id of the event to delete
-     * @return true if the event has been deleted, false if there was no event with that id
+     * @param id id of the participant to delete
+     * @return true if the participant has been deleted, false if there was no participant with that id
      */
     public boolean delete(long id) {
         if (participantRepository.existsById(id)) {

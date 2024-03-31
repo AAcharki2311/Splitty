@@ -118,6 +118,14 @@ public class Expense {
     }
 
     /**
+     * Setter for the is of the expense
+     * @param id Id of the expense
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Setter for the amount of the expense
      * @param amount of the expense
      */
