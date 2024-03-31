@@ -466,6 +466,11 @@ public class MainCtrl {
         return editExpenseCtrl.getChangedExpenses();
     }
 
+    /**
+     * Method for getting the current event Controller
+     *
+     * @return the current eventController
+     */
     public EventOverviewCtrl getEventOCtrl() {
         return eventOCtrl;
     }

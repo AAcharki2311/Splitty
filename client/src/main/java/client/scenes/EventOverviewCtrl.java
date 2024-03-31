@@ -419,6 +419,12 @@ public class EventOverviewCtrl implements Initializable {
         mc.help();
     }
 
+    /**
+     * Method for putting a Participant into the table overview
+     * If there exists a Participant with matching id it will be updated to match the attributes of the new Participant
+     *
+     * @param p Participant to PUT
+     */
     public void putParticipant(Participant p) {
         for (Participant participant:
              partdata) {
@@ -443,6 +449,11 @@ public class EventOverviewCtrl implements Initializable {
         comboBoxOne.getItems().addAll(names);
     }
 
+    /**
+     * Method that gets the current Event's ID
+     *
+     * @return the ID
+     */
     public long getCurrentEventID() {
         return eventid;
     }

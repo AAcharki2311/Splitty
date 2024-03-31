@@ -1,9 +1,6 @@
 package client.utils;
 
 import commons.Event;
-import commons.Expense;
-import commons.Participant;
-import commons.Payment;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
