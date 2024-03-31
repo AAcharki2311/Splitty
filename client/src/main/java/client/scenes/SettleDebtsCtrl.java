@@ -143,10 +143,19 @@ public class SettleDebtsCtrl implements Initializable {
             tableExp.setItems(expdata);
 
             double payed = getPayedValue(selectedParticipant);
-            payedAmount.setText(String.valueOf(payed));
+            String payedString = String.format("%.2f", payed);
+            payedAmount.setText(payedString);
 
-            double owed = getOwedValue();
-            owedAmount.setText(String.valueOf(owed));
+            int amountOfParticipants = names.size();
+
+            double owed = getOwedValue(selectedParticipant, amountOfParticipants);
+            String owedString = String.format("%.2f", owed);
+            owedAmount.setText(owedString);
+            if(owed <= 0){
+                message.setText(h.get("key72"));
+            } else{
+                message.setText(h.get("key73") + owedString + "!");
+            }
         });
     }
 
@@ -186,7 +195,8 @@ public class SettleDebtsCtrl implements Initializable {
         comboBoxPart.getItems().addAll(names);
 
         double totalValue = getTotalExpenses();
-        total.setText(String.valueOf(totalValue));
+        String totalString = String.format("%.2f", totalValue);
+        total.setText(totalString);
 
         pieData = FXCollections.observableArrayList();
         for(Participant p : listAllParticipants){
@@ -201,7 +211,7 @@ public class SettleDebtsCtrl implements Initializable {
      * This method calculates the total expenses of the event
      * @return the total expenses of the event
      */
-    private Double getTotalExpenses() {
+    public Double getTotalExpenses() {
         List<Expense> allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().getId() == eventid).collect(Collectors.toList());
         double tot = 0;
         for(Expense e : allExpenses){
@@ -215,7 +225,7 @@ public class SettleDebtsCtrl implements Initializable {
      * @param participant the participant
      * @return the amount payed by the participant
      */
-    private double getPayedValue(Participant participant) {
+    public double getPayedValue(Participant participant) {
         List<Expense> allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().getId() == eventid).collect(Collectors.toList());
         List<Expense> payedExpenses = allExpenses.stream().filter(e -> e.getCreditor().equals(participant)).collect(Collectors.toList());
         double tot = 0;
@@ -227,19 +237,18 @@ public class SettleDebtsCtrl implements Initializable {
 
     /**
      * This method calculates the amount the participant owes the group
+     * @param participant the participant
+     * @param amountOfParticipants the amount of participants
      * @return the amount the participant owes
      */
-    private double getOwedValue() {
+    public double getOwedValue(Participant participant, int amountOfParticipants) {
         double total = getTotalExpenses();
-        double payed = getPayedValue(selectedParticipant);
-        int amountOfParticipants = names.size();
+        double payed = getPayedValue(participant);
         double hasToPay = total / amountOfParticipants;
         double owed = hasToPay - payed;
         if(owed <= 0){
-            message.setText(h.get("key72"));
             return 0;
         } else{
-            message.setText(h.get("key73") + owed + "!");
             return owed;
         }
     }
