@@ -111,57 +111,65 @@ public class ParticipantCtrl implements Initializable {
         fillUserInfo.setText(h.get("key51"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
-        // TextFieldName.setPromptText(h.get("key31"));
+         TextFieldName.setPromptText(h.get("key31"));
     }
 
     /**
      * This method gets all the information from the textfields and prints it to the console
      */
     public void submit() {
-        String errormessage = h.get("key80");
+        String errormessage = "Error!";
         try{
             Event e = server.getEventByID(eventid);
             String name = TextFieldName.getText();
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
-            // boolean duplicate = checkDuplicate(name, email);
-            Participant p = new Participant(e, name, email, iban, bic);
-            // p.setEvent(e);
-            System.out.println(p.toString());
-            pcu.addParticipant(p);
-//            if(!duplicate){
-//                Participant p = new Participant(e, name, email, iban, bic);
-//                p.setEvent(e);
-//                pcu.addParticipant(p);
-//                String message = "Participant:\n" +
-//                        "_______________" + "\n" +
-//                        h.get("key31") + ": " + p.getName() + "\n" +
-//                        "Email: " + p.getEmail() + "\n" +
-//                        "IBAN: " + p.getIban() + "\n" +
-//                        "BIC: " + p.getBic();
-//                JOptionPane.showMessageDialog(null, message);
-//                clickBack();
-//            } else {
-//                System.out.println("Something wrong");
-//                if(duplicate){
-//                    errormessage = h.get("key75");
-//                } else if(name.isBlank()){
-//                    errormessage = h.get("key76");
-//                } else if(!(email.contains("@") && email.contains("."))) {
-//                    errormessage = h.get("key77");
-//                } else if(!(ibanTrue)){
-//                    errormessage = h.get("key78");
-//                }else if(bic.isBlank()){
-//                    errormessage = h.get("key79");
-//                }
-//                throw new Exception();
-//               }
-            System.out.println("correct");
+            boolean duplicate = checkDuplicate(name, email);
+            if(validate(name, email, iban, bic) && !duplicate) {
+                Participant p = new Participant(e, name, email, iban, bic);
+                p.setEvent(e);
+                pcu.addParticipant(p);
+                String message = "Participant:\n" +
+                        "_______________" + "\n" +
+                        h.get("key31") + ": " + p.getName() + "\n" +
+                        "Email: " + p.getEmail() + "\n" +
+                        "IBAN: " + p.getIban() + "\n" +
+                        "BIC: " + p.getBic();
+                JOptionPane.showMessageDialog(null, message);
+                clickBack();
+            }else {
+                errormessage = elsemethod(duplicate, name, email, iban, bic, h);
+                throw new Exception();
+            }
         } catch (Exception e){
-            //message.setText(errormessage);
-            System.out.println("wrong");
+            message.setText(errormessage);
         }
+    }
+
+    /**
+     * This method is used to check if the input is correct
+     * @param duplicate boolean to check if the name + email is a duplicate
+     * @param name the name of the participant
+     * @param email the email of the participant
+     * @param iban the iban of the participant
+     * @param bic the bic of the participant
+     * @param h the hashmap with the translations
+     * @return the error message
+     */
+    public String elsemethod(boolean duplicate, String name, String email, String iban, String bic, HashMap<String, String> h) {
+        if(duplicate){
+            return h.get("key75");
+        } else if(name.isBlank()){
+            return h.get("key76");
+        } else if(!(email.contains("@") && email.contains("."))) {
+            return h.get("key77");
+        } else if(!(ibanTrue)){
+            return h.get("key78");
+        }else if(bic.isBlank()){
+            return h.get("key79");
+        }
+        return h.get("key80");
     }
 
 
@@ -222,6 +230,30 @@ public class ParticipantCtrl implements Initializable {
      */
     public void setUserParticipant(Participant userParticipant) {
         this.userParticipant = userParticipant;
+    }
+
+    /**
+     * Method to get the user participant
+     * @return the user participant
+     */
+    public Participant getUserParticipant() {
+        return userParticipant;
+    }
+
+    /**
+     * Method to set the event id
+     * @param eventid the event id
+     */
+    public void setEventid(long eventid) {
+        this.eventid = eventid;
+    }
+
+    /**
+     * Method to get the eventid
+     * @return the eventid
+     */
+    public long getEventid() {
+        return eventid;
     }
 
     /**
