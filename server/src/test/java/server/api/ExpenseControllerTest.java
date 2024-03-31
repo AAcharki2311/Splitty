@@ -131,7 +131,7 @@ public class ExpenseControllerTest {
         List<Expense> checkExpense = new ArrayList<>();
         checkExpense.add(expense2);
         checkExpense.add(expense1);
-        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesTitle();
+        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesPerson();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
         assertEquals(checkExpense, responseEntity.getBody()); // Check request body
     }
@@ -146,7 +146,7 @@ public class ExpenseControllerTest {
         List<Expense> checkExpense = new ArrayList<>();
         checkExpense.add(expense1);
         checkExpense.add(expense2);
-        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesTitle();
+        ResponseEntity<List<Expense>> responseEntity = expenseController.getSortedExpensesDate();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
         assertEquals(checkExpense, responseEntity.getBody()); // Check request body
     }
