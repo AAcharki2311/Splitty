@@ -43,6 +43,7 @@ public class MainCtrl {
     private EventOverviewAdminCtrl eventOverviewAdminCtrl;
     private AdminDashboardCtrl adminDashboardCtrl;
     private SettleDebtsCtrl settleDebtsCtrl;
+    private AdminLoginCtrl adminLoginCtrl;
 
     /**
      * Initializes all the controllers
@@ -93,6 +94,7 @@ public class MainCtrl {
         this.aeventScene = new Scene(aevent.getValue());
         this.eventOverviewAdminCtrl = aevent.getKey();
         this.adminDashboardCtrl = adash.getKey();
+        this.adminLoginCtrl = alogin.getKey();
 
         ltest();
 
@@ -172,6 +174,23 @@ public class MainCtrl {
             }
             keyEvent.consume();
         }
+    }
+
+    /**
+     * Shows the keyboard combo's
+     */
+    public void help() {
+        TableView<String> tableView = setupTable();
+
+        Stage newStage = new Stage();
+        newStage.setTitle("Shortcuts");
+
+        StackPane secondaryLayout = new StackPane();
+        secondaryLayout.getChildren().addAll(tableView);
+
+        Scene secondscene = new Scene(secondaryLayout, 285, 300);
+        newStage.setScene(secondscene);
+        newStage.show();
     }
 
     private TableView<String> setupTable() {
@@ -286,9 +305,9 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showEventOverview(String id) {
+        eventOCtrl.update(id);
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
-        eventOCtrl.update(id);
     }
 
     /**
@@ -379,6 +398,13 @@ public class MainCtrl {
      * Shows the admin login screen
      */
     public void showAdminLogin () {
+        try {
+            String taal = setLanguage("src/main/resources/configfile.properties");
+            adminLoginCtrl.langueageswitch(taal);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(aloginScene);
     }
@@ -387,9 +413,17 @@ public class MainCtrl {
      * Shows the admin dashboard screen
      */
     public void showAdminDashboard() {
+        try {
+            String taal = setLanguage("src/main/resources/configfile.properties");
+            adminDashboardCtrl.langueageswitch(taal);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        adminDashboardCtrl.refresh();
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
-        adminDashboardCtrl.refresh();
+
     }
 
     /**
@@ -397,9 +431,16 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showAdminEvent(String id){
+        try {
+            String taal = setLanguage("src/main/resources/configfile.properties");
+            eventOverviewAdminCtrl.langueageswitch(taal);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        eventOverviewAdminCtrl.update(id);
         primaryStage.setTitle("Admin Event view");
         primaryStage.setScene(aeventScene);
-        eventOverviewAdminCtrl.update(id);
     }
 
     /**

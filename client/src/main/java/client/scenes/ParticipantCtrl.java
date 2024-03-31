@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,14 @@ public class ParticipantCtrl implements Initializable {
     @FXML
     private ImageView imageview;
     @FXML
+    private ImageView imageviewFlag;
+    @FXML
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgHome;
+    @FXML
+    private ImageView imgArrow;
+    @FXML
     private TextField TextFieldName;
     @FXML
     private TextField TextFieldEmail;
@@ -45,15 +54,15 @@ public class ParticipantCtrl implements Initializable {
     @FXML
     private TextField TextFieldBIC;
     @FXML
-    private Label titleOfScreen;
+    private Text titleOfScreen;
     @FXML
-    private Label fillInfoText;
+    private Text fillInfoText;
     @FXML
     private Label nameText;
     @FXML
     private Label fillUserInfo;
     @FXML
-    private Label labelEventName;
+    private Text labelEventName;
     @FXML
     private Button cancelBtn;
     @FXML
@@ -81,8 +90,11 @@ public class ParticipantCtrl implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
+        imageview.setImage(new Image("images/logo-no-background.png"));
+        imageviewFlag.setImage(new Image("images/br-circle-01.png"));
+        imgSet.setImage(new Image("images/settings.png"));
+        imgArrow.setImage(new Image("images/arrow.png"));
+        imgHome.setImage(new Image("images/home.png"));
     }
 
     /**
@@ -97,7 +109,9 @@ public class ParticipantCtrl implements Initializable {
         nameText.setText(h.get("key31"));
         cancelBtn.setText(h.get("key26"));
         fillUserInfo.setText(h.get("key51"));
-        TextFieldName.setPromptText(h.get("key31"));
+        Image imageFlag = new Image(h.get("key0"));
+        imageviewFlag.setImage(imageFlag);
+        // TextFieldName.setPromptText(h.get("key31"));
     }
 
     /**
@@ -111,37 +125,45 @@ public class ParticipantCtrl implements Initializable {
             String email = TextFieldEmail.getText();
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
-            boolean duplicate = checkDuplicate(name, email);
-            if(validate(name, email, iban, bic) && !duplicate){
-                Participant p = new Participant(e, name, email, iban, bic);
-                p.setEvent(e);
-                pcu.addParticipant(p);
-                String message = "Participant:\n" +
-                        "_______________" + "\n" +
-                        h.get("key31") + ": " + p.getName() + "\n" +
-                        "Email: " + p.getEmail() + "\n" +
-                        "IBAN: " + p.getIban() + "\n" +
-                        "BIC: " + p.getBic();
-                JOptionPane.showMessageDialog(null, message);
-                clickBack();
-            } else {
-                if(duplicate){
-                    errormessage = h.get("key75");
-                } else if(name.isBlank()){
-                    errormessage = h.get("key76");
-                } else if(!(email.contains("@") && email.contains("."))) {
-                    errormessage = h.get("key77");
-                } else if(!(ibanTrue)){
-                    errormessage = h.get("key78");
-                }else if(bic.isBlank()){
-                    errormessage = h.get("key79");
-                }
-                throw new Exception();
-            }
+            // boolean duplicate = checkDuplicate(name, email);
+            Participant p = new Participant(e, name, email, iban, bic);
+            // p.setEvent(e);
+            System.out.println(p.toString());
+            pcu.addParticipant(p);
+//            if(!duplicate){
+//                Participant p = new Participant(e, name, email, iban, bic);
+//                p.setEvent(e);
+//                pcu.addParticipant(p);
+//                String message = "Participant:\n" +
+//                        "_______________" + "\n" +
+//                        h.get("key31") + ": " + p.getName() + "\n" +
+//                        "Email: " + p.getEmail() + "\n" +
+//                        "IBAN: " + p.getIban() + "\n" +
+//                        "BIC: " + p.getBic();
+//                JOptionPane.showMessageDialog(null, message);
+//                clickBack();
+//            } else {
+//                System.out.println("Something wrong");
+//                if(duplicate){
+//                    errormessage = h.get("key75");
+//                } else if(name.isBlank()){
+//                    errormessage = h.get("key76");
+//                } else if(!(email.contains("@") && email.contains("."))) {
+//                    errormessage = h.get("key77");
+//                } else if(!(ibanTrue)){
+//                    errormessage = h.get("key78");
+//                }else if(bic.isBlank()){
+//                    errormessage = h.get("key79");
+//                }
+//                throw new Exception();
+//               }
+            System.out.println("correct");
         } catch (Exception e){
-            message.setText(errormessage);
+            //message.setText(errormessage);
+            System.out.println("wrong");
         }
     }
+
 
     /**
      * This method checks if the name + email is a duplicate
@@ -207,5 +229,20 @@ public class ParticipantCtrl implements Initializable {
      */
     public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * Used to get back to the Start Screen
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickHome() throws IOException {
+        mc.showStart();
     }
 }

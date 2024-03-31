@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,13 +27,24 @@ public class AddExpenseCtrl implements Initializable {
     private long eventid;
     private Participant selectedParticipant;
     private HashMap<String, String> h;
+    /**
+     * MENU
+     **/
+    @FXML
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgArrow;
+    @FXML
+    private ImageView imgHome;
+    @FXML
+    private ImageView imageviewFlag;
     /** PAGE FXML **/
     @FXML
     private ImageView imageview;
     @FXML
-    private Label titleOfScreen;
+    private Text titleOfScreen;
     @FXML
-    private Label fillInfoText;
+    private Text fillInfoText;
     @FXML
     private Label whoPaidText;
     @FXML
@@ -44,7 +56,7 @@ public class AddExpenseCtrl implements Initializable {
     @FXML
     private Label howToSplitText;
     @FXML
-    private Label labelEventName;
+    private Text labelEventName;
     @FXML
     private Text message;
     @FXML
@@ -90,8 +102,12 @@ public class AddExpenseCtrl implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image("images/logo-no-background.png");
-        imageview.setImage(image);
+        imageview.setImage(new Image("images/logo-no-background.png"));
+        imageviewFlag.setImage(new Image("images/br-circle-01.png"));
+        imgSet.setImage(new Image("images/settings.png"));
+        imgArrow.setImage(new Image("images/arrow.png"));
+        imgHome.setImage(new Image("images/home.png"));
+
         comboBoxNamePaid.setOnAction(event -> {
             String nameParticipant = comboBoxNamePaid.getValue();
             if(nameParticipant == null){
@@ -122,6 +138,8 @@ public class AddExpenseCtrl implements Initializable {
         splitRBtn.setText(h.get("key25"));
         cancelBtn.setText(h.get("key26"));
         comboBoxNamePaid.setPromptText(h.get("key7"));
+        Image imageFlag = new Image(h.get("key0"));
+        imageviewFlag.setImage(imageFlag);
     }
 
     /**
@@ -223,5 +241,20 @@ public class AddExpenseCtrl implements Initializable {
      */
     public void clickBack() {
         mc.showEventOverview(String.valueOf(eventid));
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
+    }
+
+    /**
+     * Used to get back to the Start Screen
+     * @throws IOException if something went wrong with showing the start screen
+     */
+    public void clickHome() throws IOException {
+        mc.showStart();
     }
 }

@@ -263,7 +263,34 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
-        mc.showInvite(String.valueOf(eventid));
+        // mc.showInvite(String.valueOf(eventid));
+        while(true){
+            JTextField textFieldEmail = new JTextField();
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel("Invite your friends with the code:"));
+            panel.add(new JLabel(String.valueOf(eventid)));
+            panel.add(new JLabel("Or send through email:"));
+            panel.add(textFieldEmail);
+            Object[] options = {"Send", "Back"};
+
+            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String email = textFieldEmail.getText();
+                if(email.isBlank() ||
+                        !email.matches(".*@.+\\..+")){
+                    JOptionPane.showMessageDialog(null, h.get("key64"));
+                } else{
+                    // do something
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
     }
 
     /**
@@ -375,5 +402,12 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickBack() {
         mc.showStart();
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings() {
+        mc.help();
     }
 }
