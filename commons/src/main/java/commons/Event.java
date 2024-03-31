@@ -73,6 +73,15 @@ public class Event {
     }
 
     /**
+     * The setter for the id of the Event
+     *
+     * @param id id of the event
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * The setter for the name of the Event
      *
      * @param name the name to set the name of the Event to
