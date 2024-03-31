@@ -16,7 +16,7 @@ public class ParticipantController {
     private final Random random;
     private final ParticipantRepository participantRepository;
     @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
 
     /**
@@ -25,9 +25,10 @@ public class ParticipantController {
      * @param random variable random
      * @param participantRepository repository for participants
      */
-    public ParticipantController(Random random, ParticipantRepository participantRepository) {
+    public ParticipantController(Random random, ParticipantRepository participantRepository, EventRepository eventRepository) {
         this.random = random;
         this.participantRepository = participantRepository;
+        this.eventRepository = eventRepository;
     }
 
     /**
@@ -134,19 +135,22 @@ public class ParticipantController {
      * Method to get all the participants of a specific event
      *
      * @param eventId id of the event to use
-     * @return list of all the participants of a specific event
+     * @return the response from the action
      */
     @GetMapping("/participants/event/{eventId}")
-    public List<Participant> getParticipants(@PathVariable("eventID") long eventId) {
-        List<Participant> eventParticipant = new ArrayList<>();
+    public ResponseEntity<List<Participant>> getParticipantsEvent(@PathVariable("eventId") long eventId) {
+        List<Participant> eventParticipants = new ArrayList<>();
         List<Participant> allParticipants = getParticipants();
         for(int i = 0; i < allParticipants.size(); i++) {
             Event event = allParticipants.get(i).getEvent();
             if (event.getId() == eventId) {
-                eventParticipant.add(allParticipants.get(i));
+                eventParticipants.add(allParticipants.get(i));
             }
         }
-        return eventParticipant;
+        if (eventParticipants.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(eventParticipants);
     }
 
     private boolean isNullOrEmpty(String s) {
