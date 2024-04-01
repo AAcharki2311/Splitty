@@ -22,8 +22,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -179,11 +181,19 @@ public class AdminDashboardCtrl implements Initializable {
         try {
 
             ObjectMapper objectMapper = new ObjectMapper();
-            String file = inputimport.getText();
-            List<Object> objects = Arrays.asList(objectMapper.readValue(
-                    new File("src/main/resources/JSONfiles/"+file+".json"),
-                    Object[].class));
-            
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
+            fileChooser.setTitle("Splitty23 - Import Event");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("all Files", "*.*"));
+            File selectedFile = fileChooser.showOpenDialog(null);
+            if (selectedFile == null || !selectedFile.getName().endsWith(".json")){
+                throw new IOException();
+            }
+
+            List<Object> objects = Arrays.asList(objectMapper.readValue(selectedFile, Object[].class));
+
             try {
                 Event myObject = objectMapper.readValue(objectMapper.writeValueAsString(objects.get(0)), Event.class);
                 for (int i = 0; i < objects.size(); i++){
@@ -191,14 +201,9 @@ public class AdminDashboardCtrl implements Initializable {
                 }
             }
             catch (Exception e){
-                imgMessage.setImage(new Image("images/notifications/Slide4.png"));
-                PauseTransition pause = new PauseTransition(Duration.seconds(6));
-                pause.setOnFinished(p -> imgMessage.setImage(null));
-                pause.play();
-                return;
+                throw new IOException();
                 // System.out.println("SOMETHING WRONG WHILE PRINTING");
             }
-
 
             imgMessage.setImage(new Image("images/notifications/Slide5.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
