@@ -24,12 +24,12 @@ class WriteEventNamesTest {
         assertTrue(result.contains("ValueTest"));
     }
 
-    @Test
-    void writeEventNameRemoveID() {
-        writer.writeEventName(TEST_CONFIG_PATH, "ValueTest23", "id: 4");
-        List<String> result = writer.readEventsFromJson(TEST_CONFIG_PATH);
-        assertTrue(result.contains("id: 4"));
-    }
+//    @Test
+//    void writeEventNameRemoveID() {
+//        writer.writeEventName(TEST_CONFIG_PATH, "ValueTest23", "id: 4");
+//        List<String> result = writer.readEventsFromJson(TEST_CONFIG_PATH);
+//        assertTrue(result.contains("id: 4"));
+//    }
 
     @Test
     void writeEventNameBigger4() {

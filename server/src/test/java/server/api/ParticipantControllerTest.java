@@ -18,6 +18,7 @@ public class ParticipantControllerTest {
     public int nextInt;
     private ParticipantControllerTest.MyRandom random;
     private TestParticipantRepository participantRepository;
+    private TestEventRepository eventRepository;
     private ParticipantController participantController;
     private Participant participant1;
     private Participant participant2;
@@ -30,7 +31,7 @@ public class ParticipantControllerTest {
     public void setup() {
         random = new ParticipantControllerTest.MyRandom();
         participantRepository = new TestParticipantRepository();
-        participantController = new ParticipantController(random, participantRepository);
+        participantController = new ParticipantController(random, participantRepository, eventRepository);
         participant1 = new Participant(eventTest, "nameTest1", "emailTest1", "ibanTest1", "bicTest1");
         participant2 = new Participant(eventTest, "nameTest2", "emailTest2", "ibanTest2", "bicTest2");
     }
@@ -100,13 +101,15 @@ public class ParticipantControllerTest {
      * Test to get all participants of a specific event
      */
     @Test
-    public void getParticipantsTest() {
+    public void getParticipantsEventTest() {
         participantController.add(participant1);
         participantController.add(participant2);
         List<Participant> eventParticipant = new ArrayList<>();
         eventParticipant.add(participant1);
         eventParticipant.add(participant2);
-        assertEquals(participantController.getParticipants(participant1.getEvent().getId()), eventParticipant);
+        ResponseEntity<List<Participant>> responseEntity = participantController.getParticipantsEvent(participant1.getEvent().getId());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
+        assertEquals(responseEntity.getBody(), eventParticipant);
     }
 
     @SuppressWarnings("serial")

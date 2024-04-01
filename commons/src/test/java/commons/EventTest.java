@@ -17,6 +17,15 @@ public class EventTest {
     }
 
     /**
+     * Test contrsuctor
+     */
+    @Test
+    public void checkConstructer2() {
+        Event e = new Event(101, "TestEvent", new Date(), new Date());
+        assertNotNull(e);
+    }
+
+    /**
      * Test namegetter
      */
     @Test
@@ -112,5 +121,12 @@ public class EventTest {
         var actual = e.toString();
         assertTrue(actual.contains(Event.class.getSimpleName()));
         assertTrue(actual.contains("TestEvent"));
+    }
+
+    @Test
+    void setId() {
+        Event e = new Event("TestEvent");
+        e.setId(101);
+        assertEquals(101, e.getId());
     }
 }

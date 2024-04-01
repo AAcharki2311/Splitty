@@ -33,7 +33,7 @@ public class WriteEventNames implements WriteEventNamesInterface {
             }
 
             eventNames.add(eventName);
-            while (eventNames.size() > 4) {
+            while (eventNames.size() > 3) {
                 eventNames.remove(0);
             }
             mapper.writeValue(new File(filepath), eventNames);
