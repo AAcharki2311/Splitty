@@ -8,7 +8,6 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
