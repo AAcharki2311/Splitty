@@ -6,6 +6,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +35,7 @@ public class PaymentsServerUtils {
                 .target(SERVER)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Payment>>() {});
+                .get(new GenericType<ResponseEntity<List<Payment>>>() {}).getBody();
     }
 
     /**
