@@ -22,9 +22,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -102,7 +104,7 @@ public class EventOverviewAdminCtrl implements Initializable {
      * @param expPart    the connection with the ParticipantServerUtils class
      * @param expPay     the connection with the PaymentServerUtils class
      * @param m          the main controller
-     * @param jsonReader
+     * @param jsonReader the ReadJSON object
      */
     @Inject
     public EventOverviewAdminCtrl(EventServerUtils server, ExpensesServerUtils expServer,
@@ -252,7 +254,17 @@ public class EventOverviewAdminCtrl implements Initializable {
             jsonDataObject.add(uppart);
             jsonDataObject.add(uppay);
             jsonDataObject.add(upexp);
-            writer.writeValue(new File("src/main/resources/JSONfiles/Event"+eventid+".json"), jsonDataObject);
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("Event" + eventid + ".json");
+            fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
+            fileChooser.setTitle("Splitty23 - Download Event");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+            File file = fileChooser.showSaveDialog(null);
+            file.createNewFile();
+
+            writer.writeValue(file, jsonDataObject);
+
             imgMessage.setImage(new Image("images/notifications/Slide5.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
