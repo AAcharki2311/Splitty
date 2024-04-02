@@ -465,4 +465,13 @@ public class MainCtrl {
     public ArrayList<Expense> getTempList() {
         return editExpenseCtrl.getChangedExpenses();
     }
+
+    /**
+     * Method for getting the current event Controller
+     *
+     * @return the current eventController
+     */
+    public EventOverviewCtrl getEventOCtrl() {
+        return eventOCtrl;
+    }
 }

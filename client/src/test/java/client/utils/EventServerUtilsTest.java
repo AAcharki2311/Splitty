@@ -1,12 +1,18 @@
 //package client.utils;
 //
 //import commons.Event;
+//import jakarta.inject.Inject;
 //import org.junit.jupiter.api.Test;
 //
 //import java.util.Random;
 //
 //public class EventServerUtilsTest {
-//    private static final EventServerUtils ESU = new EventServerUtils();
+//    private final EventServerUtils ESU;
+//
+//    @Inject
+//    public EventServerUtilsTest(EventServerUtils ESU) {
+//        this.ESU = ESU;
+//    }
 //    @Test
 //    public void printEvents() {
 //        System.out.println(ESU.getAllEvents());
@@ -55,5 +61,10 @@
 //        boolean d = ESU.deleteEventByID(e.id);
 //        System.out.println("Event deleted (Delete):");
 //        System.out.println(d);
+//    }
+//
+//    @Test
+//    public void sendSimpleMessage() {
+//        ESU.send("/app/events", "Test Message");
 //    }
 //}

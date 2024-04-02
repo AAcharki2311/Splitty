@@ -28,6 +28,8 @@ dependencies {
 
 	implementation 'com.google.inject:guice:7.0.0'
 
+	implementation 'org.springframework.boot:spring-boot-starter-websocket:3.2.2'
+
 	implementation 'org.openjfx:javafx-controls:21.0.2'
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'

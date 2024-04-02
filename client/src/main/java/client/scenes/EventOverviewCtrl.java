@@ -376,6 +376,14 @@ public class EventOverviewCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
+//        server.unsubscribeFromAll();
+//        System.out.println("[Websocket] Unsubscribed from update");
+//        server.registerForEventUpdates("/topic/events/"+id, Participant.class, p -> {
+//            System.out.println("[Websocket] Received: "+p);
+//            partdata.add(p);
+//            tablePart.setItems(partdata);
+//        });
+
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
         names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
@@ -409,5 +417,44 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickSettings() {
         mc.help();
+    }
+
+    /**
+     * Method for putting a Participant into the table overview
+     * If there exists a Participant with matching id it will be updated to match the attributes of the new Participant
+     *
+     * @param p Participant to PUT
+     */
+    public void putParticipant(Participant p) {
+        for (Participant participant:
+             partdata) {
+            if (participant.equals(p)) {
+                return;
+            }
+            if(participant.getId() == p.getId()){
+                participant.setEvent(p.getEvent());
+                participant.setEmail(p.getEmail());
+                participant.setName(p.getName());
+                participant.setBic(p.getBic());
+                participant.setIban(p.getIban());
+                names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
+                comboBoxOne.getItems().clear();
+                comboBoxOne.getItems().addAll(names);
+                return;
+            }
+        }
+        partdata.add(p);
+        names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
+        comboBoxOne.getItems().clear();
+        comboBoxOne.getItems().addAll(names);
+    }
+
+    /**
+     * Method that gets the current Event's ID
+     *
+     * @return the ID
+     */
+    public long getCurrentEventID() {
+        return eventid;
     }
 }
