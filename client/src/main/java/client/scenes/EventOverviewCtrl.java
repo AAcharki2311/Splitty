@@ -437,6 +437,9 @@ public class EventOverviewCtrl implements Initializable {
                 participant.setName(p.getName());
                 participant.setBic(p.getBic());
                 participant.setIban(p.getIban());
+                var pnew = partdata.stream().filter(par -> par.getId() == p.getId()).toList();
+                partdata.removeAll(pnew);
+                partdata.add(p);
                 names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
                 comboBoxOne.getItems().clear();
                 comboBoxOne.getItems().addAll(names);

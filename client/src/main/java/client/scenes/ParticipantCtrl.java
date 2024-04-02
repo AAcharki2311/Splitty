@@ -130,6 +130,7 @@ public class ParticipantCtrl implements Initializable {
                 Participant p = new Participant(e, name, email, iban, bic);
                 p.setEvent(e);
                 pcu.addParticipant(p);
+                server.send("/app/events/"+eventid, p);
                 String message = "Participant:\n" +
                         "_______________" + "\n" +
                         h.get("key31") + ": " + p.getName() + "\n" +

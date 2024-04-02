@@ -167,6 +167,8 @@ public class EditParticipantCtrl implements Initializable {
 
                 if(choice == JOptionPane.OK_OPTION){
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
+                    newParticipant.setId(selectedParticipant.getId());
+                    server.send("/app/events/"+eventid, newParticipant);
                     String message = "Participant Updated:\n" +
                             "_______________" + "\n" +
                             h.get("key31") + ": " + newParticipant.getName() + "\n" +
@@ -174,7 +176,6 @@ public class EditParticipantCtrl implements Initializable {
                             "IBAN: " + newParticipant.getIban() + "\n" +
                             "BIC: " + newParticipant.getBic();
                     JOptionPane.showMessageDialog(null, message);
-                    server.send("/app/events/"+eventid, newParticipant);
                     clickBack();
                 }
             } else {
