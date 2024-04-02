@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.ReadURL;
 import commons.Expense;
 import commons.Participant;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,8 +15,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -44,6 +48,8 @@ public class MainCtrl {
     private AdminDashboardCtrl adminDashboardCtrl;
     private SettleDebtsCtrl settleDebtsCtrl;
     private AdminLoginCtrl adminLoginCtrl;
+   private String serverURL = "http://localhost:8080";
+
 
     /**
      * Initializes all the controllers
@@ -98,9 +104,47 @@ public class MainCtrl {
 
         ltest();
 
+        serverURlpopUP();
+
         showStart();
         setUpKeyboardShortcuts();
         primaryStage.show();
+    }
+
+    /**
+     * Method to pop up a dialog to change the server URL
+     */
+    private void serverURlpopUP() {
+        ReadURL readURL = new ReadURL();
+        while(true){
+            serverURL = JOptionPane.showInputDialog("Please enter the server URL:");
+            if (serverURL == null || serverURL.isBlank()) {
+                JOptionPane.showMessageDialog(null, "No URL entered");
+            } else if (!isServerReachable(serverURL)) {
+                JOptionPane.showMessageDialog(null, "Server not reachable. Using default URL: http://localhost:8080");
+                serverURL = "http://localhost:8080";
+                readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                break;
+            } else{
+                readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method checks if the server is reachable
+     * @param url the url that the user wants to switch to
+     * @return true if the server is reachable, false otherwise
+     */
+    public boolean isServerReachable(String url) {
+        try {
+            URL u = new URL(url);
+            HttpURLConnection huc = (HttpURLConnection) u.openConnection();
+            return huc.getResponseCode() == 200;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
