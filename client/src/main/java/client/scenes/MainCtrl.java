@@ -48,7 +48,7 @@ public class MainCtrl {
     private AdminDashboardCtrl adminDashboardCtrl;
     private SettleDebtsCtrl settleDebtsCtrl;
     private AdminLoginCtrl adminLoginCtrl;
-   private String serverURL = "http://localhost:8080";
+    private String serverURL = "http://localhost:8080";
 
 
     /**
@@ -121,10 +121,12 @@ public class MainCtrl {
             if (serverURL == null || serverURL.isBlank()) {
                 JOptionPane.showMessageDialog(null, "No URL entered");
             } else if (!isServerReachable(serverURL)) {
-                JOptionPane.showMessageDialog(null, "Server not reachable. Using default URL: http://localhost:8080");
-                serverURL = "http://localhost:8080";
-                readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
-                break;
+                int choice = JOptionPane.showOptionDialog(null, "Server not reachable. Do you want to use the default URL (http://localhost:8080) or try again?", "Server not reachable", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Use default", "Try again"}, "default");
+                if(choice == 0){
+                    serverURL = "http://localhost:8080";
+                    readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                    break;
+                }
             } else{
                 readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
                 break;
