@@ -20,6 +20,14 @@ class ParticipantTest {
     }
 
     @Test
+    void setId(){
+        Event e = new Event("TestEvent");
+        Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+        a.setId(101);
+        assertEquals(101, a.getId());
+    }
+
+    @Test
     void getName(){
         Event e = new Event("TestEvent");
         Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");

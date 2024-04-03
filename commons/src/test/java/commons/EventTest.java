@@ -64,6 +64,17 @@ public class EventTest {
     }
 
     /**
+     * test check date
+     */
+    @Test
+    public void checkSetCreationDate() {
+        Event e = new Event("TestEvent");
+        Date d = new Date();
+        e.setCreationDate(d);
+        assertEquals(d, e.getCreationDate());
+    }
+
+    /**
      * test checkk name setter
      */
     @Test
