@@ -29,7 +29,7 @@ class ExpenseTest {
     public void checkConstructor() {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
         assertEquals(SOME_EVENT, e.event);
-        assertEquals(SOME_PARTICIPANT, e.participant);
+        assertEquals(SOME_PARTICIPANT, e.creditor);
         assertNotNull(e);
     }
 
@@ -89,6 +89,13 @@ class ExpenseTest {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
         e.setTitle("drinks");
         assertEquals("drinks", e.getTitle());
+    }
+
+    @Test
+    void setId() {
+        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food");
+        e.setId(101);
+        assertEquals(101, e.getId());
     }
 
     @Test

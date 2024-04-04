@@ -52,6 +52,14 @@ public class Participant {
     }
 
     /**
+     * Setter for the id of the participant
+     * @param id id of the participant
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for the event id of this person
      * @return the id of the event
      */
@@ -60,19 +68,19 @@ public class Participant {
     }
 
     /**
+     * Setter for the event of this participant
+     * @param event the new event of this participant
+     */
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    /**
      * Getter for the name of this participant
      * @return the name of the participant
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Setter for the id of the participant
-     * @param id id of the participant
-     */
-    public void setId(long id) {
-        this.id = id;
     }
 
     /**
@@ -159,13 +167,6 @@ public class Participant {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
-    /**
-     * Setter for the event of this participant
-     * @param event the new event of this participant
-     */
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 }
 
 
