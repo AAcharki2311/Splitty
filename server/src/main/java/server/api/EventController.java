@@ -51,14 +51,15 @@ public class EventController {
     @GetMapping("/update")
     public DeferredResult<ResponseEntity<Event>> getUpdates() {
         var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var error = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);
 
         res.onTimeout(() -> {
-            res.setErrorResult(ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT));
+            res.setErrorResult(noContent);
         });
 
         res.onError(err -> {
-            res.setErrorResult(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR));
+            res.setErrorResult(error);
         });
 
         var key = new Object();
