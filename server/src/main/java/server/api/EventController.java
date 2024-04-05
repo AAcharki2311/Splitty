@@ -1,15 +1,18 @@
 package server.api;
 
+import commons.Event;
 import commons.Participant;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
-
-import commons.Event;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.EventRepository;
+
 import java.util.*;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/events")
@@ -37,6 +40,34 @@ public class EventController {
     @GetMapping(path = {"", "/"})
     public List<Event> getEvents() {
         return eventRepository.findAll();
+    }
+
+    private Map<Object, Consumer<Event>> listeners = new HashMap<>();
+
+    /**
+     * Method to get updates from the events
+     * @return the updates from the events
+     */
+    @GetMapping("/update")
+    public DeferredResult<ResponseEntity<Event>> getUpdates() {
+        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);
+
+        // TODO: Error handling
+//        res.onTimeout();
+//        res.onError();
+//        res.onCompletion();
+//        res.setErrorResult();
+        var key = new Object();
+        listeners.put(key, event -> {
+            res.setResult(ResponseEntity.ok(event));
+        });
+
+        res.onCompletion(() -> {
+            listeners.remove(key);
+        });
+
+        return res;
     }
 
     /**
@@ -67,6 +98,9 @@ public class EventController {
         if (event == null || isNullOrEmpty(event.name) || event.lastActDate == null || event.creationDate == null) {
             return ResponseEntity.badRequest().build();
         }
+
+        listeners.forEach((key, consumer) -> consumer.accept(event));
+
         Event postedEvent = eventRepository.save(event);
         return ResponseEntity.ok(postedEvent);
     }

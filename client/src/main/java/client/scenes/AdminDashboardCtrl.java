@@ -10,6 +10,7 @@ import commons.Participant;
 import commons.Payment;
 import jakarta.inject.Inject;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,11 +124,24 @@ public class AdminDashboardCtrl implements Initializable {
         colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
         refresh();
 
+        server.registerForUpdates(event -> {
+            Platform.runLater(() -> {
+                data.add(event);
+            });
+        });
+
         imageviewFlag.setImage(new Image("images/br-circle-01.png"));
         imageview.setImage(new Image("images/logo-no-background.png"));
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
+    }
+
+    /**
+     * Stops the thread
+     */
+    public void stop(){
+        server.stop();
     }
 
     /**
