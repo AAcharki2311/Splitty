@@ -444,6 +444,6 @@ public class StartScreenCtrl implements Initializable {
                     readRecentEvents();
                 });
             }
-        }, 0, 3000);
+        }, 0, 5000);
     }
 }
