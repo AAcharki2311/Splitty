@@ -336,7 +336,7 @@ public class EventOverviewCtrl implements Initializable {
         String newName = "";
 
         while(true){
-            newName = JOptionPane.showInputDialog(h.get("key70"));
+            newName = JOptionPane.showInputDialog(h.get("key70"), oldName);
             if (newName == null || newName.equals(oldName)) {
                return;
             } else if (newName.isBlank()) {

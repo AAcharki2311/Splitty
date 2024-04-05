@@ -10,7 +10,6 @@ import commons.Participant;
 import commons.Payment;
 import jakarta.inject.Inject;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -125,9 +124,8 @@ public class AdminDashboardCtrl implements Initializable {
         refresh();
 
         server.registerForUpdates(event -> {
-            Platform.runLater(() -> {
+                data.removeIf(existingEvent -> existingEvent.getId() == event.getId());
                 data.add(event);
-            });
         });
 
         imageviewFlag.setImage(new Image("images/br-circle-01.png"));

@@ -54,11 +54,11 @@ public class EventController {
         var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);
 
         res.onTimeout(() -> {
-            res.setErrorResult(ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("No updates"));
+            res.setErrorResult(ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT));
         });
 
-        res.onError(e -> {
-            res.setErrorResult(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()));
+        res.onError(err -> {
+            res.setErrorResult(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR));
         });
 
         var key = new Object();
@@ -126,6 +126,8 @@ public class EventController {
         }
         currentEvent.setName(event.getName());
         currentEvent.setLastActDate(event.getLastActDate());
+
+        listeners.forEach((key, consumer) -> consumer.accept(currentEvent));
 
         Event newEvent = eventRepository.save(currentEvent);
         return ResponseEntity.ok(newEvent);
