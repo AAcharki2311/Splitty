@@ -53,11 +53,14 @@ public class EventController {
         var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);
 
-        // TODO: Error handling
-//        res.onTimeout();
-//        res.onError();
-//        res.onCompletion();
-//        res.setErrorResult();
+        res.onTimeout(() -> {
+            res.setErrorResult(ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("No updates"));
+        });
+
+        res.onError(e -> {
+            res.setErrorResult(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage()));
+        });
+
         var key = new Object();
         listeners.put(key, event -> {
             res.setResult(ResponseEntity.ok(event));
