@@ -2,6 +2,7 @@ package client.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,8 +58,12 @@ public class WriteEventNames implements WriteEventNamesInterface {
         try{
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(file, new TypeReference<List<String>>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            if(e instanceof MismatchedInputException){
+                return new ArrayList<>();
+            } else{
+                throw new RuntimeException(e);
+            }
         }
     }
 

@@ -343,7 +343,7 @@ public class MainCtrl {
     public void showStart() {
         primaryStage.setTitle("Splitty 23");
         primaryStage.setScene(startScene);
-        startCtrl.reset();
+        startCtrl.startTimer();
     }
 
     /**
@@ -354,6 +354,7 @@ public class MainCtrl {
         eventOCtrl.update(id);
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
+        startCtrl.stopTimer();
     }
 
     /**
@@ -453,6 +454,7 @@ public class MainCtrl {
         }
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(aloginScene);
+        startCtrl.stopTimer();
     }
 
     /**

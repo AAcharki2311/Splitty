@@ -123,11 +123,23 @@ public class AdminDashboardCtrl implements Initializable {
         colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
         refresh();
 
+        server.registerForUpdates(event -> {
+                data.removeIf(existingEvent -> existingEvent.getId() == event.getId());
+                data.add(event);
+        });
+
         imageviewFlag.setImage(new Image("images/br-circle-01.png"));
         imageview.setImage(new Image("images/logo-no-background.png"));
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
+    }
+
+    /**
+     * Stops the thread
+     */
+    public void stop(){
+        server.stop();
     }
 
     /**
