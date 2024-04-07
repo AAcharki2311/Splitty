@@ -5,6 +5,7 @@ import commons.Payment;
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Random;
@@ -32,10 +33,12 @@ public class PaymentControllerTest {
         random = new PaymentControllerTest.MyRandom();
         paymentRepository = new TestPaymentRepository();
         paymentController = new PaymentController(random,paymentRepository);
-        payment1 = new Payment(eventTest, debtor,creditor,100.0,dateTest);
-        payment2 = new Payment(eventTest, debtor,creditor,100.0,new Date(2002,1,1));
         debtor = new Participant(eventTest, "nameTest1","emailTest1","ibanTest1","bicTest1");
         creditor = new Participant(eventTest, "nameTest2","emailTest2","ibanTest2","bicTest2");
+        payment1 = new Payment(eventTest, debtor,creditor,100.0,dateTest);
+        payment2 = new Payment(eventTest, debtor,creditor,100.0,new Date(2002,1,1));
+        payment1.setId(1);
+        payment2.setId(2);
     }
 
     /**
@@ -48,21 +51,30 @@ public class PaymentControllerTest {
         List<Payment> list = paymentRepository.findAll();
         assertEquals(payment1, list.get(0));
         assertEquals(payment2, list.get(1));
+
+        Payment maughtyPayment = new Payment(eventTest, debtor,null,100.0,dateTest);
+        assertEquals(paymentController.add(maughtyPayment), ResponseEntity.badRequest().build());
     }
 
+    /**
+     * Test for sorting the list of payments by date
+     */
     @Test
     public void sortedPaymentsDateTest() {
-        paymentController.add(payment2);
-        paymentController.add(payment1);
+        paymentRepository.save(payment1);
+        paymentRepository.save(payment2);
         List<Payment> list = paymentController.getSortedPaymentsDate();
         assertEquals(payment1,list.get(0));
         assertEquals(payment2,list.get(1));
     }
 
+    /**
+     * Test for sorting the list of payments by payer
+     */
     @Test
     public void sortedPaymentsPayerTest() {
-        paymentController.add(payment2);
-        paymentController.add(payment1);
+        paymentRepository.save(payment1);
+        paymentRepository.save(payment2);
         List<Payment> list = paymentController.getSortedPaymentsPayer();
         assertEquals(payment1,list.get(0));
         assertEquals(payment2,list.get(1));
