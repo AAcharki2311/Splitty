@@ -208,6 +208,42 @@ public class SettleDebtsCtrl implements Initializable {
     }
 
     /**
+     * Updates pie chart with participant shares
+     */
+    public void clickParticipantBtn() {
+        update(String.valueOf(this.eventid));
+    }
+
+    /**
+     * Shows all tags in the pie chart
+     */
+    public void clickTagBtn(){
+        long eid = eventid;
+        labelEventName.setText(server.getEventByID(eid).getName());
+
+        List<Expense> allExpenses = expServer.getExpenses().stream()
+                .filter(expense -> expense.getEvent().getId() == eventid)
+                .collect(Collectors.toList());
+        List<String> allTags = allExpenses.stream().map(expense -> expense.getTag()).toList();
+
+        comboBoxPart.getItems().clear();
+        comboBoxPart.getItems().addAll(names);
+
+        double totalValue = getTotalExpenses();
+        String totalString = String.format("%.2f", totalValue);
+        total.setText(totalString);
+
+        pieData = FXCollections.observableArrayList();
+        for(Expense e : allExpenses){
+            double value = e.getAmount();
+            // double value = getPayedValue(e);
+            pieData.add(new PieChart.Data(e.getTag(), value));
+        }
+
+        pieChart.setData(pieData);
+    }
+
+    /**
      * This method calculates the total expenses of the event
      * @return the total expenses of the event
      */
