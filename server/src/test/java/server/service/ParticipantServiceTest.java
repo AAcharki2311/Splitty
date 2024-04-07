@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import server.repository.TestEventRepository;
 import server.repository.TestParticipantRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParticipantServiceTest {
     private TestParticipantRepository participantRepository;
@@ -41,4 +43,69 @@ public class ParticipantServiceTest {
         assertEquals(participant1, list.get(0));
         assertEquals(participant2, list.get(1));
     }
+
+    /**
+     * Test for the method getById
+     */
+    @Test
+    public void getByIdTest() {
+        participantService.add(participant1);
+        long id1 = participant1.getId();
+        participantService.add(participant2);
+        long id2 = participant2.getId();
+        Optional<Participant> participantTest1 = participantService.getById(id1);
+        Optional<Participant> participantTest2 = participantService.getById(id2);
+        assertTrue(participantTest1.isPresent());
+        assertEquals(participant1, participantTest1.get());
+        assertTrue(participantTest2.isPresent());
+        assertNotEquals(participant2, participantTest2.get());
+    }
+
+    /**
+     * Test for the method getById if it's non-existing
+     */
+    @Test
+    public void getByWrongIdTest() {
+        long id = -1;
+        Optional<Participant> participantTest = participantService.getById(id);
+        assertFalse(participantTest.isPresent());
+    }
+
+    /**
+     * Test for the update method
+     */
+    @Test
+    public void updateTest() {
+        participantService.add(participant1);
+        Participant updatedParticipant = new Participant(eventTest, "nameTest", "emailTest", "ibanTest", "bicTest");
+        Optional<Participant> participantTest = participantService.update(participant1.getId(), updatedParticipant);
+        assertTrue(participantTest.isPresent());
+        assertEquals(updatedParticipant, participantTest.get());
+    }
+
+    /*
+      Test for the delete method
+     */
+    //@Test
+    //public void deleteTest() {
+     //   participantService.add(participant1);
+     //   participantService.delete(participant1.getId());
+     //   Optional<Participant> participantTest = participantService.getById(participant1.getId());
+     //   assertTrue(participantTest.isEmpty());
+    //}
+
+    /**
+     * Test to get all participants of a specific event
+     */
+    @Test
+    public void getParticipantsEventTest() {
+        participantService.add(participant1);
+        participantService.add(participant2);
+        List<Participant> eventParticipant = new ArrayList<>();
+        eventParticipant.add(participant1);
+        eventParticipant.add(participant2);
+        List<Participant> participants = participantService.getParticipantsEvent(participant1.getEvent().getId());
+        assertEquals(eventParticipant, participants);
+    }
+
 }
