@@ -5,7 +5,6 @@ import commons.Payment;
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.service.PaymentService;
 import server.api.TestPaymentRepository;
 
 import java.util.List;
