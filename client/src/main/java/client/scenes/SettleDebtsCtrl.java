@@ -70,6 +70,10 @@ public class SettleDebtsCtrl implements Initializable {
     private Label owedAmount;
     @FXML
     private Text message;
+    @FXML
+    private Button sortParticipantBtn;
+    @FXML
+    private Button sortTagBtn;
     /** Combobox with Participant Info **/
     @FXML
     private ComboBox<String> comboBoxPart;
@@ -83,6 +87,8 @@ public class SettleDebtsCtrl implements Initializable {
     private TableColumn<Expense, String> colAm;
     @FXML
     private TableColumn<Expense, String> colTitle;
+    @FXML
+    private TableColumn<Expense, String> colTag;
     private ObservableList<Expense> expdata;
     /** PIECHART **/
     @FXML
@@ -119,10 +125,15 @@ public class SettleDebtsCtrl implements Initializable {
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
 
+        payedAmount.setText("0.00");
+        owedAmount.setText("0.00");
+        message.setText("");
+
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
+        colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
 
         comboBoxPart.setOnAction(event -> {
             String nameParticipant = comboBoxPart.getValue();
@@ -175,6 +186,8 @@ public class SettleDebtsCtrl implements Initializable {
         colAm.setText(h.get("key42"));
         colTitle.setText(h.get("key44"));
         comboBoxPart.setPromptText(h.get("key7"));
+        sortParticipantBtn.setText(h.get("key43"));
+        sortTagBtn.setText(h.get("key45"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
     }
@@ -205,6 +218,92 @@ public class SettleDebtsCtrl implements Initializable {
         }
 
         pieChart.setData(pieData);
+    }
+
+    /**
+     * Updates pie chart with participant shares
+     */
+    public void clickParticipantBtn() {
+        update(String.valueOf(this.eventid));
+    }
+
+    /**
+     * Shows all tags in the pie chart
+     */
+    public void clickTagBtn(){
+        long eid = eventid;
+        labelEventName.setText(server.getEventByID(eid).getName());
+
+        List<Expense> allExpenses = expServer.getExpenses().stream()
+                .filter(expense -> expense.getEvent().getId() == eventid)
+                .collect(Collectors.toList());
+        List<String> allTags = allExpenses.stream().map(expense -> expense.getTag()).toList();
+
+        comboBoxPart.getItems().clear();
+        comboBoxPart.getItems().addAll(names);
+
+        double totalValue = getTotalExpenses();
+        String totalString = String.format("%.2f", totalValue);
+        total.setText(totalString);
+
+        ArrayList<PiePair> piePairs = new ArrayList<>();
+        pieData = FXCollections.observableArrayList();
+
+        for(Expense e : allExpenses){
+            boolean done = false;
+            for (int i = 0; i < piePairs.size(); i++){
+                if (e.getTag().equals(piePairs.get(i).getName()) && done == false){
+                    piePairs.get(i).updateAmount(e.getAmount());
+                    done = true;
+                }
+            }
+            if (!done){
+                piePairs.add(new PiePair(e.getTag(), e.getAmount()));
+            }
+        }
+
+        for (PiePair pp : piePairs){
+            pieData.add(new PieChart.Data(pp.getName(), pp.getAmount()));
+        }
+
+        pieChart.setData(pieData);
+    }
+
+    /**
+     * Used to create pie data
+     */
+    static class PiePair {
+        private String name;
+        private double amount;
+
+        public PiePair(String name, double amount){
+            this.name = name;
+            this.amount = amount;
+        }
+
+        /**
+         * Getter for name
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Getter for the amount
+         * @return the amount
+         */
+        public double getAmount() {
+            return amount;
+        }
+
+        /**
+         * Update the amount
+         * @param add the amount to add
+         */
+        public void updateAmount(double add) {
+            this.amount = amount + add;
+        }
     }
 
     /**

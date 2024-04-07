@@ -21,22 +21,22 @@
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="42.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
    <Text fx:id="changeTheExpenseOfText" fill="#0d5575" layoutX="468.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change the expense of " textAlignment="CENTER" wrappingWidth="200.0" />
    <Rectangle fill="#0d5575" height="38.0" layoutY="362.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
-   <Label fx:id="titleText" layoutX="90.0" layoutY="179.0" prefHeight="16.0" prefWidth="30.0" text="Title?" textFill="#0d5575" />
+   <Label fx:id="titleText" layoutX="85.0" layoutY="174.0" prefHeight="16.0" prefWidth="30.0" text="Title?" textFill="#0d5575" />
    <ImageView fx:id="imageview" fitHeight="24.0" fitWidth="174.0" layoutX="43.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/logo-no-background.png" />
       </image>
    </ImageView>
-   <Label fx:id="whoPaidText" layoutX="90.0" layoutY="139.0" text="Who paid?" textFill="#0d5575" />
-   <Label fx:id="howMuchText" layoutX="90.0" layoutY="219.0" text="How much?" textFill="#0d5575" />
-   <Label fx:id="whenText" layoutX="90.0" layoutY="259.0" text="When?" textFill="#0d5575" />
-   <Label fx:id="howToSplitText" layoutX="90.0" layoutY="299.0" text="How to Split?" textFill="#0d5575" />
-   <TextField fx:id="titleTextField" layoutX="175.0" layoutY="179.0" prefHeight="25.0" prefWidth="250.0" promptText="e.g. McDonald's cheeseburger" />
-   <TextField fx:id="moneyField" layoutX="175.0" layoutY="219.0" prefHeight="25.0" prefWidth="166.0" promptText="4,50" />
-   <DatePicker fx:id="dateField" layoutX="175.0" layoutY="259.0" prefHeight="25.0" prefWidth="250.0" promptText="29-02-2024" />
+   <Label fx:id="whoPaidText" layoutX="85.0" layoutY="139.0" text="Who paid?" textFill="#0d5575" />
+   <Label fx:id="howMuchText" layoutX="85.0" layoutY="206.0" text="How much?" textFill="#0d5575" />
+   <Label fx:id="whenText" layoutX="85.0" layoutY="238.0" text="When?" textFill="#0d5575" />
+   <Label fx:id="howToSplitText" layoutX="85.0" layoutY="299.0" text="How to Split?" textFill="#0d5575" />
+   <TextField fx:id="titleTextField" layoutX="175.0" layoutY="170.0" prefHeight="25.0" prefWidth="250.0" promptText="e.g. McDonald's cheeseburger" />
+   <TextField fx:id="moneyField" layoutX="175.0" layoutY="202.0" prefHeight="25.0" prefWidth="166.0" promptText="4,50" />
+   <DatePicker fx:id="dateField" layoutX="175.0" layoutY="234.0" prefHeight="25.0" prefWidth="250.0" promptText="29-02-2024" />
    <RadioButton fx:id="splitRBtn" layoutX="203.0" layoutY="299.0" mnemonicParsing="false" text="Equally Between Everybody" textFill="#0d5575" />
-   <ComboBox fx:id="comboBoxNamePaid" layoutX="173.0" layoutY="135.0" prefHeight="25.0" prefWidth="250.0" promptText="Name of participant" />
-   <ComboBox fx:id="comboBoxCurr" layoutX="342.0" layoutY="219.0" prefHeight="25.0" prefWidth="86.0" promptText="€/$/..." />
+   <ComboBox fx:id="comboBoxNamePaid" layoutX="175.0" layoutY="135.0" prefHeight="25.0" prefWidth="250.0" promptText="Name of participant" />
+   <ComboBox fx:id="comboBoxCurr" layoutX="342.0" layoutY="202.0" prefHeight="25.0" prefWidth="86.0" promptText="€/$/..." />
    <ComboBox fx:id="comboBoxExpensesTitle" layoutX="503.0" layoutY="179.0" prefHeight="25.0" prefWidth="130.0" promptText="Title of expense" />
    <ComboBox fx:id="comboBoxName" layoutX="503.0" layoutY="150.0" prefHeight="26.0" prefWidth="130.0" promptText="Name of particpant" />
    <Text fx:id="message" fill="#0d5575" layoutX="387.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="207.0">
@@ -95,4 +95,6 @@
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
+   <Label fx:id="tagText" layoutX="85.0" layoutY="270.0" text="Tag?" textFill="#0d5575" />
+   <TextField fx:id="tagTextField" layoutX="175.0" layoutY="266.0" prefHeight="25.0" prefWidth="250.0" promptText="e.g. Food" />
 </AnchorPane>

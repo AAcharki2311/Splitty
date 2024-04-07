@@ -54,6 +54,8 @@ public class AddExpenseCtrl implements Initializable {
     @FXML
     private Label whenText;
     @FXML
+    private Label tagText;
+    @FXML
     private Label howToSplitText;
     @FXML
     private Text labelEventName;
@@ -67,6 +69,8 @@ public class AddExpenseCtrl implements Initializable {
     private TextField titleTextField;
     @FXML
     private TextField moneyField;
+    @FXML
+    private TextField tagTextField;
     @FXML
     private DatePicker dateField;
     /** Combobox with Participant Info **/
@@ -164,17 +168,19 @@ public class AddExpenseCtrl implements Initializable {
             String title = titleTextField.getText();
             Double money = Double.parseDouble(moneyField.getText());
             Date date = java.sql.Date.valueOf(dateField.getValue());
-            String tag = "none";
+            String tag = tagTextField.getText();
+            String cur = comboBoxCurr.getValue();
 
             boolean duplicate = checkDuplicate(selectedParticipant.getName(), title);
             if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
-                Expense exp = new Expense(e, p, money, date, title, tag);
+                Expense exp = new Expense(e, p, money, date, title, tag, cur);
                 expServer.addExpense(exp);
                 String message = h.get("key8") + ":\n" +
                         "_______________" + "\n" +
                         "Creditor: " + exp.getCreditor().getName() + "\n" +
                         h.get("key44") + ": " + exp.getTitle() + "\n" +
-                        h.get("key42") + ": " + exp.getAmount() + "\n" +
+                        h.get("key45") + ": " + exp.getTag() + "\n" +
+                        h.get("key42") + ": " + exp.getAmount() + " " + exp.getCur() + "\n" +
                         h.get("key41") + ": " + exp.getDate();
                 JOptionPane.showMessageDialog(null, message);
                 clickBack();

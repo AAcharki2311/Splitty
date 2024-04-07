@@ -14,16 +14,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminDashboardCtrl">
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="501.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="167.0" />
-   <Button fx:id="importBtn" layoutX="535.0" layoutY="187.0" mnemonicParsing="false" onAction="#clickImport" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Import" textFill="#f4fdff">
+   <Button fx:id="importBtn" layoutX="533.0" layoutY="143.0" mnemonicParsing="false" onAction="#clickImport" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Import" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-    <Text fx:id="welcomeText" fill="#0d5575" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Welcome Admin" wrappingWidth="700.0">
-        <font>
-            <Font name="Calibri Bold" size="20.0" />
-        </font>
-    </Text>
+   <Text fx:id="welcomeText" fill="#0d5575" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Welcome Admin" wrappingWidth="700.0">
+      <font>
+         <Font name="Calibri Bold" size="20.0" />
+      </font>
+   </Text>
    <TableView fx:id="table" layoutX="42.0" layoutY="88.0" prefHeight="246.0" prefWidth="444.0" style="-fx-border-radius: 3px; -fx-border-color: #0D5575;">
       <columns>
          <TableColumn fx:id="colId" editable="false" prefWidth="75.0" text="Event ID" />
@@ -32,24 +32,22 @@
          <TableColumn fx:id="colDate2" editable="false" prefWidth="114.5" text="Last Activity" />
       </columns>
    </TableView>
-   <Button fx:id="showBtn" layoutX="533.0" layoutY="301.0" mnemonicParsing="false" onAction="#clickEvent" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Show Event" textFill="#f4fdff">
+   <Button fx:id="showBtn" layoutX="533.0" layoutY="290.0" mnemonicParsing="false" onAction="#clickEvent" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Show Event" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <TextField fx:id="inputimport" layoutX="512.0" layoutY="157.0" prefHeight="25.0" prefWidth="146.0" promptText="File must be in ../JSONfiles" />
-   <TextField fx:id="inputid" layoutX="512.0" layoutY="270.0" prefHeight="25.0" prefWidth="146.0" />
+   <TextField fx:id="inputid" layoutX="512.0" layoutY="255.0" prefHeight="25.0" prefWidth="146.0" />
    <ImageView fx:id="imgMessage" disable="true" fitHeight="200.0" fitWidth="356.0" layoutX="323.0" layoutY="-45.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../../images/notifications/Slide5.png" />
       </image>
    </ImageView>
-   <Text fx:id="title1Text" fill="#0d5575" layoutX="510.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Import from JSON file" wrappingWidth="145.5234375">
+   <Text fx:id="title1Text" fill="#0d5575" layoutX="510.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Import from JSON file" wrappingWidth="145.5234375">
       <font>
          <Font size="13.0" />
       </font></Text>
-   <Text fx:id="title2Text" fill="#0d5575" layoutX="512.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please type the file name" wrappingWidth="146.0" />
-   <Text fx:id="title3Text" fill="#0d5575" layoutX="512.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show Event Data" wrappingWidth="146.0">
+   <Text fx:id="title3Text" fill="#0d5575" layoutX="512.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show Event Data" wrappingWidth="146.0">
       <font>
          <Font size="13.0" />
       </font></Text>
@@ -85,3 +83,4 @@
       </font>
    </Text>
 </AnchorPane>
+
