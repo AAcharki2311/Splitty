@@ -150,6 +150,54 @@ public class PaymentServiceTest {
         assertEquals(sortedList.get(1),testPayment2);
     }
 
+    /**
+     * test for sorting the list of payments by the payers name
+     */
+    @Test void getSortedPaymentsPayerEmailTest() {
+        Participant payer1 = new Participant(eventTest, "Andrew","AAemailTest1","ibanTest1","bicTest1"); //top of list
+        Participant payer2 = new Participant(eventTest, "Zorian","BBemailTest1","ibanTest1","bicTest1"); //bottom of list
+        Payment testPayment1 = payment1;
+        Payment testPayment2 = payment2;
+        payment1.setPayer(payer1);
+        payment2.setPayer(payer2);
+
+        paymentService.add(testPayment1);
+        paymentService.add(testPayment2);
+        List<Payment> sortedList = paymentService.getSortedPaymentsPayerEmail();
+        assertEquals(sortedList.get(0),testPayment1);
+        assertEquals(sortedList.get(1),testPayment2);
+    }
+
+    @Test void getSortedPaymentsRecieverTest() {
+        Participant reciever1 = new Participant(eventTest, "Andrew","emailTest1","ibanTest1","bicTest1"); //top of list
+        Participant reciever2 = new Participant(eventTest, "Zorian","emailTest1","ibanTest1","bicTest1"); //bottom of list
+        Payment testPayment1 = payment1;
+        Payment testPayment2 = payment2;
+        payment1.setReceiv(reciever1);
+        payment2.setReceiv(reciever2);
+
+        paymentService.add(testPayment1);
+        paymentService.add(testPayment2);
+        List<Payment> sortedList = paymentService.getSortedPaymentsReceiver();
+        assertEquals(sortedList.get(0),testPayment1);
+        assertEquals(sortedList.get(1),testPayment2);
+    }
+
+    @Test void getSortedPaymentsRecieverEmailTest() {
+        Participant reciever1 = new Participant(eventTest, "Andrew","AAemailTest1","ibanTest1","bicTest1"); //top of list
+        Participant reciever2 = new Participant(eventTest, "Zorian","ZZemailTest1","ibanTest1","bicTest1"); //bottom of list
+        Payment testPayment1 = payment1;
+        Payment testPayment2 = payment2;
+        payment1.setReceiv(reciever1);
+        payment2.setReceiv(reciever2);
+
+        paymentService.add(testPayment1);
+        paymentService.add(testPayment2);
+        List<Payment> sortedList = paymentService.getSortedPaymentsReceiverEmail();
+        assertEquals(sortedList.get(0),testPayment1);
+        assertEquals(sortedList.get(1),testPayment2);
+    }
+
     @SuppressWarnings("serial")
     public class MyRandom extends Random {
 
