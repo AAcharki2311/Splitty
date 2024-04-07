@@ -1,6 +1,8 @@
 package client.utils;
 
 import commons.Event;
+import commons.Expense;
+import commons.Participant;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -24,6 +26,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class EventServerUtils {
     private final ReadURL readURL;
     private final String SERVER;
+    private StompSession WEBSOCKET;
 
     /**
      * EventServerUtils constructor
@@ -173,5 +176,70 @@ public class EventServerUtils {
     public void send(String dest, Object o) {
         session.send(dest, o);
         System.out.println("A message was sent:"+o);
+    }
+
+    /**
+     * Method that creates a new websocket connection, severing any previous ones, and subscribes to all Participants and Expenses for a specific Event
+     *
+     * @param eventID The ID of the Event the method should subscribe to.
+     * @param participantConsumer The Consumer that handles all Participants received by the websocket
+     * @param expenseConsumer The Consumer that handles all Expenses received by the websocket
+     */
+    public void initiateWebsocketEventConnection(long eventID, Consumer<Participant> participantConsumer, Consumer<Expense> expenseConsumer) {
+        if(WEBSOCKET != null && WEBSOCKET.isConnected()) {
+            WEBSOCKET.disconnect();
+            System.out.println("[Websocket] Disconnected from a previous event");
+        }
+
+        WEBSOCKET = connect(findWebsocketURL(SERVER)+"/websocket");
+
+        String participantDest = "/topic/events/"+eventID+"/participants";
+        WEBSOCKET.subscribe(participantDest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return Participant.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                participantConsumer.accept((Participant) payload);
+            }
+        });
+        System.out.println("[Websocket] Subscribed to Participants on id: "+eventID);
+
+        String expenseDest = "/topic/events/"+eventID+"/expenses";
+        WEBSOCKET.subscribe(expenseDest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return Expense.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                expenseConsumer.accept((Expense) payload);
+            }
+        });
+        System.out.println("[Websocket] Subscribed to Expenses on id: "+eventID);
+    }
+
+    /**
+     * Method for disconnecting the websocket connection if one exists
+     *
+     * @return True if a connection was found and severed, False if no connection was found
+     */
+    public boolean disconnectFromWebsocket() {
+        if(WEBSOCKET != null && WEBSOCKET.isConnected()) {
+            WEBSOCKET.disconnect();
+            return true;
+        }
+        return false;
+    }
+
+    private String findWebsocketURL(String httpServer) {
+        if(httpServer.contains("http")) {
+            String result = httpServer.replaceFirst("http", "ws");
+            return result;
+        }
+        throw new IllegalArgumentException("Server url contains no 'http'");
     }
 }
