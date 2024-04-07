@@ -30,8 +30,8 @@ public class ExpenseServiceTest {
     public void setup() {
         expenseRepository = new TestExpenseRepository();
         expenseService = new ExpenseService(expenseRepository);
-        expense1 = new Expense(eventTest, participantTest1, 1.0, dateTest1, "b", "tahTest1");
-        expense2 = new Expense(eventTest, participantTest2, 1.5, dateTest2, "a", "tagTest2");
+        expense1 = new Expense(eventTest, participantTest1, 1.0, dateTest1, "b", "tahTest1", "EUR");
+        expense2 = new Expense(eventTest, participantTest2, 1.5, dateTest2, "a", "tagTest2", "EUR");
     }
 
     /**
