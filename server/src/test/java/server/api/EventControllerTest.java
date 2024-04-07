@@ -3,7 +3,6 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
