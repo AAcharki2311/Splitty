@@ -54,7 +54,16 @@ public class PaymentControllerTest {
     public void sortedPaymentsDateTest() {
         paymentController.add(payment2);
         paymentController.add(payment1);
-        List<Payment> list = paymentRepository.findAll();
+        List<Payment> list = paymentController.getSortedPaymentsDate();
+        assertEquals(payment1,list.get(0));
+        assertEquals(payment2,list.get(1));
+    }
+
+    @Test
+    public void sortedPaymentsPayerTest() {
+        paymentController.add(payment2);
+        paymentController.add(payment1);
+        List<Payment> list = paymentController.getSortedPaymentsPayer();
         assertEquals(payment1,list.get(0));
         assertEquals(payment2,list.get(1));
     }
