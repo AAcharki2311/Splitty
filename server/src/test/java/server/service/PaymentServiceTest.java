@@ -151,7 +151,7 @@ public class PaymentServiceTest {
     }
 
     /**
-     * test for sorting the list of payments by the payers name
+     * test for sorting the list of payments by the payers email
      */
     @Test void getSortedPaymentsPayerEmailTest() {
         Participant payer1 = new Participant(eventTest, "Andrew","AAemailTest1","ibanTest1","bicTest1"); //top of list
@@ -168,6 +168,9 @@ public class PaymentServiceTest {
         assertEquals(sortedList.get(1),testPayment2);
     }
 
+    /**
+     * test for sorting the list of payments by the recievers name
+     */
     @Test void getSortedPaymentsRecieverTest() {
         Participant reciever1 = new Participant(eventTest, "Andrew","emailTest1","ibanTest1","bicTest1"); //top of list
         Participant reciever2 = new Participant(eventTest, "Zorian","emailTest1","ibanTest1","bicTest1"); //bottom of list
@@ -183,6 +186,9 @@ public class PaymentServiceTest {
         assertEquals(sortedList.get(1),testPayment2);
     }
 
+    /**
+     * test for sorting the list of payments by the recievers email
+     */
     @Test void getSortedPaymentsRecieverEmailTest() {
         Participant reciever1 = new Participant(eventTest, "Andrew","AAemailTest1","ibanTest1","bicTest1"); //top of list
         Participant reciever2 = new Participant(eventTest, "Zorian","ZZemailTest1","ibanTest1","bicTest1"); //bottom of list
