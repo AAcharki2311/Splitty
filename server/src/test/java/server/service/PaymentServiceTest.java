@@ -91,6 +91,9 @@ public class PaymentServiceTest {
 //        assertEquals(paymentTest.get(),updatedPayment);
 //    }
 
+    /**
+     * test for sorting payments by amount
+     */
     @Test
     public void getSortedPaymentsAmountTest() {
         paymentService.add(payment1);
@@ -100,8 +103,11 @@ public class PaymentServiceTest {
         assertEquals(sortedList.get(1),payment1);
     }
 
+    /**
+     * test for sorting payments by date
+     */
     @Test
-    public void getSortedPaymentsDate() {
+    public void getSortedPaymentsDateTest() {
         paymentService.add(payment1);
         paymentService.add(payment2);
         List<Payment> sortedList = paymentService.getSortedPaymentsDate();
@@ -109,7 +115,10 @@ public class PaymentServiceTest {
         assertEquals(sortedList.get(1),payment2);
     }
 
-    @Test void getSortedPaymentsEvent() {
+    /**
+     * test for sorting the list of payments by event
+     */
+    @Test void getSortedPaymentsEventTest() {
         Event event1 = new Event("AAA_start");
         Event event2 = new Event("ZZZ_end");
         Payment testPayment1 = payment1;
@@ -124,7 +133,10 @@ public class PaymentServiceTest {
         assertEquals(sortedList.get(1),testPayment2);
     }
 
-    @Test void getSortedPaymentsPayer() {
+    /**
+     * test for sorting the list of payments by the payers name
+     */
+    @Test void getSortedPaymentsPayerTest() {
         Participant payer1 = new Participant(eventTest, "Andrew","emailTest1","ibanTest1","bicTest1"); //top of list
         Participant payer2 = new Participant(eventTest, "Zorian","emailTest1","ibanTest1","bicTest1"); //bottom of list
         Payment testPayment1 = payment1;
