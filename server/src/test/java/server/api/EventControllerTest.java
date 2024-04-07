@@ -3,6 +3,7 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import commons.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import server.repository.TestEventRepository;
 
 public class EventControllerTest {
     public int nextInt;
@@ -39,7 +41,7 @@ public class EventControllerTest {
     public void addAndGetTest() {
         eventController.add(event1);
         eventController.add(event2);
-        List<Event> list = eventController.getEvents();
+        List<Event> list = new ArrayList<>(); // eventController.getEvents(); TO FIX
         assertEquals(event1, list.get(0));
         assertEquals(event2, list.get(1));
     }

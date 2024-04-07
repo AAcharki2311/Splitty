@@ -38,8 +38,12 @@ public class EventController {
      * @return all the events in the current repository
      */
     @GetMapping(path = {"", "/"})
-    public List<Event> getEvents() {
-        return eventRepository.findAll();
+    public ResponseEntity<List<Event>> getEvents() {
+        List<Event> allEvents = eventRepository.findAll();
+        if (allEvents.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allEvents); // Fix in other classes + tests
     }
 
     private Map<Object, Consumer<Event>> listeners = new HashMap<>();

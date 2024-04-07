@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import commons.Participant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import server.repository.TestEventRepository;
+import server.repository.TestParticipantRepository;
 
 public class ParticipantControllerTest {
     public int nextInt;

@@ -1,6 +1,7 @@
 package server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import server.database.EventRepository;
 import commons.Event;
@@ -75,10 +76,10 @@ public class EventService {
      * @return true if the event has been deleted, false if there was no event with that id
      */
     public boolean delete(long id) {
-        if (eventRepository.existsById(id)) {
-            eventRepository.deleteById(id);
-            return true;
+        if (!eventRepository.existsById(id)) {
+            return false;
         }
-        else {return false;}
+        eventRepository.deleteById(id);
+        return true;
     }
 }
