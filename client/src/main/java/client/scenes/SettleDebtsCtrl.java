@@ -70,6 +70,10 @@ public class SettleDebtsCtrl implements Initializable {
     private Label owedAmount;
     @FXML
     private Text message;
+    @FXML
+    private Button sortParticipantBtn;
+    @FXML
+    private Button sortTagBtn;
     /** Combobox with Participant Info **/
     @FXML
     private ComboBox<String> comboBoxPart;
@@ -182,6 +186,8 @@ public class SettleDebtsCtrl implements Initializable {
         colAm.setText(h.get("key42"));
         colTitle.setText(h.get("key44"));
         comboBoxPart.setPromptText(h.get("key7"));
+        sortParticipantBtn.setText(h.get("key43"));
+        sortTagBtn.setText(h.get("key45"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
     }

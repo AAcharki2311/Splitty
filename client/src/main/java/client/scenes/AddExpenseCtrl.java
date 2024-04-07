@@ -178,7 +178,7 @@ public class AddExpenseCtrl implements Initializable {
                         "_______________" + "\n" +
                         "Creditor: " + exp.getCreditor().getName() + "\n" +
                         h.get("key44") + ": " + exp.getTitle() + "\n" +
-                        "Tag" + ": " + exp.getTag() + "\n" +
+                        h.get("key45") + ": " + exp.getTag() + "\n" +
                         h.get("key42") + ": " + exp.getAmount() + "\n" +
                         h.get("key41") + ": " + exp.getDate();
                 JOptionPane.showMessageDialog(null, message);
