@@ -376,13 +376,6 @@ public class EventOverviewCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
-//        server.unsubscribeFromAll();
-//        System.out.println("[Websocket] Unsubscribed from update");
-//        server.registerForEventUpdates("/topic/events/"+id, Participant.class, p -> {
-//            System.out.println("[Websocket] Received: "+p);
-//            partdata.add(p);
-//            tablePart.setItems(partdata);
-//        });
 
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
@@ -454,6 +447,12 @@ public class EventOverviewCtrl implements Initializable {
         return eventid;
     }
 
+    /**
+     * Method for putting an Expense into the table overview
+     * If there exists an Expense with matching id it will be updated to match the attributes of the new Expense
+     *
+     * @param e Expense to PUT
+     */
     public void putExpense(Expense e) {
         for (int i = 0; i < expdata.size(); i++) {
             Expense expense = expdata.get(i);
@@ -472,6 +471,10 @@ public class EventOverviewCtrl implements Initializable {
         comboBoxOne.setValue(null);
     }
 
+    /**
+     * Method for getting the EventServerUtils object for this scene
+     * @return The EventServerUtils of this scene
+     */
     public EventServerUtils getEventServerUtils() {
         return server;
     }

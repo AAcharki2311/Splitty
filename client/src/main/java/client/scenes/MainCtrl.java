@@ -14,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import org.springframework.messaging.simp.stomp.StompSession;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -521,6 +520,13 @@ public class MainCtrl {
         return eventOCtrl;
     }
 
+    /**
+     * A method for sending a payload via this instance's EventOverViewCtrl's EventServerUtils
+     * Used for centralised sending of payloads
+     *
+     * @param dest The URL to send to
+     * @param o The payload to send
+     */
     public void send(String dest, Object o) {
         eventOCtrl.getEventServerUtils().send(dest, o);
     }
