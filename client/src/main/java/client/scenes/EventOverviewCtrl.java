@@ -88,6 +88,8 @@ public class EventOverviewCtrl implements Initializable {
     @FXML
     private TableColumn<Expense, String> colDate;
     @FXML
+    private TableColumn<Expense, String> colCur;
+    @FXML
     private TableColumn<Expense, String> colAm;
     @FXML
     private TableColumn<Expense, String> colPart;
@@ -144,6 +146,7 @@ public class EventOverviewCtrl implements Initializable {
 
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
+        colCur.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getCur())));
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
         colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
@@ -336,7 +339,7 @@ public class EventOverviewCtrl implements Initializable {
         String newName = "";
 
         while(true){
-            newName = JOptionPane.showInputDialog(h.get("key70"));
+            newName = JOptionPane.showInputDialog(h.get("key70"), oldName);
             if (newName == null || newName.equals(oldName)) {
                return;
             } else if (newName.isBlank()) {

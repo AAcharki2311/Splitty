@@ -6,9 +6,13 @@ import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -21,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Timer;
 import java.util.*;
 
 public class StartScreenCtrl implements Initializable {
@@ -71,7 +76,7 @@ public class StartScreenCtrl implements Initializable {
     private Participant userParticipant;
     private WriteEventNames writeEventNames;
     private LanguageSwitch languageSwitch;
-
+    private Timer timer;
 
     /**
      * Constructor of the StartScreenCtrl
@@ -103,15 +108,6 @@ public class StartScreenCtrl implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
-        if(!eventNames.isEmpty()){
-            String text = "";
-            List<String> tempList = eventNames.reversed();
-            for(String element : tempList) text = text + element + "";
-            recentEventLabel.setText(text);
-        } else{
-            recentEventLabel.setText(h.get("key52"));
-        }
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
@@ -132,6 +128,21 @@ public class StartScreenCtrl implements Initializable {
 
         imgSet.setImage(new Image("images/settings.png"));
         imgHome.setImage(new Image("images/home.png"));
+    }
+
+    /**
+     * This method reads the recent events from the JSON file and sets the text of the recent events label
+     */
+    public void readRecentEvents() {
+        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
+        if(!eventNames.isEmpty()){
+            String text = "";
+            List<String> tempList = eventNames.reversed();
+            for(String element : tempList) text = text + "\n" + element + "\n";
+            recentEventLabel.setText(text);
+        } else{
+            recentEventLabel.setText(h.get("key52"));
+        }
     }
 
     /**
@@ -419,17 +430,26 @@ public class StartScreenCtrl implements Initializable {
     }
 
     /**
-     * Method to reset the recent event label
+     * Method to stop the timer
+     * Since the user is not on the start screen anymore
      */
-    public void reset() {
-        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
-        if(!eventNames.isEmpty()){
-            String text = "";
-            List<String> tempList = eventNames.reversed();
-            for(String element : tempList) text = text + element + "\n\n";
-            recentEventLabel.setText(text);
-        } else{
-            recentEventLabel.setText(h.get("key52").toString());
-        }
+    public void stopTimer() {
+        if(timer != null) timer.cancel();
+    }
+
+    /**
+     * Method to start the timer
+     * To update the recent events every 3 seconds
+     */
+    public void startTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    readRecentEvents();
+                });
+            }
+        }, 0, 5000);
     }
 }

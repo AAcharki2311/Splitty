@@ -58,8 +58,6 @@ public class AdminDashboardCtrl implements Initializable {
     @FXML
     private TextField inputid;
     @FXML
-    private TextField inputimport;
-    @FXML
     private TableView<Event> table;
     @FXML
     private TableColumn<Event, String> colId;
@@ -77,8 +75,6 @@ public class AdminDashboardCtrl implements Initializable {
     @FXML
     private Text title1Text;
     @FXML
-    private Text title2Text;
-    @FXML
     private Text title3Text;
     @FXML
     private Button importBtn;
@@ -88,12 +84,12 @@ public class AdminDashboardCtrl implements Initializable {
     /**
      * Constructor for the AdminDashboardCtrl
      *
-     * @param server     server
-     * @param mc         the main controller
-     * @param expServer
-     * @param expPart
-     * @param expPay
-     * @param jsonReader
+     * @param server        server
+     * @param mc            the main controller
+     * @param expServer     ExpensesServerUtils
+     * @param expPart       ParticipantsServerUtil
+     * @param expPay        PaymentsServerUtils
+     * @param jsonReader    ReadJSON
      */
     @Inject
     public AdminDashboardCtrl(EventServerUtils server, MainCtrl mc, ExpensesServerUtils expServer, ParticipantsServerUtil expPart, PaymentsServerUtils expPay, ReadJSON jsonReader) {
@@ -123,11 +119,28 @@ public class AdminDashboardCtrl implements Initializable {
         colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
         refresh();
 
+        table.setOnMouseClicked(event -> {
+            Event selectedItem = table.getSelectionModel().getSelectedItem();
+            mc.showAdminEvent(String.valueOf(selectedItem.getId()));
+        });
+
+        server.registerForUpdates(event -> {
+                data.removeIf(existingEvent -> existingEvent.getId() == event.getId());
+                data.add(event);
+        });
+
         imageviewFlag.setImage(new Image("images/br-circle-01.png"));
         imageview.setImage(new Image("images/logo-no-background.png"));
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
+    }
+
+    /**
+     * Stops the thread
+     */
+    public void stop(){
+        server.stop();
     }
 
     /**
@@ -148,11 +161,11 @@ public class AdminDashboardCtrl implements Initializable {
 
     /**
      * Goes to a specific event page
-     * @throws IOException
+     * @throws IOException if something went wrong with showing the event page
      */
     public void clickEvent() throws IOException, InterruptedException {
         String eid = inputid.getText();
-        if (eid.equals(null) || eid.equals("")){
+        if (eid.isBlank()){
             imgMessage.setImage(new Image("images/notifications/Slide2.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(e -> imgMessage.setImage(null));
@@ -175,7 +188,7 @@ public class AdminDashboardCtrl implements Initializable {
 
     /**
      * Imports a json file and adds it
-     * @throws IOException
+     * @throws IOException if something went wrong with importing the file
      */
     public void clickImport() throws IOException {
         try {
@@ -195,7 +208,7 @@ public class AdminDashboardCtrl implements Initializable {
             List<Object> objects = Arrays.asList(objectMapper.readValue(selectedFile, Object[].class));
 
             try {
-                Event myObject = objectMapper.readValue(objectMapper.writeValueAsString(objects.get(0)), Event.class);
+                Event myObject = objectMapper.readValue(objectMapper.writeValueAsString(objects.getFirst()), Event.class);
                 for (int i = 0; i < objects.size(); i++){
                     extracted(i, objectMapper, objects, myObject);
                 }
@@ -227,7 +240,7 @@ public class AdminDashboardCtrl implements Initializable {
      * @param objectMapper the object mapper
      * @param objects the list with the information from the Json file
      * @param myObject the Event which the Json file is about
-     * @throws JsonProcessingException
+     * @throws JsonProcessingException if something went wrong with processing the Json file
      */
     private void extracted(int i, ObjectMapper objectMapper, List<Object> objects, Event myObject) throws JsonProcessingException {
         if (i == 0){
@@ -282,13 +295,11 @@ public class AdminDashboardCtrl implements Initializable {
             h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
             welcomeText.setText(h.get("key96"));
             title1Text.setText(h.get("key102"));
-            title2Text.setText(h.get("key103"));
             title3Text.setText(h.get("key104"));
             colName.setText(h.get("key31"));
             colDate1.setText(h.get("key100"));
             colDate2.setText(h.get("key101"));
             inputid.setPromptText(h.get("key94"));
-            inputimport.setPromptText(h.get("key105"));
             importBtn.setText(h.get("key106"));
             showBtn.setText(h.get("key107"));
             Image imageFlag = new Image(h.get("key0"));

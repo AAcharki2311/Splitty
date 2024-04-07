@@ -13,12 +13,11 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.*;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-
-// import java.util.List;
-
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -48,6 +47,37 @@ public class EventServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Event>>() {});
+    }
+
+    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+
+    /**
+     * a method that registers for updates
+     * @param consumer the consumer that will accept the updates
+    */
+    public void registerForUpdates(Consumer<Event> consumer) {
+        EXEC.submit(() -> {
+            while(!Thread.interrupted()){
+                var res =  ClientBuilder.newClient(new ClientConfig()) //
+                        .target(SERVER).path("update") //
+                        .request(APPLICATION_JSON) //
+                        .accept(APPLICATION_JSON) //
+                        .get(Response.class);
+
+                if(res.getStatus() == 204){
+                    continue;
+                }
+                var e = res.readEntity(Event.class);
+                consumer.accept(e);
+            }
+        });
+    }
+
+    /**
+     * Stops the executor service
+     */
+    public void stop(){
+        EXEC.shutdownNow();
     }
 
     /**

@@ -27,12 +27,13 @@ public class Expense {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "creditorId")
-    protected Participant participant;
+    protected Participant creditor;
 
     private double amount;
     private Date date;
     private String title;
     private String tag;
+    private String cur;
 
     /**
      * The default constructor for the expense without args
@@ -44,21 +45,23 @@ public class Expense {
     /**
      * Constructor for creating a new expense
      * @param event the {Event} associated with this {Expense}
-     * @param participant the {participant} associated with this {Expense}
+     * @param creditor the {participant} associated with this {Expense}
      * @param amount amount of the expense
      * @param date date of the expense
      * @param title description of the expense
      * @param tag tag of the expense
+     * @param cur currency of the expense
      */
-    public Expense(Event event, Participant participant,
+    public Expense(Event event, Participant creditor,
                    double amount, Date date,
-                   String title, String tag) {
+                   String title, String tag, String cur) {
         this.event = event;
-        this.participant = participant;
+        this.creditor = creditor;
         this.amount = amount;
         this.date = date;
         this.title = title;
         this.tag = tag;
+        this.cur = cur;
     }
 
     /**
@@ -70,6 +73,14 @@ public class Expense {
     }
 
     /**
+     * Setter for the ID of the expense
+     * @param id the ID of the expense
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for the ID of the event
      * @return ID of the event
      */
@@ -78,11 +89,27 @@ public class Expense {
     }
 
     /**
+     * Setter for the event
+     * @param event the event to set
+     */
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    /**
      * Getter for the creditor
      * @return the creditor
      */
     public Participant getCreditor() {
-        return participant;
+        return creditor;
+    }
+
+    /**
+     * Setter for the creditor
+     * @param creditor the participant to set
+     */
+    public void setCreditor(Participant creditor) {
+        this.creditor = creditor;
     }
 
     /**
@@ -94,43 +121,19 @@ public class Expense {
     }
 
     /**
-     * Getter for the date of the expense
-     * @return date of the expense
-     */
-    public Date getDate() {
-        return date;
-    }
-
-    /**
-     * Getter for the title of the expense
-     * @return title of the expense
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Getter for the tag of the expense
-     * @return tag of the expense
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * Setter for the is of the expense
-     * @param id Id of the expense
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Setter for the amount of the expense
      * @param amount of the expense
      */
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    /**
+     * Getter for the date of the expense
+     * @return date of the expense
+     */
+    public Date getDate() {
+        return date;
     }
 
     /**
@@ -142,6 +145,14 @@ public class Expense {
     }
 
     /**
+     * Getter for the title of the expense
+     * @return title of the expense
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
      * Setter for the title of the expense
      * @param title of the expense
      */
@@ -150,11 +161,35 @@ public class Expense {
     }
 
     /**
+     * Getter for the tag of the expense
+     * @return tag of the expense
+     */
+    public String getTag() {
+        return tag;
+    }
+
+    /**
      * Setter for the tag of the expense
      * @param tag of the expense
      */
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    /**
+     * Getter for the currency of the expense
+     * @return currency of the expense
+     */
+    public String getCur() {
+        return cur;
+    }
+
+    /**
+     * Setter for the currency of the expense
+     * @param cur of the expense
+     */
+    public void setCur(String cur) {
+        this.cur = cur;
     }
 
     /**
@@ -185,19 +220,4 @@ public class Expense {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
-    /**
-     * Setter for the event
-     * @param event the event to set
-     */
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    /**
-     * Setter for the creditor
-     * @param participant the participant to set
-     */
-    public void setCreditor(Participant participant) {
-        this.participant = participant;
-    }
 }

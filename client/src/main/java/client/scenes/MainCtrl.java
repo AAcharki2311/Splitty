@@ -48,7 +48,7 @@ public class MainCtrl {
     private AdminDashboardCtrl adminDashboardCtrl;
     private SettleDebtsCtrl settleDebtsCtrl;
     private AdminLoginCtrl adminLoginCtrl;
-   private String serverURL = "http://localhost:8080";
+    private String serverURL = "http://localhost:8080";
 
 
 
@@ -119,13 +119,19 @@ public class MainCtrl {
         ReadURL readURL = new ReadURL();
         while(true){
             serverURL = JOptionPane.showInputDialog("Please enter the server URL:");
-            if (serverURL == null || serverURL.isBlank()) {
+            if(serverURL == null){
+                System.exit(0);
+            } else if (serverURL.isBlank()) {
                 JOptionPane.showMessageDialog(null, "No URL entered");
             } else if (!isServerReachable(serverURL)) {
-                JOptionPane.showMessageDialog(null, "Server not reachable. Using default URL: http://localhost:8080");
-                serverURL = "http://localhost:8080";
-                readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
-                break;
+                int choice = JOptionPane.showOptionDialog(null, "Server not reachable. Do you want to use the default URL (http://localhost:8080) or try again?",
+                        "Server not reachable", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                        new String[]{"Use default", "Try again"}, "default");
+                if(choice == 0){
+                    serverURL = "http://localhost:8080";
+                    readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                    break;
+                }
             } else{
                 readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
                 break;
@@ -342,7 +348,7 @@ public class MainCtrl {
     public void showStart() {
         primaryStage.setTitle("Splitty 23");
         primaryStage.setScene(startScene);
-        startCtrl.reset();
+        startCtrl.startTimer();
     }
 
     /**
@@ -353,6 +359,7 @@ public class MainCtrl {
         eventOCtrl.update(id);
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
+        startCtrl.stopTimer();
     }
 
     /**
@@ -452,6 +459,7 @@ public class MainCtrl {
         }
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(aloginScene);
+        startCtrl.stopTimer();
     }
 
     /**

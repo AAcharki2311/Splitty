@@ -51,62 +51,7 @@ public class Payment {
     }
 
     /**
-     * The getter for payer
-     *
-     * @return Participant who paid
-     */
-    public Participant getPayer() {
-        return payer;
-    }
-
-    /**
-     * The setter for payer
-     *
-     * @param payer Participant who paid
-     */
-    public void setPayer(Participant payer) {
-        this.payer = payer;
-    }
-
-    /**
-     * The getter for receiv
-     *
-     * @return Participant who got paid
-     */
-    public Participant getReceiv() {
-        return receiv;
-    }
-
-    /**
-     * The setter for receiv
-     *
-     * @param receiv Participant who got paid
-     */
-    public void setReceiv(Participant receiv) {
-        this.receiv = receiv;
-    }
-
-    /**
-     * The getter for event
-     *
-     * @return Event id
-     */
-    public Event getEvent() {
-        return event;
-    }
-
-    /**
-     * The setter for event
-     *
-     * @param event Event
-     */
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    /**
      * The getter for p_id
-     *
      * @return Payment id
      */
     public long getId() {
@@ -115,11 +60,58 @@ public class Payment {
 
     /**
      * The setter for p_id
-     *
      * @param id Payment id
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * The getter for event
+     * @return Event id
+     */
+    public Event getEvent() {
+        return event;
+    }
+
+    /**
+     * The setter for event
+     * @param event Event
+     */
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    /**
+     * The getter for payer
+     * @return Participant who paid
+     */
+    public Participant getPayer() {
+        return payer;
+    }
+
+    /**
+     * The setter for payer
+     * @param payer Participant who paid
+     */
+    public void setPayer(Participant payer) {
+        this.payer = payer;
+    }
+
+    /**
+     * The getter for receiv
+     * @return Participant who got paid
+     */
+    public Participant getReceiv() {
+        return receiv;
+    }
+
+    /**
+     * The setter for receiv
+     * @param receiv Participant who got paid
+     */
+    public void setReceiv(Participant receiv) {
+        this.receiv = receiv;
     }
 
     /**
@@ -133,7 +125,6 @@ public class Payment {
 
     /**
      * The setter for amount
-     *
      * @param amount Amount paid
      */
     public void setAmount(double amount) {
@@ -142,7 +133,6 @@ public class Payment {
 
     /**
      * The getter for date
-     *
      * @return Date of the payment
      */
     public Date getDate() {
@@ -151,7 +141,6 @@ public class Payment {
 
     /**
      * The setter for date
-     *
      * @param date Date of the payment
      */
     public void setDate(Date date) {
@@ -161,7 +150,6 @@ public class Payment {
     /**
      * The equality for the class Payments
      * Two payments are equal if they are both objects Payments and their ids match
-     *
      * @param obj The object to compare to
      * @return True if equal, False if not or null
      */
@@ -172,7 +160,6 @@ public class Payment {
 
     /**
      * The hashcode for the class Payments
-     *
      * @return The hashcode of the object
      */
     @Override
@@ -182,7 +169,6 @@ public class Payment {
 
     /**
      * The toString method for the class Payments
-     *
      * @return The string representation of the object
      */
     @Override
