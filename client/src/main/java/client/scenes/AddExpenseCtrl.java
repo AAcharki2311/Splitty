@@ -169,17 +169,18 @@ public class AddExpenseCtrl implements Initializable {
             Double money = Double.parseDouble(moneyField.getText());
             Date date = java.sql.Date.valueOf(dateField.getValue());
             String tag = tagTextField.getText();
+            String cur = comboBoxCurr.getValue();
 
             boolean duplicate = checkDuplicate(selectedParticipant.getName(), title);
             if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
-                Expense exp = new Expense(e, p, money, date, title, tag);
+                Expense exp = new Expense(e, p, money, date, title, tag, cur);
                 expServer.addExpense(exp);
                 String message = h.get("key8") + ":\n" +
                         "_______________" + "\n" +
                         "Creditor: " + exp.getCreditor().getName() + "\n" +
                         h.get("key44") + ": " + exp.getTitle() + "\n" +
                         h.get("key45") + ": " + exp.getTag() + "\n" +
-                        h.get("key42") + ": " + exp.getAmount() + "\n" +
+                        h.get("key42") + ": " + exp.getAmount() + " " + exp.getCur() + "\n" +
                         h.get("key41") + ": " + exp.getDate();
                 JOptionPane.showMessageDialog(null, message);
                 clickBack();

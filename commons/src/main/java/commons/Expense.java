@@ -33,6 +33,7 @@ public class Expense {
     private Date date;
     private String title;
     private String tag;
+    private String cur;
 
     /**
      * The default constructor for the expense without args
@@ -49,16 +50,18 @@ public class Expense {
      * @param date date of the expense
      * @param title description of the expense
      * @param tag tag of the expense
+     * @param cur currency of the expense
      */
     public Expense(Event event, Participant creditor,
                    double amount, Date date,
-                   String title, String tag) {
+                   String title, String tag, String cur) {
         this.event = event;
         this.creditor = creditor;
         this.amount = amount;
         this.date = date;
         this.title = title;
         this.tag = tag;
+        this.cur = cur;
     }
 
     /**
@@ -171,6 +174,22 @@ public class Expense {
      */
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    /**
+     * Getter for the currency of the expense
+     * @return currency of the expense
+     */
+    public String getCur() {
+        return cur;
+    }
+
+    /**
+     * Setter for the currency of the expense
+     * @param cur of the expense
+     */
+    public void setCur(String cur) {
+        this.cur = cur;
     }
 
     /**

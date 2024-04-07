@@ -171,10 +171,12 @@ public class EditExpenseCtrl implements Initializable {
             comboBoxNamePaid.setValue(selectedExpense.getCreditor().getName());
             titleTextField.setText(selectedExpense.getTitle());
             moneyField.setText(String.valueOf(selectedExpense.getAmount()));
+            comboBoxCurr.setValue(selectedExpense.getCur());
             Date date = selectedExpense.getDate();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             dateField.setValue(localDate);
             splitRBtn.setSelected(true);
+            tagTextField.setText(selectedExpense.getTag());
         });
     }
 
@@ -235,9 +237,10 @@ public class EditExpenseCtrl implements Initializable {
             double money = Double.parseDouble(moneyField.getText());
             Date date = java.sql.Date.valueOf(dateField.getValue());
             String tag = tagTextField.getText();
+            String cur = comboBoxCurr.getValue();
 
             if(validate(title, money, comboBoxCurr, splitRBtn)){
-                Expense exp = new Expense(e, p, money, date, title, tag);
+                Expense exp = new Expense(e, p, money, date, title, tag, cur);
 
                 int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
@@ -249,16 +252,14 @@ public class EditExpenseCtrl implements Initializable {
                         expServer.deleteExpenseByID(selectedExpense.getId());
                         expServer.addExpense(exp);
                     }else{
-                        // expServer.updateExpenseByID(selectedExpense.getId(), exp);
-                        expServer.deleteExpenseByID(selectedExpense.getId());
-                        expServer.addExpense(exp);
+                        expServer.updateExpenseByID(selectedExpense.getId(), exp);
                     }
                     String message = h.get("key8") + " Updated:\n" +
                             "_______________" + "\n" +
                             "Creditor: " + exp.getCreditor().getName() + "\n" +
                             h.get("key44") + ": " + exp.getTitle() + "\n" +
                             h.get("key45") + ": " + exp.getTag() + "\n" +
-                            h.get("key42") + ": " + exp.getAmount() + "\n" +
+                            h.get("key42") + ": " + exp.getAmount() + " " + exp.getCur() + "\n" +
                             h.get("key41") + ": " + exp.getDate();
                     JOptionPane.showMessageDialog(null, message);
                     clickBack();
