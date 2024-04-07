@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.springframework.messaging.simp.stomp.StompSession;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -49,6 +50,7 @@ public class MainCtrl {
     private SettleDebtsCtrl settleDebtsCtrl;
     private AdminLoginCtrl adminLoginCtrl;
    private String serverURL = "http://localhost:8080";
+
 
 
     /**
@@ -517,5 +519,9 @@ public class MainCtrl {
      */
     public EventOverviewCtrl getEventOCtrl() {
         return eventOCtrl;
+    }
+
+    public void send(String dest, Object o) {
+        eventOCtrl.getEventServerUtils().send(dest, o);
     }
 }

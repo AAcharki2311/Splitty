@@ -279,6 +279,7 @@ public class StartScreenCtrl implements Initializable {
                                     mc.getEventOCtrl().putExpense(e);
                                 }
                             });
+                            mc.getEventOCtrl().getEventServerUtils().setWebsocketConnection(server.getWebsocketConnection());
                         }
                     }.start();
 

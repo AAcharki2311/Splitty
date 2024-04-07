@@ -249,4 +249,12 @@ public class EventServerUtils {
         WEBSOCKET.send(dest, o);
         System.out.println("[WEBSOCKET] An object was sent:\n"+o);
     }
+
+    public void setWebsocketConnection(StompSession c) {
+        this.WEBSOCKET = c;
+    }
+
+    public StompSession getWebsocketConnection() {
+        return WEBSOCKET;
+    }
 }

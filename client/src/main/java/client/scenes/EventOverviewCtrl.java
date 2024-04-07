@@ -472,4 +472,8 @@ public class EventOverviewCtrl implements Initializable {
         comboBoxOne.setValue(null);
     }
 
+    public EventServerUtils getEventServerUtils() {
+        return server;
+    }
+
 }
