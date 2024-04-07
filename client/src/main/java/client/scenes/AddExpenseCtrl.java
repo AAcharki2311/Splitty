@@ -170,6 +170,7 @@ public class AddExpenseCtrl implements Initializable {
             if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
                 Expense exp = new Expense(e, p, money, date, title, tag);
                 expServer.addExpense(exp);
+                mc.send("/app/events/"+eventid+"/expenses", exp);
                 String message = h.get("key8") + ":\n" +
                         "_______________" + "\n" +
                         "Creditor: " + exp.getCreditor().getName() + "\n" +

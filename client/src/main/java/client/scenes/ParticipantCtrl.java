@@ -130,7 +130,7 @@ public class ParticipantCtrl implements Initializable {
                 Participant p = new Participant(e, name, email, iban, bic);
                 p.setEvent(e);
                 pcu.addParticipant(p);
-                mc.getEventOCtrl().getEventServerUtils().send("/app/events/"+eventid+"/participants", p);
+                mc.send("/app/events/"+eventid+"/participants", p);
                 //server.send("/app/events/"+eventid, p);
                 String message = "Participant:\n" +
                         "_______________" + "\n" +
