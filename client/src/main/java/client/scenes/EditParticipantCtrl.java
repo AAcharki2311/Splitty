@@ -168,7 +168,7 @@ public class EditParticipantCtrl implements Initializable {
                 if(choice == JOptionPane.OK_OPTION){
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
                     newParticipant.setId(selectedParticipant.getId());
-                    server.send("/app/events/"+eventid, newParticipant);
+                    mc.send("/app/events/"+eventid+"/participants", newParticipant);
                     String message = "Participant Updated:\n" +
                             "_______________" + "\n" +
                             h.get("key31") + ": " + newParticipant.getName() + "\n" +
@@ -284,4 +284,6 @@ public class EditParticipantCtrl implements Initializable {
     public void clickHome() throws IOException {
         mc.showStart();
     }
+
+
 }

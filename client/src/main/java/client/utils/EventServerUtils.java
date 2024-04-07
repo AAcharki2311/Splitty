@@ -1,6 +1,8 @@
 package client.utils;
 
 import commons.Event;
+import commons.Expense;
+import commons.Participant;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -23,6 +25,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class EventServerUtils {
     private final ReadURL readURL;
     private final String SERVER;
+    private StompSession WEBSOCKET;
 
     /**
      * EventServerUtils constructor
@@ -131,7 +134,6 @@ public class EventServerUtils {
         return response.getStatus() == 204;
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
 
     /**
      * Method that instantiates a websocket connection to the server
@@ -157,51 +159,98 @@ public class EventServerUtils {
     }
 
     /**
-     * Method that registers for the messages on a channel
+     * Method that creates a new websocket connection, severing any previous ones, and subscribes to all Participants and Expenses for a specific Event
      *
-     * @param dest the channel url to subscribe to
-     * @param type the class to received messages of
-     * @param consumer the consumer that will accept the messages
-     * @param <T> The class to receive messages of
+     * @param eventID The ID of the Event the method should subscribe to.
+     * @param participantConsumer The Consumer that handles all Participants received by the websocket
+     * @param expenseConsumer The Consumer that handles all Expenses received by the websocket
      */
-    public <T> void registerForObjectUpdates(String dest, Class<T> type, Consumer<T> consumer) {
-        session.subscribe(dest, new StompFrameHandler() {
+    public void initiateWebsocketEventConnection(long eventID, Consumer<Participant> participantConsumer, Consumer<Expense> expenseConsumer) {
+        if(WEBSOCKET != null && WEBSOCKET.isConnected()) {
+            WEBSOCKET.disconnect();
+            System.out.println("[Websocket] Disconnected from a previous event");
+        }
 
-            /**
-             * Invoked before {@link #handleFrame(StompHeaders, Object)} to determine the
-             * type of Object the payload should be converted to.
-             *
-             * @param headers the headers of a message
-             */
+        String websocketDest = findWebsocketURL(readURL.readServerUrl("src/main/resources/configfile.properties"))+"/websocket";
+        System.out.println(websocketDest);
+        WEBSOCKET = connect(websocketDest);
+
+        String participantDest = "/topic/events/"+String.valueOf(eventID)+"/participants";
+        WEBSOCKET.subscribe(participantDest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return type;
+                return Participant.class;
             }
 
-            /**
-             * Handle a STOMP frame with the payload converted to the target type returned
-             * from {@link #getPayloadType(StompHeaders)}.
-             *
-             * @param headers the headers of the frame
-             * @param payload the payload, or {@code null} if there was no payload
-             */
-            @SuppressWarnings("unchecked")
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((T) payload);
+                participantConsumer.accept((Participant) payload);
             }
         });
-        System.out.println("Subscribed to "+'"'+dest+'"');
+        System.out.println("[Websocket] Subscribed to Participants on id: "+eventID);
+
+        String expenseDest = "/topic/events/"+eventID+"/expenses";
+        WEBSOCKET.subscribe(expenseDest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return Expense.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                expenseConsumer.accept((Expense) payload);
+            }
+        });
+        System.out.println("[Websocket] Subscribed to Expenses on id: "+eventID);
     }
 
     /**
-     * Method for sending objects to the specified url
+     * Method for disconnecting the websocket connection if one exists
      *
-     * @param dest the url
-     * @param o the object to send
+     * @return True if a connection was found and severed, False if no connection was found
+     */
+    public boolean disconnectFromWebsocket() {
+        if(WEBSOCKET != null && WEBSOCKET.isConnected()) {
+            WEBSOCKET.disconnect();
+            return true;
+        }
+        return false;
+    }
+
+    private String findWebsocketURL(String httpServer) {
+        if(httpServer.contains("http")) {
+            String result = httpServer.replaceFirst("http", "ws");
+            return result;
+        }
+        throw new IllegalArgumentException("Server url contains no 'http'");
+    }
+
+    /**
+     * Sends a payload to the websocket connection
+     *
+     * @param dest The URL to send to
+     * @param o The payload
      */
     public void send(String dest, Object o) {
-        session.send(dest, o);
-        System.out.println("A message was sent:"+o);
+        WEBSOCKET.send(dest, o);
+        System.out.println("[WEBSOCKET] An object was sent:\n"+o);
+    }
+
+    /**
+     * A simple setter for the websocket connection
+     *
+     * @param c the new StompSession to set
+     */
+    public void setWebsocketConnection(StompSession c) {
+        this.WEBSOCKET = c;
+    }
+
+    /**
+     * A simple getter for the websocket connection
+     *
+     * @return the StompSession
+     */
+    public StompSession getWebsocketConnection() {
+        return WEBSOCKET;
     }
 }

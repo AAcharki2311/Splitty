@@ -254,6 +254,7 @@ public class EditExpenseCtrl implements Initializable {
                     }else{
                         expServer.updateExpenseByID(selectedExpense.getId(), exp);
                     }
+                    mc.send("/app/events/"+eventid+"/expenses", exp);
                     String message = h.get("key8") + " Updated:\n" +
                             "_______________" + "\n" +
                             "Creditor: " + exp.getCreditor().getName() + "\n" +

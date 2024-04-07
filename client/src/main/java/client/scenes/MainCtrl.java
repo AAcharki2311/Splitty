@@ -51,6 +51,7 @@ public class MainCtrl {
     private String serverURL = "http://localhost:8080";
 
 
+
     /**
      * Initializes all the controllers
      * @param primaryStage The primary stage
@@ -525,5 +526,16 @@ public class MainCtrl {
      */
     public EventOverviewCtrl getEventOCtrl() {
         return eventOCtrl;
+    }
+
+    /**
+     * A method for sending a payload via this instance's EventOverViewCtrl's EventServerUtils
+     * Used for centralised sending of payloads
+     *
+     * @param dest The URL to send to
+     * @param o The payload to send
+     */
+    public void send(String dest, Object o) {
+        eventOCtrl.getEventServerUtils().send(dest, o);
     }
 }

@@ -379,13 +379,6 @@ public class EventOverviewCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
-//        server.unsubscribeFromAll();
-//        System.out.println("[Websocket] Unsubscribed from update");
-//        server.registerForEventUpdates("/topic/events/"+id, Participant.class, p -> {
-//            System.out.println("[Websocket] Received: "+p);
-//            partdata.add(p);
-//            tablePart.setItems(partdata);
-//        });
 
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
@@ -429,20 +422,13 @@ public class EventOverviewCtrl implements Initializable {
      * @param p Participant to PUT
      */
     public void putParticipant(Participant p) {
-        for (Participant participant:
-             partdata) {
+        for (int i = 0; i < partdata.size(); i++) {
+            Participant participant = partdata.get(i);
             if (participant.equals(p)) {
                 return;
             }
             if(participant.getId() == p.getId()){
-                participant.setEvent(p.getEvent());
-                participant.setEmail(p.getEmail());
-                participant.setName(p.getName());
-                participant.setBic(p.getBic());
-                participant.setIban(p.getIban());
-                var pnew = partdata.stream().filter(par -> par.getId() == p.getId()).toList();
-                partdata.removeAll(pnew);
-                partdata.add(p);
+                partdata.set(i, p);
                 names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
                 comboBoxOne.getItems().clear();
                 comboBoxOne.getItems().addAll(names);
@@ -463,4 +449,37 @@ public class EventOverviewCtrl implements Initializable {
     public long getCurrentEventID() {
         return eventid;
     }
+
+    /**
+     * Method for putting an Expense into the table overview
+     * If there exists an Expense with matching id it will be updated to match the attributes of the new Expense
+     *
+     * @param e Expense to PUT
+     */
+    public void putExpense(Expense e) {
+        for (int i = 0; i < expdata.size(); i++) {
+            Expense expense = expdata.get(i);
+            if(expense.equals(e)) {
+                return;
+            }
+            if(expense.getId() == e.getId()) {
+                expdata.set(i, e);
+                tableExp.setItems(expdata);
+                comboBoxOne.setValue(null);
+                return;
+            }
+        }
+        expdata.add(e);
+        tableExp.setItems(expdata);
+        comboBoxOne.setValue(null);
+    }
+
+    /**
+     * Method for getting the EventServerUtils object for this scene
+     * @return The EventServerUtils of this scene
+     */
+    public EventServerUtils getEventServerUtils() {
+        return server;
+    }
+
 }

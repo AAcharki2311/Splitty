@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Expense;
 import commons.Event;
 import commons.Participant;
 import org.springframework.http.HttpStatus;
@@ -155,17 +156,49 @@ public class EventController {
 
 
     /**
-     * Method that receives and sends participants via the websocket
+     * Method that receives and sends objects via the websocket
+     *
+     * @param o The Object received
+     * @param id The id of the event from which received
+     * @return The Object that was received
+     */
+    @MessageMapping("/events/{id}") // /app/events/{id}
+    @SendTo("/topic/events/{id}")
+    public Object relayObject(Object o, @DestinationVariable("id") String id) {
+        System.out.println(
+                    "[Websocket] Received and sending to id("+id+"):\n"
+                +o);
+        return o;
+    }
+
+    /**
+     * Method that receives and sends Participants via the websocket
      *
      * @param p The Participant received
      * @param id The id of the event from which received
      * @return The Participant that was received
      */
-    @MessageMapping("/events/{id}") // /app/events/{id}
-    @SendTo("/topic/events/{id}")
-    public Participant sendConfirmationMessage(Participant p, @DestinationVariable("id") String id) {
-        System.out.println("[Websocket] Received and sending to id("+id+"):\n"+p);
+    @MessageMapping("/events/{id}/participants") // /app/events/{id}/participants
+    public Participant relayParticipant(Participant p, @DestinationVariable("id") String id) {
+        System.out.println(
+                    "[Websocket] Received a Participant and sending to id("+id+")\n"
+                +p);
         return p;
+    }
+
+    /**
+     * Method that receives and sends Expenses via the websocket
+     *
+     * @param e The Expense received
+     * @param id The id of the event from which received
+     * @return The Expense that was received
+     */
+    @MessageMapping("/events/{id}/expenses") // /app/events/{id}/expenses
+    public Expense relayParticipant(Expense e, @DestinationVariable("id") String id) {
+        System.out.println(
+                    "[Websocket] Received a Expense and sending to id("+id+")\n"
+                +e);
+        return e;
     }
 
     private boolean isNullOrEmpty(String s) {

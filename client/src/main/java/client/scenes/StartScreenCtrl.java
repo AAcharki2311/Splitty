@@ -226,13 +226,13 @@ public class StartScreenCtrl implements Initializable {
             String eid = eventJoin.getText();
             if(checkNumber(eid)){
                 try{
-                    Event x = server.getEventByID(Long.parseLong(eid));
+                    long eventID = Long.parseLong(eid);
+                    Event x = server.getEventByID(eventID);
                     x.setLastActDate(new Date());
                     server.addEvent(x);
                     mc.showEventOverview(eid);
                     String dest = "/topic/events/"+eid;
                     System.out.println("Destination: "+dest);
-
                     new Thread() {
                         /**
                          * This method is run by the thread when it executes. Subclasses of {@code
@@ -249,14 +249,20 @@ public class StartScreenCtrl implements Initializable {
                          */
                         @Override
                         public void run() {
-                            server.registerForObjectUpdates(dest, Participant.class, p -> {
+                            server.initiateWebsocketEventConnection(eventID, p -> {
                                 System.out.println("[Websocket] Received: "+p);
                                 if(p.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
                                     System.out.println("[Websocket] ID's match thus adding...");
                                     mc.getEventOCtrl().putParticipant(p);
                                 }
+                            }, e -> {
+                                System.out.println("[Websocket] Received: "+e);
+                                if(e.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
+                                    System.out.println("[Websocket] ID's match thus adding...");
+                                    mc.getEventOCtrl().putExpense(e);
+                                }
                             });
-                            System.out.println("[Websocket] Open event subscription done");
+                            mc.getEventOCtrl().getEventServerUtils().setWebsocketConnection(server.getWebsocketConnection());
                         }
                     }.start();
 
