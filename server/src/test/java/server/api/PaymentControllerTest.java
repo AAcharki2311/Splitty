@@ -33,7 +33,7 @@ public class PaymentControllerTest {
         paymentRepository = new TestPaymentRepository();
         paymentController = new PaymentController(random,paymentRepository);
         payment1 = new Payment(eventTest, debtor,creditor,100.0,dateTest);
-        payment2 = new Payment(eventTest, debtor,creditor,100.0,dateTest);
+        payment2 = new Payment(eventTest, debtor,creditor,100.0,new Date(2002,1,1));
         debtor = new Participant(eventTest, "nameTest1","emailTest1","ibanTest1","bicTest1");
         creditor = new Participant(eventTest, "nameTest2","emailTest2","ibanTest2","bicTest2");
     }
@@ -48,6 +48,15 @@ public class PaymentControllerTest {
         List<Payment> list = paymentRepository.findAll();
         assertEquals(payment1, list.get(0));
         assertEquals(payment2, list.get(1));
+    }
+
+    @Test
+    public void sortedPaymentsDateTest() {
+        paymentController.add(payment2);
+        paymentController.add(payment1);
+        List<Payment> list = paymentRepository.findAll();
+        assertEquals(payment1,list.get(0));
+        assertEquals(payment2,list.get(1));
     }
 
     @SuppressWarnings("serial")
