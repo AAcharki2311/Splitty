@@ -83,6 +83,8 @@ public class SettleDebtsCtrl implements Initializable {
     private TableColumn<Expense, String> colAm;
     @FXML
     private TableColumn<Expense, String> colTitle;
+    @FXML
+    private TableColumn<Expense, String> colTag;
     private ObservableList<Expense> expdata;
     /** PIECHART **/
     @FXML
@@ -119,10 +121,15 @@ public class SettleDebtsCtrl implements Initializable {
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
 
+        payedAmount.setText("0.00");
+        owedAmount.setText("0.00");
+        message.setText("");
+
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         colDate.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().getDate())));
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
+        colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
 
         comboBoxPart.setOnAction(event -> {
             String nameParticipant = comboBoxPart.getValue();
@@ -233,14 +240,64 @@ public class SettleDebtsCtrl implements Initializable {
         String totalString = String.format("%.2f", totalValue);
         total.setText(totalString);
 
+        ArrayList<PiePair> piePairs = new ArrayList<>();
         pieData = FXCollections.observableArrayList();
+
         for(Expense e : allExpenses){
-            double value = e.getAmount();
-            // double value = getPayedValue(e);
-            pieData.add(new PieChart.Data(e.getTag(), value));
+            boolean done = false;
+            for (int i = 0; i < piePairs.size(); i++){
+                if (e.getTag().equals(piePairs.get(i).getName()) && done == false){
+                    piePairs.get(i).updateAmount(e.getAmount());
+                    done = true;
+                }
+            }
+            if (!done){
+                piePairs.add(new PiePair(e.getTag(), e.getAmount()));
+            }
+        }
+
+        for (PiePair pp : piePairs){
+            pieData.add(new PieChart.Data(pp.getName(), pp.getAmount()));
         }
 
         pieChart.setData(pieData);
+    }
+
+    /**
+     * Used to create pie data
+     */
+    static class PiePair {
+        private String name;
+        private double amount;
+
+        public PiePair(String name, double amount){
+            this.name = name;
+            this.amount = amount;
+        }
+
+        /**
+         * Getter for name
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Getter for the amount
+         * @return the amount
+         */
+        public double getAmount() {
+            return amount;
+        }
+
+        /**
+         * Update the amount
+         * @param add the amount to add
+         */
+        public void updateAmount(double add) {
+            this.amount = amount + add;
+        }
     }
 
     /**

@@ -33,7 +33,8 @@
       <columns>
          <TableColumn fx:id="colDate" editable="false" prefWidth="70.0" text="Date" />
          <TableColumn fx:id="colAm" editable="false" prefWidth="96.5" text="Amount" />
-         <TableColumn fx:id="colTitle" editable="false" prefWidth="239.5" text="Title" />
+         <TableColumn fx:id="colTitle" editable="false" prefWidth="131.0" text="Title" />
+         <TableColumn fx:id="colTag" editable="false" prefWidth="102.5" text="Tag" />
       </columns>
    </TableView>
    <ComboBox fx:id="comboBoxPart" layoutX="257.0" layoutY="149.0" prefHeight="26.0" prefWidth="186.0" promptText="Name participant" />
@@ -63,7 +64,7 @@
          <Font size="13.0" />
       </font>
    </Label>
-   <Text fx:id="message" fill="#0d5575" layoutX="57.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="378.5">
+   <Text fx:id="message" fill="#0d5575" layoutX="57.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="378.5">
       <font>
          <Font name="Calibri Bold" size="13.0" />
       </font>

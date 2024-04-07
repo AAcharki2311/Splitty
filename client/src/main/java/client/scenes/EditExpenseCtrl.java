@@ -68,6 +68,8 @@ public class EditExpenseCtrl implements Initializable {
     @FXML
     private Label howToSplitText;
     @FXML
+    private Label tagText;
+    @FXML
     private Text labelEventName;
     @FXML
     private Button cancelBtn;
@@ -79,6 +81,8 @@ public class EditExpenseCtrl implements Initializable {
     private TextField moneyField;
     @FXML
     private DatePicker dateField;
+    @FXML
+    private TextField tagTextField;
     @FXML
     private RadioButton splitRBtn;
     @FXML
@@ -207,6 +211,7 @@ public class EditExpenseCtrl implements Initializable {
         String partName = comboBoxName.getValue();
         String expTitle = comboBoxExpensesTitle.getValue();
         String changePartName = comboBoxNamePaid.getValue();
+
         if(partName == null || changePartName == null){
             message.setText(h.get("key83"));
             return;
@@ -225,10 +230,11 @@ public class EditExpenseCtrl implements Initializable {
 
             var p = listAllParticipants.stream().filter(participant -> participant.getName().equals(changePartName)).findAny().get();
 
+
             String title = titleTextField.getText();
             double money = Double.parseDouble(moneyField.getText());
             Date date = java.sql.Date.valueOf(dateField.getValue());
-            String tag = "none";
+            String tag = tagTextField.getText();
 
             if(validate(title, money, comboBoxCurr, splitRBtn)){
                 Expense exp = new Expense(e, p, money, date, title, tag);
@@ -243,12 +249,15 @@ public class EditExpenseCtrl implements Initializable {
                         expServer.deleteExpenseByID(selectedExpense.getId());
                         expServer.addExpense(exp);
                     }else{
-                        expServer.updateExpenseByID(selectedExpense.getId(),exp);
+                        // expServer.updateExpenseByID(selectedExpense.getId(), exp);
+                        expServer.deleteExpenseByID(selectedExpense.getId());
+                        expServer.addExpense(exp);
                     }
                     String message = h.get("key8") + " Updated:\n" +
                             "_______________" + "\n" +
                             "Creditor: " + exp.getCreditor().getName() + "\n" +
                             h.get("key44") + ": " + exp.getTitle() + "\n" +
+                            "Tag" + ": " + exp.getTag() + "\n" +
                             h.get("key42") + ": " + exp.getAmount() + "\n" +
                             h.get("key41") + ": " + exp.getDate();
                     JOptionPane.showMessageDialog(null, message);
