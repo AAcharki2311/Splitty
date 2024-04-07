@@ -104,7 +104,7 @@ public class EventServerUtils {
         return response.getStatus() == 204;
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
+    //private StompSession session = connect("ws://localhost:8080/websocket");
 
     /**
      * Method that instantiates a websocket connection to the server
@@ -137,46 +137,46 @@ public class EventServerUtils {
      * @param consumer the consumer that will accept the messages
      * @param <T> The class to receive messages of
      */
-    public <T> void registerForObjectUpdates(String dest, Class<T> type, Consumer<T> consumer) {
-        session.subscribe(dest, new StompFrameHandler() {
-
-            /**
-             * Invoked before {@link #handleFrame(StompHeaders, Object)} to determine the
-             * type of Object the payload should be converted to.
-             *
-             * @param headers the headers of a message
-             */
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return type;
-            }
-
-            /**
-             * Handle a STOMP frame with the payload converted to the target type returned
-             * from {@link #getPayloadType(StompHeaders)}.
-             *
-             * @param headers the headers of the frame
-             * @param payload the payload, or {@code null} if there was no payload
-             */
-            @SuppressWarnings("unchecked")
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((T) payload);
-            }
-        });
-        System.out.println("Subscribed to "+'"'+dest+'"');
-    }
-
-    /**
-     * Method for sending objects to the specified url
-     *
-     * @param dest the url
-     * @param o the object to send
-     */
-    public void send(String dest, Object o) {
-        session.send(dest, o);
-        System.out.println("A message was sent:"+o);
-    }
+//    public <T> void registerForObjectUpdates(String dest, Class<T> type, Consumer<T> consumer) {
+//        session.subscribe(dest, new StompFrameHandler() {
+//
+//            /**
+//             * Invoked before {@link #handleFrame(StompHeaders, Object)} to determine the
+//             * type of Object the payload should be converted to.
+//             *
+//             * @param headers the headers of a message
+//             */
+//            @Override
+//            public Type getPayloadType(StompHeaders headers) {
+//                return type;
+//            }
+//
+//            /**
+//             * Handle a STOMP frame with the payload converted to the target type returned
+//             * from {@link #getPayloadType(StompHeaders)}.
+//             *
+//             * @param headers the headers of the frame
+//             * @param payload the payload, or {@code null} if there was no payload
+//             */
+//            @SuppressWarnings("unchecked")
+//            @Override
+//            public void handleFrame(StompHeaders headers, Object payload) {
+//                consumer.accept((T) payload);
+//            }
+//        });
+//        System.out.println("Subscribed to "+'"'+dest+'"');
+//    }
+//
+//    /**
+//     * Method for sending objects to the specified url
+//     *
+//     * @param dest the url
+//     * @param o the object to send
+//     */
+//    public void send(String dest, Object o) {
+//        session.send(dest, o);
+//        System.out.println("A message was sent:"+o);
+//    }
 
     /**
      * Method that creates a new websocket connection, severing any previous ones, and subscribes to all Participants and Expenses for a specific Event
@@ -191,9 +191,11 @@ public class EventServerUtils {
             System.out.println("[Websocket] Disconnected from a previous event");
         }
 
-        WEBSOCKET = connect(findWebsocketURL(SERVER)+"/websocket");
+        String websocketDest = findWebsocketURL(readURL.readServerUrl("src/main/resources/configfile.properties"))+"/websocket";
+        System.out.println(websocketDest);
+        WEBSOCKET = connect(websocketDest);
 
-        String participantDest = "/topic/events/"+eventID+"/participants";
+        String participantDest = "/topic/events/"+String.valueOf(eventID)+"/participants";
         WEBSOCKET.subscribe(participantDest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -241,5 +243,10 @@ public class EventServerUtils {
             return result;
         }
         throw new IllegalArgumentException("Server url contains no 'http'");
+    }
+
+    public void send(String dest, Object o) {
+        WEBSOCKET.send(dest, o);
+        System.out.println("[WEBSOCKET] An object was sent:\n"+o);
     }
 }
