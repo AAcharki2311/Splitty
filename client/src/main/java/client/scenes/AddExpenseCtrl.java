@@ -54,8 +54,6 @@ public class AddExpenseCtrl implements Initializable {
     @FXML
     private Label whenText;
     @FXML
-    private Label tagText;
-    @FXML
     private Label howToSplitText;
     @FXML
     private Text labelEventName;

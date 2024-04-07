@@ -72,7 +72,7 @@ public class ParticipantController {
         }
 
         try{
-            Event event = eventRepository.findById(participant.getEvent().getId()).get();
+            Event event = eventRepository.findById(participant.getEvent().getId()).orElse(null);
             if(event == null) {
                 throw new NoSuchElementException();
             }

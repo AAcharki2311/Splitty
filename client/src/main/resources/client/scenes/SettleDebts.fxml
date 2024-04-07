@@ -23,13 +23,13 @@
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="468.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="468.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="42.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
-   <Label fx:id="total" layoutX="259.0" layoutY="127.0" prefHeight="19.0" prefWidth="102.0" text="0" textFill="#0d5575">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="220.0" layoutX="42.0" layoutY="115.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
+   <Label fx:id="total" layoutX="340.0" layoutY="120.0" prefHeight="19.0" prefWidth="102.0" text="0" textFill="#0d5575">
       <font>
          <Font size="13.0" />
       </font>
    </Label>
-   <TableView fx:id="tableExp" layoutX="41.0" layoutY="251.0" prefHeight="83.0" prefWidth="408.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
+   <TableView fx:id="tableExp" layoutX="41.0" layoutY="235.0" prefHeight="99.0" prefWidth="408.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
       <columns>
          <TableColumn fx:id="colDate" editable="false" prefWidth="70.0" text="Date" />
          <TableColumn fx:id="colAm" editable="false" prefWidth="96.5" text="Amount" />
@@ -37,34 +37,34 @@
          <TableColumn fx:id="colTag" editable="false" prefWidth="102.5" text="Tag" />
       </columns>
    </TableView>
-   <ComboBox fx:id="comboBoxPart" layoutX="257.0" layoutY="149.0" prefHeight="26.0" prefWidth="186.0" promptText="Name participant" />
-   <Label fx:id="shareLabel" layoutX="55.0" layoutY="152.0" prefHeight="20.0" prefWidth="264.0" text="See Share per person:" textAlignment="CENTER" textFill="#0d5575" wrapText="true">
+   <ComboBox fx:id="comboBoxPart" layoutX="257.0" layoutY="143.0" onAction="#onClickComboBoxPart" prefHeight="26.0" prefWidth="186.0" promptText="Name participant" />
+   <Label fx:id="shareLabel" layoutX="55.0" layoutY="145.0" prefHeight="20.0" prefWidth="264.0" text="See Share per person:" textAlignment="CENTER" textFill="#0d5575" wrapText="true">
       <font>
          <Font size="13.0" />
       </font>
    </Label>
-   <Label fx:id="payedLabel" layoutX="57.0" layoutY="177.0" prefHeight="18.0" prefWidth="74.0" text="Payed:" textAlignment="CENTER" textFill="#0d5575">
+   <Label fx:id="payedLabel" layoutX="55.0" layoutY="170.0" prefHeight="18.0" prefWidth="74.0" text="Payed:" textAlignment="CENTER" textFill="#0d5575">
       <font>
          <Font size="13.0" />
       </font>
    </Label>
-   <Label fx:id="owedLabel" layoutX="57.0" layoutY="201.0" prefHeight="18.0" prefWidth="115.0" text="Needs to pay:" textAlignment="CENTER" textFill="#0d5575">
+   <Label fx:id="owedLabel" layoutX="55.0" layoutY="195.0" prefHeight="18.0" prefWidth="115.0" text="Needs to pay:" textAlignment="CENTER" textFill="#0d5575">
       <font>
          <Font size="13.0" />
       </font>
    </Label>
-   <PieChart fx:id="pieChart" layoutX="468.0" layoutY="179.0" prefHeight="150.0" prefWidth="200.0" />
-   <Label fx:id="payedAmount" layoutX="259.0" layoutY="179.0" prefHeight="20.0" prefWidth="63.0" text="0" textAlignment="CENTER" textFill="#0d5575">
+   <PieChart fx:id="pieChart" layoutX="468.0" layoutY="179.0" legendSide="TOP" prefHeight="150.0" prefWidth="200.0" />
+   <Label fx:id="payedAmount" layoutX="259.0" layoutY="170.0" prefHeight="20.0" prefWidth="63.0" text="0" textAlignment="CENTER" textFill="#0d5575">
       <font>
          <Font size="13.0" />
       </font>
    </Label>
-   <Label fx:id="owedAmount" layoutX="259.0" layoutY="203.0" prefHeight="18.0" prefWidth="74.0" text="0" textAlignment="CENTER" textFill="#0d5575">
+   <Label fx:id="owedAmount" layoutX="259.0" layoutY="195.0" prefHeight="18.0" prefWidth="74.0" text="0" textAlignment="CENTER" textFill="#0d5575">
       <font>
          <Font size="13.0" />
       </font>
    </Label>
-   <Text fx:id="message" fill="#0d5575" layoutX="57.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="378.5">
+   <Text fx:id="message" fill="#0d5575" layoutX="57.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="378.5">
       <font>
          <Font name="Calibri Bold" size="13.0" />
       </font>
@@ -100,7 +100,7 @@
          <Font name="System Bold" size="13.0" />
       </font>
    </Text>
-   <Text fx:id="sumLabel" fill="#0d5575" layoutX="55.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The total sum of alle expenses:" wrappingWidth="235.0">
+   <Text fx:id="sumLabel" fill="#0d5575" layoutX="55.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The total sum of alle expenses:" wrappingWidth="235.0">
       <font>
          <Font size="13.0" />
       </font>

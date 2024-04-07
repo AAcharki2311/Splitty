@@ -5,6 +5,7 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -134,40 +135,43 @@ public class SettleDebtsCtrl implements Initializable {
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
+    }
 
-        comboBoxPart.setOnAction(event -> {
-            String nameParticipant = comboBoxPart.getValue();
-            if(nameParticipant == null){
-                message.setText(h.get("key74"));
-                return;
-            }
+    /**
+     * This method sets the field when clicked on the combobox with the participants of the event
+     */
+    public void onClickComboBoxPart() {
+        String nameParticipant = comboBoxPart.getValue();
+        if(nameParticipant == null){
+            message.setText(h.get("key74"));
+            return;
+        }
 
-            List<Participant> listAllParticipants = partServer.getAllParticipants()
-                    .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
+        List<Participant> listAllParticipants = partServer.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
 
-            selectedParticipant = listAllParticipants.stream().filter(participant -> participant.getName().equals(nameParticipant)).findAny().get();
+        selectedParticipant = listAllParticipants.stream().filter(participant -> participant.getName().equals(nameParticipant)).findAny().get();
 
-            Event x = server.getEventByID(eventid);
-            var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
-            var expensesOnlyParticipant = allExpenses.stream().filter(e -> e.getCreditor().equals(selectedParticipant)).collect(Collectors.toList());
-            expdata = FXCollections.observableList(expensesOnlyParticipant);
-            tableExp.setItems(expdata);
+        Event x = server.getEventByID(eventid);
+        var allExpenses = expServer.getExpenses().stream().filter(e -> e.getEvent().equals(x)).collect(Collectors.toList());
+        var expensesOnlyParticipant = allExpenses.stream().filter(e -> e.getCreditor().equals(selectedParticipant)).collect(Collectors.toList());
+        expdata = FXCollections.observableList(expensesOnlyParticipant);
+        tableExp.setItems(expdata);
 
-            double payed = getPayedValue(selectedParticipant);
-            String payedString = String.format("%.2f", payed);
-            payedAmount.setText(payedString);
+        double payed = getPayedValue(selectedParticipant);
+        String payedString = String.format("%.2f", payed);
+        payedAmount.setText(payedString);
 
-            int amountOfParticipants = names.size();
+        int amountOfParticipants = names.size();
 
-            double owed = getOwedValue(selectedParticipant, amountOfParticipants);
-            String owedString = String.format("%.2f", owed);
-            owedAmount.setText(owedString);
-            if(owed <= 0){
-                message.setText(h.get("key72"));
-            } else{
-                message.setText(h.get("key73") + owedString + "!");
-            }
-        });
+        double owed = getOwedValue(selectedParticipant, amountOfParticipants);
+        String owedString = String.format("%.2f", owed);
+        owedAmount.setText(owedString);
+        if(owed <= 0){
+            message.setText(h.get("key72"));
+        } else{
+            message.setText(h.get("key73") + owedString + "!");
+        }
     }
 
     /**
@@ -212,12 +216,18 @@ public class SettleDebtsCtrl implements Initializable {
         total.setText(totalString);
 
         pieData = FXCollections.observableArrayList();
+        pieData.clear();
         for(Participant p : listAllParticipants){
             double value = getPayedValue(p);
             pieData.add(new PieChart.Data(p.getName(), value));
         }
 
-        pieChart.setData(pieData);
+        pieData.forEach(data -> data.nameProperty().bind(
+                Bindings.concat(data.getName(), ": ", data.pieValueProperty().getValue())
+        ));
+
+        pieChart.getData().clear();
+        pieChart.getData().addAll(pieData);
     }
 
     /**
@@ -231,79 +241,22 @@ public class SettleDebtsCtrl implements Initializable {
      * Shows all tags in the pie chart
      */
     public void clickTagBtn(){
-        long eid = eventid;
-        labelEventName.setText(server.getEventByID(eid).getName());
-
-        List<Expense> allExpenses = expServer.getExpenses().stream()
-                .filter(expense -> expense.getEvent().getId() == eventid)
-                .collect(Collectors.toList());
-        List<String> allTags = allExpenses.stream().map(expense -> expense.getTag()).toList();
-
-        comboBoxPart.getItems().clear();
-        comboBoxPart.getItems().addAll(names);
-
-        double totalValue = getTotalExpenses();
-        String totalString = String.format("%.2f", totalValue);
-        total.setText(totalString);
-
-        ArrayList<PiePair> piePairs = new ArrayList<>();
-        pieData = FXCollections.observableArrayList();
-
-        for(Expense e : allExpenses){
-            boolean done = false;
-            for (int i = 0; i < piePairs.size(); i++){
-                if (e.getTag().equals(piePairs.get(i).getName()) && done == false){
-                    piePairs.get(i).updateAmount(e.getAmount());
-                    done = true;
-                }
-            }
-            if (!done){
-                piePairs.add(new PiePair(e.getTag(), e.getAmount()));
-            }
+        pieData.clear();
+        List<Expense> listAllExpenses = expServer.getExpenses()
+                .stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
+        ArrayList<String> tags = (ArrayList<String>) listAllExpenses.stream().map(Expense::getTag).distinct().collect(Collectors.toList());
+        for(String tag : tags){
+            double value = listAllExpenses.stream().filter(expense -> expense.getTag().equals(tag)).mapToDouble(Expense::getAmount).sum();
+            pieData.add(new PieChart.Data(tag, value));
         }
 
-        for (PiePair pp : piePairs){
-            pieData.add(new PieChart.Data(pp.getName(), pp.getAmount()));
-        }
+        pieData.forEach(data -> data.nameProperty().bind(
+                Bindings.concat(data.getName(), "; ", data.pieValueProperty().getValue())
+        ));
 
-        pieChart.setData(pieData);
-    }
+        pieChart.getData().clear();
+        pieChart.getData().addAll(pieData);
 
-    /**
-     * Used to create pie data
-     */
-    static class PiePair {
-        private String name;
-        private double amount;
-
-        public PiePair(String name, double amount){
-            this.name = name;
-            this.amount = amount;
-        }
-
-        /**
-         * Getter for name
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * Getter for the amount
-         * @return the amount
-         */
-        public double getAmount() {
-            return amount;
-        }
-
-        /**
-         * Update the amount
-         * @param add the amount to add
-         */
-        public void updateAmount(double add) {
-            this.amount = amount + add;
-        }
     }
 
     /**

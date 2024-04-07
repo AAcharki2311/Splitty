@@ -21,7 +21,7 @@
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="42.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
    <ComboBox fx:id="comboBoxNamePaid" layoutX="175.0" layoutY="135.0" prefHeight="25.0" prefWidth="250.0" promptText="Name of participant" />
    <TextField fx:id="titleTextField" layoutX="175.0" layoutY="170.0" prefHeight="25.0" prefWidth="250.0" promptText="e.g. McDonald's cheeseburger" />
-   <TextField fx:id="moneyField" layoutX="175.0" layoutY="202.0" prefHeight="25.0" prefWidth="166.0" promptText="4.50" />
+   <TextField fx:id="moneyField" layoutX="175.0" layoutY="202.0" prefHeight="25.0" prefWidth="160.0"  promptText="4.50" />
    <DatePicker fx:id="dateField" layoutX="175.0" layoutY="234.0" prefHeight="25.0" prefWidth="250.0" promptText="29-02-2024" />
    <Label fx:id="titleText" layoutX="85.0" layoutY="174.0" prefHeight="16.0" prefWidth="30.0" text="Title?" textFill="#0d5575" />
    <ImageView fx:id="imageview" fitHeight="25.0" fitWidth="174.0" layoutX="43.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
@@ -34,7 +34,7 @@
    <Label fx:id="whenText" layoutX="85.0" layoutY="238.0" text="When?" textFill="#0d5575" />
    <Label fx:id="howToSplitText" layoutX="85.0" layoutY="299.0" text="How to Split?" textFill="#0d5575" />
    <RadioButton fx:id="splitRBtn" layoutX="203.0" layoutY="299.0" mnemonicParsing="false" text="Equally Between Everybody" textFill="#0d5575" />
-   <ComboBox fx:id="comboBoxCurr" layoutX="343.0" layoutY="202.0" prefHeight="25.0" prefWidth="86.0" promptText="€/$/..." />
+   <ComboBox fx:id="comboBoxCurr" layoutX="338.0" layoutY="202.0" prefHeight="25.0" prefWidth="88.0" promptText="€/$/..." />
    <Text fx:id="message" fill="#0d5575" layoutX="469.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="200.0">
       <font>
          <Font name="Calibri Bold" size="14.0" />

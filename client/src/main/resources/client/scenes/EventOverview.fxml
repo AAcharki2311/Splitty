@@ -94,6 +94,7 @@
    <TableView fx:id="tableExp" layoutX="42.0" layoutY="115.0" prefHeight="175.0" prefWidth="408.0" style="-fx-border-radius: 3px; -fx-border-color: #0D5575;">
       <columns>
          <TableColumn fx:id="colDate" editable="false" prefWidth="68.0" text="Date" />
+         <TableColumn fx:id="colCur" editable="false" minWidth="25.0" prefWidth="35.0" text="Cur" />
          <TableColumn fx:id="colAm" editable="false" prefWidth="64.5" text="Amount" />
          <TableColumn fx:id="colPart" editable="false" prefWidth="92.5" text="Participant" />
          <TableColumn fx:id="colTitle" editable="false" prefWidth="75.0" text="Title" />
