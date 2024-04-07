@@ -215,7 +215,8 @@ public class StartScreenCtrl implements Initializable {
             String eid = eventJoin.getText();
             if(checkNumber(eid)){
                 try{
-                    Event x = server.getEventByID(Long.parseLong(eid));
+                    long eventID = Long.parseLong(eid);
+                    Event x = server.getEventByID(eventID);
                     x.setLastActDate(new Date());
                     server.addEvent(x);
                     mc.showEventOverview(eid);
@@ -246,6 +247,38 @@ public class StartScreenCtrl implements Initializable {
                                 }
                             });
                             System.out.println("[Websocket] Open event subscription done");
+                        }
+                    }.start();
+
+                    new Thread() {
+                        /**
+                         * This method is run by the thread when it executes. Subclasses of {@code
+                         * Thread} may override this method.
+                         *
+                         * <p> This method is not intended to be invoked directly. If this thread is a
+                         * platform thread created with a {@link Runnable} task then invoking this method
+                         * will invoke the task's {@code run} method. If this thread is a virtual thread
+                         * then invoking this method directly does nothing.
+                         *
+                         * @implSpec The default implementation executes the {@link Runnable} task that
+                         * the {@code Thread} was created with. If the thread was created without a task
+                         * then this method does nothing.
+                         */
+                        @Override
+                        public void run() {
+                            server.initiateWebsocketEventConnection(eventID, p -> {
+                                System.out.println("[Websocket] Received: "+p);
+                                if(p.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
+                                    System.out.println("[Websocket] ID's match thus adding...");
+                                    mc.getEventOCtrl().putParticipant(p);
+                                }
+                            }, e -> {
+                                System.out.println("[Websocket] Received: "+e);
+                                if(e.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
+                                    System.out.println("[Websocket] ID's match thus adding...");
+                                    mc.getEventOCtrl().putExpense(e);
+                                }
+                            });
                         }
                     }.start();
 

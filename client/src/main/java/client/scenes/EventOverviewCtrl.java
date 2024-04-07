@@ -426,20 +426,13 @@ public class EventOverviewCtrl implements Initializable {
      * @param p Participant to PUT
      */
     public void putParticipant(Participant p) {
-        for (Participant participant:
-             partdata) {
+        for (int i = 0; i < partdata.size(); i++) {
+            Participant participant = partdata.get(i);
             if (participant.equals(p)) {
                 return;
             }
             if(participant.getId() == p.getId()){
-                participant.setEvent(p.getEvent());
-                participant.setEmail(p.getEmail());
-                participant.setName(p.getName());
-                participant.setBic(p.getBic());
-                participant.setIban(p.getIban());
-                var pnew = partdata.stream().filter(par -> par.getId() == p.getId()).toList();
-                partdata.removeAll(pnew);
-                partdata.add(p);
+                partdata.set(i, p);
                 names = (ArrayList<String>) partdata.stream().map(Participant :: getName).collect(Collectors.toList());
                 comboBoxOne.getItems().clear();
                 comboBoxOne.getItems().addAll(names);
@@ -460,4 +453,23 @@ public class EventOverviewCtrl implements Initializable {
     public long getCurrentEventID() {
         return eventid;
     }
+
+    public void putExpense(Expense e) {
+        for (int i = 0; i < expdata.size(); i++) {
+            Expense expense = expdata.get(i);
+            if(expense.equals(e)) {
+                return;
+            }
+            if(expense.getId() == e.getId()) {
+                expdata.set(i, e);
+                tableExp.setItems(expdata);
+                comboBoxOne.setValue(null);
+                return;
+            }
+        }
+        expdata.add(e);
+        tableExp.setItems(expdata);
+        comboBoxOne.setValue(null);
+    }
+
 }
