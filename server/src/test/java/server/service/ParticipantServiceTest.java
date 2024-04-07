@@ -4,8 +4,6 @@ import commons.Event;
 import commons.Participant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.api.ParticipantController;
-import server.api.ParticipantControllerTest;
 import server.repository.TestEventRepository;
 import server.repository.TestParticipantRepository;
 
