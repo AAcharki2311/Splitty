@@ -1,4 +1,4 @@
-package server.api;
+package server.repository;
 import java.util.*;
 import java.util.function.Function;
 
@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 
-import commons.Participant;
-import server.database.ParticipantRepository;
+import commons.Expense;
+import server.database.ExpenseRepository;
 
-public class TestParticipantRepository implements ParticipantRepository {
-    public final List<Participant> participants = new ArrayList<>();
+public class TestExpenseRepository implements ExpenseRepository {
+    public final List<Expense> expenses = new ArrayList<>();
     public final List<String> calledMethods = new ArrayList<>();
     private void call(String name) {
         calledMethods.add(name);
@@ -30,7 +30,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> S saveAndFlush(S entity) {
+    public <S extends Expense> S saveAndFlush(S entity) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -39,7 +39,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends Expense> List<S> saveAllAndFlush(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -48,10 +48,10 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> S save(S entity) {
+    public <S extends Expense> S save(S entity) {
         call("save");
         // entity.id = (long) participants.size();
-        participants.add(entity);
+        expenses.add(entity);
         return entity;
     }
 
@@ -59,7 +59,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> List<S> saveAll(Iterable<S> entities) {
+    public <S extends Expense> List<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -68,7 +68,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public Participant getOne(Long id) {
+    public Expense getOne(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -77,7 +77,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public Participant getById(Long id) {
+    public Expense getById(Long id) {
         call("getById");
         return find(id).get();
     }
@@ -86,7 +86,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public Participant getReferenceById(Long id) {
+    public Expense getReferenceById(Long id) {
         call("getReferenceById");
         return find(id).get();
     }
@@ -94,15 +94,15 @@ public class TestParticipantRepository implements ParticipantRepository {
     /**
      * Auto-generated method for a temporary repository
      */
-    private Optional<Participant> find(Long id) {
-        return participants.stream().filter(q -> q.getId() == id).findFirst();
+    private Optional<Expense> find(Long id) {
+        return expenses.stream().filter(q -> q.getId() == id).findFirst();
     }
 
     /**
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> Optional<S> findOne(Example<S> example) {
+    public <S extends Expense> Optional<S> findOne(Example<S> example) {
         // TODO Auto-generated method stub
         return Optional.empty();
     }
@@ -111,7 +111,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Expense, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -120,7 +120,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public Optional<Participant> findById(Long id) {
+    public Optional<Expense> findById(Long id) {
         // TODO Auto-generated method stub
         return find(id);
     }
@@ -129,16 +129,16 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public List<Participant> findAll() {
+    public List<Expense> findAll() {
         calledMethods.add("findAll");
-        return participants;
+        return expenses;
     }
 
     /**
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> List<S> findAll(Example<S> example) {
+    public <S extends Expense> List<S> findAll(Example<S> example) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -147,7 +147,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Expense> List<S> findAll(Example<S> example, Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -156,7 +156,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Expense> Page<S> findAll(Example<S> example, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -165,7 +165,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public List<Participant> findAll(Sort sort) {
+    public List<Expense> findAll(Sort sort) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -174,7 +174,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public Page<Participant> findAll(Pageable pageable) {
+    public Page<Expense> findAll(Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -183,7 +183,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public List<Participant> findAllById(Iterable<Long> ids) {
+    public List<Expense> findAllById(Iterable<Long> ids) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -193,14 +193,14 @@ public class TestParticipantRepository implements ParticipantRepository {
      */
     @Override
     public long count() {
-        return participants.size();
+        return expenses.size();
     }
 
     /**
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> long count(Example<S> example) {
+    public <S extends Expense> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -209,7 +209,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public <S extends Participant> boolean exists(Example<S> example) {
+    public <S extends Expense> boolean exists(Example<S> example) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -235,7 +235,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public void delete(Participant entity) {
+    public void delete(Expense entity) {
         // TODO Auto-generated method stub
     }
 
@@ -251,7 +251,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public void deleteAll(Iterable<? extends Participant> entities) {
+    public void deleteAll(Iterable<? extends Expense> entities) {
         // TODO Auto-generated method stub
     }
 
@@ -267,7 +267,7 @@ public class TestParticipantRepository implements ParticipantRepository {
      * Auto-generated method for a temporary repository
      */
     @Override
-    public void deleteAllInBatch(Iterable<Participant> entities) {
+    public void deleteAllInBatch(Iterable<Expense> entities) {
         // TODO Auto-generated method stub
     }
 

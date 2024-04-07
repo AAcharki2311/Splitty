@@ -75,10 +75,10 @@ public class EventService {
      * @return true if the event has been deleted, false if there was no event with that id
      */
     public boolean delete(long id) {
-        if (eventRepository.existsById(id)) {
-            eventRepository.deleteById(id);
-            return true;
+        if (!eventRepository.existsById(id)) {
+            return false;
         }
-        else {return false;}
+        eventRepository.deleteById(id);
+        return true;
     }
 }
