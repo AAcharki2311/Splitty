@@ -178,6 +178,10 @@ public class EventOverviewAdminCtrl implements Initializable {
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
             if (result == JOptionPane.OK_OPTION) {
+                expServer.getExpenses().stream()
+                        .filter(e -> e.getEvent().getId() == eventid).forEach(e -> expServer.deleteExpenseByID(e.getId()));
+                expPart.getAllParticipants().stream()
+                        .filter(p -> p.getEvent().getId() == eventid).forEach(p -> expPart.deleteParticipantByID(p.getId()));
                 server.deleteEventByID(eventid);
                 mc.showAdminDashboard();
             }

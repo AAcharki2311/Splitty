@@ -118,10 +118,14 @@ public class MainCtrl {
         ReadURL readURL = new ReadURL();
         while(true){
             serverURL = JOptionPane.showInputDialog("Please enter the server URL:");
-            if (serverURL == null || serverURL.isBlank()) {
+            if(serverURL == null){
+                System.exit(0);
+            } else if (serverURL.isBlank()) {
                 JOptionPane.showMessageDialog(null, "No URL entered");
             } else if (!isServerReachable(serverURL)) {
-                int choice = JOptionPane.showOptionDialog(null, "Server not reachable. Do you want to use the default URL (http://localhost:8080) or try again?", "Server not reachable", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Use default", "Try again"}, "default");
+                int choice = JOptionPane.showOptionDialog(null, "Server not reachable. Do you want to use the default URL (http://localhost:8080) or try again?",
+                        "Server not reachable", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                        new String[]{"Use default", "Try again"}, "default");
                 if(choice == 0){
                     serverURL = "http://localhost:8080";
                     readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
