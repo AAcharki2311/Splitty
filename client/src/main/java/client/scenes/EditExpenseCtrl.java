@@ -1,8 +1,6 @@
 package client.scenes;
 
 import client.utils.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
@@ -20,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;

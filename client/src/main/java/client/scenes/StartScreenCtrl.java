@@ -1,8 +1,6 @@
 package client.scenes;
 
 import client.utils.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
