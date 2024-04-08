@@ -27,6 +27,7 @@ public class AddExpenseCtrl implements Initializable {
     private long eventid;
     private Participant selectedParticipant;
     private HashMap<String, String> h;
+    private HashMap<String, String> ht;
     /**
      * MENU
      **/
@@ -79,6 +80,10 @@ public class AddExpenseCtrl implements Initializable {
     @FXML
     private ComboBox<String> comboBoxCurr;
     private String[] curNames = {"EUR", "USD", "CHF"};    //    here must go an array with currency names
+    /** Combobox with Tags **/
+    @FXML
+    private ComboBox<String> comboBoxTag;
+    private ArrayList<String> eventTags = new ArrayList<>();
 
     /**
      * Constructor of the AddExpenseCtrl
@@ -166,7 +171,7 @@ public class AddExpenseCtrl implements Initializable {
             String title = titleTextField.getText();
             Double money = Double.parseDouble(moneyField.getText());
             Date date = java.sql.Date.valueOf(dateField.getValue());
-            String tag = tagTextField.getText();
+            String tag = comboBoxTag.getValue();
             String cur = comboBoxCurr.getValue();
 
             boolean duplicate = checkDuplicate(selectedParticipant.getName(), title);
@@ -239,6 +244,25 @@ public class AddExpenseCtrl implements Initializable {
         names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
         comboBoxNamePaid.getItems().clear();
         comboBoxNamePaid.getItems().addAll(names);
+        comboBoxTag.getItems().clear();
+        eventTags.clear();
+        addTags();
+    }
+
+    /**
+     * Add tags to comboBox
+     */
+    public void addTags() {
+        ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+        // Get all keys from the JSON object
+        for (String key : ht.keySet()) {
+            if (key.endsWith("?" + String.valueOf(eventid))) {
+                // System.out.println(key);
+                String extractedString = key.substring(0, key.indexOf("?"));
+                eventTags.add(extractedString);
+            }
+        }
+        comboBoxTag.getItems().addAll(eventTags);
     }
 
     /**
@@ -261,5 +285,95 @@ public class AddExpenseCtrl implements Initializable {
      */
     public void clickHome() throws IOException {
         mc.showStart();
+    }
+
+    /**
+     * Add tag to this event
+     */
+    public void clickAddTag(){
+        while(true){
+            JTextField textFieldName = new JTextField();
+            JTextField textFieldColor = new JTextField();
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel("Name of the tag:"));
+            panel.add(textFieldName);
+            panel.add(new JLabel("Color of the tag:"));
+            panel.add(textFieldColor);
+            Object[] options = {"Add", "Back"};
+            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String name = textFieldName.getText();
+                String color = textFieldColor.getText();
+                if(name.isBlank() || color.isBlank()){
+                    JOptionPane.showMessageDialog(null, h.get("key64"));
+                } else{
+                    // do something
+                    HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                    ht.put(name+"?"+eventid, color);
+                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    comboBoxTag.getItems().clear();
+                    eventTags.clear();
+                    addTags();
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Edit tag of this event
+     */
+    public void clickEditTag() {
+        while(true){
+            JTextField textFieldName = new JTextField();
+            JTextField textFieldColor = new JTextField();
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel("Name of the tag:"));
+            panel.add(textFieldName);
+            textFieldName.setText(comboBoxTag.getValue());
+            panel.add(new JLabel("Color of the tag:"));
+            panel.add(textFieldColor);
+
+            ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+            // System.out.println(comboBoxCurr.getValue()+"?"+eventid);
+            // System.out.println(ht.get(comboBoxTag.getValue()+"?"+eventid));
+            textFieldColor.setText(ht.get(comboBoxTag.getValue()+"?"+eventid));
+
+            Object[] options = {"Add", "Delete"};
+            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String name = textFieldName.getText();
+                String color = textFieldColor.getText();
+                if(name.isBlank() || color.isBlank()){
+                    JOptionPane.showMessageDialog(null, h.get("key64"));
+                } else{
+                    // do something
+                    HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                    ht.remove(comboBoxTag.getValue()+"?"+eventid);
+                    ht.put(name+"?"+eventid, color);
+                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    comboBoxTag.getItems().clear();
+                    eventTags.clear();
+                    addTags();
+                    break;
+                }
+            } else {
+                HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                ht.remove(comboBoxTag.getValue()+"?"+eventid);
+                ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                comboBoxTag.getItems().clear();
+                eventTags.clear();
+                addTags();
+                break;
+            }
+        }
     }
 }

@@ -232,6 +232,10 @@ public class SettleDebtsCtrl implements Initializable {
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
+
+        var expenses = expServer.getExpenses().stream().filter(exp -> exp.getEvent().equals(eventid)).collect(Collectors.toList());
+        expdata = FXCollections.observableList(expenses);
+        tableExp.setItems(expdata);
     }
 
     /**
@@ -265,12 +269,15 @@ public class SettleDebtsCtrl implements Initializable {
 
         for (PieChart.Data data : pieChart.getData()) {
             String dataname = data.getName();
-            // System.out.println(dataname);
             String extractedString = dataname.substring(0, dataname.indexOf("; "));
-            // System.out.println(extractedString);
             String color = ht.get(extractedString + "?" + eventid);
-            data.getNode().setStyle("-fx-pie-color: " + color);
-            System.out.println(extractedString + " color: " + color);
+            try {
+                data.getNode().setStyle("-fx-pie-color: " + color);
+            }
+            catch (Exception e){
+                data.getNode().setStyle("-fx-pie-color: white");
+            }
+            // System.out.println(extractedString + " color: " + color);
         }
     }
 

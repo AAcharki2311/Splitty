@@ -71,8 +71,8 @@ public class EditExpenseCtrl implements Initializable {
     private Label whenText;
     @FXML
     private Label howToSplitText;
-    @FXML
-    private Label tagText;
+//    @FXML
+//    private Label tagText;
     @FXML
     private Text labelEventName;
     @FXML
@@ -393,7 +393,7 @@ public class EditExpenseCtrl implements Initializable {
         // Get all keys from the JSON object
         for (String key : ht.keySet()) {
             if (key.endsWith("?" + String.valueOf(eventid))) {
-                System.out.println(key);
+                // System.out.println(key);
                 String extractedString = key.substring(0, key.indexOf("?"));
                 eventTags.add(extractedString);
             }
@@ -536,7 +536,7 @@ public class EditExpenseCtrl implements Initializable {
                     // do something
                     HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
                     ht.put(name+"?"+eventid, color);
-                    writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                     comboBoxTag.getItems().clear();
                     eventTags.clear();
                     addTags();
@@ -545,29 +545,6 @@ public class EditExpenseCtrl implements Initializable {
             } else {
                 break;
             }
-        }
-    }
-
-    /**
-     * Update tag map
-     * @param dataMap the map to write to a file
-     * @param filePath the file to write to
-     */
-    public static void writeMapToJsonFile(HashMap<String, String> dataMap, String filePath) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        try {
-            // Convert HashMap to JSON string
-            String jsonString = objectMapper.writeValueAsString(dataMap);
-            // System.out.println(jsonString);
-
-            // Write JSON string to file
-            objectMapper.writeValue(new File(filePath), dataMap);
-
-            System.out.println("Tag has been written to the file successfully.");
-        } catch (IOException e) {
-            System.out.println("An error occurred while writing to the file: " + e.getMessage());
         }
     }
 
@@ -605,7 +582,7 @@ public class EditExpenseCtrl implements Initializable {
                     HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
                     ht.remove(comboBoxTag.getValue()+"?"+eventid);
                     ht.put(name+"?"+eventid, color);
-                    writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                     comboBoxTag.getItems().clear();
                     eventTags.clear();
                     addTags();
@@ -614,7 +591,7 @@ public class EditExpenseCtrl implements Initializable {
             } else {
                 HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
                 ht.remove(comboBoxTag.getValue()+"?"+eventid);
-                writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                 comboBoxTag.getItems().clear();
                 eventTags.clear();
                 addTags();

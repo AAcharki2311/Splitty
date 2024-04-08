@@ -206,7 +206,7 @@ public class StartScreenCtrl implements Initializable {
                     ht.put("Food?"+(String.valueOf(newEvent.id)), "#43CE43");
                     ht.put("Entrance Fees?"+(String.valueOf(newEvent.id)), "#616BD0");
                     ht.put("Travel?" + (String.valueOf(newEvent.id)), "#D71919");
-                    writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
 
                     mc.showEventOverview(String.valueOf(newEvent.id));
 
@@ -225,29 +225,6 @@ public class StartScreenCtrl implements Initializable {
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> warningImageview.setImage(null));
             pause.play();
-        }
-    }
-
-    /**
-     * Update tag map
-     * @param dataMap the map to write to a file
-     * @param filePath the file to write to
-     */
-    public static void writeMapToJsonFile(HashMap<String, String> dataMap, String filePath) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        try {
-            // Convert HashMap to JSON string
-            String jsonString = objectMapper.writeValueAsString(dataMap);
-            // System.out.println(jsonString);
-
-            // Write JSON string to file
-            objectMapper.writeValue(new File(filePath), dataMap);
-
-            System.out.println("Tag has been written to the file successfully.");
-        } catch (IOException e) {
-            System.out.println("An error occurred while writing to the file: " + e.getMessage());
         }
     }
 
