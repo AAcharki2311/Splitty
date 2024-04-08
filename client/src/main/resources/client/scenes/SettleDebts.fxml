@@ -125,4 +125,9 @@
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
+   <Label fx:id="resultLabel" alignment="CENTER" layoutX="41.0" layoutY="340.0" prefHeight="19.0" prefWidth="626.0" text=" " textFill="#0d5575">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font>
+   </Label>
 </AnchorPane>
