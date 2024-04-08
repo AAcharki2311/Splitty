@@ -227,7 +227,7 @@ public class SettleDebtsCtrl implements Initializable {
             pieData.add(new PieChart.Data(p.getName(), value));
         }
 
-        String res = "";
+        String res = "|| ";
         for(PieChart.Data data : pieData){
             res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
         }
@@ -261,7 +261,7 @@ public class SettleDebtsCtrl implements Initializable {
             pieData.add(new PieChart.Data(tag, value));
         }
 
-        String res = "";
+        String res = "|| ";
         for (PieChart.Data data : pieData) {
             res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
         }
@@ -273,8 +273,7 @@ public class SettleDebtsCtrl implements Initializable {
         ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
 
         for (PieChart.Data data : pieChart.getData()) {
-            String dataname = data.getName();
-            String extractedString = dataname.substring(0, dataname.indexOf("; "));
+            String extractedString = data.getName();
             String color = ht.get(extractedString + "?" + eventid);
             try {
                 data.getNode().setStyle("-fx-pie-color: " + color);
