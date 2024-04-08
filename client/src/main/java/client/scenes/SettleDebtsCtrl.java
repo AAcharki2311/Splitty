@@ -13,10 +13,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
@@ -37,6 +40,7 @@ public class SettleDebtsCtrl implements Initializable {
     private long eventid;
     private Participant selectedParticipant;
     private HashMap<String, String> h;
+    private HashMap<String, String> ht;
     /**
      * MENU
      **/
@@ -257,6 +261,17 @@ public class SettleDebtsCtrl implements Initializable {
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
 
+        ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+
+        for (PieChart.Data data : pieChart.getData()) {
+            String dataname = data.getName();
+            // System.out.println(dataname);
+            String extractedString = dataname.substring(0, dataname.indexOf("; "));
+            // System.out.println(extractedString);
+            String color = ht.get(extractedString + "?" + eventid);
+            data.getNode().setStyle("-fx-pie-color: " + color);
+            System.out.println(extractedString + " color: " + color);
+        }
     }
 
     /**

@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.utils.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
@@ -18,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -27,6 +28,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Timer;
 import java.util.*;
+import java.io.*;
 
 public class StartScreenCtrl implements Initializable {
     @FXML
@@ -199,7 +201,15 @@ public class StartScreenCtrl implements Initializable {
                             partServer.addParticipant(userParticipant);
                         }
                     }
+
+                    HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                    ht.put("Food?"+(String.valueOf(newEvent.id)), "#43CE43");
+                    ht.put("Entrance Fees?"+(String.valueOf(newEvent.id)), "#616BD0");
+                    ht.put("Travel?" + (String.valueOf(newEvent.id)), "#D71919");
+                    writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+
                     mc.showEventOverview(String.valueOf(newEvent.id));
+
                 } else {
                     warningImageview.setImage(new Image("images/notifications/Slide2.png"));
                     PauseTransition pause = new PauseTransition(Duration.seconds(6));
@@ -215,6 +225,29 @@ public class StartScreenCtrl implements Initializable {
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> warningImageview.setImage(null));
             pause.play();
+        }
+    }
+
+    /**
+     * Update tag map
+     * @param dataMap the map to write to a file
+     * @param filePath the file to write to
+     */
+    public static void writeMapToJsonFile(HashMap<String, String> dataMap, String filePath) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        try {
+            // Convert HashMap to JSON string
+            String jsonString = objectMapper.writeValueAsString(dataMap);
+            // System.out.println(jsonString);
+
+            // Write JSON string to file
+            objectMapper.writeValue(new File(filePath), dataMap);
+
+            System.out.println("Tag has been written to the file successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
         }
     }
 
