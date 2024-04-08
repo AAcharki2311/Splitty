@@ -5,7 +5,6 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,6 +68,8 @@ public class SettleDebtsCtrl implements Initializable {
     private Label owedLabel;
     @FXML
     private Label owedAmount;
+    @FXML
+    private Label resultLabel;
     @FXML
     private Text message;
     @FXML
@@ -222,9 +223,11 @@ public class SettleDebtsCtrl implements Initializable {
             pieData.add(new PieChart.Data(p.getName(), value));
         }
 
-        pieData.forEach(data -> data.nameProperty().bind(
-                Bindings.concat(data.getName(), ": ", data.pieValueProperty().getValue())
-        ));
+        String res = "";
+        for(PieChart.Data data : pieData){
+            res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
+        }
+        resultLabel.setText(res);
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
@@ -250,13 +253,26 @@ public class SettleDebtsCtrl implements Initializable {
             pieData.add(new PieChart.Data(tag, value));
         }
 
-        pieData.forEach(data -> data.nameProperty().bind(
-                Bindings.concat(data.getName(), "; ", data.pieValueProperty().getValue())
-        ));
+        String res = "";
+        for(PieChart.Data data : pieData){
+            res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
+        }
+        resultLabel.setText(res);
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
+    }
 
+    /**
+     * This method calculates the percentage of the value compared to the total
+     * @param value the value
+     * @return the percentage of the value compared to the total
+     */
+    public String getPercentage(double value){
+        double total = getTotalExpenses();
+        double percentage = (value / total) * 100;
+        String res = String.format("%.2f", percentage) + "%";
+        return res;
     }
 
     /**
