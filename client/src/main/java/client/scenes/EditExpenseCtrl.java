@@ -189,6 +189,7 @@ public class EditExpenseCtrl implements Initializable {
             dateField.setValue(localDate);
             splitRBtn.setSelected(true);
             comboBoxTag.setValue(selectedExpense.getTag());
+            comboBoxCurr.setValue(selectedExpense.getCur());
             // tagTextField.setText(selectedExpense.getTag());
         });
     }
