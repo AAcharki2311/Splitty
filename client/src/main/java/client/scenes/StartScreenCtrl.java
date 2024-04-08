@@ -18,7 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -27,6 +26,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Timer;
 import java.util.*;
+import java.io.*;
 
 public class StartScreenCtrl implements Initializable {
     @FXML
@@ -199,7 +199,15 @@ public class StartScreenCtrl implements Initializable {
                             partServer.addParticipant(userParticipant);
                         }
                     }
+
+                    HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                    ht.put("Food?"+(String.valueOf(newEvent.id)), "#43CE43");
+                    ht.put("Entrance Fees?"+(String.valueOf(newEvent.id)), "#616BD0");
+                    ht.put("Travel?" + (String.valueOf(newEvent.id)), "#D71919");
+                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+
                     mc.showEventOverview(String.valueOf(newEvent.id));
+
                 } else {
                     warningImageview.setImage(new Image("images/notifications/Slide2.png"));
                     PauseTransition pause = new PauseTransition(Duration.seconds(6));

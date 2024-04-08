@@ -12,10 +12,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
@@ -36,6 +39,7 @@ public class SettleDebtsCtrl implements Initializable {
     private long eventid;
     private Participant selectedParticipant;
     private HashMap<String, String> h;
+    private HashMap<String, String> ht;
     /**
      * MENU
      **/
@@ -231,6 +235,10 @@ public class SettleDebtsCtrl implements Initializable {
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
+
+        var expenses = expServer.getExpenses().stream().filter(exp -> exp.getEvent().equals(eventid)).collect(Collectors.toList());
+        expdata = FXCollections.observableList(expenses);
+        tableExp.setItems(expdata);
     }
 
     /**
@@ -243,26 +251,40 @@ public class SettleDebtsCtrl implements Initializable {
     /**
      * Shows all tags in the pie chart
      */
-    public void clickTagBtn(){
+    public void clickTagBtn() {
         pieData.clear();
         List<Expense> listAllExpenses = expServer.getExpenses()
                 .stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
         ArrayList<String> tags = (ArrayList<String>) listAllExpenses.stream().map(Expense::getTag).distinct().collect(Collectors.toList());
-        for(String tag : tags){
+        for (String tag : tags) {
             double value = listAllExpenses.stream().filter(expense -> expense.getTag().equals(tag)).mapToDouble(Expense::getAmount).sum();
             pieData.add(new PieChart.Data(tag, value));
         }
 
         String res = "";
-        for(PieChart.Data data : pieData){
+        for (PieChart.Data data : pieData) {
             res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
         }
         resultLabel.setText(res);
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
-    }
 
+        ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+
+        for (PieChart.Data data : pieChart.getData()) {
+            String dataname = data.getName();
+            String extractedString = dataname.substring(0, dataname.indexOf("; "));
+            String color = ht.get(extractedString + "?" + eventid);
+            try {
+                data.getNode().setStyle("-fx-pie-color: " + color);
+            }
+            catch (Exception e){
+                data.getNode().setStyle("-fx-pie-color: white");
+            }
+            // System.out.println(extractedString + " color: " + color);
+        }
+    }
     /**
      * This method calculates the percentage of the value compared to the total
      * @param value the value
