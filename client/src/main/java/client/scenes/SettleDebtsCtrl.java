@@ -74,6 +74,8 @@ public class SettleDebtsCtrl implements Initializable {
     @FXML
     private Label owedAmount;
     @FXML
+    private Label resultLabel;
+    @FXML
     private Text message;
     @FXML
     private Button sortParticipantBtn;
@@ -226,9 +228,11 @@ public class SettleDebtsCtrl implements Initializable {
             pieData.add(new PieChart.Data(p.getName(), value));
         }
 
-        pieData.forEach(data -> data.nameProperty().bind(
-                Bindings.concat(data.getName(), ": ", data.pieValueProperty().getValue())
-        ));
+        String res = "";
+        for(PieChart.Data data : pieData){
+            res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
+        }
+        resultLabel.setText(res);
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
@@ -248,19 +252,21 @@ public class SettleDebtsCtrl implements Initializable {
     /**
      * Shows all tags in the pie chart
      */
-    public void clickTagBtn(){
+    public void clickTagBtn() {
         pieData.clear();
         List<Expense> listAllExpenses = expServer.getExpenses()
                 .stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
         ArrayList<String> tags = (ArrayList<String>) listAllExpenses.stream().map(Expense::getTag).distinct().collect(Collectors.toList());
-        for(String tag : tags){
+        for (String tag : tags) {
             double value = listAllExpenses.stream().filter(expense -> expense.getTag().equals(tag)).mapToDouble(Expense::getAmount).sum();
             pieData.add(new PieChart.Data(tag, value));
         }
 
-        pieData.forEach(data -> data.nameProperty().bind(
-                Bindings.concat(data.getName(), "; ", data.pieValueProperty().getValue())
-        ));
+        String res = "";
+        for (PieChart.Data data : pieData) {
+            res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
+        }
+        resultLabel.setText(res);
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
@@ -273,12 +279,22 @@ public class SettleDebtsCtrl implements Initializable {
             String color = ht.get(extractedString + "?" + eventid);
             try {
                 data.getNode().setStyle("-fx-pie-color: " + color);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 data.getNode().setStyle("-fx-pie-color: white");
             }
             // System.out.println(extractedString + " color: " + color);
         }
+    }
+    /**
+     * This method calculates the percentage of the value compared to the total
+     * @param value the value
+     * @return the percentage of the value compared to the total
+     */
+    public String getPercentage(double value){
+        double total = getTotalExpenses();
+        double percentage = (value / total) * 100;
+        String res = String.format("%.2f", percentage) + "%";
+        return res;
     }
 
     /**
