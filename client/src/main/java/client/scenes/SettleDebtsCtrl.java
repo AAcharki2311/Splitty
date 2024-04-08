@@ -279,7 +279,8 @@ public class SettleDebtsCtrl implements Initializable {
             String color = ht.get(extractedString + "?" + eventid);
             try {
                 data.getNode().setStyle("-fx-pie-color: " + color);
-            } catch (Exception e) {
+            }
+            catch (Exception e){
                 data.getNode().setStyle("-fx-pie-color: white");
             }
             // System.out.println(extractedString + " color: " + color);
