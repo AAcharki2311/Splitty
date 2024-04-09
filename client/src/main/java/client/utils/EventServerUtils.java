@@ -4,15 +4,21 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.*;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,42 +35,53 @@ public class EventServerUtils {
 
     /**
      * EventServerUtils constructor
+     *
      * @param readURL readURL object
      */
     @Inject
-    public EventServerUtils(ReadURL readURL){
+    public EventServerUtils(ReadURL readURL) {
         this.readURL = readURL;
         this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
     }
 
     /**
      * Javadoc
+     *
      * @return dweg
-    */
+     */
     public List<Event> getAllEvents() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Event>>() {});
+        ResponseEntity<List<Event>> res;
+        try {
+            res = ClientBuilder.newClient(new ClientConfig()) //
+                    .target(SERVER) //
+                    .request(APPLICATION_JSON) //
+                    .accept(APPLICATION_JSON) //
+                    .get(new GenericType<ResponseEntity<List<Event>>>() {
+                    });
+        } catch (NotFoundException e) {
+
+            return List.of();
+        }
+        return res.getBody();
     }
 
     private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
 
     /**
      * a method that registers for updates
+     *
      * @param consumer the consumer that will accept the updates
-    */
+     */
     public void registerForUpdates(Consumer<Event> consumer) {
         EXEC.submit(() -> {
-            while(!Thread.interrupted()){
-                var res =  ClientBuilder.newClient(new ClientConfig()) //
+            while (!Thread.interrupted()) {
+                var res = ClientBuilder.newClient(new ClientConfig()) //
                         .target(SERVER).path("update") //
                         .request(APPLICATION_JSON) //
                         .accept(APPLICATION_JSON) //
                         .get(Response.class);
 
-                if(res.getStatus() == 204){
+                if (res.getStatus() == 204) {
                     continue;
                 }
                 var e = res.readEntity(Event.class);
@@ -76,12 +93,13 @@ public class EventServerUtils {
     /**
      * Stops the executor service
      */
-    public void stop(){
+    public void stop() {
         EXEC.shutdownNow();
     }
 
     /**
      * Javadoc
+     *
      * @param event
      * @return duplicate return tag?
      */
@@ -95,26 +113,29 @@ public class EventServerUtils {
 
     /**
      * Javadoc
+     *
      * @param id
      * @return dsf
      */
     public Event getEventByID(long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("/"+id) //
+                .target(SERVER).path("/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<Event>() {});
+                .get(new GenericType<Event>() {
+                });
     }
 
     /**
      * Javadoc
+     *
      * @param id
      * @param event
      * @return sdf
      */
     public Event updateEventByID(long id, Event event) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(SERVER).path("/" + id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -122,6 +143,7 @@ public class EventServerUtils {
 
     /**
      * Javadoc
+     *
      * @param id The id of the event to delete
      * @return sdf
      */
@@ -161,21 +183,21 @@ public class EventServerUtils {
     /**
      * Method that creates a new websocket connection, severing any previous ones, and subscribes to all Participants and Expenses for a specific Event
      *
-     * @param eventID The ID of the Event the method should subscribe to.
+     * @param eventID             The ID of the Event the method should subscribe to.
      * @param participantConsumer The Consumer that handles all Participants received by the websocket
-     * @param expenseConsumer The Consumer that handles all Expenses received by the websocket
+     * @param expenseConsumer     The Consumer that handles all Expenses received by the websocket
      */
     public void initiateWebsocketEventConnection(long eventID, Consumer<Participant> participantConsumer, Consumer<Expense> expenseConsumer) {
-        if(WEBSOCKET != null && WEBSOCKET.isConnected()) {
+        if (WEBSOCKET != null && WEBSOCKET.isConnected()) {
             WEBSOCKET.disconnect();
             System.out.println("[Websocket] Disconnected from a previous event");
         }
 
-        String websocketDest = findWebsocketURL(readURL.readServerUrl("src/main/resources/configfile.properties"))+"/websocket";
+        String websocketDest = findWebsocketURL(readURL.readServerUrl("src/main/resources/configfile.properties")) + "/websocket";
         System.out.println(websocketDest);
         WEBSOCKET = connect(websocketDest);
 
-        String participantDest = "/topic/events/"+String.valueOf(eventID)+"/participants";
+        String participantDest = "/topic/events/" + String.valueOf(eventID) + "/participants";
         WEBSOCKET.subscribe(participantDest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -187,9 +209,9 @@ public class EventServerUtils {
                 participantConsumer.accept((Participant) payload);
             }
         });
-        System.out.println("[Websocket] Subscribed to Participants on id: "+eventID);
+        System.out.println("[Websocket] Subscribed to Participants on id: " + eventID);
 
-        String expenseDest = "/topic/events/"+eventID+"/expenses";
+        String expenseDest = "/topic/events/" + eventID + "/expenses";
         WEBSOCKET.subscribe(expenseDest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -201,7 +223,7 @@ public class EventServerUtils {
                 expenseConsumer.accept((Expense) payload);
             }
         });
-        System.out.println("[Websocket] Subscribed to Expenses on id: "+eventID);
+        System.out.println("[Websocket] Subscribed to Expenses on id: " + eventID);
     }
 
     /**
@@ -210,7 +232,7 @@ public class EventServerUtils {
      * @return True if a connection was found and severed, False if no connection was found
      */
     public boolean disconnectFromWebsocket() {
-        if(WEBSOCKET != null && WEBSOCKET.isConnected()) {
+        if (WEBSOCKET != null && WEBSOCKET.isConnected()) {
             WEBSOCKET.disconnect();
             return true;
         }
@@ -218,7 +240,7 @@ public class EventServerUtils {
     }
 
     private String findWebsocketURL(String httpServer) {
-        if(httpServer.contains("http")) {
+        if (httpServer.contains("http")) {
             String result = httpServer.replaceFirst("http", "ws");
             return result;
         }
@@ -229,11 +251,11 @@ public class EventServerUtils {
      * Sends a payload to the websocket connection
      *
      * @param dest The URL to send to
-     * @param o The payload
+     * @param o    The payload
      */
     public void send(String dest, Object o) {
         WEBSOCKET.send(dest, o);
-        System.out.println("[WEBSOCKET] An object was sent:\n"+o);
+        System.out.println("[WEBSOCKET] An object was sent:\n" + o);
     }
 
     /**
