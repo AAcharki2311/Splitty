@@ -316,6 +316,7 @@ public class AddExpenseCtrl implements Initializable {
                     comboBoxTag.getItems().clear();
                     eventTags.clear();
                     addTags();
+                    comboBoxTag.setValue(name);
                     break;
                 }
             } else {

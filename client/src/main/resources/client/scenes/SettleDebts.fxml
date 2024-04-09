@@ -21,8 +21,8 @@
       </image>
    </ImageView>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="468.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="214.0" layoutX="468.0" layoutY="121.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="230.0" layoutX="468.0" layoutY="10.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="206.0" layoutX="468.0" layoutY="34.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="220.0" layoutX="42.0" layoutY="115.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
    <Label fx:id="total" layoutX="340.0" layoutY="120.0" prefHeight="19.0" prefWidth="102.0" text="0" textFill="#0d5575">
       <font>
@@ -53,7 +53,7 @@
          <Font size="13.0" />
       </font>
    </Label>
-   <PieChart fx:id="pieChart" labelsVisible="false" layoutX="468.0" layoutY="179.0" legendSide="TOP" legendVisible="false" prefHeight="150.0" prefWidth="200.0" />
+   <PieChart fx:id="pieChart" labelsVisible="false" layoutX="468.0" layoutY="87.0" legendSide="TOP" legendVisible="false" prefHeight="76.0" prefWidth="200.0" />
    <Label fx:id="payedAmount" layoutX="259.0" layoutY="170.0" prefHeight="20.0" prefWidth="63.0" text="0" textAlignment="CENTER" textFill="#0d5575">
       <font>
          <Font size="13.0" />
@@ -105,29 +105,38 @@
          <Font size="13.0" />
       </font>
    </Text>
-   <Text fx:id="titleOfScreen1" fill="#0d5575" layoutX="468.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pie Chart" textAlignment="CENTER" wrappingWidth="200.0">
+   <Text fx:id="titleOfScreen1" fill="#0d5575" layoutX="468.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pie Chart" textAlignment="CENTER" wrappingWidth="200.0">
       <font>
          <Font name="System Bold" size="13.0" />
       </font>
    </Text>
-   <Text fx:id="sumLabel1" fill="#0d5575" layoutX="475.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by:" wrappingWidth="169.5">
+   <Text fx:id="sumLabel1" fill="#0d5575" layoutX="475.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by:" wrappingWidth="169.5">
       <font>
          <Font size="13.0" />
       </font>
    </Text>
-   <Button fx:id="sortParticipantBtn" layoutX="477.0" layoutY="149.0" mnemonicParsing="false" onAction="#clickParticipantBtn" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #0D5575;" text="Participant" textFill="#f4fdff">
+   <Button fx:id="sortParticipantBtn" layoutX="477.0" layoutY="57.0" mnemonicParsing="false" onAction="#clickParticipantBtn" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #0D5575;" text="Participant" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <Button fx:id="sortTagBtn" layoutX="568.0" layoutY="149.0" mnemonicParsing="false" onAction="#clickTagBtn" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #0D5575;" text="Tag" textFill="#f4fdff">
+   <Button fx:id="sortTagBtn" layoutX="568.0" layoutY="57.0" mnemonicParsing="false" onAction="#clickTagBtn" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #0D5575;" text="Tag" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <Label fx:id="resultLabel" alignment="CENTER" layoutX="41.0" layoutY="340.0" prefHeight="19.0" prefWidth="626.0" text=" " textFill="#0d5575">
-      <font>
-         <Font name="System Bold" size="13.0" />
-      </font>
-   </Label>
+   <TableView fx:id="tableTag" layoutX="468.0" layoutY="248.0" prefHeight="99.0" prefWidth="200.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colShareTag" editable="false" text="Tags" />
+         <TableColumn fx:id="colAmShareTag" editable="false" prefWidth="50.0" text="Total" />
+         <TableColumn fx:id="colPercentTag" editable="false" prefWidth="60.0" text="\%" />
+      </columns>
+   </TableView>
+   <TableView fx:id="tableShare" layoutX="468.0" layoutY="248.0" prefHeight="99.0" prefWidth="200.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colPartShare" editable="false" text="Participant" />
+         <TableColumn fx:id="colAmShare" editable="false" prefWidth="50.0" text="Total" />
+         <TableColumn fx:id="colPercent" editable="false" prefWidth="60.0" text="\%" />
+      </columns>
+   </TableView>
 </AnchorPane>

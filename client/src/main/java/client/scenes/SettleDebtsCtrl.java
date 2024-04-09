@@ -18,15 +18,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class SettleDebtsCtrl implements Initializable {
@@ -96,6 +93,25 @@ public class SettleDebtsCtrl implements Initializable {
     @FXML
     private TableColumn<Expense, String> colTag;
     private ObservableList<Expense> expdata;
+    /** TABLE SHARE PER PRSON **/
+    @FXML
+    private TableView<Participant> tableShare;
+    @FXML
+    private TableColumn<Participant, String> colPartShare;
+    @FXML
+    private TableColumn<Participant, String> colAmShare;
+    @FXML
+    private TableColumn<Participant, String> colPercent;
+    private ObservableList<Participant> partdata;
+    /** TABLE SHARE PER TAG **/
+    @FXML
+    private TableView<Map.Entry<String, Double>> tableTag;
+    @FXML
+    private TableColumn<Map.Entry<String, Double>, String> colShareTag;
+    @FXML
+    private TableColumn<Map.Entry<String, Double>, String> colAmShareTag;
+    @FXML
+    private TableColumn<Map.Entry<String, Double>, String> colPercentTag;
     /** PIECHART **/
     @FXML
     private PieChart pieChart;
@@ -140,6 +156,18 @@ public class SettleDebtsCtrl implements Initializable {
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
+
+        colPartShare.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
+        colAmShare.setCellValueFactory(cellData -> {
+            Participant p = cellData.getValue();
+            double sum = getPayedValue(p);
+            return new SimpleStringProperty(String.format("%.2f", sum));
+        });
+        colPercent.setCellValueFactory(cellData -> {
+            double sum = getPayedValue(cellData.getValue());
+            return new SimpleStringProperty(getPercentage(sum));
+        });
+
     }
 
     /**
@@ -227,18 +255,15 @@ public class SettleDebtsCtrl implements Initializable {
             pieData.add(new PieChart.Data(p.getName(), value));
         }
 
-        String res = "|| ";
-        for(PieChart.Data data : pieData){
-            res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
-        }
-        resultLabel.setText(res);
-
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
 
         var expenses = expServer.getExpenses().stream().filter(exp -> exp.getEvent().equals(eventid)).collect(Collectors.toList());
         expdata = FXCollections.observableList(expenses);
         tableExp.setItems(expdata);
+
+        partdata = FXCollections.observableList(listAllParticipants);
+        tableShare.setItems(partdata);
     }
 
     /**
@@ -246,6 +271,8 @@ public class SettleDebtsCtrl implements Initializable {
      */
     public void clickParticipantBtn() {
         update(String.valueOf(this.eventid));
+        tableTag.setVisible(false);
+        tableShare.setVisible(true);
     }
 
     /**
@@ -256,16 +283,21 @@ public class SettleDebtsCtrl implements Initializable {
         List<Expense> listAllExpenses = expServer.getExpenses()
                 .stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
         ArrayList<String> tags = (ArrayList<String>) listAllExpenses.stream().map(Expense::getTag).distinct().collect(Collectors.toList());
+        HashMap<String, Double> tagValues = new HashMap<>();
         for (String tag : tags) {
             double value = listAllExpenses.stream().filter(expense -> expense.getTag().equals(tag)).mapToDouble(Expense::getAmount).sum();
             pieData.add(new PieChart.Data(tag, value));
+            tagValues.put(tag, value);
         }
 
-        String res = "|| ";
-        for (PieChart.Data data : pieData) {
-            res += data.getName() + ": [" + data.getPieValue() + "|" + getPercentage(data.getPieValue()) + "] || ";
-        }
-        resultLabel.setText(res);
+        ObservableList<Map.Entry<String, Double>> items = FXCollections.observableArrayList(tagValues.entrySet());
+        colShareTag.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getKey())); // String (tag name)
+        colAmShareTag.setCellValueFactory(p -> new SimpleStringProperty(String.valueOf(p.getValue().getValue()))); // Double (tag value)
+        colPercentTag.setCellValueFactory(p -> new SimpleStringProperty(getPercentage(p.getValue().getValue()))); // percentage
+
+        tableTag.setItems(items);
+        tableTag.setVisible(true);
+        tableShare.setVisible(false);
 
         pieChart.getData().clear();
         pieChart.getData().addAll(pieData);
@@ -281,9 +313,11 @@ public class SettleDebtsCtrl implements Initializable {
             catch (Exception e){
                 data.getNode().setStyle("-fx-pie-color: white");
             }
-            // System.out.println(extractedString + " color: " + color);
         }
+
+
     }
+
     /**
      * This method calculates the percentage of the value compared to the total
      * @param value the value
