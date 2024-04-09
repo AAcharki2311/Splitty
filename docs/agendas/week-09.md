@@ -4,7 +4,7 @@
 | Time: | 15:45 - 16:45 |
 | Location: | Drebbelweg PC1 - Cube 6 |
 | Chair | Everyone |
-| Minute Taker | x |
+| Minute Taker | Giulia |
 | Attendees: | Anne-Sophie, Ayoub, Eelco, Giulia, Thijmen |
 
 Agenda Items:
@@ -18,7 +18,7 @@ Agenda Items:
   
 - Announcements by the TA (~5 min)
 - Show current app to the TA (5 min)
-- Can TA run app (2 min)
+- Can TA run app? (2 min)
 
 - Check all the rubrics together to see where we are (5 min)
 - TESTING (10 min)
