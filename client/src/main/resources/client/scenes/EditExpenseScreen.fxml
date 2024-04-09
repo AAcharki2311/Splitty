@@ -96,7 +96,7 @@
       </font>
    </Button>
    <Label fx:id="tagText" layoutX="85.0" layoutY="270.0" text="Tag?" textFill="#0d5575" />
-   <ComboBox fx:id="comboBoxTag" layoutX="314.0" layoutY="266.0" prefHeight="25.0" prefWidth="111.0" promptText="Food" />
+   <ComboBox fx:id="comboBoxTag" layoutX="314.0" layoutY="266.0" prefHeight="25.0" prefWidth="111.0" promptText="Tags" />
    <Button fx:id="addTagBtn" layoutX="175.0" layoutY="266.0" mnemonicParsing="false" onAction="#clickAddTag" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: #0d5575;" text="Add" textFill="#f4fdff">
       <font>
          <Font name="Calibri" size="12.0" />

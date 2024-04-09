@@ -92,5 +92,5 @@
          <Font name="Calibri" size="12.0" />
       </font>
    </Button>
-   <ComboBox fx:id="comboBoxTag" layoutX="314.0" layoutY="266.0" prefHeight="25.0" prefWidth="111.0" promptText="Food" />
+   <ComboBox fx:id="comboBoxTag" layoutX="314.0" layoutY="266.0" prefHeight="25.0" prefWidth="111.0" promptText="Tags" />
 </AnchorPane>

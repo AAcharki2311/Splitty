@@ -53,7 +53,7 @@
          <Font size="13.0" />
       </font>
    </Label>
-   <PieChart fx:id="pieChart" layoutX="468.0" layoutY="179.0" legendSide="TOP" prefHeight="150.0" prefWidth="200.0" />
+   <PieChart fx:id="pieChart" labelsVisible="false" layoutX="468.0" layoutY="179.0" legendSide="TOP" legendVisible="false" prefHeight="150.0" prefWidth="200.0" />
    <Label fx:id="payedAmount" layoutX="259.0" layoutY="170.0" prefHeight="20.0" prefWidth="63.0" text="0" textAlignment="CENTER" textFill="#0d5575">
       <font>
          <Font size="13.0" />
