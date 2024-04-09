@@ -50,19 +50,19 @@ public class EventServerUtils {
      * @return dweg
      */
     public List<Event> getAllEvents() {
-        ResponseEntity<List<Event>> res;
+        List<Event> res;
         try {
             res = ClientBuilder.newClient(new ClientConfig()) //
                     .target(SERVER) //
                     .request(APPLICATION_JSON) //
                     .accept(APPLICATION_JSON) //
-                    .get(new GenericType<ResponseEntity<List<Event>>>() {
+                    .get(new GenericType<List<Event>>() {
                     });
         } catch (NotFoundException e) {
 
             return List.of();
         }
-        return res.getBody();
+        return res;
     }
 
     private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
