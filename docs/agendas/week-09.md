@@ -23,6 +23,7 @@ Agenda Items:
 - Check all the rubrics together to see where we are (5 min)
 - TESTING (10 min)
 - Git Lab (3 min)
+- ReadMe file & Javadoc (5 min)
 - Dividing the work load for this week: What needs to be done? FrontEnd/BackEnd, special care for rubrics (5 min)
 - Plan a meeting/session for this week (1 min)
 - Points for next meeting + Summarize action points: Who , what , when? (2 min)
