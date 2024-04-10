@@ -132,16 +132,18 @@ public class StartScreenCtrl implements Initializable {
 
     /**
      * This method reads the recent events from the JSON file and sets the text of the recent events label
+     * @param path the path of the JSON file
+     * @return the text of the recent events
      */
-    public void readRecentEvents() {
-        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
+    public String readRecentEvents(String path) {
+        List<String> eventNames = writeEventNames.readEventsFromJson(path);
         if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
             for(String element : tempList) text = text + "\n" + element + "\n";
-            recentEventLabel.setText(text);
+            return text;
         } else{
-            recentEventLabel.setText(h.get("key52"));
+            return h.get("key52");
         }
     }
 
@@ -455,7 +457,8 @@ public class StartScreenCtrl implements Initializable {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    readRecentEvents();
+                    String res = readRecentEvents("src/main/resources/recentEvents.json");
+                    recentEventLabel.setText(res);
                 });
             }
         }, 0, 5000);
