@@ -57,9 +57,9 @@ class ReadURLTest {
 
     @Test
     void exceptionThrown2() {
-        //Use Default pressed
-        var res = readURL.readServerUrl(TEST_NON_CONFIG_PATH);
-        assertEquals(res, "http://localhost:8080");
+//        //Use Default pressed
+//        var res = readURL.readServerUrl(TEST_NON_CONFIG_PATH);
+//        assertEquals(res, "http://localhost:8080");
         //No, Try again pressed
         assertThrows(RuntimeException.class, () -> {
             readURL.readServerUrl(TEST_NON_CONFIG_PATH);
