@@ -189,17 +189,28 @@ public class AddExpenseCtrl implements Initializable {
                 JOptionPane.showMessageDialog(null, message);
                 clickBack();
             } else {
-                if(duplicate){
-                    errormessage = h.get("key68");
-                }else if(money < 0){
-                    errormessage = h.get("key93");
-                } else{
-                    errormessage = h.get("key84");
-                }
+                errormessage = elsemethod(duplicate, money, h);
                 throw new Exception();
             }
         } catch (Exception e){
             message.setText(errormessage);
+        }
+    }
+
+    /**
+     * This method is used to check if the input is correct
+     * @param duplicate boolean to check if the name + title is a duplicate
+     * @param money the amount of money
+     * @param h the hashmap with the translations
+     * @return the error message
+     */
+    public String elsemethod(boolean duplicate, Double money, HashMap<String, String> h) {
+        if(duplicate){
+            return h.get("key68");
+        }else if(money < 0){
+            return h.get("key93");
+        } else{
+            return h.get("key84");
         }
     }
 
@@ -226,8 +237,8 @@ public class AddExpenseCtrl implements Initializable {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String title, double money, Date date, ComboBox comboBoxCurr, RadioButton splitRBtn){
-        return !title.isBlank() && !(money < 0) && date != null && comboBoxCurr.getValue() != null &&
-                splitRBtn.isSelected();
+        return !title.isBlank() && !(money < 0) && date != null && comboBoxCurr !=null && comboBoxCurr.getValue() != null &&
+                splitRBtn != null && splitRBtn.isSelected();
     }
 
     /**
