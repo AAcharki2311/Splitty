@@ -26,7 +26,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Timer;
 import java.util.*;
-import java.io.*;
 
 public class StartScreenCtrl implements Initializable {
     @FXML
@@ -204,7 +203,7 @@ public class StartScreenCtrl implements Initializable {
                     ht.put("Food?"+(String.valueOf(newEvent.id)), "#43CE43");
                     ht.put("Entrance Fees?"+(String.valueOf(newEvent.id)), "#616BD0");
                     ht.put("Travel?" + (String.valueOf(newEvent.id)), "#D71919");
-                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
 
                     mc.showEventOverview(String.valueOf(newEvent.id));
 

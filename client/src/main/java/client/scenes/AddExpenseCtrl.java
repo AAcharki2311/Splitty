@@ -312,7 +312,7 @@ public class AddExpenseCtrl implements Initializable {
                 } else{
                     HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
                     ht.put(name+"?"+eventid, color);
-                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                     comboBoxTag.getItems().clear();
                     eventTags.clear();
                     addTags();
@@ -354,7 +354,7 @@ public class AddExpenseCtrl implements Initializable {
             } else{
                 ht.remove(comboBoxTag.getValue()+"?"+eventid);
                 ht.put(name+"?"+eventid, color);
-                ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                 comboBoxTag.getItems().clear();
                 eventTags.clear();
                 addTags();
@@ -362,7 +362,7 @@ public class AddExpenseCtrl implements Initializable {
             }
         } else if(result == JOptionPane.NO_OPTION){
             ht.remove(comboBoxTag.getValue()+"?"+eventid);
-            ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+            jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
             comboBoxTag.getItems().clear();
             eventTags.clear();
             addTags();

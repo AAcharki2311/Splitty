@@ -2,6 +2,8 @@ package client.utils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,6 +11,8 @@ class WriteEventNamesTest {
 
     private WriteEventNames writer;
     private static final String TEST_CONFIG_PATH = "src/test/java/client/resources/testEventFile.JSON";
+    private static final String TEST_OTHER_CONFIG_PATH = "src/test/java/client/resources/testOtherEventFile.JSON";
+    private static final String TEST_OTHER_OTHER_CONFIG_PATH = "src/test/java/client/resources/testOtherOtherEventFile.JSON";
     private static final String NEW_TEST_CONFIG_PATH = "src/test/java/client/resources/newTestEventFile.JSON";
 
 
@@ -56,4 +60,17 @@ class WriteEventNamesTest {
 //        writer.writeEventName("Fake path", "eventname", "id");
 //        assertNotNull(result);
 //    }
+
+    @Test
+    void writeEventException() {
+        var res = writer.readEventsFromJson(TEST_OTHER_CONFIG_PATH);
+        assertNotNull(res);
+        assertThrows(RuntimeException.class, () -> writer.readEventsFromJson(TEST_OTHER_OTHER_CONFIG_PATH));
+    }
+
+    @Test
+    void testexception() {
+        assertThrows(RuntimeException.class, () -> writer.writeEventName(null, null, null));
+    }
+
 }
