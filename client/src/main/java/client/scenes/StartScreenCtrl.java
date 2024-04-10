@@ -34,6 +34,10 @@ public class StartScreenCtrl implements Initializable {
     private final ParticipantsServerUtil partServer;
     private final MainCtrl mc;
     private HashMap<String, String> h;
+    private Participant userParticipant;
+    private WriteEventNames writeEventNames;
+    private LanguageSwitch languageSwitch;
+    private Timer timer;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -72,10 +76,7 @@ public class StartScreenCtrl implements Initializable {
     private Button addUserInfoBtn;
     @FXML
     private ImageView warningImageview;
-    private Participant userParticipant;
-    private WriteEventNames writeEventNames;
-    private LanguageSwitch languageSwitch;
-    private Timer timer;
+
 
     /**
      * Constructor of the StartScreenCtrl
@@ -459,4 +460,53 @@ public class StartScreenCtrl implements Initializable {
             }
         }, 0, 5000);
     }
+
+    /**
+     * Method to get the participant
+     * @return the participant
+     */
+    public Participant getuserParticipant() {
+        return userParticipant;
+    }
+
+    /**
+     * Method to set the participant
+     * @param participant the participant
+     */
+    public void setUserParticipant(Participant participant) {
+        this.userParticipant = participant;
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
+    }
+
+    /**
+     * Method to set the timer
+     * @param timer the timer
+     */
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
+    /**
+     * Method to get the timer
+     * @return the timer
+     */
+    public Timer getTimer() {
+        return timer;
+    }
+
 }
