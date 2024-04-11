@@ -1,21 +1,32 @@
 package client.scenes;
 
+import client.MyFXML;
+import client.MyModule;
 import client.utils.*;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import commons.*;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.testfx.framework.junit5.ApplicationTest;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class SettleDebtsCtrlTest {
+class SettleDebtsCtrlTest extends ApplicationTest {
     @Mock
     private EventServerUtils server;
     @Mock
@@ -28,6 +39,33 @@ class SettleDebtsCtrlTest {
     private ExpensesServerUtils expServer;
     @InjectMocks
     private SettleDebtsCtrl settleDebtsCtrl;
+
+    @BeforeAll
+    static void setAllUp(){
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("glass.platform", "Monocle");
+        System.setProperty("monocle.platform", "Headless");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("java.awt.headless", "true");
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Injector injector = Guice.createInjector(new MyModule());
+        MyFXML fxml = new MyFXML(injector);
+
+        Pair<SettleDebtsCtrl, Parent> screen = fxml.load(SettleDebtsCtrl.class,
+                "client", "scenes", "SettleDebts.fxml");
+
+        this.settleDebtsCtrl = screen.getKey();
+        MockitoAnnotations.openMocks(this).close();
+
+        Scene scene = new Scene(screen.getValue());
+        stage.setScene(scene);
+        stage.show();
+    }
 
     @BeforeEach
     void setUp() {
