@@ -314,8 +314,6 @@ public class SettleDebtsCtrl implements Initializable {
                 data.getNode().setStyle("-fx-pie-color: white");
             }
         }
-
-
     }
 
     /**
