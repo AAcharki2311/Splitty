@@ -68,8 +68,6 @@ public class EditExpenseCtrl implements Initializable {
     private Label whenText;
     @FXML
     private Label howToSplitText;
-//    @FXML
-//    private Label tagText;
     @FXML
     private Text labelEventName;
     @FXML
@@ -82,8 +80,6 @@ public class EditExpenseCtrl implements Initializable {
     private TextField moneyField;
     @FXML
     private DatePicker dateField;
-    // @FXML
-    // private TextField tagTextField;
     @FXML
     private Button addTagBtn;
     @FXML
@@ -190,7 +186,6 @@ public class EditExpenseCtrl implements Initializable {
             splitRBtn.setSelected(true);
             comboBoxTag.setValue(selectedExpense.getTag());
             comboBoxCurr.setValue(selectedExpense.getCur());
-            // tagTextField.setText(selectedExpense.getTag());
         });
     }
 
@@ -203,7 +198,6 @@ public class EditExpenseCtrl implements Initializable {
         h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
         titleOfScreen.setText(h.get("key16"));
         changeTheExpenseOfText.setText(h.get("key17"));
-        // calledText.setText(h.get("key18"));
         fillInfoText.setText(h.get("key19"));
         whoPaidText.setText(h.get("key20"));
         titleText.setText(h.get("key21"));
@@ -252,7 +246,7 @@ public class EditExpenseCtrl implements Initializable {
             String tag = comboBoxTag.getValue();
             String cur = comboBoxCurr.getValue();
 
-            if(validate(title, money, comboBoxCurr, splitRBtn)){
+            if(validate(title, money, date, comboBoxCurr, splitRBtn)){
                 Expense exp = new Expense(e, p, money, date, title, tag, cur);
 
                 int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
@@ -278,10 +272,8 @@ public class EditExpenseCtrl implements Initializable {
                     JOptionPane.showMessageDialog(null, message);
                     clickBack();
                 }
-            } else if(money < 0){
-                message.setText(h.get("key93"));
             } else {
-                message.setText(h.get("key84"));
+                message.setText(elsemethod(money, h));
             }
         } catch (Exception e){
             message.setText(h.get("key84"));
@@ -289,16 +281,31 @@ public class EditExpenseCtrl implements Initializable {
     }
 
     /**
+     * This method shows a message if the input is incorrect
+     * @param money the amount of money
+     * @param h the hashmap with the messages
+     * @return the message
+     */
+    public String elsemethod(double money, HashMap<String, String> h){
+        if(money < 0){
+            return h.get("key93");
+        } else {
+            return h.get("key84");
+        }
+    }
+
+    /**
      * This method checks if the input is correct
      * @param title the title of the expense
      * @param money the amount of money
+     * @param date the date of expense
      * @param comboBoxCurr the currency of the expense
      * @param splitRBtn the radio button that indicates if the expense is split
      * @return true if the input is correct, false if the input is incorrect
      */
-    public boolean validate(String title, double money, ComboBox comboBoxCurr, RadioButton splitRBtn){
-        return !title.isBlank() && !(money < 0) &&
-                comboBoxCurr.getValue() != null &&
+    public boolean validate(String title, double money, Date date, ComboBox comboBoxCurr, RadioButton splitRBtn){
+        return !title.isBlank() && !(money < 0) && date != null && comboBoxCurr != null &&
+                comboBoxCurr.getValue() != null && splitRBtn != null &&
                 splitRBtn.isSelected();
     }
 
@@ -362,7 +369,6 @@ public class EditExpenseCtrl implements Initializable {
      * @param id the id of the event
      */
     public void update(String id){
-
         long eid = Long.parseLong(id);
         this.eventid = eid;
 
@@ -449,7 +455,7 @@ public class EditExpenseCtrl implements Initializable {
      * This method sets up the table with the changed expenses
      * @return the tableview with the changed expenses
      */
-    public TableView setupTable() {
+    public TableView<Expense> setupTable() {
         ObservableList<Expense> data = FXCollections.observableArrayList(changedExpenses);
         TableView<Expense> tableView = new TableView<>();
         tableView.setItems(data);
