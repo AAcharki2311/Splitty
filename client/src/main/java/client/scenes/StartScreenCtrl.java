@@ -68,8 +68,6 @@ public class StartScreenCtrl implements Initializable {
     @FXML
     private Text message;
     @FXML
-    private Label switchServerText;
-    @FXML
     private Label recentEventLabel;
     @FXML
     private Button addUserInfoBtn;
@@ -196,7 +194,6 @@ public class StartScreenCtrl implements Initializable {
         imageviewFlag.setImage(imageFlag);
         eventJoin.setPromptText(h.get("key94"));
         eventName.setPromptText(h.get("key95"));
-        switchServerText.setText(h.get("key127") + "\n    " + server.getServerUrl().replace("/api/events", ""));
     }
 
     /**
