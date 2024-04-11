@@ -49,7 +49,6 @@ class AddExpenseCtrlTest extends ApplicationTest {
         System.setProperty("prism.order", "sw");
         System.setProperty("prism.text", "t2k");
         System.setProperty("java.awt.headless", "true");
-
     }
 
     @BeforeEach
