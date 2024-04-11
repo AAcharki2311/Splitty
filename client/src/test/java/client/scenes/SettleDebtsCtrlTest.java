@@ -21,7 +21,6 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
