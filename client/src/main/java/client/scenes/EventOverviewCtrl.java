@@ -44,7 +44,7 @@ public class EventOverviewCtrl implements Initializable {
     private ComboBox comboboxLanguage;
     /** PAGE **/
     private long eventid;
-    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch \uD83C\uDDF3\uD83C\uDDF1", "English \uD83C\uDDEC\uD83C\uDDE7", "French \uD83C\uDDEB\uD83C\uDDF7"));
     @FXML
     private Text partictext;
     @FXML
@@ -130,9 +130,9 @@ public class EventOverviewCtrl implements Initializable {
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
-            String language = comboboxLanguage.getValue().toString();
+            String language = comboboxLanguage.getSelectionModel().getSelectedItem().toString().split(" ")[0].trim();
             languageSwitch.languageChange(path, language);
-            comboboxLanguage.setPromptText(h.get("key53") + comboboxLanguage.getSelectionModel().getSelectedItem());
+            comboboxLanguage.setPromptText(h.get("key53") + language);
 
             try {
                 mc.ltest();
@@ -270,11 +270,11 @@ public class EventOverviewCtrl implements Initializable {
             JTextField textFieldEmail = new JTextField();
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Invite your friends with the code:"));
+            panel.add(new JLabel(h.get("key33")));
             panel.add(new JLabel(String.valueOf(eventid)));
-            panel.add(new JLabel("Or send through email:"));
+            panel.add(new JLabel(h.get("key36")));
             panel.add(textFieldEmail);
-            Object[] options = {"Send", "Back"};
+            Object[] options = {h.get("key12"), h.get("key99")};
 
             int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
@@ -409,7 +409,7 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**

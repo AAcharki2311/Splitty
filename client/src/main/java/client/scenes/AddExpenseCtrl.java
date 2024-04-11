@@ -63,6 +63,10 @@ public class AddExpenseCtrl implements Initializable {
     @FXML
     private Button cancelBtn;
     @FXML
+    private Button addTagBtn;
+    @FXML
+    private Button editTagBtn;
+    @FXML
     private RadioButton splitRBtn;
     @FXML
     private TextField titleTextField;
@@ -144,6 +148,8 @@ public class AddExpenseCtrl implements Initializable {
         howToSplitText.setText(h.get("key24"));
         splitRBtn.setText(h.get("key25"));
         cancelBtn.setText(h.get("key26"));
+        addTagBtn.setText(h.get("key10"));
+        editTagBtn.setText(h.get("key9"));
         comboBoxNamePaid.setPromptText(h.get("key7"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
@@ -287,7 +293,7 @@ public class AddExpenseCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**
@@ -307,11 +313,11 @@ public class AddExpenseCtrl implements Initializable {
             JTextField textFieldColor = new JTextField();
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Name of the tag:"));
+            panel.add(new JLabel(h.get("key123")));
             panel.add(textFieldName);
-            panel.add(new JLabel("Color of the tag:"));
+            panel.add(new JLabel(h.get("key124")));
             panel.add(textFieldColor);
-            Object[] options = {"Add", "Back"};
+            Object[] options = {h.get("key10"), h.get("key99")};
             int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
@@ -344,16 +350,16 @@ public class AddExpenseCtrl implements Initializable {
         JTextField textFieldColor = new JTextField();
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(new JLabel("Name of the tag:"));
+        panel.add(new JLabel(h.get("key123")));
         panel.add(textFieldName);
         textFieldName.setText(comboBoxTag.getValue());
-        panel.add(new JLabel("Color of the tag:"));
+        panel.add(new JLabel(h.get("key124")));
         panel.add(textFieldColor);
 
         ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
         textFieldColor.setText(ht.get(comboBoxTag.getValue()+"?"+eventid));
 
-        Object[] options = {"Add", "Delete"};
+        Object[] options = {h.get("key10"), h.get("key67")};
         int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 

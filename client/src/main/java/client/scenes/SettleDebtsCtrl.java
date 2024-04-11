@@ -54,9 +54,13 @@ public class SettleDebtsCtrl implements Initializable {
     @FXML
     private Text titleOfScreen;
     @FXML
+    private Text titleOfScreen1;
+    @FXML
     private Text labelEventName;
     @FXML
     private Text sumLabel;
+    @FXML
+    private Text sumLabel1;
     @FXML
     private Label total;
     @FXML
@@ -225,6 +229,8 @@ public class SettleDebtsCtrl implements Initializable {
         comboBoxPart.setPromptText(h.get("key7"));
         sortParticipantBtn.setText(h.get("key43"));
         sortTagBtn.setText(h.get("key45"));
+        sumLabel1.setText(h.get("key121"));
+        titleOfScreen1.setText(h.get("key122"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
     }
@@ -385,7 +391,7 @@ public class SettleDebtsCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**

@@ -44,7 +44,7 @@ public class StartScreenCtrl implements Initializable {
     @FXML
     private ImageView imgHome;
     /** NEEDED FOR LANGUAGE SWITCH **/
-    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch \uD83C\uDDF3\uD83C\uDDF1", "English \uD83C\uDDEC\uD83C\uDDE7", "French \uD83C\uDDEB\uD83C\uDDF7"));
     @FXML
     private ImageView imageviewFlag;
     private String language;
@@ -111,9 +111,9 @@ public class StartScreenCtrl implements Initializable {
         comboboxLanguage.getItems().addAll(languages);
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
-            this.language = comboboxLanguage.getValue().toString();
+            this.language = comboboxLanguage.getSelectionModel().getSelectedItem().toString().split(" ")[0].trim();
             languageSwitch.languageChange(path, language);
-            comboboxLanguage.setPromptText(h.get("key53") + comboboxLanguage.getSelectionModel().getSelectedItem());
+            comboboxLanguage.setPromptText(h.get("key53") + language);
 
             try {
                 mc.ltest();
@@ -339,7 +339,7 @@ public class StartScreenCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings(){
-        mc.help();
+        mc.help(h);
     }
 
     /**

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class MainCtrl {
@@ -195,17 +196,7 @@ public class MainCtrl {
                     if (currentScene == eventOverviewScene) eventOCtrl.clickEditExpense();
                     break;
                 case S:
-                    TableView<String> tableView = setupTable();
-
-                    Stage newStage = new Stage();
-                    newStage.setTitle("Shortcuts");
-
-                    StackPane secondaryLayout = new StackPane();
-                    secondaryLayout.getChildren().addAll(tableView);
-
-                    Scene secondscene = new Scene(secondaryLayout, 285, 300);
-                    newStage.setScene(secondscene);
-                    newStage.show();
+                    eventOCtrl.clickSettings();
                     break;
                 case Y:
                     System.exit(0);
@@ -221,9 +212,10 @@ public class MainCtrl {
 
     /**
      * Shows the keyboard combo's
+     * @param h the hashmap
      */
-    public void help() {
-        TableView<String> tableView = setupTable();
+    public void help(HashMap<String, String> h) {
+        TableView<String> tableView = setupTable(h);
 
         Stage newStage = new Stage();
         newStage.setTitle("Shortcuts");
@@ -231,32 +223,37 @@ public class MainCtrl {
         StackPane secondaryLayout = new StackPane();
         secondaryLayout.getChildren().addAll(tableView);
 
-        Scene secondscene = new Scene(secondaryLayout, 285, 300);
+        Scene secondscene = new Scene(secondaryLayout, 400, 300);
         newStage.setScene(secondscene);
         newStage.show();
     }
 
-    private TableView<String> setupTable() {
+    /**
+     * Method to set up the table with shortcuts
+     * @param h the hashmap
+     * @return the table view
+     */
+    public TableView<String> setupTable(HashMap<String, String> h) {
         ObservableList<String> data = FXCollections.observableArrayList(
-                "Alt + A, Add participant, Event Overview",
-                "Alt + C, Create event, Start",
-                "Alt + E, Edit participant, Event Overview",
-                "Alt + F, Settle debts, Event Overview",
-                "Alt + I, Invite, Event Overview",
-                "Alt + J, Join event, Start",
-                "Alt + K, Add expense, Event Overview",
-                "Alt + L, Edit expense, Event Overview",
-                "Alt + S, Show shortcuts, All",
-                "Alt + Y, Close application, All",
-                "Alt + /, Go back, All"
+                ("Alt + A," + h.get("key113") + ", " + h.get("key120")),
+                ("Alt + C," + h.get("key4") + ", Start"),
+                ("Alt + E," + h.get("key114") + ", " + h.get("key120")),
+                ("Alt + F," + h.get("key115") + ", " + h.get("key120")),
+                ("Alt + I," + h.get("key12") + ", " + h.get("key120")),
+                ("Alt + J," + h.get("key3") + ", Start"),
+                ("Alt + K," + h.get("key116") + ", " + h.get("key120")),
+                ("Alt + L," + h.get("key117") + ", " + h.get("key120")),
+                ("Alt + S," + h.get("key118") + ", " + h.get("key13")),
+                ("Alt + Y," + h.get("key119") + ", " + h.get("key13")),
+                ("Alt + /," + h.get("key99") + ", " + h.get("key13"))
         );
 
         TableView<String> tableView = new TableView<>();
         tableView.setItems(data);
 
         TableColumn<String, String> colShortcut = new TableColumn<>("Shortcut");
-        TableColumn<String, String> colAction = new TableColumn<>("Action");
-        TableColumn<String, String> colPage = new TableColumn<>("Page");
+        TableColumn<String, String> colAction = new TableColumn<>(h.get("key125"));
+        TableColumn<String, String> colPage = new TableColumn<>(h.get("key126"));
 
         colShortcut.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[0].trim()));
         colAction.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[1].trim()));
