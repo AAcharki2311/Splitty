@@ -267,7 +267,7 @@ public class MainCtrl {
      * Method to handle the key press for the slash key
      * @param currentScene the current scene
      */
-    private void keySlashMethod(Scene currentScene) {
+    public void keySlashMethod(Scene currentScene) {
         if(currentScene == eventOverviewScene) {
             eventOCtrl.clickBack();
         } else if (currentScene == expenseScene) {
@@ -480,6 +480,7 @@ public class MainCtrl {
     public void setParticipant(Participant p){
         participantCtrl.setUserParticipant(p);
     }
+
     /**
      * Sets the changed expenses
      * @param tempList the list of changed expenses
@@ -503,6 +504,30 @@ public class MainCtrl {
      */
     public EventOverviewCtrl getEventOCtrl() {
         return eventOCtrl;
+    }
+
+    /**
+     * Method for setting the current event Controller
+     * @param eventOCtrl the event controller to set
+     */
+    public void setEventOCtrl(EventOverviewCtrl eventOCtrl) {
+        this.eventOCtrl = eventOCtrl;
+    }
+
+    /**
+     * Method for setting the current editexpense Controller
+     * @param editExpenseCtrl the editexpense controller to set
+     */
+    public void setEditExpenseCtrl(EditExpenseCtrl editExpenseCtrl) {
+        this.editExpenseCtrl = editExpenseCtrl;
+    }
+
+    /**
+     * Method for setting the current participant Controller
+     * @param participantCtrl the participant controller to set
+     */
+    public void setParticipantCtrl(ParticipantCtrl participantCtrl) {
+        this.participantCtrl = participantCtrl;
     }
 
     /**

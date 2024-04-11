@@ -15,7 +15,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ParticipantsServerUtil {
     private final ReadURL readURL;
-    private final String serverURL;
+    private static String serverURL;
 
     /**
      * ParticipantsServerUtil constructor
@@ -24,7 +24,7 @@ public class ParticipantsServerUtil {
     @Inject
     public ParticipantsServerUtil(ReadURL readURL){
         this.readURL = readURL;
-        this.serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/participants";
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/participants";
     }
 
     /**

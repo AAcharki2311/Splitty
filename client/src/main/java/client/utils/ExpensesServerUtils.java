@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ExpensesServerUtils {
     private final ReadURL readURL;
-    private final String serverURL;
+    private static String serverURL;
     /**
      * ExpensesServerUtils constructor
      * @param readURL readURL object
@@ -24,7 +24,7 @@ public class ExpensesServerUtils {
     @Inject
     public ExpensesServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        this.serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/expenses";
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/expenses";
     }
 
     /**

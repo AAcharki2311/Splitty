@@ -29,7 +29,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventServerUtils {
     private final ReadURL readURL;
-    private final String serverURL;
+    private static String serverURL;
     private StompSession WEBSOCKET;
 
     /**
@@ -40,15 +40,7 @@ public class EventServerUtils {
     @Inject
     public EventServerUtils(ReadURL readURL) {
         this.readURL = readURL;
-        this.serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
-    }
-
-    /**
-     * Method that returns the server URL
-     * @return the server URL
-     */
-    public String getServerUrl(){
-        return this.serverURL;
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
     }
 
     /**
