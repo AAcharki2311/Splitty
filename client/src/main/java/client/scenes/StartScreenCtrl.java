@@ -68,6 +68,10 @@ public class StartScreenCtrl implements Initializable {
     @FXML
     private Text message;
     @FXML
+    private Label switchServerText;
+    @FXML
+    private Label switchServerText2;
+    @FXML
     private Label recentEventLabel;
     @FXML
     private Button addUserInfoBtn;
@@ -194,6 +198,8 @@ public class StartScreenCtrl implements Initializable {
         imageviewFlag.setImage(imageFlag);
         eventJoin.setPromptText(h.get("key94"));
         eventName.setPromptText(h.get("key95"));
+        switchServerText.setText(h.get("key127") + "\n    " + server.getServerUrl().replace("/api/events", ""));
+        switchServerText2.setText(h.get("key128"));
     }
 
     /**
@@ -540,4 +546,12 @@ public class StartScreenCtrl implements Initializable {
         return timer;
     }
 
+    /**
+     * Method to switch the server
+     */
+    public void switchServer(){
+        String oldServer = server.getServerUrl().replace("/api/events", "");
+        mc.changeServerURlPopUP(oldServer);
+        switchServerText.setText(h.get("key127") + "\n    " + server.getServerUrl().replace("/api/events", ""));
+    }
 }

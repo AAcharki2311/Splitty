@@ -125,5 +125,7 @@
     "key123": "Name of the tag:",
     "key124": "Color of the tag:",
     "key125": "Action",
-    "key126": "Page"
+    "key126": "Page",
+    "key127": "Current server: ",
+    "key128": "Switch server"
 }

@@ -117,7 +117,6 @@ public class AdminDashboardCtrl implements Initializable {
         colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().name));
         colDate1.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().creationDate)));
         colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
-        refresh();
 
         table.setOnMouseClicked(event -> {
             Event selectedItem = table.getSelectionModel().getSelectedItem();
@@ -316,5 +315,15 @@ public class AdminDashboardCtrl implements Initializable {
      */
     public void clickSettings() {
         mc.help(h);
+    }
+
+    /**
+     * Refreshes the utils
+     */
+    public void refreshUtils() {
+        server.refreshServerUrl();
+        expPart.refreshServerUrl();
+        expPay.refreshServerUrl();
+        expServer.refreshServerUrl();
     }
 }

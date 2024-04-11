@@ -109,7 +109,7 @@ public class MainCtrl {
     /**
      * Method to pop up a dialog to change the server URL
      */
-    private void serverURlpopUP() {
+    public void serverURlpopUP() {
         ReadURL readURL = new ReadURL();
         while(true){
             serverURL = JOptionPane.showInputDialog("Please enter the server URL:");
@@ -124,10 +124,42 @@ public class MainCtrl {
                 if(choice == 0){
                     serverURL = "http://localhost:8080";
                     readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                    adminDashboardCtrl.refreshUtils();
                     break;
                 }
             } else{
                 readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                adminDashboardCtrl.refreshUtils();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Method to pop up a dialog to change the server URL
+     * @param oldURL the old URL
+     */
+    public void changeServerURlPopUP(String oldURL) {
+        ReadURL readURL = new ReadURL();
+        while(true){
+            serverURL = JOptionPane.showInputDialog("Server: ", oldURL);
+            if(serverURL == null){
+                break;
+            } else if (serverURL.isBlank()) {
+                JOptionPane.showMessageDialog(null, "No URL entered");
+            } else if (!isServerReachable(serverURL)) {
+                int choice = JOptionPane.showOptionDialog(null, "Server not reachable. Do you want to use the default URL (http://localhost:8080) or try again?",
+                        "Server not reachable", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                        new String[]{"Use default", "Try again"}, "default");
+                if(choice == 0){
+                    serverURL = "http://localhost:8080";
+                    readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                    adminDashboardCtrl.refreshUtils();
+                    break;
+                }
+            } else{
+                readURL.writeServerUrl(serverURL, "src/main/resources/configfile.properties");
+                adminDashboardCtrl.refreshUtils();
                 break;
             }
         }
@@ -442,6 +474,7 @@ public class MainCtrl {
      * Shows the admin dashboard screen
      */
     public void showAdminDashboard() {
+        adminDashboardCtrl.refresh();
         try {
             String taal = setLanguage("src/main/resources/configfile.properties");
             adminDashboardCtrl.langueageswitch(taal);
@@ -449,7 +482,6 @@ public class MainCtrl {
         catch (Exception e){
             e.printStackTrace();
         }
-        adminDashboardCtrl.refresh();
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
 
@@ -460,6 +492,7 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showAdminEvent(String id){
+        eventOverviewAdminCtrl.refresh();
         try {
             String taal = setLanguage("src/main/resources/configfile.properties");
             eventOverviewAdminCtrl.langueageswitch(taal);

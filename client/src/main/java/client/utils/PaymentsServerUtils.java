@@ -16,7 +16,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class PaymentsServerUtils {
 
     private final ReadURL readURL;
-    private final String SERVER;
+    private static String serverURL;
 
     /**
      * PaymentsServerUtils constructor
@@ -25,14 +25,22 @@ public class PaymentsServerUtils {
     @Inject
     public PaymentsServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
     }
+
+    /**
+     * Method that refreshes the utils with the new server URL
+     */
+    public void refreshServerUrl(){
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
+    }
+
     /**
      * @return list of all payments
      */
     public List<Payment> getPayments() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER)
+                .target(serverURL)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<ResponseEntity<List<Payment>>>() {}).getBody();
@@ -44,7 +52,7 @@ public class PaymentsServerUtils {
      */
     public Payment addPayments(Payment payment) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER)
+                .target(serverURL)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(payment, APPLICATION_JSON), Payment.class);
@@ -56,7 +64,7 @@ public class PaymentsServerUtils {
      */
     public Payment getPaymentByID(long id) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<Payment>() {});
