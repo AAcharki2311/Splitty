@@ -16,7 +16,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class PaymentsServerUtils {
 
     private final ReadURL readURL;
-    private static String serverURL;
+    private final String serverURL;
 
     /**
      * PaymentsServerUtils constructor
@@ -25,14 +25,7 @@ public class PaymentsServerUtils {
     @Inject
     public PaymentsServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
-    }
-
-    /**
-     * Method that refreshes the utils with the new server URL
-     */
-    public void refreshServerUrl(){
-        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
+        this.serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/payments";
     }
 
     /**

@@ -317,13 +317,4 @@ public class AdminDashboardCtrl implements Initializable {
         mc.help(h);
     }
 
-    /**
-     * Refreshes the utils
-     */
-    public void refreshUtils() {
-        server.refreshServerUrl();
-        expPart.refreshServerUrl();
-        expPay.refreshServerUrl();
-        expServer.refreshServerUrl();
-    }
 }
