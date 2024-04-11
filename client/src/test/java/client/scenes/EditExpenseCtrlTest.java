@@ -2,8 +2,8 @@ package client.scenes;
 
 import client.utils.*;
 import commons.*;
-import javafx.application.Platform;
-import javafx.scene.control.TableView;
+//import javafx.application.Platform;
+//import javafx.scene.control.TableView;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
