@@ -266,7 +266,6 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
-        // mc.showInvite(String.valueOf(eventid));
         while(true){
             JTextField textFieldEmail = new JTextField();
             JPanel panel = new JPanel();
@@ -286,7 +285,6 @@ public class EventOverviewCtrl implements Initializable {
                         !email.matches(".*@.+\\..+")){
                     JOptionPane.showMessageDialog(null, h.get("key64"));
                 } else{
-                    // do something
                     break;
                 }
             } else {
@@ -378,7 +376,6 @@ public class EventOverviewCtrl implements Initializable {
         this.eventid = eid;
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
-
 
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
