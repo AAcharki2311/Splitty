@@ -27,7 +27,6 @@ public class MainCtrl {
     private Stage primaryStage;
     private Scene startScene;
     private Scene eventOverviewScene;
-    private Scene inviteScene;
     private Scene expenseScene;
     private Scene participantScene;
     private Scene editParticipantScene;
@@ -39,7 +38,6 @@ public class MainCtrl {
     /**CONTROLLERS**/
     private StartScreenCtrl startCtrl;
     private EventOverviewCtrl eventOCtrl;
-    private InviteCtrl inviteCtrl;
     private ParticipantCtrl participantCtrl;
     private EditParticipantCtrl editParticipantCtrl;
     private EditExpenseCtrl editExpenseCtrl;
@@ -50,14 +48,11 @@ public class MainCtrl {
     private AdminLoginCtrl adminLoginCtrl;
     private String serverURL = "http://localhost:8080";
 
-
-
     /**
      * Initializes all the controllers
      * @param primaryStage The primary stage
      * @param start controller for the start screen
      * @param eventO controller for the screen with an overview of the event
-     * @param invite controller for the screen where people can be invited to an event
      * @param addExpense controller for the screen where an expense can be added for an event
      * @param participant controller for the screen where a participant can be added
      * @param editParticipant controller the screen where a participant can be changed
@@ -70,7 +65,7 @@ public class MainCtrl {
      */
     public void initialize(Stage primaryStage,
                            Pair <StartScreenCtrl, Parent> start,
-                           Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
+                           Pair <EventOverviewCtrl, Parent> eventO,
                            Pair <AddExpenseCtrl, Parent> addExpense, Pair <ParticipantCtrl, Parent> participant,
                            Pair <EditParticipantCtrl, Parent> editParticipant, Pair <EditExpenseCtrl, Parent> editExpense,
                            Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash,
@@ -78,7 +73,6 @@ public class MainCtrl {
         this.primaryStage = primaryStage;
         this.startScene = new Scene(start.getValue());
         this.eventOverviewScene = new Scene(eventO.getValue());
-        this.inviteScene = new Scene(invite.getValue());
         this.expenseScene = new Scene(addExpense.getValue());
         this.participantScene = new Scene(participant.getValue());
         this.editParticipantScene = new Scene(editParticipant.getValue());
@@ -87,7 +81,6 @@ public class MainCtrl {
 
         this.startCtrl = start.getKey();
         this.eventOCtrl = eventO.getKey();
-        this.inviteCtrl = invite.getKey();
         this.participantCtrl = participant.getKey();
         this.editParticipantCtrl = editParticipant.getKey();
         this.editExpenseCtrl = editExpense.getKey();
@@ -161,7 +154,6 @@ public class MainCtrl {
         if(primaryStage != null){
             startScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             eventOverviewScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
-            inviteScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             expenseScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             participantScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             editParticipantScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
@@ -281,8 +273,6 @@ public class MainCtrl {
     private void keySlashMethod(Scene currentScene) {
         if(currentScene == eventOverviewScene) {
             eventOCtrl.clickBack();
-        } else if (currentScene == inviteScene) {
-            inviteCtrl.clickBack();
         } else if (currentScene == expenseScene) {
             addExpenseCtrl.clickBack();
         } else if (currentScene == participantScene) {
@@ -334,7 +324,6 @@ public class MainCtrl {
 
         this.startCtrl.langueageswitch(languageToTranslate);
         this.eventOCtrl.langueageswitch(languageToTranslate);
-        this.inviteCtrl.langueageswitch(languageToTranslate);
         this.participantCtrl.langueageswitch(languageToTranslate);
         this.editParticipantCtrl.langueageswitch(languageToTranslate);
         this.editExpenseCtrl.langueageswitch(languageToTranslate);
@@ -360,16 +349,6 @@ public class MainCtrl {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
         startCtrl.stopTimer();
-    }
-
-    /**
-     * Shows the invite screen
-     * @param id the id of the event
-     */
-    public void showInvite(String id) {
-        primaryStage.setTitle("Invite");
-        primaryStage.setScene(inviteScene);
-        inviteCtrl.update(id);
     }
 
     /**

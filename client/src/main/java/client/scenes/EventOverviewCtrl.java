@@ -277,7 +277,7 @@ public class EventOverviewCtrl implements Initializable {
             Object[] options = {"Send", "Back"};
 
             int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
-                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 
             if (result == JOptionPane.OK_OPTION) {
                 String email = textFieldEmail.getText();

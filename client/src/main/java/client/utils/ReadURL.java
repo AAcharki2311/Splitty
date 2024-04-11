@@ -24,8 +24,9 @@ public class ReadURL implements ReadURLInterface {
             String url = appProps.getProperty("serverurl");
             return url;
         } catch (IOException e) {
+            Object[] options = {"Use default", "No, Try again"};
             int choice = JOptionPane.showOptionDialog(null, "Error reading config file. Please check if the file exists and if the url is correct!" +
-                    "\n Or do you want to use the default URL (http://localhost:8080)?", "404 Server not Found", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Use default", "No, Try again"}, "default");
+                    "\n Or do you want to use the default URL (http://localhost:8080)?", "404 Server not Found", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if(choice == 0){
                 return "http://localhost:8080";
             } else{
