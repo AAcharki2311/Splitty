@@ -9,10 +9,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -109,6 +106,37 @@ public class StartScreenCtrl implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboboxLanguage.getItems().addAll(languages);
+        comboboxLanguage.setCellFactory(param -> new ListCell<String>() {
+            private final ImageView imageView = new ImageView();
+
+            /**
+             * This method updates the item and sets an image of the flag to the combobox
+             * @param item The new item for the cell.
+             * @param empty If this cell is empty, it doesn't contain any domain data;
+             *              but, it's utilized to display an "empty" row.
+             */
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    if(item.contains("Dutch")){
+                        imageView.setImage(new Image("images/nl-circle-01.png"));
+                    } else if(item.contains("English")){
+                        imageView.setImage(new Image("images/br-circle-01.png"));
+                    } else if(item.contains("French")){
+                        imageView.setImage(new Image("images/fr-circle-01.png"));
+                    }
+                    imageView.setFitHeight(20);
+                    imageView.setFitWidth(20);
+                    setGraphic(imageView);
+                }
+            }
+        });
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
             this.language = comboboxLanguage.getSelectionModel().getSelectedItem().toString().split(" ")[0].trim();
