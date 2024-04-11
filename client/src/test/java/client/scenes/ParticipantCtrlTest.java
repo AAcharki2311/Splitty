@@ -53,6 +53,15 @@ class ParticipantCtrlTest {
         String iban = "NL91ABNA0417164300";
         String bic = "ABNANL2A";
         assertTrue(participantCtrl.validate(name, email, iban, bic));
+
+        assertFalse(participantCtrl.validate(name, "wrong.email", iban, bic));
+
+        assertFalse(participantCtrl.validate("", email, iban, bic));
+        assertFalse(participantCtrl.validate(name, "", iban, bic));
+        assertFalse(participantCtrl.validate(name, email, "", bic));
+        assertFalse(participantCtrl.validate(name, email, iban, ""));
+        assertFalse(participantCtrl.validate(name, "wrong@email", iban, bic));
+        assertFalse(participantCtrl.validate(name, email, "06565", bic));
     }
 
     @Test
