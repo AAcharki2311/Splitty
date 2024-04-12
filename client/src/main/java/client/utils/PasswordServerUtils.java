@@ -24,6 +24,11 @@ public class PasswordServerUtils {
         this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/generate-password";
     }
 
+    /**
+     * Generates password from the server
+     * @return the password
+     * @throws IOException
+     */
     public String generatePasswordFromServer() throws IOException {
         URL url = new URL(SERVER);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

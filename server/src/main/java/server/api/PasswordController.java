@@ -13,6 +13,10 @@ public class PasswordController {
 
     private static final Logger logger = Logger.getLogger(PasswordController.class.getName());
 
+    /**
+     * Generates a password and logs it to the server
+     * @return a string password
+     */
     @PostMapping("/generate-password")
     public ResponseEntity<String> generatePassword() {
         String generatedPassword = generateStrongPassword(); // Your password generation logic here

@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang3.RandomStringUtils;
+// import org.apache.commons.lang3.RandomStringUtils;
 import java.net.URL;
 import java.util.*;
 
@@ -99,6 +99,7 @@ public class AdminLoginCtrl implements Initializable {
      *
      * @param server     the server
      * @param mc         the main controller
+     * @param pwserver   the password server
      * @param jsonReader
      */
     @Inject
@@ -115,6 +116,7 @@ public class AdminLoginCtrl implements Initializable {
             // System.out.println("Your random password is: " + pw);
         }
         catch (Exception e){
+            e.printStackTrace();
         }
     }
 
