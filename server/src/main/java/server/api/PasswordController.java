@@ -19,17 +19,11 @@ public class PasswordController {
      */
     @PostMapping("/generate-password")
     public ResponseEntity<String> generatePassword() {
-        String generatedPassword = generateStrongPassword(); // Your password generation logic here
+        String generatedPassword = RandomStringUtils.random(8, true, true); // Your password generation logic here
 
         // Log the generated password
         logger.info("Generated admin password: " + generatedPassword);
         return ResponseEntity.ok(generatedPassword);
-    }
-
-    private String generateStrongPassword() {
-        // Your password generation logic using secure methods
-        // Example: using SecureRandom and MessageDigest for hashing
-        return RandomStringUtils.random(8, true, true);
     }
 }
 
