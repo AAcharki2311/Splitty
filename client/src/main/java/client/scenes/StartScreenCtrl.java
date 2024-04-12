@@ -33,6 +33,7 @@ public class StartScreenCtrl implements Initializable {
     private ComboBox comboboxLanguage;
     private final EventServerUtils server;
     private final ParticipantsServerUtil partServer;
+    private final PasswordServerUtils pasServer;
     private final MainCtrl mc;
     private HashMap<String, String> h;
     /** MENU **/
@@ -88,13 +89,14 @@ public class StartScreenCtrl implements Initializable {
      * @param languageSwitch the LanguageSwitch class
      */
     @Inject
-    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer,
+    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer, PasswordServerUtils pasServer,
                            MainCtrl mc, ReadJSON jsonReader,
                            WriteEventNames writeEventNames, LanguageSwitch languageSwitch) {
         this.partServer = partServer;
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.server = server;
+        this.pasServer = pasServer;
         this.writeEventNames = writeEventNames;
         this.languageSwitch = languageSwitch;
         this.language = "English";

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.EventServerUtils;
+import client.utils.PasswordServerUtils;
 import client.utils.ReadJSON;
 import com.google.inject.Inject;
 import javafx.animation.PauseTransition;
@@ -24,6 +25,7 @@ public class AdminLoginCtrl implements Initializable {
      **/
     private final EventServerUtils server;
     private final MainCtrl mc;
+    private final PasswordServerUtils pwserver;
     /**
      * MENU
      **/
@@ -50,7 +52,7 @@ public class AdminLoginCtrl implements Initializable {
     private Button backText;
     @FXML
     private Text welcomeText;
-    private final String pw;
+    private String pw;
     @FXML
     private ImageView imageview;
     private final ReadJSON jsonReader;
@@ -100,12 +102,20 @@ public class AdminLoginCtrl implements Initializable {
      * @param jsonReader
      */
     @Inject
-    public AdminLoginCtrl(EventServerUtils server, MainCtrl mc, ReadJSON jsonReader) {
+    public AdminLoginCtrl(EventServerUtils server, PasswordServerUtils pwserver, MainCtrl mc, ReadJSON jsonReader) {
         this.mc = mc;
         this.jsonReader = jsonReader;
-        this.pw = RandomStringUtils.random(8, true, true);
+        this.pwserver = pwserver;
+        // this.pw = RandomStringUtils.random(8, true, true);
         this.server = server;
-        System.out.println("Your random password is: " + pw);
+        // System.out.println("Your random password is: " + pw);
+        this.pw = null;
+        try {
+            this.pw = pwserver.generatePasswordFromServer();
+            // System.out.println("Your random password is: " + pw);
+        }
+        catch (Exception e){
+        }
     }
 
     /**
@@ -120,7 +130,7 @@ public class AdminLoginCtrl implements Initializable {
      * the server output. If it isn't a message gets displayed.
      */
     public void clickLogin() {
-        mc.showAdminDashboard();
+        // mc.showAdminDashboard();
         String input = inputpw.getText();
         if (input.equals(pw)) {
             mc.showAdminDashboard();
