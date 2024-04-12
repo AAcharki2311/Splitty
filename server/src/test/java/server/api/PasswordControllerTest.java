@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.Event;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
