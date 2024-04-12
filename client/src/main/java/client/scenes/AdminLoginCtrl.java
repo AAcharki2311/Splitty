@@ -52,7 +52,6 @@ public class AdminLoginCtrl implements Initializable {
     private Button backText;
     @FXML
     private Text welcomeText;
-    private String pw;
     @FXML
     private ImageView imageview;
     private final ReadJSON jsonReader;
@@ -107,17 +106,7 @@ public class AdminLoginCtrl implements Initializable {
         this.mc = mc;
         this.jsonReader = jsonReader;
         this.pwserver = pwserver;
-        // this.pw = RandomStringUtils.random(8, true, true);
         this.server = server;
-        // System.out.println("Your random password is: " + pw);
-        this.pw = null;
-        try {
-            this.pw = pwserver.generatePasswordFromServer();
-            // System.out.println("Your random password is: " + pw);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -128,13 +117,13 @@ public class AdminLoginCtrl implements Initializable {
     }
 
     /**
-     * Used to login to the admin environment. It checks if the given password is equal to the password in
+     * Used to log in to the admin environment. It checks if the given password is equal to the password in
      * the server output. If it isn't a message gets displayed.
      */
     public void clickLogin() {
         // mc.showAdminDashboard();
         String input = inputpw.getText();
-        if (input.equals(pw)) {
+        if (!input.isBlank() && pwserver.checkPassword(input)){
             mc.showAdminDashboard();
         } else {
             imgMessage.setImage(new Image("images/notifications/Slide1.png"));

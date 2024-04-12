@@ -1,17 +1,15 @@
 package client.utils;
 
 import jakarta.inject.Inject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import org.glassfish.jersey.client.ClientConfig;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class PasswordServerUtils {
 
     private final ReadURL readURL;
-    private final String SERVER;
+    private static String serverUrl;
 
     /**
      * PasswordServerUtils constructor
@@ -21,28 +19,19 @@ public class PasswordServerUtils {
     @Inject
     public PasswordServerUtils(ReadURL readURL) {
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/generate-password";
+        serverUrl = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/password";
     }
 
     /**
-     * Generates password from the server
-     * @return the password
-     * @throws IOException
+     * Method to check if the input is correct
+     * @param input the input to check
+     * @return true if the input is correct
      */
-    public String generatePasswordFromServer() throws IOException {
-        URL url = new URL(SERVER);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-
-        // Check the response code
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String generatedPassword = reader.readLine(); // Assuming the server returns the password as plain text
-            connection.disconnect();
-            return generatedPassword;
-        } else {
-            connection.disconnect();
-            throw new IOException("Failed to generate password. HTTP Error Code: " + connection.getResponseCode());
-        }
+    public boolean checkPassword(String input) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverUrl)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(input, APPLICATION_JSON), Boolean.class);
     }
 }

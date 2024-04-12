@@ -4,32 +4,48 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.logging.Logger;
-
-// UserController.java (Controller handling password generation)
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/password")
 public class PasswordController {
-
-    private static final Logger logger = Logger.getLogger(PasswordController.class.getName());
+    private final String password;
 
     /**
-     * Generates a password and logs it to the server
-     * @return a string password
+     * PasswordController constructor
      */
-    @PostMapping("/generate-password")
-    public ResponseEntity<String> generatePassword() {
-        String generatedPassword = generateStrongPassword(); // Your password generation logic here
-
-        // Log the generated password
-        logger.info("Generated admin password: " + generatedPassword);
-        return ResponseEntity.ok(generatedPassword);
+    public PasswordController( ) {
+        password = generateStrongPassword();
+        System.out.println(" *** Generated password: " + password + " ***");
     }
 
-    private String generateStrongPassword() {
-        // Your password generation logic using secure methods
-        // Example: using SecureRandom and MessageDigest for hashing
+    /**
+     * Generates a strong password
+     * @return the generated password
+     */
+    public String generateStrongPassword() {
         return RandomStringUtils.random(8, true, true);
+    }
+
+    /**
+     * Returns true if equal
+     * @param userPassword the user input
+     * @return true if equal
+     */
+    public boolean checkPassword(String userPassword) {
+        return password.equals(userPassword);
+    }
+
+    /**
+     * Checks if the password is correct
+     * @param pw the password to check
+     * @return true if the password is correct
+     */
+    @PostMapping(path = {"", "/"})
+    public ResponseEntity<Boolean> check(@RequestBody String pw) {
+        if (checkPassword(pw)) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.ok(false);
+        }
     }
 }
 
