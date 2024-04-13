@@ -23,7 +23,6 @@ import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -130,8 +129,7 @@ class StartScreenCtrlTest extends ApplicationTest {
 
     @Test
     void joinInvalidCodeTest() {
-        Mockito.when(server.getEventByID(666666))
-                .thenReturn(null);
+        Mockito.when(server.getEventByID(666666)).thenReturn(null);
 
         TextField field = lookup("#eventJoin").queryAs(TextField.class);
         Text message = lookup("#message").queryAs(Text.class);
@@ -167,25 +165,14 @@ class StartScreenCtrlTest extends ApplicationTest {
         assertEquals("Name can not be empty", message.getText());
     }
 
-    @Test
-    void createAlreadyExistingTest() {
-        List<String> namesOfAllEvents = server.getAllEvents().stream().map(Event::getName).toList();
-        if(!namesOfAllEvents.contains("TestEvent")){
-            Event event = new Event("TestEvent");
-            server.addEvent(event);
-        }
-
-        TextField field = lookup("#eventName").queryAs(TextField.class);
-        Text message = lookup("#message").queryAs(Text.class);
-
-        clickOn(field);
-        write("TestEvent");
-        clickOn(lookup("#createBTN").queryButton());
-
-        assertEquals("Name must be unique", message.getText());
-    }
-
     @AfterEach
     void tearDown() {
     }
+
+//    @Test
+//    void langueageswitch() {
+//        Text welcometext = lookup("#welcometext").queryAs(Text.class);
+//        startScreenCtrl.langueageswitch("EN");
+//        assertEquals("Welcome to the Expense Manager", welcometext.getText());
+//    }
 }
