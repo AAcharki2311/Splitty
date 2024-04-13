@@ -44,7 +44,7 @@ public class EventController {
         if (allEvents.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(allEvents); // Fix in other classes + tests
+        return ResponseEntity.ok(allEvents);
     }
 
     private Map<Object, Consumer<Event>> listeners = new HashMap<>();
