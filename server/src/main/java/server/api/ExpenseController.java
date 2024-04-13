@@ -41,8 +41,12 @@ public class ExpenseController {
      * @return all the expenses in the current repository
      */
     @GetMapping(path = {"", "/"})
-    public List<Expense> getExpenses() {
-        return expenseRepository.findAll();
+    public ResponseEntity<List<Expense>> getExpenses() {
+        List<Expense> allExpenses = expenseRepository.findAll();
+        if (allExpenses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allExpenses);
     }
 
     /**
