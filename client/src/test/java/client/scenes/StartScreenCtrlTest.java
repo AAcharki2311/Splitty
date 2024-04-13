@@ -44,6 +44,9 @@ class StartScreenCtrlTest extends ApplicationTest {
     private LanguageSwitch languageSwitch;
     @InjectMocks
     private StartScreenCtrl startScreenCtrl;
+
+    private final ReadJSON jsonReader2 = new ReadJSON();
+    private final HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
     private static final String TEST_CONFIG_PATH = "src/test/java/client/resources/readFile.txt";
 
     @BeforeAll
@@ -66,8 +69,6 @@ class StartScreenCtrlTest extends ApplicationTest {
                 "client", "scenes", "StartScreen.fxml");
 
         this.startScreenCtrl = screen.getKey();
-        ReadJSON jsonReader2 = new ReadJSON();
-        HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
         this.startScreenCtrl.setHashmap(h);
         MockitoAnnotations.openMocks(this).close();
 
@@ -80,8 +81,6 @@ class StartScreenCtrlTest extends ApplicationTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         startScreenCtrl = new StartScreenCtrl(server, partServer, mc, jsonReader, writeEventNames, languageSwitch);
-        ReadJSON jsonReader2 = new ReadJSON();
-        HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
         this.startScreenCtrl.setHashmap(h);
     }
 
