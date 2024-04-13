@@ -346,6 +346,7 @@ public class MainCtrl {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
         startCtrl.stopTimer();
+        eventOCtrl.startTimer();
     }
 
     /**
