@@ -345,7 +345,9 @@ public class MainCtrl {
         eventOCtrl.update(id);
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
-        startCtrl.stopTimer();
+        if(!startCtrl.stopTimer()){
+            throw new RuntimeException("Timer not stopped");
+        }
     }
 
     /**
@@ -435,7 +437,9 @@ public class MainCtrl {
         }
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(aloginScene);
-        startCtrl.stopTimer();
+        if(!startCtrl.stopTimer()){
+            throw new RuntimeException("Timer not stopped");
+        }
     }
 
     /**

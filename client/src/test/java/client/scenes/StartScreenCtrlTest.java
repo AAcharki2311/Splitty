@@ -22,7 +22,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,6 +80,9 @@ class StartScreenCtrlTest extends ApplicationTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         startScreenCtrl = new StartScreenCtrl(server, partServer, mc, jsonReader, writeEventNames, languageSwitch);
+        ReadJSON jsonReader2 = new ReadJSON();
+        HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
+        this.startScreenCtrl.setHashmap(h);
     }
 
     @Test
@@ -168,6 +173,37 @@ class StartScreenCtrlTest extends ApplicationTest {
     @AfterEach
     void tearDown() {
     }
+
+    @Test
+    void readRecentEvents() {
+        String path = "src/test/java/client/resources/testEventFile.JSON";
+        List<String> list = new ArrayList<>();
+        list.add("Event1");
+        list.add("Event2");
+        Mockito.when(writeEventNames.readEventsFromJson(path)).thenReturn(list);
+        var res = startScreenCtrl.readRecentEvents(path);
+        assertNotNull(res);
+    }
+
+    @Test
+    void readRecentEventsError() {
+        String path = "src/test/java/client/resources/testEventFile.JSON";
+        var res = startScreenCtrl.readRecentEvents(path);
+        assertNotNull(res);
+    }
+
+    @Test
+    void stopTimer() {
+        Timer t = new Timer();
+        startScreenCtrl.setTimer(t);
+        assertTrue(startScreenCtrl.stopTimer());
+        startScreenCtrl.setTimer(null);
+        assertFalse(startScreenCtrl.stopTimer());
+    }
+
+
+
+
 
 //    @Test
 //    void langueageswitch() {
