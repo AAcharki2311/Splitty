@@ -8,6 +8,8 @@ import com.google.inject.Injector;
 import commons.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
@@ -16,11 +18,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
-
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,6 +65,9 @@ class StartScreenCtrlTest extends ApplicationTest {
                 "client", "scenes", "StartScreen.fxml");
 
         this.startScreenCtrl = screen.getKey();
+        ReadJSON jsonReader2 = new ReadJSON();
+        HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
+        this.startScreenCtrl.setHashmap(h);
         MockitoAnnotations.openMocks(this).close();
 
         Scene scene = new Scene(screen.getValue());
@@ -120,6 +126,63 @@ class StartScreenCtrlTest extends ApplicationTest {
         Timer t = new Timer();
         startScreenCtrl.setTimer(t);
         assertEquals(t, startScreenCtrl.getTimer());
+    }
+
+    @Test
+    void joinInvalidCodeTest() {
+        Mockito.when(server.getEventByID(666666))
+                .thenReturn(null);
+
+        TextField field = lookup("#eventJoin").queryAs(TextField.class);
+        Text message = lookup("#message").queryAs(Text.class);
+
+        clickOn(field);
+        write("666666");
+        clickOn(lookup("#joinBTN").queryButton());
+
+        assertEquals("This Id does not exist", message.getText());
+    }
+
+    @Test
+    void joinInvalidCodeTestNotNumber() {
+        TextField field = lookup("#eventJoin").queryAs(TextField.class);
+        Text message = lookup("#message").queryAs(Text.class);
+
+        clickOn(field);
+        write("sdds");
+        clickOn(lookup("#joinBTN").queryButton());
+
+        assertEquals("This Id is incorrect", message.getText());
+    }
+
+    @Test
+    void createInvalidCodeTest() {
+        TextField field = lookup("#eventName").queryAs(TextField.class);
+        Text message = lookup("#message").queryAs(Text.class);
+
+        clickOn(field);
+        write(" ");
+        clickOn(lookup("#createBTN").queryButton());
+
+        assertEquals("Name can not be empty", message.getText());
+    }
+
+    @Test
+    void createAlreadyExistingTest() {
+        List<String> namesOfAllEvents = server.getAllEvents().stream().map(Event::getName).toList();
+        if(!namesOfAllEvents.contains("TestEvent")){
+            Event event = new Event("TestEvent");
+            server.addEvent(event);
+        }
+
+        TextField field = lookup("#eventName").queryAs(TextField.class);
+        Text message = lookup("#message").queryAs(Text.class);
+
+        clickOn(field);
+        write("TestEvent");
+        clickOn(lookup("#createBTN").queryButton());
+
+        assertEquals("Name must be unique", message.getText());
     }
 
     @AfterEach

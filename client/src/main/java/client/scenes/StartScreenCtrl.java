@@ -207,7 +207,7 @@ public class StartScreenCtrl implements Initializable {
                 PauseTransition pause = new PauseTransition(Duration.seconds(6));
                 pause.setOnFinished(p -> warningImageview.setImage(null));
                 pause.play();
-                // throw new IllegalArgumentException(h.get("key54"));
+                 throw new IllegalArgumentException(h.get("key54"));
             } else{
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
