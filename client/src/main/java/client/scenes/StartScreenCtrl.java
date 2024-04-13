@@ -9,10 +9,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -26,7 +23,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Timer;
 import java.util.*;
-import java.io.*;
 
 public class StartScreenCtrl implements Initializable {
     @FXML
@@ -35,13 +31,17 @@ public class StartScreenCtrl implements Initializable {
     private final ParticipantsServerUtil partServer;
     private final MainCtrl mc;
     private HashMap<String, String> h;
+    private Participant userParticipant;
+    private WriteEventNames writeEventNames;
+    private LanguageSwitch languageSwitch;
+    private Timer timer;
     /** MENU **/
     @FXML
     private ImageView imgSet;
     @FXML
     private ImageView imgHome;
     /** NEEDED FOR LANGUAGE SWITCH **/
-    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch \uD83C\uDDF3\uD83C\uDDF1", "English \uD83C\uDDEC\uD83C\uDDE7", "French \uD83C\uDDEB\uD83C\uDDF7"));
     @FXML
     private ImageView imageviewFlag;
     private String language;
@@ -73,10 +73,7 @@ public class StartScreenCtrl implements Initializable {
     private Button addUserInfoBtn;
     @FXML
     private ImageView warningImageview;
-    private Participant userParticipant;
-    private WriteEventNames writeEventNames;
-    private LanguageSwitch languageSwitch;
-    private Timer timer;
+
 
     /**
      * Constructor of the StartScreenCtrl
@@ -109,11 +106,42 @@ public class StartScreenCtrl implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboboxLanguage.getItems().addAll(languages);
+        comboboxLanguage.setCellFactory(param -> new ListCell<String>() {
+            private final ImageView imageView = new ImageView();
+
+            /**
+             * This method updates the item and sets an image of the flag to the combobox
+             * @param item The new item for the cell.
+             * @param empty If this cell is empty, it doesn't contain any domain data;
+             *              but, it's utilized to display an "empty" row.
+             */
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    if(item.contains("Dutch")){
+                        imageView.setImage(new Image("images/nl-circle-01.png"));
+                    } else if(item.contains("English")){
+                        imageView.setImage(new Image("images/br-circle-01.png"));
+                    } else if(item.contains("French")){
+                        imageView.setImage(new Image("images/fr-circle-01.png"));
+                    }
+                    imageView.setFitHeight(20);
+                    imageView.setFitWidth(20);
+                    setGraphic(imageView);
+                }
+            }
+        });
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
-            this.language = comboboxLanguage.getValue().toString();
+            this.language = comboboxLanguage.getSelectionModel().getSelectedItem().toString().split(" ")[0].trim();
             languageSwitch.languageChange(path, language);
-            comboboxLanguage.setPromptText(h.get("key53") + comboboxLanguage.getSelectionModel().getSelectedItem());
+            comboboxLanguage.setPromptText(h.get("key53") + language);
 
             try {
                 mc.ltest();
@@ -132,16 +160,18 @@ public class StartScreenCtrl implements Initializable {
 
     /**
      * This method reads the recent events from the JSON file and sets the text of the recent events label
+     * @param path the path of the JSON file
+     * @return the text of the recent events
      */
-    public void readRecentEvents() {
-        List<String> eventNames = writeEventNames.readEventsFromJson("src/main/resources/recentEvents.json");
+    public String readRecentEvents(String path) {
+        List<String> eventNames = writeEventNames.readEventsFromJson(path);
         if(!eventNames.isEmpty()){
             String text = "";
             List<String> tempList = eventNames.reversed();
             for(String element : tempList) text = text + "\n" + element + "\n";
-            recentEventLabel.setText(text);
+            return text;
         } else{
-            recentEventLabel.setText(h.get("key52"));
+            return h.get("key52");
         }
     }
 
@@ -204,7 +234,7 @@ public class StartScreenCtrl implements Initializable {
                     ht.put("Food?"+(String.valueOf(newEvent.id)), "#43CE43");
                     ht.put("Entrance Fees?"+(String.valueOf(newEvent.id)), "#616BD0");
                     ht.put("Travel?" + (String.valueOf(newEvent.id)), "#D71919");
-                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
 
                     mc.showEventOverview(String.valueOf(newEvent.id));
 
@@ -337,7 +367,7 @@ public class StartScreenCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings(){
-        mc.help();
+        mc.help(h);
     }
 
     /**
@@ -455,9 +485,58 @@ public class StartScreenCtrl implements Initializable {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    readRecentEvents();
+                    String res = readRecentEvents("src/main/resources/recentEvents.json");
+                    recentEventLabel.setText(res);
                 });
             }
         }, 0, 5000);
+    }
+
+    /**
+     * Method to get the participant
+     * @return the participant
+     */
+    public Participant getuserParticipant() {
+        return userParticipant;
+    }
+
+    /**
+     * Method to set the participant
+     * @param participant the participant
+     */
+    public void setUserParticipant(Participant participant) {
+        this.userParticipant = participant;
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
+    }
+
+    /**
+     * Method to set the timer
+     * @param timer the timer
+     */
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
+    /**
+     * Method to get the timer
+     * @return the timer
+     */
+    public Timer getTimer() {
+        return timer;
     }
 }

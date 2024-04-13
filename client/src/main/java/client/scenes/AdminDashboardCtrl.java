@@ -117,7 +117,6 @@ public class AdminDashboardCtrl implements Initializable {
         colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().name));
         colDate1.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().creationDate)));
         colDate2.setCellValueFactory(q -> new SimpleStringProperty(formatter.format(q.getValue().lastActDate)));
-        refresh();
 
         table.setOnMouseClicked(event -> {
             Event selectedItem = table.getSelectionModel().getSelectedItem();
@@ -315,6 +314,7 @@ public class AdminDashboardCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
+
 }

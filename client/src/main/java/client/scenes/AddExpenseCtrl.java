@@ -63,6 +63,10 @@ public class AddExpenseCtrl implements Initializable {
     @FXML
     private Button cancelBtn;
     @FXML
+    private Button addTagBtn;
+    @FXML
+    private Button editTagBtn;
+    @FXML
     private RadioButton splitRBtn;
     @FXML
     private TextField titleTextField;
@@ -144,6 +148,8 @@ public class AddExpenseCtrl implements Initializable {
         howToSplitText.setText(h.get("key24"));
         splitRBtn.setText(h.get("key25"));
         cancelBtn.setText(h.get("key26"));
+        addTagBtn.setText(h.get("key10"));
+        editTagBtn.setText(h.get("key9"));
         comboBoxNamePaid.setPromptText(h.get("key7"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
@@ -189,17 +195,28 @@ public class AddExpenseCtrl implements Initializable {
                 JOptionPane.showMessageDialog(null, message);
                 clickBack();
             } else {
-                if(duplicate){
-                    errormessage = h.get("key68");
-                }else if(money < 0){
-                    errormessage = h.get("key93");
-                } else{
-                    errormessage = h.get("key84");
-                }
+                errormessage = elsemethod(duplicate, money, h);
                 throw new Exception();
             }
         } catch (Exception e){
             message.setText(errormessage);
+        }
+    }
+
+    /**
+     * This method is used to check if the input is correct
+     * @param duplicate boolean to check if the name + title is a duplicate
+     * @param money the amount of money
+     * @param h the hashmap with the translations
+     * @return the error message
+     */
+    public String elsemethod(boolean duplicate, Double money, HashMap<String, String> h) {
+        if(duplicate){
+            return h.get("key68");
+        }else if(money < 0){
+            return h.get("key93");
+        } else{
+            return h.get("key84");
         }
     }
 
@@ -226,8 +243,8 @@ public class AddExpenseCtrl implements Initializable {
      * @return true if the input is correct, false if the input is incorrect
      */
     public boolean validate(String title, double money, Date date, ComboBox comboBoxCurr, RadioButton splitRBtn){
-        return !title.isBlank() && !(money < 0) && date != null && comboBoxCurr.getValue() != null &&
-                splitRBtn.isSelected();
+        return !title.isBlank() && !(money < 0) && date != null && comboBoxCurr !=null && comboBoxCurr.getValue() != null &&
+                splitRBtn != null && splitRBtn.isSelected();
     }
 
     /**
@@ -276,7 +293,7 @@ public class AddExpenseCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**
@@ -296,11 +313,11 @@ public class AddExpenseCtrl implements Initializable {
             JTextField textFieldColor = new JTextField();
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Name of the tag:"));
+            panel.add(new JLabel(h.get("key123")));
             panel.add(textFieldName);
-            panel.add(new JLabel("Color of the tag:"));
+            panel.add(new JLabel(h.get("key124")));
             panel.add(textFieldColor);
-            Object[] options = {"Add", "Back"};
+            Object[] options = {h.get("key10"), h.get("key99")};
             int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
                     JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
@@ -312,7 +329,7 @@ public class AddExpenseCtrl implements Initializable {
                 } else{
                     HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
                     ht.put(name+"?"+eventid, color);
-                    ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                     comboBoxTag.getItems().clear();
                     eventTags.clear();
                     addTags();
@@ -333,16 +350,16 @@ public class AddExpenseCtrl implements Initializable {
         JTextField textFieldColor = new JTextField();
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(new JLabel("Name of the tag:"));
+        panel.add(new JLabel(h.get("key123")));
         panel.add(textFieldName);
         textFieldName.setText(comboBoxTag.getValue());
-        panel.add(new JLabel("Color of the tag:"));
+        panel.add(new JLabel(h.get("key124")));
         panel.add(textFieldColor);
 
         ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
         textFieldColor.setText(ht.get(comboBoxTag.getValue()+"?"+eventid));
 
-        Object[] options = {"Add", "Delete"};
+        Object[] options = {h.get("key10"), h.get("key67")};
         int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
@@ -354,7 +371,7 @@ public class AddExpenseCtrl implements Initializable {
             } else{
                 ht.remove(comboBoxTag.getValue()+"?"+eventid);
                 ht.put(name+"?"+eventid, color);
-                ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
                 comboBoxTag.getItems().clear();
                 eventTags.clear();
                 addTags();
@@ -362,7 +379,7 @@ public class AddExpenseCtrl implements Initializable {
             }
         } else if(result == JOptionPane.NO_OPTION){
             ht.remove(comboBoxTag.getValue()+"?"+eventid);
-            ReadJSON.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+            jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
             comboBoxTag.getItems().clear();
             eventTags.clear();
             addTags();

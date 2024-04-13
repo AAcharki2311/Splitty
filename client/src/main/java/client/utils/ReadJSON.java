@@ -30,7 +30,7 @@ public class ReadJSON implements ReadJSONInterface{
      * @param dataMap the map to write to a file
      * @param filePath the file to write to
      */
-    public static void writeMapToJsonFile(HashMap<String, String> dataMap, String filePath) {
+    public void writeMapToJsonFile(HashMap<String, String> dataMap, String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -43,8 +43,9 @@ public class ReadJSON implements ReadJSONInterface{
             objectMapper.writeValue(new File(filePath), dataMap);
 
             System.out.println("Tag has been written to the file successfully.");
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("An error occurred while writing to the file: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

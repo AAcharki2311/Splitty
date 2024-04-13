@@ -55,7 +55,6 @@ public class Main extends Application {
 
         var start = FXML.load(StartScreenCtrl.class, "client", "scenes", "StartScreen.fxml");
         var eventOver = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
-        var invite = FXML.load(InviteCtrl.class, "client", "scenes", "Invite.fxml");
         var expense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpenseScreen.fxml");
         var participant = FXML.load(ParticipantCtrl.class, "client", "scenes", "AddParticipantScreen.fxml");
         var editParticipant = FXML.load(EditParticipantCtrl.class, "client", "scenes", "EditParticipantScreen.fxml");
@@ -66,7 +65,7 @@ public class Main extends Application {
         var settle = FXML.load(SettleDebtsCtrl.class, "client", "scenes", "SettleDebts.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, start, eventOver, invite, expense, participant, editParticipant, editExpense, alogin, adash, aevent, settle);
+        mainCtrl.initialize(primaryStage, start, eventOver, expense, participant, editParticipant, editExpense, alogin, adash, aevent, settle);
 
         primaryStage.setOnCloseRequest(event -> {
             adash.getKey().stop();
