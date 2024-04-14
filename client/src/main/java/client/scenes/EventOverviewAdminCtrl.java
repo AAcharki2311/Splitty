@@ -277,7 +277,7 @@ public class EventOverviewAdminCtrl implements Initializable {
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(p -> imgMessage.setImage(null));
 //            pause.play();
-            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
             e.printStackTrace();
         }
     }
