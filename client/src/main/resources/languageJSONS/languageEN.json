@@ -111,5 +111,11 @@
     "key109": "Delete event",
     "key110": "Email",
     "key111": "Are you sure you want to delete ",
-    "key112": "This action is not reversible"
+    "key112": "This action is not reversible",
+    "key113": "This field can not be empty. Please try again.",
+    "key114": "Warning",
+    "key115": "Unexpected error. Please try again later.",
+    "key116": "Error",
+    "key117": "The input is incorrect. Please try again.",
+    "key118": "This event name already exists. Please try again."
 }
