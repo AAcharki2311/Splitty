@@ -194,7 +194,7 @@ public class EventController {
      * @return The Expense that was received
      */
     @MessageMapping("/events/{id}/expenses") // /app/events/{id}/expenses
-    public Expense relayParticipant(Expense e, @DestinationVariable("id") String id) {
+    public Expense relayExpense(Expense e, @DestinationVariable("id") String id) {
         System.out.println(
                     "[Websocket] Received a Expense and sending to id("+id+")\n"
                 +e);

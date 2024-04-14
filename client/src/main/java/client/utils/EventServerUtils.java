@@ -31,6 +31,8 @@ public class EventServerUtils {
     private final ReadURL readURL;
     private static String serverURL;
     private StompSession WEBSOCKET;
+    private StandardWebSocketClient client;
+    private WebSocketStompClient stomp;
 
     /**
      * EventServerUtils constructor
@@ -40,6 +42,20 @@ public class EventServerUtils {
     @Inject
     public EventServerUtils(ReadURL readURL) {
         this.readURL = readURL;
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
+    }
+
+    /**
+     * EventServerUtils constructor for mockito
+     *
+     * @param readURL readURL object
+     * @param client StandardWebSocketClient object
+     * @param stomp WebSocketStompClient object
+     */
+    public EventServerUtils(ReadURL readURL, StandardWebSocketClient client, WebSocketStompClient stomp) {
+        this.readURL = readURL;
+        this.client = client;
+        this.stomp = stomp;
         serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
     }
 
@@ -162,9 +178,9 @@ public class EventServerUtils {
      * @param url the url of the websocket endpoint
      * @return the connected session
      */
-    private StompSession connect(String url) {
-        var client = new StandardWebSocketClient();
-        var stomp = new WebSocketStompClient(client);
+    StompSession connect(String url) {
+        if(client == null) client = new StandardWebSocketClient();
+        if(stomp == null) stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
         try {
             StompSession session = stomp.connectAsync(url, new StompSessionHandlerAdapter() {
@@ -239,7 +255,7 @@ public class EventServerUtils {
     }
 
     private String findWebsocketURL(String httpServer) {
-        if (httpServer.contains("http")) {
+        if (httpServer != null && httpServer.contains("http")) {
             String result = httpServer.replaceFirst("http", "ws");
             return result;
         }
