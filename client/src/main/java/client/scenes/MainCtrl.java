@@ -48,6 +48,7 @@ public class MainCtrl {
     private SettleDebtsCtrl settleDebtsCtrl;
     private AdminLoginCtrl adminLoginCtrl;
     private String serverURL = "http://localhost:8080";
+    private HashMap<String, String> h;
 
     /**
      * Initializes all the controllers
@@ -345,7 +346,10 @@ public class MainCtrl {
         eventOCtrl.update(id);
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
-        startCtrl.stopTimer();
+        if(!startCtrl.stopTimer()){
+            throw new RuntimeException("Timer not stopped");
+        }
+        eventOCtrl.startTimer();
     }
 
     /**
@@ -435,7 +439,9 @@ public class MainCtrl {
         }
         primaryStage.setTitle("Admin Login");
         primaryStage.setScene(aloginScene);
-        startCtrl.stopTimer();
+        if(!startCtrl.stopTimer()){
+            throw new RuntimeException("Timer not stopped");
+        }
     }
 
     /**
@@ -539,5 +545,21 @@ public class MainCtrl {
      */
     public void send(String dest, Object o) {
         eventOCtrl.getEventServerUtils().send(dest, o);
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
     }
 }

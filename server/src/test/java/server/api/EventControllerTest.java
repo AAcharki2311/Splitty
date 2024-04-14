@@ -43,10 +43,9 @@ public class EventControllerTest {
     public void addAndGetTest() {
         eventController.add(event1);
         eventController.add(event2);
-        ResponseEntity<List<Event>> list = eventController.getEvents();
-        assertTrue(true);
-        // assertEquals(event1, list.get(0));
-        // assertEquals(event2, list.get(1));
+        List<Event> list = eventController.getEvents().getBody();
+        assertEquals(event1, list.get(0));
+        assertEquals(event2, list.get(1));
     }
 
     /**

@@ -45,7 +45,7 @@ public class ParticipantControllerTest {
     public void addAndGetTest() {
         participantController.add(participant1);
         participantController.add(participant2);
-        List<Participant> list = participantController.getParticipants();
+        List<Participant> list = participantController.getParticipants().getBody();
         assertEquals(participant1, list.get(0));
         assertEquals(participant2, list.get(1));
     }
@@ -111,7 +111,7 @@ public class ParticipantControllerTest {
         eventParticipant.add(participant2);
         ResponseEntity<List<Participant>> responseEntity = participantController.getParticipantsEvent(participant1.getEvent().getId());
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode()); // Check status code
-        assertEquals(responseEntity.getBody(), eventParticipant);
+        assertEquals(responseEntity.getBody(), eventParticipant); // Check body of the response
     }
 
     @SuppressWarnings("serial")

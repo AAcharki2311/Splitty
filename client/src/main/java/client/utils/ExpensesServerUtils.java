@@ -7,6 +7,7 @@ import java.util.List;
 
 import commons.Expense;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -31,11 +32,18 @@ public class ExpensesServerUtils {
      * @return list of all expenses
      */
     public List<Expense> getExpenses() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(serverURL)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Expense>>() {});
+        List<Expense> res;
+        try {
+            res = ClientBuilder.newClient(new ClientConfig()) //
+                    .target(serverURL)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<List<Expense>>() {
+                    });
+        } catch (NotFoundException e) {
+            return List.of();
+        }
+        return res;
     }
 
     /**
