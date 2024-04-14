@@ -11,7 +11,7 @@
     "key9": "Edit",
     "key10": "Add",
     "key11": "Statistics",
-    "key12": "Send Invite",
+    "key12": "Send Invites",
     "key13": "All",
     "key14": "Add User Info",
     "key15": "Delete All",
@@ -112,10 +112,12 @@
     "key110": "Email",
     "key111": "Are you sure you want to delete ",
     "key112": "This action is not reversible",
-    "key113": "This field can not be empty. Please try again.",
-    "key114": "Warning",
-    "key115": "Unexpected error. Please try again later.",
-    "key116": "Error",
-    "key117": "The input is incorrect. Please try again.",
-    "key118": "This event name already exists. Please try again."
+    "key128": "Switch server",
+    "key129": "This field can not be empty. Please try again.",
+    "key130": "Warning",
+    "key131": "Unexpected error. Please try again later.",
+    "key132": "Error",
+    "key133": "The input is incorrect. Please try again.",
+    "key134": "This event name already exists. Please try again.",
+    "key135": "Invite your friends with the code: "
 }
