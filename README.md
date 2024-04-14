@@ -1,17 +1,20 @@
 # OOPP Template Project
 
-**Run the Project**
+## **Run the Project**
 
-Navigate to the project and open your terminal.
+1) Navigate to the project and open your terminal.
 Your terminal should look something like this: C:\...\oopp-team-23>
 Now type the following comments:
-./gradlew build, ./gradlew bootRun. This will build the project and start a server.
+`./gradlew build`, `./gradlew bootRun`. This will build the project and start a server.
 In the server output the password for the admin pages will be shown.
-With ./gradlew run the client application can be started.
+With `./gradlew run` the client application can be started.
 By inputting this multiple times multiple client instances
 can be opened to test the websocket and long polling.
+2) Clone the GitLab Repository using the terminal `(git clone URL)`. Launch IntelliJ IDEA on your computer. Click `Open` to load the project into IntelliJ IDEA. Once the project is loaded, open Gradle in the sidebar. Now you can run the server with `bootRun` and the client with `run`.
 
-**Implemented Features**
+
+
+## **Implemented Features**
 
 - Live Language Switch: 
   - This feature has been fully implemented. 
@@ -35,7 +38,7 @@ can be opened to test the websocket and long polling.
   - Email addresses can be added and changed for each participant.
   - Email addresses are unique and it is not possible to add two participants with the same email.
 
-**HCL features**
+## **HCL features**
 
 - Accessibility:
     - Color Contrast:
@@ -49,7 +52,7 @@ can be opened to test the websocket and long polling.
     - Logical Navigation: 
       - On evey page a menu is present which is the same for all pages.
     - Keyboard Navigation: 
-      - By using TAB buttons can be reached and there are also keyboard shortcuts.
+      - By using _TAB_ buttons can be reached and there are also keyboard shortcuts.
     - Supporting Undo Changes: 
       - Change operations in expenses have undo operations. 
       - On the edit expense page, if the user presse the button with the trashcan, a table is visible with editted expenses. When pressing on a expense/row, the user can chose to reset the expense.
@@ -63,7 +66,7 @@ can be opened to test the websocket and long polling.
       - There are confirmation dialogs for each irreversible delete operations.
 
 
-**Long-polling and websocket**
+## **Long-polling and websocket**
 
 - Long-polling implementation:
   - Run 2 clients (see _Run the Project_).
@@ -79,5 +82,7 @@ can be opened to test the websocket and long polling.
   - For the recent events in the StartScreenCtrl = when clientA is in the StartScreen and clientB joins an event, the recent event on StartScreen of clientA gets updated.  
   - For the event name = when clientA is in the EventOverview and clientB changes the event name, it is visible for clientA without refreshing the page.
 
-
+## **To Contribute**
+Contribute by downloading the language template file (_client/src/main/resources/languageJSONS/languageTemplate.json_), translating each value after the "_keyX_" to your new language, and submitting the file. 
+Ensure translations display accurately and submit a pull request. Let's make our app accessible globally!
 
