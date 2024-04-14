@@ -189,9 +189,6 @@ public class AdminDashboardCtrl implements Initializable {
 //            pause.play();
             return;
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     /**
