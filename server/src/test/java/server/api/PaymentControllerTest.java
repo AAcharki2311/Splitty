@@ -5,6 +5,7 @@ import commons.Payment;
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import server.repository.TestPaymentRepository;
 
@@ -64,9 +65,10 @@ public class PaymentControllerTest {
     public void sortedPaymentsDateTest() {
         paymentRepository.save(payment1);
         paymentRepository.save(payment2);
-        List<Payment> list = paymentController.getSortedPaymentsDate();
-        assertEquals(payment1,list.get(0));
-        assertEquals(payment2,list.get(1));
+        ResponseEntity<List<Payment>> list = paymentController.getSortedPaymentsDate();
+        assertEquals(HttpStatus.OK, list.getStatusCode()); // Check status code
+        assertEquals(payment1,list.getBody().get(0)); // Check request body
+        assertEquals(payment2,list.getBody().get(1)); // Check request body
     }
 
     /**
@@ -76,9 +78,10 @@ public class PaymentControllerTest {
     public void sortedPaymentsPayerTest() {
         paymentRepository.save(payment1);
         paymentRepository.save(payment2);
-        List<Payment> list = paymentController.getSortedPaymentsPayer();
-        assertEquals(payment1,list.get(0));
-        assertEquals(payment2,list.get(1));
+        ResponseEntity<List<Payment>> list = paymentController.getSortedPaymentsPayer();
+        assertEquals(HttpStatus.OK, list.getStatusCode()); // Check status code
+        assertEquals(payment1,list.getBody().get(0)); // Check request body
+        assertEquals(payment2,list.getBody().get(1)); // Check request body
     }
 
     @SuppressWarnings("serial")

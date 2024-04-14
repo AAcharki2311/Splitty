@@ -47,10 +47,13 @@ public class PaymentController {
      *
      * @return list of payments sorted by date
      */
-    public List<Payment> getSortedPaymentsDate() {
+    public ResponseEntity<List<Payment>> getSortedPaymentsDate() {
         List<Payment> allPayments = paymentRepository.findAll();
+        if(allPayments.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         allPayments.sort(Comparator.comparing(Payment::getDate));
-        return allPayments;
+        return ResponseEntity.ok(allPayments);
     }
 
     /**
@@ -58,9 +61,12 @@ public class PaymentController {
      *
      * @return list of payments sorted by payer
      */
-    public List<Payment> getSortedPaymentsPayer() {
+    public ResponseEntity<List<Payment>> getSortedPaymentsPayer() {
         List<Payment> allPayments = paymentRepository.findAll();
+        if(allPayments.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         allPayments.sort(Comparator.comparing(payment -> payment.getPayer().getName()));
-        return allPayments;
+        return ResponseEntity.ok(allPayments);
     }
 }
