@@ -298,7 +298,6 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
-<<<<<<< HEAD
         // mc.showInvite(String.valueOf(eventid));
 //        while(true){
 //            JTextField textFieldEmail = new JTextField();

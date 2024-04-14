@@ -210,7 +210,7 @@ public class StartScreenCtrl implements Initializable {
 //                pause.setOnFinished(p -> warningImageview.setImage(null));
 //                pause.play();
 //                // throw new IllegalArgumentException(h.get("key54"));
-                JOptionPane.showOptionDialog(null, h.get("key113"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             } else {
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
@@ -247,7 +247,7 @@ public class StartScreenCtrl implements Initializable {
 //                    pause.setOnFinished(p -> warningImageview.setImage(null));
 //                    pause.play();
 //                    throw new IllegalArgumentException(h.get("key59"));
-                      JOptionPane.showOptionDialog(null, h.get("key118"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                      JOptionPane.showOptionDialog(null, h.get("key134"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
                 }
             }
         }
@@ -257,7 +257,7 @@ public class StartScreenCtrl implements Initializable {
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(p -> warningImageview.setImage(null));
 //            pause.play();
-            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
         }
     }
 
@@ -318,7 +318,7 @@ public class StartScreenCtrl implements Initializable {
 //                    pause.setOnFinished(p -> warningImageview.setImage(null));
 //                    pause.play();
 //                    throw new IllegalArgumentException(h.get("key60"));
-                    JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                    JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
                 }
             } else{
 //                warningImageview.setImage(new Image("images/notifications/Slide2.png"));
@@ -326,7 +326,7 @@ public class StartScreenCtrl implements Initializable {
 //                pause.setOnFinished(p -> warningImageview.setImage(null));
 //                pause.play();
 //                throw new IllegalArgumentException(h.get("key61"));
-                JOptionPane.showOptionDialog(null, h.get("key113"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             }
         }
         catch (Exception e){
@@ -335,7 +335,7 @@ public class StartScreenCtrl implements Initializable {
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(p -> warningImageview.setImage(null));
 //            pause.play();
-            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
         }
     }
     /**
