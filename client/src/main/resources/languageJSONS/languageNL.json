@@ -127,5 +127,13 @@
     "key125": "Actie",
     "key126": "Pagina",
     "key127": "Huidige server: ",
-    "key128": "Verander server"
+    "key128": "Verander server",
+    "key129": "Veld(en) mogen niet leeg zijn. Probeer opnieuw.",
+    "key130": "Waarschuwing",
+    "key131": "Onverwachte fout. Probeer later opnieuw.",
+    "key132": "Onverwachte fout",
+    "key133": "De invoer is niet juist. Probeer opnieuw.",
+    "key134": "Deze event naam bestaat al. Probeert opnieuw.",
+    "key135": "Nodig je vrienden uit met de code: ",
+    "key136": "Deelnemer succesvol toegevoegd"
 }

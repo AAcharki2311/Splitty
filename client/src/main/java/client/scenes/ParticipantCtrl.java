@@ -131,7 +131,7 @@ public class ParticipantCtrl implements Initializable {
                 p.setEvent(e);
                 pcu.addParticipant(p);
                 mc.send("/app/events/"+eventid+"/participants", p);
-                String message = "Participant:\n" +
+                String message = h.get("key31") + "136:\n" +
                         "_______________" + "\n" +
                         h.get("key31") + ": " + p.getName() + "\n" +
                         "Email: " + p.getEmail() + "\n" +
@@ -141,10 +141,11 @@ public class ParticipantCtrl implements Initializable {
                 clickBack();
             }else {
                 errormessage = elsemethod(duplicate, name, email, iban, bic, h);
-                throw new Exception();
+                JOptionPane.showOptionDialog(null, errormessage,h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             }
         } catch (Exception e){
-            message.setText(errormessage);
+            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+            // message.setText(errormessage);
         }
     }
 

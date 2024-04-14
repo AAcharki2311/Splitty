@@ -75,10 +75,10 @@
     "key73": "You owe to the group: ",
     "key74": "Please select a Participant",
     "key75": "Name or email already exists",
-    "key76": "Name is not correct",
-    "key77": "Email is not correct",
-    "key78": "IBAN is not correct",
-    "key79": "Bic is not correct",
+    "key76": "Name is not correct.",
+    "key77": "Email is not correct. Please make sure the email includes '@' and '.'",
+    "key78": "IBAN is not correct. Please make sure the IBAN starts with 2 letters and 2 numbers.",
+    "key79": "BIC is not correct.",
     "key80": "Something went wrong",
     "key81": "Participant deleted",
     "key82": "Are you sure you want to delete?",
@@ -112,17 +112,6 @@
     "key110": "Email",
     "key111": "Are you sure you want to delete ",
     "key112": "This action is not reversible",
-<<<<<<< HEAD
-    "key128": "Switch server",
-    "key129": "This field can not be empty. Please try again.",
-    "key130": "Warning",
-    "key131": "Unexpected error. Please try again later.",
-    "key132": "Error",
-    "key133": "The input is incorrect. Please try again.",
-    "key134": "This event name already exists. Please try again.",
-    "key135": "Invite your friends with the code: "
-=======
->>>>>>> 9c9f354c0b7e7874649831d6ee84cc2b373ee07b
     "key113": "Add participant",
     "key114": "Edit participant",
     "key115": "Settle debts",
@@ -139,10 +128,12 @@
     "key126": "Page",
     "key127": "Current server: ",
     "key128": "Switch server",
-    "key129": "This field can not be empty. Please try again.",
+    "key129": "Field(s) can not be empty. Please try again.",
     "key130": "Warning",
     "key131": "Unexpected error. Please try again later.",
     "key132": "Error",
     "key133": "The input is incorrect. Please try again.",
-    "key134": "This event name already exists. Please try again."
+    "key134": "This event name already exists. Please try again.",
+    "key135": "Invite your friends with the code: ",
+    "key136": "Participant added successfully"
 }
