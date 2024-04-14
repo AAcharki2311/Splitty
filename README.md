@@ -48,8 +48,19 @@ can be opened to test the websocket and long polling.
 
 **Long-polling and websocket**
 
-- Long-polling implementation can be seen here xxx
-- Websocket implementation can be seen here xxx
+- Long-polling implementation:
+  - Run 2 clients (see _Run the Project_).
+  - Login with 1 client to the admin page and go to the Admin Dashoard.
+  - When the user creates an event, it is immediately visible in the admin dashboard without refreshing the page.
+  - Classes that implemented it: AdminDashboardCtrl, EventServerUtils.
+- Websocket implementation:
+  - Run 2 clients (see _Run the Project_).
+  - Join the same event with both clients. 
+  - When one client changes (adding/editing) the participant or expenses, it is immediately visible in the other clients EventOverview.
+  - Classes that implemented it: WebsocketConfig, EventServerUtils, StartScreenCtrl
+- Regular Polling implementation:
+  - For the recent events in the StartScreenCtrl = when clientA is in the StartScreen and clientB joins an event, the recent event on StartScreen of clientA gets updated.  
+  - For the event name = when clientA is in the EventOverview and clientB changes the event name, it is visible for clientA without refreshing the page.
 
 
 
