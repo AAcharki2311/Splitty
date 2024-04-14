@@ -161,13 +161,11 @@ public class AddExpenseCtrl implements Initializable {
     public void submit() {
         String errormessage = h.get("key84");
         try{
+
             if(comboBoxNamePaid.getValue() == null){
                 errormessage = h.get("key83");
                 throw new Exception();
             }
-
-            var e = server.getEventByID(eventid);
-            var p = selectedParticipant;
 
             if(moneyField.getText().isBlank() || dateField.getValue() == null){
                 errormessage = h.get("key84");
@@ -182,6 +180,8 @@ public class AddExpenseCtrl implements Initializable {
 
             boolean duplicate = checkDuplicate(selectedParticipant.getName(), title);
             if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
+                var e = server.getEventByID(eventid);
+                var p = selectedParticipant;
                 Expense exp = new Expense(e, p, money, date, title, tag, cur);
                 expServer.addExpense(exp);
                 mc.send("/app/events/"+eventid+"/expenses", exp);
@@ -384,5 +384,21 @@ public class AddExpenseCtrl implements Initializable {
             eventTags.clear();
             addTags();
         }
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
     }
 }

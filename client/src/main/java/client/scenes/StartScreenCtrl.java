@@ -207,7 +207,7 @@ public class StartScreenCtrl implements Initializable {
                 PauseTransition pause = new PauseTransition(Duration.seconds(6));
                 pause.setOnFinished(p -> warningImageview.setImage(null));
                 pause.play();
-                // throw new IllegalArgumentException(h.get("key54"));
+                 throw new IllegalArgumentException(h.get("key54"));
             } else{
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
@@ -470,9 +470,14 @@ public class StartScreenCtrl implements Initializable {
     /**
      * Method to stop the timer
      * Since the user is not on the start screen anymore
+     * @return true if the timer is stopped
      */
-    public void stopTimer() {
-        if(timer != null) timer.cancel();
+    public boolean stopTimer() {
+        if(timer != null){
+            timer.cancel();
+            return true;
+        }
+        return false;
     }
 
     /**
