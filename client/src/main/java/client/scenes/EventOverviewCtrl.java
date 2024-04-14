@@ -192,7 +192,6 @@ public class EventOverviewCtrl implements Initializable {
 
         ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
 
-        // Set custom cell factory for tag column
         colTag.setCellFactory(column -> new TableCell<Expense, String>() {
             @Override
             protected void updateItem(String tag, boolean empty) {
@@ -200,9 +199,8 @@ public class EventOverviewCtrl implements Initializable {
 
                 if (tag == null || empty) {
                     setText(null);
-                    setStyle(""); // Reset style
+                    setStyle(""); 
                 } else {
-
                     setText(tag);
                     try {
                         String color = ht.get(tag + "?" + eventid);
