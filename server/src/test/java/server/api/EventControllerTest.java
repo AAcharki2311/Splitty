@@ -118,7 +118,9 @@ public class EventControllerTest {
         assertEquals(testEvent, returnEvent);
     }
 
-
+    /**
+     * Test for the relayParticipant method
+     */
     @Test
     public void relayParticipantTest() {
         Event testEvent = new Event(
