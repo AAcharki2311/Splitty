@@ -210,7 +210,7 @@ public class StartScreenCtrl implements Initializable {
 //                pause.setOnFinished(p -> warningImageview.setImage(null));
 //                pause.play();
                 message.setText(h.get("key54"));
-                JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                // JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             } else {
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
