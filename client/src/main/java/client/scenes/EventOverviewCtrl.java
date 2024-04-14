@@ -206,10 +206,10 @@ public class EventOverviewCtrl implements Initializable {
                     setText(tag);
                     try {
                         String color = ht.get(tag + "?" + eventid);
-                        setStyle("-fx-text-fill: " + color + ";");
+                        setStyle("-fx-background-color:  " + color + ";");
                     }
                     catch (Exception e){
-                        setStyle("-fx-text-fill: black;");
+                        e.printStackTrace();
                     }
                 }
             }
@@ -475,10 +475,10 @@ public class EventOverviewCtrl implements Initializable {
                     setText(tag);
                     try {
                         String color = ht.get(tag + "?" + eventid);
-                        setStyle("-fx-text-fill: " + color + ";");
+                        setStyle("-fx-background-color:  " + color + ";");
                     }
                     catch (Exception e){
-                        setStyle("-fx-text-fill: black;");
+                        e.printStackTrace();
                     }
                 }
             }
