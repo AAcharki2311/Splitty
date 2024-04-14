@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.EventServerUtils;
 import client.utils.PasswordServerUtils;
 import client.utils.ReadJSON;
+import javax.naming.directory.InvalidAttributesException;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
