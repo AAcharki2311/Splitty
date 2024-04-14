@@ -13,37 +13,54 @@ can be opened to test the websocket and long polling.
 
 **Implemented Features**
 
-- Live Language Switch: this feature has been fully implemented. On the start screen and the event
-  overview page the user can switch the language. This is persisted through the whole application.
-- Detailed Expenses: expenses can be given a date, all the expenses can be seen in an overview
-  and can be filtered.
-- Foreign Currency: the date and currency for an expense can be selected
-- Open Debts: bank account numbers can be added to participants.
-- Statistics: this feature has been fully implemented. Tags can be made, changed and deleted.
-  A pie chart is shown on the statistics page.
-- Email Notification: Email addresses can be added and changed for each participant
+- Live Language Switch: 
+  - This feature has been fully implemented. 
+  - On the start screen and the event overview page the user can switch the language. This is persisted through the whole application.
+  - It is also possible to download a template file.
+- Detailed Expenses: 
+  - Expenses can be given a date
+  - All the expenses can be seen in an overview (event overview)
+  - In the overview, it is possible to filter by participant or to show all expenses. 
+  - There is also a button to delete all expenses.
+- Foreign Currency: 
+  - The date and currency for an expense can be selected.
+- Open Debts: 
+  - Bank account numbers (IBAN + BIC) can be added to participants.
+- Statistics:
+  - This feature has been fully implemented. 
+  - Tags can be made, changed/editted and deleted.
+  - A pie chart is shown on the statistics page.
+  - This pie chart can be filtered by tag or by participant
+- Email Notification: 
+  - Email addresses can be added and changed for each participant.
+  - Email addresses are unique and it is not possible to add two participants with the same email.
 
 **HCL features**
 
 - Accessibility:
     - Color Contrast:
-      Buttons: ![img_1.png](img_1.png)
-      Other text: ![img_2.png](img_2.png)
+      - Buttons: ![img_1.png](img_1.png)
+      - Other text: ![img_2.png](img_2.png)
     - Keyboard Shortcuts:
-      By pressing on the question mark in the menu a list will be shown of the available keyboard shortcuts.
+      - By pressing on the question mark in the menu a list will be shown of the available keyboard shortcuts.
     - Multi-modal visualization:
-      When pressing on the buttons messages will be shown with if the action failed or not. These messages
-      have an appropriate colour, text and picture. All the delete buttons are red.
+      - When pressing on the buttons messages will be shown with the result of the action (if the action failed or succeeded). These messages have an appropriate colour, text and picture. All the delete buttons are red.
 - Navigation:
-    - Logical Navigation: on evey page a menu is present which is the same for all pages.
-    - Keyboard Navigation: by using tab buttons can be reached and there are also keyboard shortcuts.
-    - Supporting Undo Changes: change operations in expenses have undo operations. On the edit
-      expense page see the button with the trashcan on it.
+    - Logical Navigation: 
+      - On evey page a menu is present which is the same for all pages.
+    - Keyboard Navigation: 
+      - By using TAB buttons can be reached and there are also keyboard shortcuts.
+    - Supporting Undo Changes: 
+      - Change operations in expenses have undo operations. 
+      - On the edit expense page, if the user presse the button with the trashcan, a table is visible with editted expenses. When pressing on a expense/row, the user can chose to reset the expense.
 - User Feedback:
-    - Error Messages: invalid entries will not get accepted and an error will be shown. Unavailability
-      of the server is also shown. A user can choose to use the default localhost:8080.
-    - Informative Feedback: messages are shown when the user performs actions.
-    - Confirmation for Key Actions: there are confirmation dialogs for irreversible delete operations.
+    - Error Messages: 
+      - Invalid entries in textfields will not get accepted and an error will be shown. 
+      - Unavailability of the server is also shown. A user can choose to use the default server (localhost:8080).
+    - Informative Feedback: 
+      - Messages are shown when the user performs actions.
+    - Confirmation for Key Actions: 
+      - There are confirmation dialogs for each irreversible delete operations.
 
 
 **Long-polling and websocket**
