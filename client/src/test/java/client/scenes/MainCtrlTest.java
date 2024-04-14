@@ -5,20 +5,23 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.testfx.framework.junit5.ApplicationTest;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MainCtrlTest {
+class MainCtrlTest extends ApplicationTest {
     @Mock
     private ReadJSON jsonReader;
     @Mock
@@ -37,11 +40,24 @@ class MainCtrlTest {
     private static final String TEST_CONFIG_PATH = "src/test/java/client/resources/testConfigEn.JSON";
     private static final String TEST_CONFIG_PATH_NL = "src/test/java/client/resources/testConfigNl.JSON";
     private static final String TEST_CONFIG_PATH_FR = "src/test/java/client/resources/testConfigFr.JSON";
+    private final ReadJSON jsonReader2 = new ReadJSON();
+    private final HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
 
+    @BeforeAll
+    static void setAllUp(){
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("glass.platform", "Monocle");
+        System.setProperty("monocle.platform", "Headless");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("java.awt.headless", "true");
+    }
 
     @BeforeEach
     void setUp() {
         mainCtrl = new MainCtrl();
+        this.mainCtrl.setHashmap(h);
 //            mainCtrl.initialize(null, null, null, null, null, null, null, null, null, null, null);
     }
 
@@ -130,5 +146,21 @@ class MainCtrlTest {
             fileFR.delete();
             fileNL.delete();
         }
+    }
+
+    @Test
+    void setupTable() {
+        ReadJSON jsonReader2 = new ReadJSON();
+        HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
+        var res = mainCtrl.setupTable(h);
+        assertNotNull(res);
+    }
+
+    @Test
+    void testSetAndGetHashMap() {
+        HashMap<String, String> hash = new HashMap<>();
+        hash.put("key", "value");
+        mainCtrl.setHashmap(hash);
+        assertEquals(hash, mainCtrl.getHashmap());
     }
 }

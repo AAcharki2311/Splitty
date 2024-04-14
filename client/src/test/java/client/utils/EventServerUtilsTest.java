@@ -1,70 +1,61 @@
-//package client.utils;
-//
-//import commons.Event;
-//import jakarta.inject.Inject;
-//import org.junit.jupiter.api.Test;
-//
-//import java.util.Random;
-//
-//public class EventServerUtilsTest {
-//    private final EventServerUtils ESU;
-//
-//    @Inject
-//    public EventServerUtilsTest(EventServerUtils ESU) {
-//        this.ESU = ESU;
-//    }
-//    @Test
-//    public void printEvents() {
-//        System.out.println(ESU.getAllEvents());
-//    }
-//
-//    @Test
-//    public void addEvent() {
-//        Event e = ESU.addEvent(new Event("Test Event"));
-//        System.out.println(e);
-//        ESU.deleteEventByID(e.id);
-//    }
-//
-//    @Test
-//    public void getEventByID() {
-//        System.out.println(ESU.getEventByID(0));
-//    }
-//
-//    @Test
-//    public void updateEventByID() {
-//        Event e = new Event("mainEventTest"+(new Random().nextInt(0, 99)));
-//        e = ESU.updateEventByID(0, e);
-//        System.out.println(e);
-//    }
-//
-//    @Test
-//    public void deleteEventByID() {
-//        System.out.println(ESU.deleteEventByID(1));
-//    }
-//
-//    @Test
-//    public void CRUDEventByID() {
-//        Event e = new Event("CRUDEventTest");
-//
-//        e = ESU.addEvent(e);
-//        System.out.println("Event created (Create):");
-//        System.out.println(e);
-//
-//        e = ESU.getEventByID(e.id);
-//        System.out.println("Event in database (Read):");
-//        System.out.println(e);
-//
-//        e = ESU.updateEventByID(e.id, new Event("CRUDEventTestUpdated"));
-//        System.out.println("Event updated (Update):");
-//        System.out.println(e);
-//
-//        boolean d = ESU.deleteEventByID(e.id);
-//        System.out.println("Event deleted (Delete):");
-//        System.out.println(d);
-//    }
-//
-//    @Test
-//    public void sendSimpleMessage() {
-//        ESU.send("/app/events", "Test Message");
-//    }
-//}
+package client.utils;
+
+import commons.Expense;
+import commons.Participant;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class EventServerUtilsTest {
+
+    @Mock
+    private StandardWebSocketClient client;
+
+    @Mock
+    private WebSocketStompClient stomp;
+
+    @Mock
+    private StompSession session;
+
+    @Mock
+    private ReadURL readURL;
+
+    @InjectMocks
+    private EventServerUtils ESU;
+
+    @BeforeEach
+    void setUp() {
+        when(stomp.connectAsync(anyString(), any(StompSessionHandlerAdapter.class))).thenReturn(CompletableFuture.completedFuture(session));
+    }
+
+    @Test
+    void testConnect() throws Exception {
+        StompSession result = ESU.connect("ws://localhost:8080/websocket");
+        assertEquals(session, result);
+    }
+
+    @Test
+    void testInitiateWebsocketEventConnection() {
+        when(readURL.readServerUrl(anyString())).thenReturn("http://localhost:8080");
+        Consumer<Participant> participantConsumer = participant -> {};
+        Consumer<Expense> expenseConsumer = expense -> {};
+        ESU.initiateWebsocketEventConnection(1L, participantConsumer, expenseConsumer);
+        verify(session, times(2)).subscribe(anyString(), any());
+    }
+}
