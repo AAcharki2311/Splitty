@@ -126,6 +126,7 @@ public class AdminDashboardCtrl implements Initializable {
         server.registerForUpdates(event -> {
                 data.removeIf(existingEvent -> existingEvent.getId() == event.getId());
                 data.add(event);
+                colId.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().id)));
         });
 
         imageviewFlag.setImage(new Image("images/br-circle-01.png"));

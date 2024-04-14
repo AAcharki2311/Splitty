@@ -5,6 +5,7 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import jakarta.inject.Inject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Timer;
 import java.util.stream.Collectors;
 
 public class EventOverviewCtrl implements Initializable {
@@ -31,6 +33,7 @@ public class EventOverviewCtrl implements Initializable {
     private final ExpensesServerUtils expServer;
     private LanguageSwitch languageSwitch;
     private HashMap<String, String> h;
+    private Timer timer;
     /** MENU **/
     @FXML
     private ImageView imgSet;
@@ -331,6 +334,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickAddExpense() {
         mc.showExpense(String.valueOf(eventid));
+        stopTimer();
     }
 
     /**
@@ -338,6 +342,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickAddParticipant() {
         mc.showParticipant(String.valueOf(eventid));
+        stopTimer();
     }
 
     /**
@@ -345,6 +350,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickEditParticipant() {
         mc.showEditParticipant(String.valueOf(eventid));
+        stopTimer();
     }
 
     /**
@@ -352,6 +358,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickEditExpense() {
         mc.showEditExpense(String.valueOf(eventid));
+        stopTimer();
     }
 
     /**
@@ -359,6 +366,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickSettleDebts() {
         mc.showSettleDebts(String.valueOf(eventid));
+        stopTimer();
     }
 
     /**
@@ -428,6 +436,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickHome() throws IOException {
         mc.showStart();
+        stopTimer();
     }
 
     /**
@@ -435,6 +444,7 @@ public class EventOverviewCtrl implements Initializable {
      */
     public void clickBack() {
         mc.showStart();
+        stopTimer();
     }
 
     /**
@@ -509,6 +519,31 @@ public class EventOverviewCtrl implements Initializable {
      */
     public EventServerUtils getEventServerUtils() {
         return server;
+    }
+
+    /**
+     * Method to stop the timer
+     * Since the user is not on the start screen anymore
+     */
+    public void stopTimer() {
+        if(timer != null) timer.cancel();
+    }
+
+    /**
+     * Method to start the timer
+     * To update the recent events every 3 seconds
+     */
+    public void startTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    String res = server.getEventByID(eventid).getName();
+                    eventName.setText(res);
+                });
+            }
+        }, 0, 2000);
     }
 
 }
