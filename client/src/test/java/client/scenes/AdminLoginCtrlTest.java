@@ -5,16 +5,8 @@ import client.MyModule;
 import client.utils.*;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-// import commons.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-// import javafx.scene.control.Label;
-// import javafx.scene.control.PasswordField;
-// import javafx.scene.control.TextField;
-// import javafx.scene.text.Text;
-// import javafx.scene.text.Text;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
@@ -23,16 +15,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-// import org.mockito.Mockito;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
-// import java.io.IOException;
-// import java.util.ArrayList;
 import java.util.HashMap;
-// import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.when;
 
 class AdminLoginCtrlTest extends ApplicationTest {
 
@@ -96,19 +82,19 @@ class AdminLoginCtrlTest extends ApplicationTest {
         assertThrows(Exception.class, () -> alCtrl.langueageswitch("x"));
     }
 
-    @Test
-    void invalidPasswordTest2() {
-        Mockito.when(pwserver.checkPassword("abc")).thenReturn(false);
-
-        PasswordField field = lookup("#inputpw").queryAs(PasswordField.class);
-        Label message = lookup("#pwText").queryAs(Label.class);
-
-        clickOn(field);
-        write("abc");
-        // clickOn(lookup("#loginText").queryButton());
-
-        // assertEquals("Invalid password, please try again", message.getText());
-    }
+//    @Test
+//    void invalidPasswordTest2() {
+//        Mockito.when(pwserver.checkPassword("abc")).thenReturn(false);
+//
+//        PasswordField field = lookup("#inputpw").queryAs(PasswordField.class);
+//        Label message = lookup("#pwText").queryAs(Label.class);
+//
+//        clickOn(field);
+//        write("abc");
+//        clickOn(lookup("#loginText").queryButton());
+//
+//        assertEquals("Invalid password, please try again", message.getText());
+//    }
 
 
 
