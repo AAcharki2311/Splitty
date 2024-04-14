@@ -1,6 +1,7 @@
 package server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import server.database.ExpenseRepository;
 import commons.Expense;
@@ -49,7 +50,14 @@ public class ExpenseService {
      * @return the added expense
      */
     public Expense add(Expense expense) {
-        return expenseRepository.save(expense); // I still need to add some validation here
+        if (expense == null || expense.getId() < 0 ||
+                expense.getAmount() < 0 || expense.getCreditor() == null ||
+                expense.getDate() == null || isNullOrEmpty(expense.getTag()) ||
+                isNullOrEmpty(expense.getTitle()) || expense.getEvent() == null ||
+                isNullOrEmpty(expense.getCur())) {
+            throw new IllegalArgumentException("Expense is not valid");
+        }
+        return expenseRepository.save(expense);
     }
 
     /**
@@ -114,5 +122,9 @@ public class ExpenseService {
         List<Expense> allExpenses = expenseRepository.findAll();
         allExpenses.sort(Comparator.comparing(Expense::getDate));
         return allExpenses;
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 }

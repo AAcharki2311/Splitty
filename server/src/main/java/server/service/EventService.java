@@ -48,7 +48,11 @@ public class EventService {
      * @return the added event
      */
     public Event add(Event event) {
-        return eventRepository.save(event); // I still need to add some validation here
+        if (event == null || isNullOrEmpty(event.name) ||
+                event.lastActDate == null || event.creationDate == null) {
+            throw new IllegalArgumentException("Event is not valid");
+        }
+        return eventRepository.save(event);
     }
 
     /**
@@ -80,5 +84,9 @@ public class EventService {
         }
         eventRepository.deleteById(id);
         return true;
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 }

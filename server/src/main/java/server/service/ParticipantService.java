@@ -49,7 +49,13 @@ public class ParticipantService {
      * @return the added participant
      */
     public Participant add(Participant participant) {
-        return participantRepository.save(participant); // I still need to add some validation here
+        if (participant == null || participant.getId() < 0 ||
+                isNullOrEmpty(participant.getEmail()) || isNullOrEmpty(participant.getName()) ||
+                participant.getEvent() == null || isNullOrEmpty(participant.getBic()) ||
+                isNullOrEmpty(participant.getIban())) {
+            throw new IllegalArgumentException("Event is not valid");
+        }
+        return participantRepository.save(participant);
     }
 
     /**
@@ -101,4 +107,7 @@ public class ParticipantService {
         return eventParticipant;
     }
 
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
 }
