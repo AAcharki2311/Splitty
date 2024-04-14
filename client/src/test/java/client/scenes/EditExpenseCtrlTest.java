@@ -10,6 +10,8 @@ import commons.*;
 //import javafx.scene.control.TableView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
@@ -80,6 +82,12 @@ class EditExpenseCtrlTest extends ApplicationTest {
         double money = 10.0;
         Date date = new Date(2021-01-01);
         assertFalse(editExpenseCtrl.validate(title, money, date, null, null));
+        ComboBox comboBoxCurr = lookup("#comboBoxCurr").queryAs(ComboBox.class);
+        clickOn(lookup("#comboBoxCurr").queryAs(ComboBox.class));
+        clickOn("EUR");
+        RadioButton splitRBtn = lookup("#splitRBtn").queryAs(RadioButton.class);
+        clickOn(splitRBtn);
+        assertTrue(editExpenseCtrl.validate(title, money, date, comboBoxCurr, splitRBtn));
     }
 
     @Test
