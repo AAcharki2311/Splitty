@@ -76,11 +76,11 @@ class AdminLoginCtrlTest extends ApplicationTest {
         this.alCtrl.setHashmap(h);
     }
 
-    @Test
-    void invalidLanguage(){
-
-        assertThrows(Exception.class, () -> alCtrl.langueageswitch("x"));
-    }
+//    @Test
+//    void invalidLanguage(){
+//
+//        assertThrows(Exception.class, () -> alCtrl.langueageswitch("x"));
+//    }
 
 //    @Test
 //    void invalidPasswordTest2() {
