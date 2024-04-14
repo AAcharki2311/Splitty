@@ -320,6 +320,31 @@ public class SettleDebtsCtrl implements Initializable {
                 data.getNode().setStyle("-fx-pie-color: white");
             }
         }
+
+        ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+
+        // Set custom cell factory for tag column
+        colShareTag.setCellFactory(column -> new TableCell<Map.Entry<String, Double>, String>() {
+            @Override
+            protected void updateItem(String tag, boolean empty) {
+                super.updateItem(tag, empty);
+
+                if (tag == null || empty) {
+                    setText(null);
+                    setStyle(""); // Reset style
+                } else {
+
+                    setText(tag);
+                    try {
+                        String color = ht.get(tag + "?" + eventid);
+                        setStyle("-fx-text-fill: " + color + ";");
+                    }
+                    catch (Exception e){
+                        setStyle("-fx-text-fill: black;");
+                    }
+                }
+            }
+        });
     }
 
     /**
