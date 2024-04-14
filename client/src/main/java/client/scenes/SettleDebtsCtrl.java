@@ -323,7 +323,6 @@ public class SettleDebtsCtrl implements Initializable {
 
         ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
 
-        // Set custom cell factory for tag column
         colShareTag.setCellFactory(column -> new TableCell<Map.Entry<String, Double>, String>() {
             @Override
             protected void updateItem(String tag, boolean empty) {
@@ -331,7 +330,7 @@ public class SettleDebtsCtrl implements Initializable {
 
                 if (tag == null || empty) {
                     setText(null);
-                    setStyle(""); // Reset style
+                    setStyle("");
                 } else {
 
                     setText(tag);
