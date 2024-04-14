@@ -596,7 +596,7 @@ public class EventOverviewCtrl implements Initializable {
                     eventName.setText(res);
                 });
             }
-        }, 0, 1000);
+        }, 0, 500);
     }
 
 }
