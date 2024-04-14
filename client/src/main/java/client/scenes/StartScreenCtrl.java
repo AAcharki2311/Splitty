@@ -503,7 +503,7 @@ public class StartScreenCtrl implements Initializable {
                     recentEventLabel.setText(res);
                 });
             }
-        }, 0, 5000);
+        }, 0, 1000);
     }
 
     /**
