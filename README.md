@@ -42,8 +42,9 @@ can be opened to test the websocket and long polling.
 
 - Accessibility:
     - Color Contrast:
-      - Buttons: ![img_1.png](img_1.png)
-      - Other text: ![img_2.png](img_2.png)
+      - The app Colour Contrast Analyser has been used to look at the values of the colours. The button
+      colours
+      pass all contrast tests.
     - Keyboard Shortcuts:
       - By pressing on the question mark in the menu a list will be shown of the available keyboard shortcuts.
     - Multi-modal visualization:

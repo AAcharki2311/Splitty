@@ -101,6 +101,7 @@ public class EventOverviewCtrl implements Initializable {
     @FXML
     private TableColumn<Expense, String> colTag;
     private ObservableList<Expense> expdata;
+    private HashMap<String, String> ht;
 
     /**
      * Constructor of the EventoverviewCtrl
@@ -185,7 +186,32 @@ public class EventOverviewCtrl implements Initializable {
         colAm.setCellValueFactory(q -> new SimpleStringProperty(String.valueOf(q.getValue().getAmount())));
         colPart.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getCreditor().getName()));
         colTitle.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
-        colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
+        // colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
+
+        colTag.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTag()));
+
+        ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+
+        colTag.setCellFactory(column -> new TableCell<Expense, String>() {
+            @Override
+            protected void updateItem(String tag, boolean empty) {
+                super.updateItem(tag, empty);
+
+                if (tag == null || empty) {
+                    setText(null);
+                    setStyle(""); 
+                } else {
+                    setText(tag);
+                    try {
+                        String color = ht.get(tag + "?" + eventid);
+                        setStyle("-fx-background-color:  " + color + ";");
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         tablePart.setOnMouseClicked(event -> {
             Participant selectedItem = tablePart.getSelectionModel().getSelectedItem();
@@ -430,6 +456,31 @@ public class EventOverviewCtrl implements Initializable {
         var participants = partServer.getAllParticipants().stream().filter(participant -> participant.getEvent().equals(x)).collect(Collectors.toList());
         partdata = FXCollections.observableList(participants);
         tablePart.setItems(partdata);
+
+        ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+
+        // Set custom cell factory for tag column
+        colTag.setCellFactory(column -> new TableCell<Expense, String>() {
+            @Override
+            protected void updateItem(String tag, boolean empty) {
+                super.updateItem(tag, empty);
+
+                if (tag == null || empty) {
+                    setText(null);
+                    setStyle(""); // Reset style
+                } else {
+
+                    setText(tag);
+                    try {
+                        String color = ht.get(tag + "?" + eventid);
+                        setStyle("-fx-background-color:  " + color + ";");
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     /**
