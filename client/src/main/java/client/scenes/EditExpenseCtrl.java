@@ -147,7 +147,8 @@ public class EditExpenseCtrl implements Initializable {
         comboBoxName.setOnAction(event -> {
             String nameParticipant = comboBoxName.getValue();
             if(nameParticipant == null){
-                message.setText(h.get("key83"));
+                JOptionPane.showOptionDialog(null, h.get("key83"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                // message.setText(h.get("key83"));
                 return;
             }
 
@@ -167,7 +168,8 @@ public class EditExpenseCtrl implements Initializable {
             String nameParticipant = comboBoxName.getValue();
             String title = comboBoxExpensesTitle.getValue();
             if(title == null){
-                message.setText(h.get("key92"));
+                JOptionPane.showOptionDialog(null, h.get("key92"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                // message.setText(h.get("key92"));
                 return;
             }
 
@@ -225,11 +227,14 @@ public class EditExpenseCtrl implements Initializable {
         String changePartName = comboBoxNamePaid.getValue();
 
         if(partName == null || changePartName == null){
-            message.setText(h.get("key83"));
+            // message.setText(h.get("key83"));
+            JOptionPane.showOptionDialog(null, h.get("key83"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+
             return;
         }
         if(expTitle == null){
-            message.setText(h.get("key92"));
+            JOptionPane.showOptionDialog(null, h.get("key92"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            //message.setText(h.get("key92"));
             return;
         }
 
@@ -264,9 +269,9 @@ public class EditExpenseCtrl implements Initializable {
                         expServer.updateExpenseByID(selectedExpense.getId(), exp);
                     }
                     mc.send("/app/events/"+eventid+"/expenses", exp);
-                    String message = h.get("key8") + " Updated:\n" +
+                    String message = h.get("key138") + ":\n" +
                             "_______________" + "\n" +
-                            "Creditor: " + exp.getCreditor().getName() + "\n" +
+                            h.get("key137") + ": " + exp.getCreditor().getName() + "\n" +
                             h.get("key44") + ": " + exp.getTitle() + "\n" +
                             h.get("key45") + ": " + exp.getTag() + "\n" +
                             h.get("key42") + ": " + exp.getAmount() + " " + exp.getCur() + "\n" +
@@ -275,10 +280,12 @@ public class EditExpenseCtrl implements Initializable {
                     clickBack();
                 }
             } else {
-                message.setText(elsemethod(money, h));
+                JOptionPane.showOptionDialog(null , elsemethod(money, h),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                // message.setText(elsemethod(money, h));
             }
         } catch (Exception e){
-            message.setText(h.get("key84"));
+            JOptionPane.showOptionDialog(null, h.get("key84"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            // message.setText(h.get("key84"));
         }
     }
 
@@ -318,11 +325,13 @@ public class EditExpenseCtrl implements Initializable {
         String partName = comboBoxName.getValue();
         String expTitle = comboBoxExpensesTitle.getValue();
         if(partName == null){
-            message.setText(h.get("key83"));
+            JOptionPane.showOptionDialog(null, h.get("key83"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            // message.setText(h.get("key83"));
             return;
         }
         if(expTitle == null){
-            message.setText(h.get("key92"));
+            JOptionPane.showOptionDialog(null, h.get("key92"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            // message.setText(h.get("key92"));
             return;
         }
 

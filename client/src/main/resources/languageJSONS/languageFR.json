@@ -127,5 +127,18 @@
     "key125": "Action",
     "key126": "Page",
     "key127": "Serveur actuel: ",
-    "key128": "Changer de serveur"
+    "key128": "Changer de serveur",
+    "key129": "Les champs ne peuvent pas être vides. Veuillez réessayer.",
+    "key130": "Avertissement",
+    "key131": "Erreur inattendue. Veuillez réessayer plus tard.",
+    "key132": "Erreur",
+    "key133": "La saisie est incorrecte. Veuillez réessayer.",
+    "key134": "Ce nom d'événement existe déjà. Veuillez réessayer.",
+    "key135": "Invitez vos amis avec le code: ",
+    "key136": "Participant ajouté avec succès",
+    "key137": "Créancier(e)",
+    "key138": "Dépense ajoutée avec succès.",
+    "key139": "Fichier téléchargé avec succès",
+    "key140": "Fichier importé avec succès",
+    "key141": "Succès"
 }

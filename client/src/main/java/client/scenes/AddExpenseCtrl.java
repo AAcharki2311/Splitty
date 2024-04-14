@@ -122,7 +122,8 @@ public class AddExpenseCtrl implements Initializable {
         comboBoxNamePaid.setOnAction(event -> {
             String nameParticipant = comboBoxNamePaid.getValue();
             if(nameParticipant == null){
-                message.setText(h.get("key83"));
+                // message.setText(h.get("key83"));
+                JOptionPane.showOptionDialog(null, h.get("key83"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
                 return;
             }
             List<Participant> listAllParticipants = partServer.getAllParticipants()
@@ -185,9 +186,9 @@ public class AddExpenseCtrl implements Initializable {
                 Expense exp = new Expense(e, p, money, date, title, tag, cur);
                 expServer.addExpense(exp);
                 mc.send("/app/events/"+eventid+"/expenses", exp);
-                String message = h.get("key8") + ":\n" +
+                String message = h.get("key138") + ":\n" +
                         "_______________" + "\n" +
-                        "Creditor: " + exp.getCreditor().getName() + "\n" +
+                        h.get("key137") + ": " + exp.getCreditor().getName() + "\n" +
                         h.get("key44") + ": " + exp.getTitle() + "\n" +
                         h.get("key45") + ": " + exp.getTag() + "\n" +
                         h.get("key42") + ": " + exp.getAmount() + " " + exp.getCur() + "\n" +
@@ -200,6 +201,7 @@ public class AddExpenseCtrl implements Initializable {
             }
         } catch (Exception e){
             message.setText(errormessage);
+            // JOptionPane.showOptionDialog(null, errormessage,h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
         }
     }
 

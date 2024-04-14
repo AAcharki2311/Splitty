@@ -301,32 +301,34 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
-        while(true){
-            JTextField textFieldEmail = new JTextField();
-            JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel(h.get("key33")));
-            panel.add(new JLabel(String.valueOf(eventid)));
-            panel.add(new JLabel(h.get("key36")));
-            panel.add(textFieldEmail);
-            Object[] options = {h.get("key12"), h.get("key99")};
-
-            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
-                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
-
-            if (result == JOptionPane.OK_OPTION) {
-                String email = textFieldEmail.getText();
-                if(email.isBlank() ||
-                        !email.matches(".*@.+\\..+")){
-                    JOptionPane.showMessageDialog(null, h.get("key64"));
-                } else{
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
+        // mc.showInvite(String.valueOf(eventid));
+//        while(true){
+//            JTextField textFieldEmail = new JTextField();
+//            JPanel panel = new JPanel();
+//            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+//            panel.add(new JLabel("Invite your friends with the code:"));
+//            panel.add(new JLabel(String.valueOf(eventid)));
+//            // panel.add(new JLabel("Or send through email:"));
+//            // panel.add(textFieldEmail);
+//            Object[] options = {"Send", "Back"};
+//
+//            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
+//                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+//
+//            if (result == JOptionPane.OK_OPTION) {
+//                String email = textFieldEmail.getText();
+//                if(email.isBlank() ||
+//                        !email.matches(".*@.+\\..+")){
+//                    JOptionPane.showMessageDialog(null, h.get("key64"));
+//                } else{
+//                    // do something with email
+//                    break;
+//                }
+//            } else {
+//                break;
+//            }
+//        }
+        JOptionPane.showOptionDialog(null, h.get("key135") + "\n" + (String.valueOf(eventid)), h.get("key12"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);
     }
 
     /**
@@ -381,9 +383,9 @@ public class EventOverviewCtrl implements Initializable {
             if (newName == null || newName.equals(oldName)) {
                return;
             } else if (newName.isBlank()) {
-                JOptionPane.showMessageDialog(null, h.get("key54"));
+                JOptionPane.showOptionDialog(null, h.get("key54"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             } else if(checkDuplicateName(newName)){
-                JOptionPane.showMessageDialog(null, h.get("key71"));
+                JOptionPane.showOptionDialog(null, h.get("key71"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             } else {
                 Event x = server.getEventByID(eventid);
                 x.setName(newName);

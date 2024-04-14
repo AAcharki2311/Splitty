@@ -3,8 +3,8 @@ package client.scenes;
 import client.utils.EventServerUtils;
 import client.utils.PasswordServerUtils;
 import client.utils.ReadJSON;
+import javax.naming.directory.InvalidAttributesException;
 import com.google.inject.Inject;
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,9 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
-// import org.apache.commons.lang3.RandomStringUtils;
-import javax.naming.directory.InvalidAttributesException;
+import javax.swing.*;
 import java.net.URL;
 import java.util.*;
 
@@ -129,11 +127,12 @@ public class AdminLoginCtrl implements Initializable {
             pwText.setText("correct");
             mc.showAdminDashboard();
         } else {
-            pwText.setText("Invalid password, please try again");
-            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(p -> imgMessage.setImage(null));
-            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+//            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> imgMessage.setImage(null));
+//            pause.play();
+            return;
         }
     }
 

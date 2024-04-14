@@ -169,7 +169,7 @@ public class EditParticipantCtrl implements Initializable {
                     partServer.updateParticipantByID(selectedParticipant.getId(),newParticipant);
                     newParticipant.setId(selectedParticipant.getId());
                     mc.send("/app/events/"+eventid+"/participants", newParticipant);
-                    String message = "Participant Updated:\n" +
+                    String message = h.get("key31") + "136:\n" +
                             "_______________" + "\n" +
                             h.get("key31") + ": " + newParticipant.getName() + "\n" +
                             "Email: " + newParticipant.getEmail() + "\n" +
@@ -181,10 +181,11 @@ public class EditParticipantCtrl implements Initializable {
             } else {
                 if(!(ibanTrue)) errormessage = h.get("key78");
                 if(!(email.contains("@") && email.contains(".")))  errormessage = h.get("key84");
-                throw new Exception();
+                JOptionPane.showOptionDialog(null, errormessage,h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             }
         } catch (Exception e){
-            message.setText(errormessage);
+            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+            // message.setText(errormessage);
         }
     }
 

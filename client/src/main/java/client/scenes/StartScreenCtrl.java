@@ -5,7 +5,7 @@ import commons.Event;
 import commons.Participant;
 import jakarta.inject.Inject;
 import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+// import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,10 +17,12 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+// import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.List;
 import java.util.Timer;
 import java.util.*;
 
@@ -203,12 +205,13 @@ public class StartScreenCtrl implements Initializable {
         try {
             String name = eventName.getText();
             if(name.isBlank()){
-                warningImageview.setImage(new Image("images/notifications/Slide3.png"));
-                PauseTransition pause = new PauseTransition(Duration.seconds(6));
-                pause.setOnFinished(p -> warningImageview.setImage(null));
-                pause.play();
-                throw new IllegalArgumentException(h.get("key54"));
-            } else{
+//                warningImageview.setImage(new Image("images/notifications/Slide3.png"));
+//                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                pause.setOnFinished(p -> warningImageview.setImage(null));
+//                pause.play();
+                message.setText(h.get("key54"));
+                // JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            } else {
                 List<Event> allEvents = server.getAllEvents();
                 List<String> namesOfAllEvents = new ArrayList<>();
                 for(Event e : allEvents){
@@ -239,20 +242,22 @@ public class StartScreenCtrl implements Initializable {
                     mc.showEventOverview(String.valueOf(newEvent.id));
 
                 } else {
-                    warningImageview.setImage(new Image("images/notifications/Slide2.png"));
-                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
-                    pause.setOnFinished(p -> warningImageview.setImage(null));
-                    pause.play();
-                    throw new IllegalArgumentException(h.get("key59"));
+//                    warningImageview.setImage(new Image("images/notifications/Slide2.png"));
+//                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                    pause.setOnFinished(p -> warningImageview.setImage(null));
+//                    pause.play();
+//                    throw new IllegalArgumentException(h.get("key59"));
+                      JOptionPane.showOptionDialog(null, h.get("key134"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
                 }
             }
         }
         catch (Exception e){
-            message.setText(e.getMessage());
-            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(p -> warningImageview.setImage(null));
-            pause.play();
+        //    message.setText(e.getMessage());
+//            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> warningImageview.setImage(null));
+//            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
         }
     }
 
@@ -308,29 +313,33 @@ public class StartScreenCtrl implements Initializable {
                     writeEventNames.writeEventName(filepath, (server.getEventByID(Long.parseLong(eid)).getName() + "\nID: " + eid), eid);
                     message.setText("");
                 } catch(Exception e){
-                    warningImageview.setImage(new Image("images/notifications/Slide1.png"));
-                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
-                    pause.setOnFinished(p -> warningImageview.setImage(null));
-                    pause.play();
-                    throw new IllegalArgumentException(h.get("key60"));
+//                    warningImageview.setImage(new Image("images/notifications/Slide1.png"));
+//                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                    pause.setOnFinished(p -> warningImageview.setImage(null));
+//                    pause.play();
+//                    throw new IllegalArgumentException(h.get("key60"));
+                    message.setText(h.get("key60"));
+                    // JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
                 }
             } else{
-                warningImageview.setImage(new Image("images/notifications/Slide2.png"));
-                PauseTransition pause = new PauseTransition(Duration.seconds(6));
-                pause.setOnFinished(p -> warningImageview.setImage(null));
-                pause.play();
-                throw new IllegalArgumentException(h.get("key61"));
+//                warningImageview.setImage(new Image("images/notifications/Slide2.png"));
+//                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                pause.setOnFinished(p -> warningImageview.setImage(null));
+//                pause.play();
+//                throw new IllegalArgumentException(h.get("key61"));
+                message.setText(h.get("key61"));
+                // JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             }
         }
         catch (Exception e){
-            message.setText(e.getMessage());
-            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(p -> warningImageview.setImage(null));
-            pause.play();
+//            message.setText(e.getMessage());
+//            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> warningImageview.setImage(null));
+//            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
         }
     }
-
     /**
      * Method to check if the input is a number
      * @param eid the input
