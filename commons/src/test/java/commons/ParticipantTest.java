@@ -13,6 +13,13 @@ class ParticipantTest {
     }
 
     @Test
+    void constructor(){
+        Event e = new Event("TestEvent");
+        Participant p = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U", 95);
+        assertNotNull(p);
+    }
+
+    @Test
     void getId(){
         Event e = new Event("TestEvent");
         Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");

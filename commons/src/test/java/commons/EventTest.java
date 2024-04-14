@@ -26,6 +26,15 @@ public class EventTest {
     }
 
     /**
+     * Test contrsuctor
+     */
+    @Test
+    public void checkConstructer3() {
+        Event e = new Event( "TestEvent", new Date(), new Date());
+        assertNotNull(e);
+    }
+
+    /**
      * Test namegetter
      */
     @Test
