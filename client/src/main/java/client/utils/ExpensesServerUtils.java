@@ -7,6 +7,7 @@ import java.util.List;
 
 import commons.Expense;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -16,7 +17,7 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ExpensesServerUtils {
     private final ReadURL readURL;
-    private final String SERVER;
+    private static String serverURL;
     /**
      * ExpensesServerUtils constructor
      * @param readURL readURL object
@@ -24,18 +25,25 @@ public class ExpensesServerUtils {
     @Inject
     public ExpensesServerUtils(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/expenses";
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/expenses";
     }
 
     /**
      * @return list of all expenses
      */
     public List<Expense> getExpenses() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Expense>>() {});
+        List<Expense> res;
+        try {
+            res = ClientBuilder.newClient(new ClientConfig()) //
+                    .target(serverURL)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<List<Expense>>() {
+                    });
+        } catch (NotFoundException e) {
+            return List.of();
+        }
+        return res;
     }
 
     /**
@@ -44,7 +52,7 @@ public class ExpensesServerUtils {
      */
     public Expense addExpense(Expense expense) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER)
+                .target(serverURL)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
@@ -56,7 +64,7 @@ public class ExpensesServerUtils {
      */
     public Expense getExpenseByID(long id) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<Expense>() {});
@@ -68,7 +76,7 @@ public class ExpensesServerUtils {
      */
     public boolean deleteExpenseByID(long id) {
         Response response = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -84,7 +92,7 @@ public class ExpensesServerUtils {
      */
     public Expense updateExpenseByID(long id, Expense expense) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(expense,APPLICATION_JSON), Expense.class);

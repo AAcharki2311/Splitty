@@ -111,7 +111,7 @@ public class ParticipantCtrl implements Initializable {
         fillUserInfo.setText(h.get("key51"));
         Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
-         TextFieldName.setPromptText(h.get("key31"));
+        TextFieldName.setPromptText(h.get("key31"));
     }
 
     /**
@@ -268,7 +268,7 @@ public class ParticipantCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**

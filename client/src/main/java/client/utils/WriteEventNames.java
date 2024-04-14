@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,7 @@ public class WriteEventNames implements WriteEventNamesInterface {
                 eventNames.remove(0);
             }
             mapper.writeValue(new File(filepath), eventNames);
-            System.out.println("Successfully wrote event to JSON file.");
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

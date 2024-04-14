@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class MainCtrl {
     private Stage primaryStage;
     private Scene startScene;
     private Scene eventOverviewScene;
-    private Scene inviteScene;
     private Scene expenseScene;
     private Scene participantScene;
     private Scene editParticipantScene;
@@ -39,7 +39,6 @@ public class MainCtrl {
     /**CONTROLLERS**/
     private StartScreenCtrl startCtrl;
     private EventOverviewCtrl eventOCtrl;
-    private InviteCtrl inviteCtrl;
     private ParticipantCtrl participantCtrl;
     private EditParticipantCtrl editParticipantCtrl;
     private EditExpenseCtrl editExpenseCtrl;
@@ -50,14 +49,11 @@ public class MainCtrl {
     private AdminLoginCtrl adminLoginCtrl;
     private String serverURL = "http://localhost:8080";
 
-
-
     /**
      * Initializes all the controllers
      * @param primaryStage The primary stage
      * @param start controller for the start screen
      * @param eventO controller for the screen with an overview of the event
-     * @param invite controller for the screen where people can be invited to an event
      * @param addExpense controller for the screen where an expense can be added for an event
      * @param participant controller for the screen where a participant can be added
      * @param editParticipant controller the screen where a participant can be changed
@@ -70,7 +66,7 @@ public class MainCtrl {
      */
     public void initialize(Stage primaryStage,
                            Pair <StartScreenCtrl, Parent> start,
-                           Pair <EventOverviewCtrl, Parent> eventO, Pair <InviteCtrl, Parent> invite,
+                           Pair <EventOverviewCtrl, Parent> eventO,
                            Pair <AddExpenseCtrl, Parent> addExpense, Pair <ParticipantCtrl, Parent> participant,
                            Pair <EditParticipantCtrl, Parent> editParticipant, Pair <EditExpenseCtrl, Parent> editExpense,
                            Pair <AdminLoginCtrl, Parent> alogin, Pair <AdminDashboardCtrl, Parent> adash,
@@ -78,7 +74,6 @@ public class MainCtrl {
         this.primaryStage = primaryStage;
         this.startScene = new Scene(start.getValue());
         this.eventOverviewScene = new Scene(eventO.getValue());
-        this.inviteScene = new Scene(invite.getValue());
         this.expenseScene = new Scene(addExpense.getValue());
         this.participantScene = new Scene(participant.getValue());
         this.editParticipantScene = new Scene(editParticipant.getValue());
@@ -87,7 +82,6 @@ public class MainCtrl {
 
         this.startCtrl = start.getKey();
         this.eventOCtrl = eventO.getKey();
-        this.inviteCtrl = invite.getKey();
         this.participantCtrl = participant.getKey();
         this.editParticipantCtrl = editParticipant.getKey();
         this.editExpenseCtrl = editExpense.getKey();
@@ -115,7 +109,7 @@ public class MainCtrl {
     /**
      * Method to pop up a dialog to change the server URL
      */
-    private void serverURlpopUP() {
+    public void serverURlpopUP() {
         ReadURL readURL = new ReadURL();
         while(true){
             serverURL = JOptionPane.showInputDialog("Please enter the server URL:");
@@ -161,7 +155,6 @@ public class MainCtrl {
         if(primaryStage != null){
             startScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             eventOverviewScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
-            inviteScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             expenseScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             participantScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
             editParticipantScene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
@@ -203,17 +196,7 @@ public class MainCtrl {
                     if (currentScene == eventOverviewScene) eventOCtrl.clickEditExpense();
                     break;
                 case S:
-                    TableView<String> tableView = setupTable();
-
-                    Stage newStage = new Stage();
-                    newStage.setTitle("Shortcuts");
-
-                    StackPane secondaryLayout = new StackPane();
-                    secondaryLayout.getChildren().addAll(tableView);
-
-                    Scene secondscene = new Scene(secondaryLayout, 285, 300);
-                    newStage.setScene(secondscene);
-                    newStage.show();
+                    eventOCtrl.clickSettings();
                     break;
                 case Y:
                     System.exit(0);
@@ -229,9 +212,10 @@ public class MainCtrl {
 
     /**
      * Shows the keyboard combo's
+     * @param h the hashmap
      */
-    public void help() {
-        TableView<String> tableView = setupTable();
+    public void help(HashMap<String, String> h) {
+        TableView<String> tableView = setupTable(h);
 
         Stage newStage = new Stage();
         newStage.setTitle("Shortcuts");
@@ -239,32 +223,37 @@ public class MainCtrl {
         StackPane secondaryLayout = new StackPane();
         secondaryLayout.getChildren().addAll(tableView);
 
-        Scene secondscene = new Scene(secondaryLayout, 285, 300);
+        Scene secondscene = new Scene(secondaryLayout, 400, 300);
         newStage.setScene(secondscene);
         newStage.show();
     }
 
-    private TableView<String> setupTable() {
+    /**
+     * Method to set up the table with shortcuts
+     * @param h the hashmap
+     * @return the table view
+     */
+    public TableView<String> setupTable(HashMap<String, String> h) {
         ObservableList<String> data = FXCollections.observableArrayList(
-                "Alt + A, Add participant, Event Overview",
-                "Alt + C, Create event, Start",
-                "Alt + E, Edit participant, Event Overview",
-                "Alt + F, Settle debts, Event Overview",
-                "Alt + I, Invite, Event Overview",
-                "Alt + J, Join event, Start",
-                "Alt + K, Add expense, Event Overview",
-                "Alt + L, Edit expense, Event Overview",
-                "Alt + S, Show shortcuts, All",
-                "Alt + Y, Close application, All",
-                "Alt + /, Go back, All"
+                ("Alt + A," + h.get("key113") + ", " + h.get("key120")),
+                ("Alt + C," + h.get("key4") + ", Start"),
+                ("Alt + E," + h.get("key114") + ", " + h.get("key120")),
+                ("Alt + F," + h.get("key115") + ", " + h.get("key120")),
+                ("Alt + I," + h.get("key12") + ", " + h.get("key120")),
+                ("Alt + J," + h.get("key3") + ", Start"),
+                ("Alt + K," + h.get("key116") + ", " + h.get("key120")),
+                ("Alt + L," + h.get("key117") + ", " + h.get("key120")),
+                ("Alt + S," + h.get("key118") + ", " + h.get("key13")),
+                ("Alt + Y," + h.get("key119") + ", " + h.get("key13")),
+                ("Alt + /," + h.get("key99") + ", " + h.get("key13"))
         );
 
         TableView<String> tableView = new TableView<>();
         tableView.setItems(data);
 
         TableColumn<String, String> colShortcut = new TableColumn<>("Shortcut");
-        TableColumn<String, String> colAction = new TableColumn<>("Action");
-        TableColumn<String, String> colPage = new TableColumn<>("Page");
+        TableColumn<String, String> colAction = new TableColumn<>(h.get("key125"));
+        TableColumn<String, String> colPage = new TableColumn<>(h.get("key126"));
 
         colShortcut.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[0].trim()));
         colAction.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().split(",")[1].trim()));
@@ -278,11 +267,9 @@ public class MainCtrl {
      * Method to handle the key press for the slash key
      * @param currentScene the current scene
      */
-    private void keySlashMethod(Scene currentScene) {
+    public void keySlashMethod(Scene currentScene) {
         if(currentScene == eventOverviewScene) {
             eventOCtrl.clickBack();
-        } else if (currentScene == inviteScene) {
-            inviteCtrl.clickBack();
         } else if (currentScene == expenseScene) {
             addExpenseCtrl.clickBack();
         } else if (currentScene == participantScene) {
@@ -334,7 +321,6 @@ public class MainCtrl {
 
         this.startCtrl.langueageswitch(languageToTranslate);
         this.eventOCtrl.langueageswitch(languageToTranslate);
-        this.inviteCtrl.langueageswitch(languageToTranslate);
         this.participantCtrl.langueageswitch(languageToTranslate);
         this.editParticipantCtrl.langueageswitch(languageToTranslate);
         this.editExpenseCtrl.langueageswitch(languageToTranslate);
@@ -360,16 +346,6 @@ public class MainCtrl {
         primaryStage.setTitle("EventOverview");
         primaryStage.setScene(eventOverviewScene);
         startCtrl.stopTimer();
-    }
-
-    /**
-     * Shows the invite screen
-     * @param id the id of the event
-     */
-    public void showInvite(String id) {
-        primaryStage.setTitle("Invite");
-        primaryStage.setScene(inviteScene);
-        inviteCtrl.update(id);
     }
 
     /**
@@ -466,6 +442,7 @@ public class MainCtrl {
      * Shows the admin dashboard screen
      */
     public void showAdminDashboard() {
+        adminDashboardCtrl.refresh();
         try {
             String taal = setLanguage("src/main/resources/configfile.properties");
             adminDashboardCtrl.langueageswitch(taal);
@@ -473,7 +450,6 @@ public class MainCtrl {
         catch (Exception e){
             e.printStackTrace();
         }
-        adminDashboardCtrl.refresh();
         primaryStage.setTitle("Admin Dashboard");
         primaryStage.setScene(adashScene);
 
@@ -484,6 +460,7 @@ public class MainCtrl {
      * @param id the id of the event
      */
     public void showAdminEvent(String id){
+        eventOverviewAdminCtrl.refresh();
         try {
             String taal = setLanguage("src/main/resources/configfile.properties");
             eventOverviewAdminCtrl.langueageswitch(taal);
@@ -503,6 +480,7 @@ public class MainCtrl {
     public void setParticipant(Participant p){
         participantCtrl.setUserParticipant(p);
     }
+
     /**
      * Sets the changed expenses
      * @param tempList the list of changed expenses
@@ -526,6 +504,30 @@ public class MainCtrl {
      */
     public EventOverviewCtrl getEventOCtrl() {
         return eventOCtrl;
+    }
+
+    /**
+     * Method for setting the current event Controller
+     * @param eventOCtrl the event controller to set
+     */
+    public void setEventOCtrl(EventOverviewCtrl eventOCtrl) {
+        this.eventOCtrl = eventOCtrl;
+    }
+
+    /**
+     * Method for setting the current editexpense Controller
+     * @param editExpenseCtrl the editexpense controller to set
+     */
+    public void setEditExpenseCtrl(EditExpenseCtrl editExpenseCtrl) {
+        this.editExpenseCtrl = editExpenseCtrl;
+    }
+
+    /**
+     * Method for setting the current participant Controller
+     * @param participantCtrl the participant controller to set
+     */
+    public void setParticipantCtrl(ParticipantCtrl participantCtrl) {
+        this.participantCtrl = participantCtrl;
     }
 
     /**
