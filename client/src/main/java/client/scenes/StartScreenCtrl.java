@@ -209,7 +209,7 @@ public class StartScreenCtrl implements Initializable {
 //                PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //                pause.setOnFinished(p -> warningImageview.setImage(null));
 //                pause.play();
-                throw new IllegalArgumentException(h.get("key54"));
+                message.setText(h.get("key54"));
                 JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             } else {
                 List<Event> allEvents = server.getAllEvents();
@@ -252,7 +252,7 @@ public class StartScreenCtrl implements Initializable {
             }
         }
         catch (Exception e){
-           message.setText(e.getMessage());
+        //    message.setText(e.getMessage());
 //            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(p -> warningImageview.setImage(null));
