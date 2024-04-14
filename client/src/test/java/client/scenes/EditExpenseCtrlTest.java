@@ -24,10 +24,12 @@ import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class EditExpenseCtrlTest extends ApplicationTest {
     @Mock
@@ -88,6 +90,20 @@ class EditExpenseCtrlTest extends ApplicationTest {
         RadioButton splitRBtn = lookup("#splitRBtn").queryAs(RadioButton.class);
         clickOn(splitRBtn);
         assertTrue(editExpenseCtrl.validate(title, money, date, comboBoxCurr, splitRBtn));
+    }
+
+    @Test
+    void checkDuplicate() {
+        Event event1 = new Event("Event1");
+        Participant participant1 = new Participant(event1, "Participant1", "email1", "iban1", "bic1");
+        Expense expense1 = new Expense(event1, participant1, 10.0, new Date(2021-01-01), "Expense1", "none", "EUR");
+        expServer.addExpense(expense1);
+
+        when(expServer.getExpenses()).thenReturn(Arrays.asList(
+                new Expense(event1, participant1, 10.0, new Date(2021-01-01), "Expense1", "none", "EUR")
+        ));
+
+        assertTrue(editExpenseCtrl.checkDuplicate("Participant1", "Expense1"));
     }
 
     @Test
