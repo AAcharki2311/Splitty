@@ -136,6 +136,30 @@ public class EventControllerTest {
         assertEquals(returnParticipant, testParticipant);
     }
 
+    @Test
+    public void relayExpenseTest() {
+        Event testEvent = new Event(
+                "TestEvent");
+        Participant testParticipant = new Participant(
+                testEvent,
+                "TestParticipant",
+                "test@participant",
+                "NL1234567890",
+                "1234567890");
+        Date testDate = new Date();
+        Expense testExpense = new Expense(
+                testEvent,
+                testParticipant,
+                42.0, testDate,
+                "TestExpense",
+                "Tests",
+                "EUR");
+        Expense returnExpense = eventController
+                .relayExpense(testExpense, "42");
+        assertEquals(returnExpense, testExpense);
+
+    }
+
     @SuppressWarnings("serial")
     public class MyRandom extends Random {
 
