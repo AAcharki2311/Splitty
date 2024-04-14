@@ -173,23 +173,23 @@ public class AdminDashboardCtrl implements Initializable {
         }
     }
 
-    /**
-     * Shows error message 2
-     */
-    public void showError2() {
-        try {
-            String eid = inputid.getText();
-            Event test = server.getEventByID(Long.parseLong(eid));
-        }
-        catch (Exception e){
-            JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
-//            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
-//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-//            pause.setOnFinished(p -> imgMessage.setImage(null));
-//            pause.play();
-            return;
-        }
-    }
+//     /**
+//      * Shows error message 2
+//      */
+//     public void showError2() {
+//         try {
+//             String eid = inputid.getText();
+//             Event test = server.getEventByID(Long.parseLong(eid));
+//         }
+//         catch (Exception e){
+//             JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+// //            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
+// //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+// //            pause.setOnFinished(p -> imgMessage.setImage(null));
+// //            pause.play();
+//             return;
+//         }
+//     }
 
     /**
      * Check for valid input
