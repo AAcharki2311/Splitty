@@ -34,6 +34,14 @@ class ExpenseTest {
     }
 
     @Test
+    public void checkConstructor2() {
+        var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food", "EUR", 95);
+        assertEquals(SOME_EVENT, e.event);
+        assertEquals(SOME_PARTICIPANT, e.creditor);
+        assertNotNull(e);
+    }
+
+    @Test
     void getEvent() {
         var e = new Expense(SOME_EVENT, SOME_PARTICIPANT, 4.50, new Date(2024-11-10), "snack", "food", "EUR");
         assertEquals(SOME_EVENT, e.getEvent());
