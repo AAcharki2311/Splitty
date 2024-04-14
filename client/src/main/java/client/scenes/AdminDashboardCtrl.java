@@ -165,25 +165,43 @@ public class AdminDashboardCtrl implements Initializable {
      */
     public void clickEvent() throws IOException, InterruptedException {
         String eid = inputid.getText();
-        if (eid.isBlank()){
-            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(e -> imgMessage.setImage(null));
-            pause.play();
-            return;
+        if (!(checkEvent(eid))) {
+            showError2();
         }
-        // if statement to check if the event does exist
+    }
+
+    /**
+     * Shows error message 2
+     */
+    public void showError2() {
         try {
-            Event test = server.getEventByID(Long.parseLong(eid));
-        }
-        catch (Exception e){
-            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
+            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            return;
         }
-        mc.showAdminEvent(eid);
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check for valid input
+     * @param eid the input check
+     * @return true or false depending on validity
+     */
+    public boolean checkEvent(String eid) {
+        if (eid.equals(null) || eid.equals("")) {
+            return false;
+        } else {
+            try {
+                Event test = server.getEventByID(Long.parseLong(eid));
+                mc.showAdminEvent(eid);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
     }
 
     /**

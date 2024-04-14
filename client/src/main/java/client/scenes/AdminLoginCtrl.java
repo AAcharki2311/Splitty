@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 // import org.apache.commons.lang3.RandomStringUtils;
+import javax.naming.directory.InvalidAttributesException;
 import java.net.URL;
 import java.util.*;
 
@@ -77,7 +78,7 @@ public class AdminLoginCtrl implements Initializable {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language to switch to
      */
-    public void langueageswitch(String taal) {
+    public void langueageswitch(String taal) throws InvalidAttributesException {
         try {
             String langfile = "language" + taal + ".json";
             h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
@@ -90,6 +91,7 @@ public class AdminLoginCtrl implements Initializable {
         }
         catch (Exception e) {
             e.printStackTrace();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -124,13 +126,14 @@ public class AdminLoginCtrl implements Initializable {
         // mc.showAdminDashboard();
         String input = inputpw.getText();
         if (!input.isBlank() && pwserver.checkPassword(input)){
+            pwText.setText("correct");
             mc.showAdminDashboard();
         } else {
+            pwText.setText("Invalid password, please try again");
             imgMessage.setImage(new Image("images/notifications/Slide1.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            return;
         }
     }
 
@@ -139,5 +142,21 @@ public class AdminLoginCtrl implements Initializable {
      */
     public void clickSettings() {
         mc.help(h);
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
     }
 }

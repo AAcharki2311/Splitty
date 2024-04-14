@@ -330,5 +330,37 @@ public class EventOverviewAdminCtrl implements Initializable {
             this.exps = exps;
             this.pays = pays;
         }
+
+        /**
+         * Getter for the event in the data wrapper
+         * @return the event
+         */
+        public Event getEvent() {
+            return event;
+        }
+
+        /**
+         * Getter for the participants in the data wrapper
+         * @return a list of participants
+         */
+        public List<Participant> getParts() {
+            return parts;
+        }
+
+        /**
+         * Getter for the expenses in the data wrapper
+         * @return a list of expenses
+         */
+        public List<Expense> getExps() {
+            return exps;
+        }
+
+        /**
+         * Getter for the payments in the data wrapper
+         * @return a list of payments
+         */
+        public List<Payment> getPays() {
+            return pays;
+        }
     }
 }
