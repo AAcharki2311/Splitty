@@ -6,6 +6,7 @@ import server.database.EventRepository;
 import commons.Event;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,11 @@ public class EventService {
      * @return all the events in the current repository
      */
     public List<Event> getEvents() {
-        return eventRepository.findAll();
+        List<Event> allEvents = eventRepository.findAll();
+        if(allEvents.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
+        return allEvents;
     }
 
     /**
@@ -38,7 +43,11 @@ public class EventService {
      * @return the event with that specific id (if there is one)
      */
     public Optional<Event> getById(long id) {
-        return eventRepository.findById(id);
+        Optional<Event> event = eventRepository.findById(id);
+        if(event.isEmpty()) {
+            throw new NoSuchElementException("There is no expense with the given ID");
+        }
+        return event;
     }
 
     /**
@@ -48,7 +57,11 @@ public class EventService {
      * @return the added event
      */
     public Event add(Event event) {
-        return eventRepository.save(event); // I still need to add some validation here
+        if (event == null || isNullOrEmpty(event.name) ||
+                event.lastActDate == null || event.creationDate == null) {
+            throw new IllegalArgumentException("Event is not valid");
+        }
+        return eventRepository.save(event);
     }
 
     /**
@@ -80,5 +93,9 @@ public class EventService {
         }
         eventRepository.deleteById(id);
         return true;
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 }

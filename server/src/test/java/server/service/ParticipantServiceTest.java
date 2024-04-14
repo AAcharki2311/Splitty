@@ -9,6 +9,7 @@ import server.repository.TestParticipantRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,8 +68,12 @@ public class ParticipantServiceTest {
     @Test
     public void getByWrongIdTest() {
         long id = -1;
-        Optional<Participant> participantTest = participantService.getById(id);
-        assertFalse(participantTest.isPresent());
+        try {
+            participantService.getById(id);
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException e) {
+            // The method throws an exception if there is no object with that ID
+        }
     }
 
     /**
@@ -82,17 +87,6 @@ public class ParticipantServiceTest {
         assertTrue(participantTest.isPresent());
         assertEquals(updatedParticipant, participantTest.get());
     }
-
-    /*
-      Test for the delete method
-     */
-    //@Test
-    //public void deleteTest() {
-     //   participantService.add(participant1);
-     //   participantService.delete(participant1.getId());
-     //   Optional<Participant> participantTest = participantService.getById(participant1.getId());
-     //   assertTrue(participantTest.isEmpty());
-    //}
 
     /**
      * Test to get all participants of a specific event

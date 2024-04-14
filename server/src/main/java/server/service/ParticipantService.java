@@ -8,6 +8,7 @@ import commons.Participant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,11 @@ public class ParticipantService {
      * @return all the participants in the current repository
      */
     public List<Participant> getParticipants() {
-        return participantRepository.findAll();
+        List<Participant> allParticipants = participantRepository.findAll();
+        if(allParticipants.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
+        return allParticipants;
     }
 
     /**
@@ -39,7 +44,11 @@ public class ParticipantService {
      * @return the participant with that specific id (if there is one)
      */
     public Optional<Participant> getById(long id) {
-        return participantRepository.findById(id);
+        Optional<Participant> participant = participantRepository.findById(id);
+        if(participant.isEmpty()) {
+            throw new NoSuchElementException("There is no expense with the given ID");
+        }
+        return participant;
     }
 
     /**
@@ -49,7 +58,13 @@ public class ParticipantService {
      * @return the added participant
      */
     public Participant add(Participant participant) {
-        return participantRepository.save(participant); // I still need to add some validation here
+        if (participant == null || participant.getId() < 0 ||
+                isNullOrEmpty(participant.getEmail()) || isNullOrEmpty(participant.getName()) ||
+                participant.getEvent() == null || isNullOrEmpty(participant.getBic()) ||
+                isNullOrEmpty(participant.getIban())) {
+            throw new IllegalArgumentException("Event is not valid");
+        }
+        return participantRepository.save(participant);
     }
 
     /**
@@ -92,6 +107,9 @@ public class ParticipantService {
     public List<Participant> getParticipantsEvent(long eventId) {
         List<Participant> eventParticipant = new ArrayList<>();
         List<Participant> allParticipants = getParticipants();
+        if(allParticipants.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
         for(int i = 0; i < allParticipants.size(); i++) {
             Event event = allParticipants.get(i).getEvent();
             if (event.getId() == eventId) {
@@ -101,4 +119,7 @@ public class ParticipantService {
         return eventParticipant;
     }
 
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
 }
