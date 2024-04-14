@@ -348,6 +348,7 @@ public class MainCtrl {
         if(!startCtrl.stopTimer()){
             throw new RuntimeException("Timer not stopped");
         }
+        eventOCtrl.startTimer();
     }
 
     /**

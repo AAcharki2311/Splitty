@@ -38,8 +38,12 @@ public class ParticipantController {
      * @return all the participants in the current repository
      */
     @GetMapping(path = {"", "/"})
-    public List<Participant> getParticipants() {
-        return participantRepository.findAll();
+    public ResponseEntity<List<Participant>> getParticipants() {
+        List<Participant> allParticipants = participantRepository.findAll();
+        if (allParticipants.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allParticipants);
     }
 
     /**
@@ -111,8 +115,6 @@ public class ParticipantController {
         currentParticipant.setBic(participant.getBic());
         currentParticipant.setIban(participant.getIban());
 
-        // Update also the other attributes?
-
         Participant newParticipant = participantRepository.save(currentParticipant);
         return ResponseEntity.ok(newParticipant);
     }
@@ -141,7 +143,7 @@ public class ParticipantController {
     @GetMapping("/participants/event/{eventId}")
     public ResponseEntity<List<Participant>> getParticipantsEvent(@PathVariable("eventId") long eventId) {
         List<Participant> eventParticipants = new ArrayList<>();
-        List<Participant> allParticipants = getParticipants();
+        List<Participant> allParticipants = participantRepository.findAll();
         for(int i = 0; i < allParticipants.size(); i++) {
             Event event = allParticipants.get(i).getEvent();
             if (event.getId() == eventId) {
