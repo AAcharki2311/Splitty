@@ -1,15 +1,6 @@
 package client.scenes;
 
-import client.MyFXML;
-import client.MyModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import client.utils.*;
 import commons.Event;
@@ -17,14 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class EventOverviewCtrlTest extends ApplicationTest {
+class EventOverviewCtrlTest {
     @Mock
     private EventServerUtils server;
     @Mock
@@ -39,33 +29,6 @@ class EventOverviewCtrlTest extends ApplicationTest {
     private LanguageSwitch languageSwitch;
     @InjectMocks
     private EventOverviewCtrl eventOverviewCtrl;
-
-    @BeforeAll
-    static void setAllUp(){
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("glass.platform", "Monocle");
-        System.setProperty("monocle.platform", "Headless");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
-        System.setProperty("java.awt.headless", "true");
-    }
-
-//    @Override
-//    public void start(Stage stage) throws Exception {
-//        Injector injector = Guice.createInjector(new MyModule());
-//        MyFXML fxml = new MyFXML(injector);
-//
-//        Pair<EventOverviewCtrl, Parent> screen = fxml.load(EventOverviewCtrl.class,
-//                "client", "scenes", "EventOverview.fxml");
-//
-//        this.eventOverviewCtrl = screen.getKey();
-//        MockitoAnnotations.openMocks(this).close();
-//
-//        Scene scene = new Scene(screen.getValue());
-//        stage.setScene(scene);
-//        stage.show();
-//    }
 
     @BeforeEach
     void setUp() {
