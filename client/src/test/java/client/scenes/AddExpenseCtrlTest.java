@@ -45,7 +45,6 @@ class AddExpenseCtrlTest extends ApplicationTest {
     private final ReadJSON jsonReader2 = new ReadJSON();
     private final HashMap<String, String> h = jsonReader2.readJsonToMap("src/main/resources/languageJSONS/languageEN.json");
 
-
     @BeforeAll
     static void setAllUp(){
         System.setProperty("testfx.robot", "glass");
