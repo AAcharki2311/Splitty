@@ -10,6 +10,7 @@ import server.repository.TestExpenseRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +32,7 @@ public class ExpenseServiceTest {
     public void setup() {
         expenseRepository = new TestExpenseRepository();
         expenseService = new ExpenseService(expenseRepository);
-        expense1 = new Expense(eventTest, participantTest1, 1.0, dateTest1, "b", "tahTest1", "EUR");
+        expense1 = new Expense(eventTest, participantTest1, 1.0, dateTest1, "b", "tagTest1", "EUR");
         expense2 = new Expense(eventTest, participantTest2, 1.5, dateTest2, "a", "tagTest2", "EUR");
     }
 
@@ -68,7 +69,10 @@ public class ExpenseServiceTest {
     @Test
     public void getByWrongIdTest() {
         long id = -1;
-        assertFalse(expenseService.getById(id).isPresent());
+        try {
+            expenseService.getById(id);
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException e) {}
     }
 
     /**
@@ -86,17 +90,6 @@ public class ExpenseServiceTest {
         assertEquals(updatedExpense.getTag(), expenseService.update(expense1.getId(), updatedExpense).get().getTag()); // Check the updated tag of the Expense
     }
 
-    /**
-     * Test for the delete method
-     *
-    @Test
-    public void deleteTest() {
-        expenseService.add(expense1);
-        ResponseEntity<Void> responseEntity = expenseService.delete(expense1.getId());
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode()); // Check status code
-        assertNull(responseEntity.getBody()); // Check that the object is null
-    }
-    */
 
     /**
      * Test for the method getSortedExpensesTitle

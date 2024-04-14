@@ -7,6 +7,7 @@ import commons.Expense;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,11 @@ public class ExpenseService {
      * @return all the expenses in the current repository
      */
     public List<Expense> getExpenses() {
-        return expenseRepository.findAll();
+        List<Expense> allExpenses = expenseRepository.findAll();
+        if(allExpenses.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
+        return allExpenses;
     }
 
     /**
@@ -39,7 +44,11 @@ public class ExpenseService {
      * @return the expense with that specific id (if there is one)
      */
     public Optional<Expense> getById(long id) {
-        return expenseRepository.findById(id);
+        Optional<Expense> expense = expenseRepository.findById(id);
+        if(expense.isEmpty()) {
+            throw new NoSuchElementException("There is no expense with the given ID");
+        }
+        return expense;
     }
 
     /**
@@ -83,7 +92,7 @@ public class ExpenseService {
      * @return true if the expense has been deleted, false if there was no expense with that id
      */
     public boolean delete(long id) {
-        if (expenseRepository.existsById(id)) {
+        if (expenseRepository.findById(id).isPresent()) {
             expenseRepository.deleteById(id);
             return true;
         }
@@ -97,6 +106,9 @@ public class ExpenseService {
      */
     public List<Expense> getSortedExpensesTitle() {
         List<Expense> allExpenses = expenseRepository.findAll();
+        if(allExpenses.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
         allExpenses.sort(Comparator.comparing(Expense::getTitle));
         return allExpenses;
     }
@@ -108,6 +120,9 @@ public class ExpenseService {
      */
     public List<Expense> getSortedExpensesPerson() {
         List<Expense> allExpenses = expenseRepository.findAll();
+        if(allExpenses.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
         allExpenses.sort(Comparator.comparing(expense -> expense.getCreditor().getName()));
         return allExpenses;
     }
@@ -119,6 +134,9 @@ public class ExpenseService {
      */
     public List<Expense> getSortedExpensesDate() {
         List<Expense> allExpenses = expenseRepository.findAll();
+        if(allExpenses.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
         allExpenses.sort(Comparator.comparing(Expense::getDate));
         return allExpenses;
     }

@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.Event;
+import commons.Expense;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.database.ParticipantRepository;
@@ -8,6 +9,7 @@ import commons.Participant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,7 +31,11 @@ public class ParticipantService {
      * @return all the participants in the current repository
      */
     public List<Participant> getParticipants() {
-        return participantRepository.findAll();
+        List<Participant> allParticipants = participantRepository.findAll();
+        if(allParticipants.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
+        return allParticipants;
     }
 
     /**
@@ -39,7 +45,11 @@ public class ParticipantService {
      * @return the participant with that specific id (if there is one)
      */
     public Optional<Participant> getById(long id) {
-        return participantRepository.findById(id);
+        Optional<Participant> participant = participantRepository.findById(id);
+        if(participant.isEmpty()) {
+            throw new NoSuchElementException("There is no expense with the given ID");
+        }
+        return participant;
     }
 
     /**
@@ -98,6 +108,9 @@ public class ParticipantService {
     public List<Participant> getParticipantsEvent(long eventId) {
         List<Participant> eventParticipant = new ArrayList<>();
         List<Participant> allParticipants = getParticipants();
+        if(allParticipants.isEmpty()) {
+            throw new NoSuchElementException("The repository is empty");
+        }
         for(int i = 0; i < allParticipants.size(); i++) {
             Event event = allParticipants.get(i).getEvent();
             if (event.getId() == eventId) {

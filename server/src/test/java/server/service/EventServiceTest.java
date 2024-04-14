@@ -2,15 +2,17 @@ package server.service;
 
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import server.repository.TestEventRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EventServiceTest {
+class EventServiceTest {
     private TestEventRepository eventRepository;
     private EventService eventService;
     private Event event1;
@@ -62,8 +64,10 @@ public class EventServiceTest {
     @Test
     public void getByWrongIdTest() {
         long id = -1;
-        Optional<Event> eventTest = eventService.getById(id);
-        assertFalse(eventTest.isPresent());
+        try {
+            eventService.getById(id);
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException e) {}
     }
 
     /**
@@ -78,13 +82,4 @@ public class EventServiceTest {
         assertEquals(updatedEvent, eventTest.get());
     }
 
-    /*
-      Test for the delete method
-     */
-    // @Test
-    // public void deleteTest() {
-     //    eventService.add(event2);
-     //    eventService.delete(event2.getId());
-     //    assertNull(eventService.getById(event2.id));
-    // }
 }
