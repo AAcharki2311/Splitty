@@ -118,6 +118,22 @@ public class EventControllerTest {
         assertEquals(testEvent, returnEvent);
     }
 
+
+    @Test
+    public void relayParticipantTest() {
+        Event testEvent = new Event(
+                "TestEvent");
+        Participant testParticipant = new Participant(
+                testEvent,
+                "TestParticipant",
+                "test@participant",
+                "NL1234567890",
+                "1234567890");
+        Participant returnParticipant = eventController
+                .relayParticipant(testParticipant, "42");
+        assertEquals(returnParticipant, testParticipant);
+    }
+
     @SuppressWarnings("serial")
     public class MyRandom extends Random {
 
