@@ -123,7 +123,7 @@ public class AddExpenseCtrl implements Initializable {
             String nameParticipant = comboBoxNamePaid.getValue();
             if(nameParticipant == null){
                 JOptionPane.showOptionDialog(null, h.get("key83"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
-                // message.setText(h.get("key83"));
+                message.setText(h.get("key83"));
                 return;
             }
             List<Participant> listAllParticipants = partServer.getAllParticipants()
