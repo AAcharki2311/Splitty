@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 // import org.apache.commons.lang3.RandomStringUtils;
+import javax.naming.directory.InvalidAttributesException;
 import java.net.URL;
 import java.util.*;
 
@@ -77,7 +78,7 @@ public class AdminLoginCtrl implements Initializable {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language to switch to
      */
-    public void langueageswitch(String taal) {
+    public void langueageswitch(String taal) throws InvalidAttributesException {
         try {
             String langfile = "language" + taal + ".json";
             h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
@@ -90,6 +91,7 @@ public class AdminLoginCtrl implements Initializable {
         }
         catch (Exception e) {
             e.printStackTrace();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -130,7 +132,7 @@ public class AdminLoginCtrl implements Initializable {
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            return;
+            pwText.setText("Invalid password, please try again");
         }
     }
 
