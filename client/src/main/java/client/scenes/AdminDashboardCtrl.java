@@ -171,7 +171,12 @@ public class AdminDashboardCtrl implements Initializable {
 //            pause.play();
             return;
         }
-        // if statement to check if the event does exist
+    }
+
+    /**
+     * Shows error message 2
+     */
+    public void showError2() {
         try {
             Event test = server.getEventByID(Long.parseLong(eid));
         }
@@ -183,7 +188,28 @@ public class AdminDashboardCtrl implements Initializable {
 //            pause.play();
             return;
         }
-        mc.showAdminEvent(eid);
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check for valid input
+     * @param eid the input check
+     * @return true or false depending on validity
+     */
+    public boolean checkEvent(String eid) {
+        if (eid.equals(null) || eid.equals("")) {
+            return false;
+        } else {
+            try {
+                Event test = server.getEventByID(Long.parseLong(eid));
+                mc.showAdminEvent(eid);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
     }
 
     /**

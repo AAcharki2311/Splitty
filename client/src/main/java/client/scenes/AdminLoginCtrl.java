@@ -75,7 +75,7 @@ public class AdminLoginCtrl implements Initializable {
      * This method translates each label. It changes the text to the corresponding key with the translated text
      * @param taal the language to switch to
      */
-    public void langueageswitch(String taal) {
+    public void langueageswitch(String taal) throws InvalidAttributesException {
         try {
             String langfile = "language" + taal + ".json";
             h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/" + langfile);
@@ -88,6 +88,7 @@ public class AdminLoginCtrl implements Initializable {
         }
         catch (Exception e) {
             e.printStackTrace();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -122,6 +123,7 @@ public class AdminLoginCtrl implements Initializable {
         // mc.showAdminDashboard();
         String input = inputpw.getText();
         if (!input.isBlank() && pwserver.checkPassword(input)){
+            pwText.setText("correct");
             mc.showAdminDashboard();
         } else {
             JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
@@ -138,5 +140,21 @@ public class AdminLoginCtrl implements Initializable {
      */
     public void clickSettings() {
         mc.help(h);
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
     }
 }

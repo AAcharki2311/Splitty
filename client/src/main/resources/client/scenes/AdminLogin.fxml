@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminLoginCtrl">
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="158.0" layoutX="195.0" layoutY="146.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="310.0" />
-    <Text fx:id="welcomeText" fill="#0d5575" layoutX="197.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Admin!" textAlignment="CENTER" wrappingWidth="310.0">
+    <Text fx:id="welcomeText" fill="#0d5575" layoutX="197.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Admin" textAlignment="CENTER" wrappingWidth="310.0">
         <font>
             <Font name="Calibri" size="18.0" />
         </font>
