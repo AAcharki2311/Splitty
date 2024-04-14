@@ -33,9 +33,9 @@ public class PaymentController {
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Payment> add(@RequestBody Payment payment) {
         if (payment == null || payment.getId() < 0 ||
-        payment.getAmount() <= 0 || payment.getDate() == null ||
-        payment.getEvent() == null || payment.getPayer() == null ||
-        payment.getReceiv() == null) {
+                payment.getAmount() <= 0 || payment.getDate() == null ||
+                payment.getEvent() == null || payment.getPayer() == null ||
+                payment.getReceiv() == null) {
             return ResponseEntity.badRequest().build();
         }
         Payment postedPayment = paymentRepository.save(payment);
