@@ -1,4 +1,4 @@
-package server.api;
+package server.repository;
 
 import commons.Payment;
 import org.springframework.data.domain.Example;

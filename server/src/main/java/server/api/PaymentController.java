@@ -33,9 +33,9 @@ public class PaymentController {
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Payment> add(@RequestBody Payment payment) {
         if (payment == null || payment.getId() < 0 ||
-        payment.getAmount() <= 0 || payment.getDate() == null ||
-        payment.getEvent() == null || payment.getPayer() == null ||
-        payment.getReceiv() == null) {
+                payment.getAmount() <= 0 || payment.getDate() == null ||
+                payment.getEvent() == null || payment.getPayer() == null ||
+                payment.getReceiv() == null) {
             return ResponseEntity.badRequest().build();
         }
         Payment postedPayment = paymentRepository.save(payment);
@@ -47,10 +47,13 @@ public class PaymentController {
      *
      * @return list of payments sorted by date
      */
-    public List<Payment> getSortedPaymentsDate() {
+    public ResponseEntity<List<Payment>> getSortedPaymentsDate() {
         List<Payment> allPayments = paymentRepository.findAll();
+        if(allPayments.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         allPayments.sort(Comparator.comparing(Payment::getDate));
-        return allPayments;
+        return ResponseEntity.ok(allPayments);
     }
 
     /**
@@ -58,9 +61,12 @@ public class PaymentController {
      *
      * @return list of payments sorted by payer
      */
-    public List<Payment> getSortedPaymentsPayer() {
+    public ResponseEntity<List<Payment>> getSortedPaymentsPayer() {
         List<Payment> allPayments = paymentRepository.findAll();
+        if(allPayments.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         allPayments.sort(Comparator.comparing(payment -> payment.getPayer().getName()));
-        return allPayments;
+        return ResponseEntity.ok(allPayments);
     }
 }

@@ -5,6 +5,8 @@ import client.MyModule;
 import client.utils.*;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import commons.Event;
+import commons.Participant;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,7 +20,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class EditParticipantCtrlTest extends ApplicationTest {
     @Mock
@@ -80,6 +85,19 @@ class EditParticipantCtrlTest extends ApplicationTest {
         assertFalse(editParticipantCtrl.validate(name, email, iban, ""));
         assertFalse(editParticipantCtrl.validate(name, "wrong@email", iban, bic));
         assertFalse(editParticipantCtrl.validate(name, email, "06565", bic));
+    }
+
+    @Test
+    void checkDuplicate() {
+        Event event1 = new Event("Event1");
+        Participant participant1 = new Participant(event1, "Participant1", "email1", "iban1", "bic1");
+        partServer.addParticipant(participant1);
+
+        when(partServer.getAllParticipants()).thenReturn(Arrays.asList(
+                new Participant(event1, "Participant1", "email1@email.com", "iban1", "bic1")
+        ));
+
+        assertTrue(editParticipantCtrl.checkDuplicate("Participant1", "email1@email.com"));
     }
 
     @AfterEach

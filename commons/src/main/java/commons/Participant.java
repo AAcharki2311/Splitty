@@ -37,6 +37,24 @@ public class Participant {
     }
 
     /**
+     * Constructor fot participant
+     * @param event the event of the particiapnt
+     * @param name the name of the participant
+     * @param email the email of the participant
+     * @param iban the iban
+     * @param bic the bic
+     * @param id the id
+     */
+    public Participant(Event event, String name, String email, String iban, String bic, long id) {
+        this.event = event;
+        this.name = name;
+        this.email = email;
+        this.iban = iban;
+        this.bic = bic;
+        this.id = id;
+    }
+
+    /**
      * The constructor for Participant without args
      */
     public Participant() {

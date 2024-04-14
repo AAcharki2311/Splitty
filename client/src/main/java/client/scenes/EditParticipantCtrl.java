@@ -158,7 +158,8 @@ public class EditParticipantCtrl implements Initializable {
             String iban = TextFieldIBAN.getText();
             String bic = TextFieldBIC.getText();
 
-            if(validate(name, email, iban, bic)){
+            boolean duplicate = checkDuplicate(name, email);
+            if(validate(name, email, iban, bic) && !duplicate){
                 Participant newParticipant = new Participant(e, name, email, iban, bic);
 
                 int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
@@ -187,6 +188,22 @@ public class EditParticipantCtrl implements Initializable {
             JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
             // message.setText(errormessage);
         }
+    }
+
+    /**
+     * This method checks if the name + email is a duplicate
+     * @param name the name of the participant
+     * @param email the email of the participant
+     * @return true if it is a duplicate, false if it is not a duplicate
+     */
+    public boolean checkDuplicate(String name, String email){
+        List<Participant> allParticipants = partServer.getAllParticipants()
+                .stream().filter(participant -> participant.getEvent().getId() == eventid)
+                .collect(Collectors.toList());
+        allParticipants.remove(selectedParticipant);
+        List<String> namesOfAllParticipants = allParticipants.stream().map(Participant::getName).collect(Collectors.toList());
+        List<String> emailsOfAllParticipants = allParticipants.stream().map(Participant::getEmail).collect(Collectors.toList());
+        return namesOfAllParticipants.contains(name) || emailsOfAllParticipants.contains(email);
     }
 
     /**

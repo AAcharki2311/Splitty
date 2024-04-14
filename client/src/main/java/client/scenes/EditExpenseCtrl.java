@@ -146,11 +146,6 @@ public class EditExpenseCtrl implements Initializable {
 
         comboBoxName.setOnAction(event -> {
             String nameParticipant = comboBoxName.getValue();
-            if(nameParticipant == null){
-                JOptionPane.showOptionDialog(null, h.get("key83"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
-                // message.setText(h.get("key83"));
-                return;
-            }
 
             List<Expense> listAllExpense = expServer.getExpenses()
                     .stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
@@ -167,11 +162,6 @@ public class EditExpenseCtrl implements Initializable {
         comboBoxExpensesTitle.setOnAction(event -> {
             String nameParticipant = comboBoxName.getValue();
             String title = comboBoxExpensesTitle.getValue();
-            if(title == null){
-                JOptionPane.showOptionDialog(null, h.get("key92"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
-                // message.setText(h.get("key92"));
-                return;
-            }
 
             selectedExpense = expServer.getExpenses().stream()
                     .filter(expense -> expense.getCreditor().getName().equals(nameParticipant)
@@ -253,22 +243,24 @@ public class EditExpenseCtrl implements Initializable {
             String tag = comboBoxTag.getValue();
             String cur = comboBoxCurr.getValue();
 
-            if(validate(title, money, date, comboBoxCurr, splitRBtn)){
+            boolean duplicate = checkDuplicate(changePartName, title);
+            if(validate(title, money, date, comboBoxCurr, splitRBtn) && !duplicate){
                 Expense exp = new Expense(e, p, money, date, title, tag, cur);
-
                 int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                         new String[]{"Update", h.get("key26")}, "default");
 
                 if(choice == JOptionPane.OK_OPTION){
+                    Expense newExpense;
                     changedExpenses.add(selectedExpense);
+                    exp.setId(selectedExpense.getId());
                     if(!(selectedExpense.getCreditor().equals(exp.getCreditor()))){
                         expServer.deleteExpenseByID(selectedExpense.getId());
-                        expServer.addExpense(exp);
+                        newExpense = expServer.addExpense(exp);
                     }else{
-                        expServer.updateExpenseByID(selectedExpense.getId(), exp);
+                        newExpense = expServer.updateExpenseByID(selectedExpense.getId(), exp);
                     }
-                    mc.send("/app/events/"+eventid+"/expenses", exp);
+                    mc.send("/app/events/"+eventid+"/expenses", newExpense);
                     String message = h.get("key138") + ":\n" +
                             "_______________" + "\n" +
                             h.get("key137") + ": " + exp.getCreditor().getName() + "\n" +
@@ -287,6 +279,20 @@ public class EditExpenseCtrl implements Initializable {
             JOptionPane.showOptionDialog(null, h.get("key84"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
             // message.setText(h.get("key84"));
         }
+    }
+
+    /**
+     * This method checks if the name + title is a duplicate
+     * @param name the name of the participant
+     * @param title the title of the expense
+     * @return true if it is a duplicate, false if it is not a duplicate
+     */
+    public boolean checkDuplicate(String name, String title){
+        List<Expense> allExpenses = expServer.getExpenses().stream().filter(expense -> expense.getEvent().getId() == eventid).collect(Collectors.toList());
+        allExpenses.remove(selectedExpense);
+        List<String> namesOfAllParticipants = allExpenses.stream().map(Expense::getCreditor).map(Participant::getName).collect(Collectors.toList());
+        List<String> titlesOfExpense = allExpenses.stream().map(Expense::getTitle).collect(Collectors.toList());
+        return namesOfAllParticipants.contains(name) && titlesOfExpense.contains(title);
     }
 
     /**
