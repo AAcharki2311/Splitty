@@ -126,13 +126,14 @@ public class AdminLoginCtrl implements Initializable {
         // mc.showAdminDashboard();
         String input = inputpw.getText();
         if (!input.isBlank() && pwserver.checkPassword(input)){
+            pwText.setText("correct");
             mc.showAdminDashboard();
         } else {
+            pwText.setText("Invalid password, please try again");
             imgMessage.setImage(new Image("images/notifications/Slide1.png"));
             PauseTransition pause = new PauseTransition(Duration.seconds(6));
             pause.setOnFinished(p -> imgMessage.setImage(null));
             pause.play();
-            pwText.setText("Invalid password, please try again");
         }
     }
 
@@ -141,5 +142,21 @@ public class AdminLoginCtrl implements Initializable {
      */
     public void clickSettings() {
         mc.help(h);
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
     }
 }
