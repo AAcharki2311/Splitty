@@ -65,6 +65,30 @@ public class Expense {
     }
 
     /**
+     * Constructor for creating a new expense
+     * @param event the {Event} associated with this {Expense}
+     * @param creditor the {participant} associated with this {Expense}
+     * @param amount amount of the expense
+     * @param date date of the expense
+     * @param title description of the expense
+     * @param tag tag of the expense
+     * @param cur currency of the expense
+     * @param id the id of the event
+     */
+    public Expense(Event event, Participant creditor,
+                   double amount, Date date,
+                   String title, String tag, String cur, long id) {
+        this.event = event;
+        this.creditor = creditor;
+        this.amount = amount;
+        this.date = date;
+        this.title = title;
+        this.tag = tag;
+        this.cur = cur;
+        this.id = id;
+    }
+
+    /**
      * Getter for the ID of the expense
      * @return ID of the expense
      */
