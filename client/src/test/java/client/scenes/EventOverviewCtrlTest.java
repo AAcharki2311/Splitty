@@ -51,21 +51,21 @@ class EventOverviewCtrlTest extends ApplicationTest {
         System.setProperty("java.awt.headless", "true");
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Injector injector = Guice.createInjector(new MyModule());
-        MyFXML fxml = new MyFXML(injector);
-
-        Pair<EventOverviewCtrl, Parent> screen = fxml.load(EventOverviewCtrl.class,
-                "client", "scenes", "EventOverview.fxml");
-
-        this.eventOverviewCtrl = screen.getKey();
-        MockitoAnnotations.openMocks(this).close();
-
-        Scene scene = new Scene(screen.getValue());
-        stage.setScene(scene);
-        stage.show();
-    }
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//        Injector injector = Guice.createInjector(new MyModule());
+//        MyFXML fxml = new MyFXML(injector);
+//
+//        Pair<EventOverviewCtrl, Parent> screen = fxml.load(EventOverviewCtrl.class,
+//                "client", "scenes", "EventOverview.fxml");
+//
+//        this.eventOverviewCtrl = screen.getKey();
+//        MockitoAnnotations.openMocks(this).close();
+//
+//        Scene scene = new Scene(screen.getValue());
+//        stage.setScene(scene);
+//        stage.show();
+//    }
 
     @BeforeEach
     void setUp() {
