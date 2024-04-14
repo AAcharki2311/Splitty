@@ -60,9 +60,9 @@ public class EventServerUtils {
     }
 
     /**
-     * Javadoc
+     * Gets all the events in the database
      *
-     * @return dweg
+     * @return a list of all the events
      */
     public List<Event> getAllEvents() {
         List<Event> res;
@@ -74,7 +74,6 @@ public class EventServerUtils {
                     .get(new GenericType<List<Event>>() {
                     });
         } catch (NotFoundException e) {
-
             return List.of();
         }
         return res;
@@ -113,10 +112,10 @@ public class EventServerUtils {
     }
 
     /**
-     * Javadoc
+     * Adds an event to the server
      *
-     * @param event
-     * @return duplicate return tag?
+     * @param event the event to add
+     * @return the added event
      */
     public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -127,10 +126,10 @@ public class EventServerUtils {
     }
 
     /**
-     * Javadoc
+     * Get event by ID
      *
-     * @param id
-     * @return dsf
+     * @param id the id of the vent
+     * @return the event of that id
      */
     public Event getEventByID(long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -142,11 +141,11 @@ public class EventServerUtils {
     }
 
     /**
-     * Javadoc
+     * Update event by id
      *
-     * @param id
-     * @param event
-     * @return sdf
+     * @param id the id of the event
+     * @param event the new updated event
+     * @return the updated event
      */
     public Event updateEventByID(long id, Event event) {
         return ClientBuilder.newClient(new ClientConfig())
@@ -157,10 +156,10 @@ public class EventServerUtils {
     }
 
     /**
-     * Javadoc
+     * Delete event
      *
      * @param id The id of the event to delete
-     * @return sdf
+     * @return boolean to see if events has been deleted or not
      */
     public boolean deleteEventByID(long id) {
         Response response = ClientBuilder.newClient(new ClientConfig())

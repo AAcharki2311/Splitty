@@ -1,9 +1,15 @@
 package client.scenes;
+import org.junit.jupiter.api.Test;
 
-//import org.junit.jupiter.api.Test;
-//import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class AdminDashboardCtrlTest {
+
+    @Test
+    void checkEvent() {
+        AdminDashboardCtrl adCtrl = new AdminDashboardCtrl(null, null, null, null, null, null);
+       assertFalse(adCtrl.checkEvent(""));
+    }
 
 //    @Test
 //    void checkEvent() {
