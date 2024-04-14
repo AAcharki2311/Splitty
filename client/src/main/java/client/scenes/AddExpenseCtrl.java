@@ -200,8 +200,8 @@ public class AddExpenseCtrl implements Initializable {
                 throw new Exception();
             }
         } catch (Exception e){
+            message.setText(errormessage);
             JOptionPane.showOptionDialog(null, errormessage,h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
-            // message.setText(errormessage);
         }
     }
 
