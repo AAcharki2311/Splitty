@@ -9,7 +9,6 @@ import commons.Expense;
 import commons.Participant;
 import commons.Payment;
 import jakarta.inject.Inject;
-import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,8 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
-
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
@@ -165,10 +163,11 @@ public class AdminDashboardCtrl implements Initializable {
     public void clickEvent() throws IOException, InterruptedException {
         String eid = inputid.getText();
         if (eid.isBlank()){
-            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(e -> imgMessage.setImage(null));
-            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+//            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(e -> imgMessage.setImage(null));
+//            pause.play();
             return;
         }
         // if statement to check if the event does exist
@@ -176,10 +175,11 @@ public class AdminDashboardCtrl implements Initializable {
             Event test = server.getEventByID(Long.parseLong(eid));
         }
         catch (Exception e){
-            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(p -> imgMessage.setImage(null));
-            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+//            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> imgMessage.setImage(null));
+//            pause.play();
             return;
         }
         mc.showAdminEvent(eid);
@@ -217,18 +217,20 @@ public class AdminDashboardCtrl implements Initializable {
                 // System.out.println("SOMETHING WRONG WHILE PRINTING");
             }
 
-            imgMessage.setImage(new Image("images/notifications/Slide5.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(p -> imgMessage.setImage(null));
-            pause.play();
-            refresh();
+            JOptionPane.showOptionDialog(null, h.get("key140"),h.get("key141"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+//            imgMessage.setImage(new Image("images/notifications/Slide5.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> imgMessage.setImage(null));
+//            pause.play();
+//            refresh();
             return;
         }
         catch (Exception e){
-            imgMessage.setImage(new Image("images/notifications/Slide4.png"));
-            PauseTransition pause = new PauseTransition(Duration.seconds(6));
-            pause.setOnFinished(p -> imgMessage.setImage(null));
-            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+//            imgMessage.setImage(new Image("images/notifications/Slide4.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> imgMessage.setImage(null));
+//            pause.play();
             return;
         }
     }
