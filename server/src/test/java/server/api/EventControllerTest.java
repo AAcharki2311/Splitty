@@ -49,6 +49,17 @@ public class EventControllerTest {
     }
 
     /**
+     * Bad Request test for add and get method
+     */
+    @Test
+    public void addBadTest() {
+        ResponseEntity<Event> responseEntity1 = eventController.add(null);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity1.getStatusCode());
+        ResponseEntity<List<Event>> responseEntity2 = eventController.getEvents();
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity2.getStatusCode());
+    }
+
+    /**
      * Test for the method getById
      */
     @Test
@@ -77,6 +88,17 @@ public class EventControllerTest {
      * Test for the update method
      */
     @Test
+    public void updateTestBadReq() {
+        eventController.add(event1);
+        Event updatedEvent = new Event("Updated Event");
+        ResponseEntity<Event> responseEntity = eventController.update(1, updatedEvent);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode()); // Check status code
+    }
+
+    /**
+     * Test for the update method
+     */
+    @Test
     public void updateTest() {
         eventController.add(event1);
         Event updatedEvent = new Event("Updated Event");
@@ -94,6 +116,16 @@ public class EventControllerTest {
         eventController.add(event1);
         ResponseEntity<Void> responseEntity = eventController.delete(event1.id);
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode()); // Check status code
+        assertNull(responseEntity.getBody()); // Check that the object is null
+    }
+
+    /**
+     * Test for the delete method
+     */
+    @Test
+    public void deleteTestBad() {
+        ResponseEntity<Void> responseEntity = eventController.delete(1);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode()); // Check status code
         assertNull(responseEntity.getBody()); // Check that the object is null
     }
 

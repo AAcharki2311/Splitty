@@ -12,13 +12,13 @@ import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.util.HashMap;
-// import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AdminLoginCtrlTest extends ApplicationTest {
 
@@ -76,26 +76,11 @@ class AdminLoginCtrlTest extends ApplicationTest {
         this.alCtrl.setHashmap(h);
     }
 
-//    @Test
-//    void invalidLanguage(){
-//
-//        assertThrows(Exception.class, () -> alCtrl.langueageswitch("x"));
-//    }
-
-//    @Test
-//    void invalidPasswordTest2() {
-//        Mockito.when(pwserver.checkPassword("abc")).thenReturn(false);
-//
-//        PasswordField field = lookup("#inputpw").queryAs(PasswordField.class);
-//        Label message = lookup("#pwText").queryAs(Label.class);
-//
-//        clickOn(field);
-//        write("abc");
-//        clickOn(lookup("#loginText").queryButton());
-//
-//        assertEquals("Invalid password, please try again", message.getText());
-//    }
-
+    @Test
+    void invalidLanguage(){
+        AdminLoginCtrl al = new AdminLoginCtrl(null, null, null, null);
+        assertThrows(Exception.class, () -> alCtrl.langueageswitch("x"));
+    }
 
 
 //    @Test

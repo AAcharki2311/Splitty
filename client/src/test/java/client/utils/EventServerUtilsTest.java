@@ -1,5 +1,4 @@
 package client.utils;
-
 import commons.Expense;
 import commons.Participant;
 import org.junit.jupiter.api.BeforeEach;
