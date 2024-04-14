@@ -319,7 +319,7 @@ public class StartScreenCtrl implements Initializable {
 //                    pause.play();
 //                    throw new IllegalArgumentException(h.get("key60"));
                     message.setText(h.get("key60"));
-                    JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                    // JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
                 }
             } else{
 //                warningImageview.setImage(new Image("images/notifications/Slide2.png"));
