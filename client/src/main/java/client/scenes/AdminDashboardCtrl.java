@@ -163,13 +163,15 @@ public class AdminDashboardCtrl implements Initializable {
      */
     public void clickEvent() throws IOException, InterruptedException {
         String eid = inputid.getText();
-        if (eid.isBlank()){
+        if (eid.isBlank() || !checkEvent(eid)){
             JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
 //            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(e -> imgMessage.setImage(null));
 //            pause.play();
             return;
+        } else{
+            mc.showAdminEvent(eid);
         }
     }
 
