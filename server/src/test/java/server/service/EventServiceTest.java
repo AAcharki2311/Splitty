@@ -2,7 +2,6 @@ package server.service;
 
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import server.repository.TestEventRepository;
 
@@ -67,7 +66,9 @@ class EventServiceTest {
         try {
             eventService.getById(id);
             fail("Expected NoSuchElementException was not thrown");
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException e) {
+            // The method throws an exception if there is no object with that ID
+        }
     }
 
     /**

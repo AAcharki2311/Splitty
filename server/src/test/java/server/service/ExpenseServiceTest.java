@@ -72,7 +72,9 @@ public class ExpenseServiceTest {
         try {
             expenseService.getById(id);
             fail("Expected NoSuchElementException was not thrown");
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException e) {
+            // The method throws an exception if there is no object with that ID
+        }
     }
 
     /**
