@@ -128,7 +128,7 @@ public class ExpenseServiceTest {
      * Test for the method getSortedExpensesDate
      */
     @Test
-    public void getSortedDate() {
+    public void getSortedDateTest() {
         expenseService.add(expense1);
         expenseService.add(expense2);
         List<Expense> checkExpense = new ArrayList<>();
