@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.utils.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Event;
@@ -173,6 +172,7 @@ public class AdminDashboardCtrl implements Initializable {
         } else{
             mc.showAdminEvent(eid);
         }
+        checkEvent(eid);
     }
 
 //     /**
@@ -235,8 +235,61 @@ public class AdminDashboardCtrl implements Initializable {
 
             try {
                 Event myObject = objectMapper.readValue(objectMapper.writeValueAsString(objects.getFirst()), Event.class);
+                Event newev = new Event(myObject.getName(), myObject.getCreationDate(), myObject.getLastActDate());
                 for (int i = 0; i < objects.size(); i++){
-                    extracted(i, objectMapper, objects, myObject);
+                    if (i == 0){
+                        String json = objectMapper.writeValueAsString(objects.get(0));
+                        long id = myObject.getId();
+                        newev = server.addEvent(newev);
+
+                        HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                        ht.put("Food?"+(String.valueOf(newev.id)), "#43CE43");
+                        ht.put("Entrance Fees?"+(String.valueOf(newev.id)), "#616BD0");
+                        ht.put("Travel?" + (String.valueOf(newev.id)), "#D71919");
+                        jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+                    }
+                    else if (i == 1){
+                        String json = objectMapper.writeValueAsString(objects.get(1));
+                        List<Participant> parts = objectMapper.readValue(json, new TypeReference<List<Participant>>(){});
+                        for (Participant part : parts){
+                            Participant np = new Participant(newev, part.getName(), part.getEmail(), part.getIban(), part.getBic(), part.getId());
+                            // System.out.println("UPDATED PARTICIPANT:" + np);
+                            try {
+                                expPart.addParticipant(np);
+                            }
+                            catch (Exception e) {
+                                System.out.println("EXCEPTION WITH ADDING PARTICIPANT");
+                            }
+                        }
+                    }
+                    else if (i == 2){
+                        String json = objectMapper.writeValueAsString(objects.get(2));
+                        List<Payment> payms = objectMapper.readValue(json, new TypeReference<List<Payment>>(){});
+                        if (payms != null){
+                            for (Payment parm : payms){
+                                Payment newPay = expPay.addPayments(parm);
+                            }
+                        }
+                    }
+                    else if (i == 3){
+                        String json = objectMapper.writeValueAsString(objects.get(3));
+                        List<Expense> expenses = objectMapper.readValue(json, new TypeReference<List<Expense>>(){});
+                        if (expenses != null){
+                            for (Expense exp : expenses){
+                                // System.out.println("EXPENSE" + exp.toString());
+                                Participant pp = new Participant(newev, exp.getCreditor().getName(),
+                                        exp.getCreditor().getEmail(), exp.getCreditor().getIban(), exp.getCreditor().getBic(), exp.getCreditor().getId());
+                                Expense ep = new Expense(newev, pp, exp.getAmount(), exp.getDate(), exp.getTitle(), exp.getTag(), exp.getCur());
+                                // System.out.println("UPDATED EXPENSE" + ep);
+                                try {
+                                    expServer.addExpense(ep);
+                                }
+                                catch (Exception e) {
+                                    System.out.println("EXCEPTION WITH EXPENSE");
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e){
@@ -262,47 +315,6 @@ public class AdminDashboardCtrl implements Initializable {
         }
     }
 
-    /**
-     * Extracted method of click import to reduce cyclomatic complexity
-     * @param i the number from the counter
-     * @param objectMapper the object mapper
-     * @param objects the list with the information from the Json file
-     * @param myObject the Event which the Json file is about
-     * @throws JsonProcessingException if something went wrong with processing the Json file
-     */
-    private void extracted(int i, ObjectMapper objectMapper, List<Object> objects, Event myObject) throws JsonProcessingException {
-        if (i == 0){
-            String json = objectMapper.writeValueAsString(objects.get(0));
-            Event newEvent = server.addEvent(myObject);
-            newEvent.setId(myObject.getId());
-        }
-        else if (i == 1){
-            String json = objectMapper.writeValueAsString(objects.get(1));
-            List<Participant> parts = objectMapper.readValue(json, new TypeReference<List<Participant>>(){});
-            for (Participant part : parts){
-                Participant newPart = expPart.addParticipant(part);
-            }
-        }
-        else if (i == 2){
-            String json = objectMapper.writeValueAsString(objects.get(2));
-            List<Payment> payms = objectMapper.readValue(json, new TypeReference<List<Payment>>(){});
-            if (payms != null){
-                for (Payment parm : payms){
-                    System.out.println("PAYMENT: " + parm);
-                    Payment newPay = expPay.addPayments(parm);
-                }
-            }
-        }
-        else if (i == 3){
-            String json = objectMapper.writeValueAsString(objects.get(3));
-            List<Expense> expenses = objectMapper.readValue(json, new TypeReference<List<Expense>>(){});
-            if (expenses != null){
-                for (Expense exp : expenses){
-                    Expense newExp = expServer.addExpense(exp);
-                }
-            }
-        }
-    }
 
     /**
      * Refreshes the data in the tables
