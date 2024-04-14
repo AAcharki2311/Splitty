@@ -44,7 +44,7 @@ public class EventOverviewCtrl implements Initializable {
     private ComboBox comboboxLanguage;
     /** PAGE **/
     private long eventid;
-    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch", "English", "French"));
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch \uD83C\uDDF3\uD83C\uDDF1", "English \uD83C\uDDEC\uD83C\uDDE7", "French \uD83C\uDDEB\uD83C\uDDF7"));
     @FXML
     private Text partictext;
     @FXML
@@ -128,11 +128,43 @@ public class EventOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboboxLanguage.getItems().addAll(languages);
+        comboboxLanguage.setCellFactory(param -> new ListCell<String>() {
+            private final ImageView imageView = new ImageView();
+
+            /**
+             * This method updates the item and sets an image of the flag to the combobox
+             * @param item The new item for the cell.
+             * @param empty If this cell is empty, it doesn't contain any domain data;
+             *              but, it's utilized to display an "empty" row.
+             */
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    if(item.contains("Dutch")){
+                        imageView.setImage(new Image("images/nl-circle-01.png"));
+                    } else if(item.contains("English")){
+                        imageView.setImage(new Image("images/br-circle-01.png"));
+                    } else if(item.contains("French")){
+                        imageView.setImage(new Image("images/fr-circle-01.png"));
+                    }
+                    imageView.setFitHeight(20);
+                    imageView.setFitWidth(20);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
         comboboxLanguage.setOnAction(event -> {
             String path = "src/main/resources/configfile.properties";
-            String language = comboboxLanguage.getValue().toString();
+            String language = comboboxLanguage.getSelectionModel().getSelectedItem().toString().split(" ")[0].trim();
             languageSwitch.languageChange(path, language);
-            comboboxLanguage.setPromptText(h.get("key53") + comboboxLanguage.getSelectionModel().getSelectedItem());
+            comboboxLanguage.setPromptText(h.get("key53") + language);
 
             try {
                 mc.ltest();
@@ -266,19 +298,18 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the invite button, when pressed, it shows the invite screen
      */
     public void clickInvite() {
-        // mc.showInvite(String.valueOf(eventid));
         while(true){
             JTextField textFieldEmail = new JTextField();
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.add(new JLabel("Invite your friends with the code:"));
+            panel.add(new JLabel(h.get("key33")));
             panel.add(new JLabel(String.valueOf(eventid)));
-            panel.add(new JLabel("Or send through email:"));
+            panel.add(new JLabel(h.get("key36")));
             panel.add(textFieldEmail);
-            Object[] options = {"Send", "Back"};
+            Object[] options = {h.get("key12"), h.get("key99")};
 
             int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
-                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 
             if (result == JOptionPane.OK_OPTION) {
                 String email = textFieldEmail.getText();
@@ -286,7 +317,6 @@ public class EventOverviewCtrl implements Initializable {
                         !email.matches(".*@.+\\..+")){
                     JOptionPane.showMessageDialog(null, h.get("key64"));
                 } else{
-                    // do something
                     break;
                 }
             } else {
@@ -379,7 +409,6 @@ public class EventOverviewCtrl implements Initializable {
         Event x = server.getEventByID(eid);
         eventName.setText(x.getName());
 
-
         List<Participant> listAllParticipants = partServer.getAllParticipants()
                 .stream().filter(participant -> participant.getEvent().getId() == eventid).collect(Collectors.toList());
         names = (ArrayList<String>) listAllParticipants.stream().map(Participant::getName).collect(Collectors.toList());
@@ -412,7 +441,7 @@ public class EventOverviewCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**

@@ -138,7 +138,6 @@ public class EventOverviewAdminCtrl implements Initializable {
         colTag.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTag()));
         colName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
         colEmail.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getEmail()));
-        refresh();
         imgSet.setImage(new Image("images/settings.png"));
         imgArrow.setImage(new Image("images/arrow.png"));
         imgHome.setImage(new Image("images/home.png"));
@@ -287,7 +286,7 @@ public class EventOverviewAdminCtrl implements Initializable {
      * Method of the settings button, when pressed, it shows the keyboard combo's
      */
     public void clickSettings() {
-        mc.help();
+        mc.help(h);
     }
 
     /**

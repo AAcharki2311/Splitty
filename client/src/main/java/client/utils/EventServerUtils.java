@@ -29,7 +29,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventServerUtils {
     private final ReadURL readURL;
-    private final String SERVER;
+    private static String serverURL;
     private StompSession WEBSOCKET;
 
     /**
@@ -40,7 +40,7 @@ public class EventServerUtils {
     @Inject
     public EventServerUtils(ReadURL readURL) {
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/events";
     }
 
     /**
@@ -52,7 +52,7 @@ public class EventServerUtils {
         List<Event> res;
         try {
             res = ClientBuilder.newClient(new ClientConfig()) //
-                    .target(SERVER) //
+                    .target(serverURL) //
                     .request(APPLICATION_JSON) //
                     .accept(APPLICATION_JSON) //
                     .get(new GenericType<List<Event>>() {
@@ -75,7 +75,7 @@ public class EventServerUtils {
         EXEC.submit(() -> {
             while (!Thread.interrupted()) {
                 var res = ClientBuilder.newClient(new ClientConfig()) //
-                        .target(SERVER).path("update") //
+                        .target(serverURL).path("update") //
                         .request(APPLICATION_JSON) //
                         .accept(APPLICATION_JSON) //
                         .get(Response.class);
@@ -104,7 +104,7 @@ public class EventServerUtils {
      */
     public Event addEvent(Event event) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER) //
+                .target(serverURL) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -118,7 +118,7 @@ public class EventServerUtils {
      */
     public Event getEventByID(long id) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("/" + id) //
+                .target(serverURL).path("/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<Event>() {
@@ -134,7 +134,7 @@ public class EventServerUtils {
      */
     public Event updateEventByID(long id, Event event) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/" + id)
+                .target(serverURL).path("/" + id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(event, APPLICATION_JSON), Event.class);
@@ -148,7 +148,7 @@ public class EventServerUtils {
      */
     public boolean deleteEventByID(long id) {
         Response response = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/" + id)
+                .target(serverURL).path("/" + id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();

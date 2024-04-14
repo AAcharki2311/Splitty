@@ -15,7 +15,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ParticipantsServerUtil {
     private final ReadURL readURL;
-    private final String SERVER;
+    private static String serverURL;
+
     /**
      * ParticipantsServerUtil constructor
      * @param readURL readURL object
@@ -23,9 +24,8 @@ public class ParticipantsServerUtil {
     @Inject
     public ParticipantsServerUtil(ReadURL readURL){
         this.readURL = readURL;
-        this.SERVER = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/participants";
+        serverURL = readURL.readServerUrl("src/main/resources/configfile.properties") + "/api/participants";
     }
-
 
     /**
      * @param participant the participant to add
@@ -33,7 +33,7 @@ public class ParticipantsServerUtil {
      */
     public Participant addParticipant(Participant participant) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER)
+                .target(serverURL)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(participant, APPLICATION_JSON), Participant.class);
@@ -45,7 +45,7 @@ public class ParticipantsServerUtil {
      */
     public List<Participant> getAllParticipants() {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER)
+                .target(serverURL)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Participant>>() {});
@@ -58,7 +58,7 @@ public class ParticipantsServerUtil {
      */
     public Participant getParticipantByID(long id) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<Participant>() {});
@@ -72,7 +72,7 @@ public class ParticipantsServerUtil {
      */
     public Participant updateParticipantByID(long id, Participant participant) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(participant,APPLICATION_JSON), Participant.class);
@@ -84,7 +84,7 @@ public class ParticipantsServerUtil {
      */
     public boolean deleteParticipantByID(long id) {
         Response response = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/"+id)
+                .target(serverURL).path("/"+id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
