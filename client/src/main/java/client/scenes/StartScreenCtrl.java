@@ -477,9 +477,14 @@ public class StartScreenCtrl implements Initializable {
     /**
      * Method to stop the timer
      * Since the user is not on the start screen anymore
+     * @return true if the timer is stopped
      */
-    public void stopTimer() {
-        if(timer != null) timer.cancel();
+    public boolean stopTimer() {
+        if(timer != null){
+            timer.cancel();
+            return true;
+        }
+        return false;
     }
 
     /**
