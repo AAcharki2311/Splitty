@@ -164,7 +164,7 @@ public class AdminDashboardCtrl implements Initializable {
     public void clickEvent() throws IOException, InterruptedException {
         String eid = inputid.getText();
         if (eid.isBlank()){
-            JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
 //            imgMessage.setImage(new Image("images/notifications/Slide2.png"));
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(e -> imgMessage.setImage(null));
@@ -251,7 +251,7 @@ public class AdminDashboardCtrl implements Initializable {
             return;
         }
         catch (Exception e){
-            JOptionPane.showOptionDialog(null, h.get("key115"),h.get("key116"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
 //            imgMessage.setImage(new Image("images/notifications/Slide4.png"));
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(p -> imgMessage.setImage(null));

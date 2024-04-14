@@ -1,4 +1,4 @@
-# OOPP Template Project
+# OOPP Project Group 23
 
 ## **Run the Project**
 

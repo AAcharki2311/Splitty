@@ -127,7 +127,7 @@ public class AdminLoginCtrl implements Initializable {
             pwText.setText("correct");
             mc.showAdminDashboard();
         } else {
-            JOptionPane.showOptionDialog(null, h.get("key117"),h.get("key114"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
 //            imgMessage.setImage(new Image("images/notifications/Slide1.png"));
 //            PauseTransition pause = new PauseTransition(Duration.seconds(6));
 //            pause.setOnFinished(p -> imgMessage.setImage(null));

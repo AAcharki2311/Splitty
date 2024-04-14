@@ -3,9 +3,12 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import commons.Expense;
+import commons.Participant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import commons.Event;
@@ -92,6 +95,71 @@ public class EventControllerTest {
         ResponseEntity<Void> responseEntity = eventController.delete(event1.id);
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode()); // Check status code
         assertNull(responseEntity.getBody()); // Check that the object is null
+    }
+
+    /**
+     * Test for the relayObject method
+     */
+    @Test
+    public void relayObjectTest() {
+        int testInt = 9;
+        String testString = "Hello World!";
+        Event testEvent = new Event(
+                "TestEvent");
+        int returnInt = (int) eventController
+                .relayObject(testInt, "42");
+        String returnString = (String) eventController
+                .relayObject(testString, "42");
+        Event returnEvent = (Event) eventController
+                .relayObject(testEvent, "42");
+        assertEquals(testInt, returnInt);
+        assertEquals(testString, returnString);
+        assertEquals(testEvent, returnEvent);
+    }
+
+    /**
+     * Test for the relayParticipant method
+     */
+    @Test
+    public void relayParticipantTest() {
+        Event testEvent = new Event(
+                "TestEvent");
+        Participant testParticipant = new Participant(
+                testEvent,
+                "TestParticipant",
+                "test@participant",
+                "NL1234567890",
+                "1234567890");
+        Participant returnParticipant = eventController
+                .relayParticipant(testParticipant, "42");
+        assertEquals(returnParticipant, testParticipant);
+    }
+
+    /**
+     * Test for the relayExpense method
+     */
+    @Test
+    public void relayExpenseTest() {
+        Event testEvent = new Event(
+                "TestEvent");
+        Participant testParticipant = new Participant(
+                testEvent,
+                "TestParticipant",
+                "test@participant",
+                "NL1234567890",
+                "1234567890");
+        Date testDate = new Date();
+        Expense testExpense = new Expense(
+                testEvent,
+                testParticipant,
+                42.0, testDate,
+                "TestExpense",
+                "Tests",
+                "EUR");
+        Expense returnExpense = eventController
+                .relayExpense(testExpense, "42");
+        assertEquals(returnExpense, testExpense);
+
     }
 
     @SuppressWarnings("serial")
