@@ -255,20 +255,21 @@ public class EditExpenseCtrl implements Initializable {
 
             if(validate(title, money, date, comboBoxCurr, splitRBtn)){
                 Expense exp = new Expense(e, p, money, date, title, tag, cur);
-
                 int choice = JOptionPane.showOptionDialog(null,h.get("key85"), h.get("key86"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                         new String[]{"Update", h.get("key26")}, "default");
 
                 if(choice == JOptionPane.OK_OPTION){
+                    Expense newExpense;
                     changedExpenses.add(selectedExpense);
+                    exp.setId(selectedExpense.getId());
                     if(!(selectedExpense.getCreditor().equals(exp.getCreditor()))){
                         expServer.deleteExpenseByID(selectedExpense.getId());
-                        expServer.addExpense(exp);
+                        newExpense = expServer.addExpense(exp);
                     }else{
-                        expServer.updateExpenseByID(selectedExpense.getId(), exp);
+                        newExpense = expServer.updateExpenseByID(selectedExpense.getId(), exp);
                     }
-                    mc.send("/app/events/"+eventid+"/expenses", exp);
+                    mc.send("/app/events/"+eventid+"/expenses", newExpense);
                     String message = h.get("key138") + ":\n" +
                             "_______________" + "\n" +
                             h.get("key137") + ": " + exp.getCreditor().getName() + "\n" +
