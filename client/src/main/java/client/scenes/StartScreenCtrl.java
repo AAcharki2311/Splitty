@@ -1,31 +1,56 @@
 package client.scenes;
 
-import client.utils.languageSwitchInterface;
+import client.utils.*;
+import commons.Event;
+import commons.Participant;
 import jakarta.inject.Inject;
+import javafx.animation.FadeTransition;
+// import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import client.utils.ReadJSON;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+// import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.List;
+import java.util.Timer;
 import java.util.*;
 
-public class StartScreenCtrl implements Initializable, languageSwitchInterface {
+public class StartScreenCtrl implements Initializable {
     @FXML
     private ComboBox comboboxLanguage;
-    private List<String> languages = new ArrayList<>(Arrays.asList("dutch", "english", "french"));
+    private final EventServerUtils server;
+    private final ParticipantsServerUtil partServer;
     private final MainCtrl mc;
+    private HashMap<String, String> h;
+    private Participant userParticipant;
+    private WriteEventNames writeEventNames;
+    private LanguageSwitch languageSwitch;
+    private Timer timer;
+    /** MENU **/
+    @FXML
+    private ImageView imgSet;
+    @FXML
+    private ImageView imgHome;
+    /** NEEDED FOR LANGUAGE SWITCH **/
+    private List<String> languages = new ArrayList<>(Arrays.asList("Dutch \uD83C\uDDF3\uD83C\uDDF1", "English \uD83C\uDDEC\uD83C\uDDE7", "French \uD83C\uDDEB\uD83C\uDDF7"));
+    @FXML
+    private ImageView imageviewFlag;
+    private String language;
+    /** PAGE **/
     private final ReadJSON jsonReader;
     @FXML
     private ImageView imageview;
-    @FXML
-    private ImageView imageviewFlag;
     @FXML
     private Text welcometext;
     @FXML
@@ -38,13 +63,87 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
     private Button createBTN;
     @FXML
     private Button loginBTN;
+    @FXML
+    private TextField eventName;
+    @FXML
+    private TextField eventJoin;
+    @FXML
+    private Text message;
+    @FXML
+    private Label recentEventLabel;
+    @FXML
+    private Button addUserInfoBtn;
+    @FXML
+    private ImageView warningImageview;
 
+
+    /**
+     * Constructor of the StartScreenCtrl
+     * @param mc represent the MainCtrl
+     * @param jsonReader is an instance of the ReadJSON class, so it can read JSONS
+     * @param server server
+     * @param partServer participant server
+     * @param writeEventNames the WriteEventNames class
+     * @param languageSwitch the LanguageSwitch class
+     */
+    @Inject
+    public StartScreenCtrl(EventServerUtils server, ParticipantsServerUtil partServer,
+                           MainCtrl mc, ReadJSON jsonReader,
+                           WriteEventNames writeEventNames, LanguageSwitch languageSwitch) {
+        this.partServer = partServer;
+        this.mc = mc;
+        this.jsonReader = jsonReader;
+        this.server = server;
+        this.writeEventNames = writeEventNames;
+        this.languageSwitch = languageSwitch;
+        this.language = "English";
+    }
+
+    /**
+     * This method sets the image for the imageview and adds the items to the comboboxes
+     * @param url represent the URL
+     * @param resourceBundle represent the ResourceBundle
+     * When pressed on the combobox of languages, it translates it immeditalty
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboboxLanguage.getItems().addAll(languages);
+        comboboxLanguage.setCellFactory(param -> new ListCell<String>() {
+            private final ImageView imageView = new ImageView();
+
+            /**
+             * This method updates the item and sets an image of the flag to the combobox
+             * @param item The new item for the cell.
+             * @param empty If this cell is empty, it doesn't contain any domain data;
+             *              but, it's utilized to display an "empty" row.
+             */
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    if(item.contains("Dutch")){
+                        imageView.setImage(new Image("images/nl-circle-01.png"));
+                    } else if(item.contains("English")){
+                        imageView.setImage(new Image("images/br-circle-01.png"));
+                    } else if(item.contains("French")){
+                        imageView.setImage(new Image("images/fr-circle-01.png"));
+                    }
+                    imageView.setFitHeight(20);
+                    imageView.setFitWidth(20);
+                    setGraphic(imageView);
+                }
+            }
+        });
         comboboxLanguage.setOnAction(event -> {
-            languageChange(comboboxLanguage);
-            comboboxLanguage.setPromptText("Current language: " + comboboxLanguage.getSelectionModel().getSelectedItem());
+            String path = "src/main/resources/configfile.properties";
+            this.language = comboboxLanguage.getSelectionModel().getSelectedItem().toString().split(" ")[0].trim();
+            languageSwitch.languageChange(path, language);
+            comboboxLanguage.setPromptText(h.get("key53") + language);
 
             try {
                 mc.ltest();
@@ -56,48 +155,402 @@ public class StartScreenCtrl implements Initializable, languageSwitchInterface {
         });
         Image image = new Image("images/logo-no-background.png");
         imageview.setImage(image);
+
+        imgSet.setImage(new Image("images/settings.png"));
+        imgHome.setImage(new Image("images/home.png"));
     }
-    @Override
+
+    /**
+     * This method reads the recent events from the JSON file and sets the text of the recent events label
+     * @param path the path of the JSON file
+     * @return the text of the recent events
+     */
+    public String readRecentEvents(String path) {
+        List<String> eventNames = writeEventNames.readEventsFromJson(path);
+        if(!eventNames.isEmpty()){
+            String text = "";
+            List<String> tempList = eventNames.reversed();
+            for(String element : tempList) text = text + "\n" + element + "\n";
+            return text;
+        } else{
+            return h.get("key52");
+        }
+    }
+
+    /**
+     * This method translates each label. It changes the text to the corresponding key with the translated text
+     * @param taal the language that the user wants to switch to
+     */
     public void langueageswitch(String taal) throws NullPointerException{
-        HashMap<String, Object> h = jsonReader.readJsonToMap("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\resources\\languageJSONS\\language" + taal + ".json");
-        comboboxLanguage.setPromptText("Current language: " + taal);
-        welcometext.setText(h.get("key1").toString());
-        pleasetext.setText(h.get("key2").toString());
-        joinBTN.setText(h.get("key3").toString());
-        createBTN.setText(h.get("key4").toString());
-        loginBTN.setText(h.get("key5").toString());
-        recentviewedtext.setText(h.get("key6").toString());
-        Image imageFlag = new Image(h.get("key0").toString());
+        String langfile = "language" + taal + ".json";
+        h = jsonReader.readJsonToMap("src/main/resources/languageJSONS/"+langfile);
+        comboboxLanguage.setPromptText(h.get("key53") + taal);
+        welcometext.setText(h.get("key1"));
+        pleasetext.setText(h.get("key2"));
+        joinBTN.setText(h.get("key3"));
+        createBTN.setText(h.get("key4"));
+        loginBTN.setText(h.get("key5"));
+        recentviewedtext.setText(h.get("key6"));
+        addUserInfoBtn.setText(h.get("key14"));
+        Image imageFlag = new Image(h.get("key0"));
         imageviewFlag.setImage(imageFlag);
+        eventJoin.setPromptText(h.get("key94"));
+        eventName.setPromptText(h.get("key95"));
     }
 
-    @Inject
-    public StartScreenCtrl(MainCtrl mc, ReadJSON jsonReader) {
-        this.mc = mc;
-        this.jsonReader = jsonReader;
+    /**
+     * Method of the create event button, when pressed, it shows the eventoverview screen
+     */
+    public void createEvent() {
+        try {
+            String name = eventName.getText();
+            if(name.isBlank()){
+//                warningImageview.setImage(new Image("images/notifications/Slide3.png"));
+//                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                pause.setOnFinished(p -> warningImageview.setImage(null));
+//                pause.play();
+                message.setText(h.get("key54"));
+                // JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            } else {
+                List<Event> allEvents = server.getAllEvents();
+                List<String> namesOfAllEvents = new ArrayList<>();
+                for(Event e : allEvents){
+                    namesOfAllEvents.add(e.getName());
+                }
+                if(!namesOfAllEvents.contains(name)){
+                    Event newEvent = new Event(name);
+                    newEvent = server.addEvent(newEvent);
+                    String filepath = "src/main/resources/recentEvents.json";
+                    writeEventNames.writeEventName(filepath, (newEvent.name + "\nID: " + (newEvent.id)), String.valueOf(newEvent.id));
+
+                    if (userParticipant != null){
+                        int choice = JOptionPane.showOptionDialog(null, h.get("key55"),
+                                h.get("key56"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                                new String[]{h.get("key57"), h.get("key58")}, "default");
+                        if(choice == JOptionPane.OK_OPTION){
+                            userParticipant.setEvent(newEvent);
+                            partServer.addParticipant(userParticipant);
+                        }
+                    }
+
+                    HashMap<String, String> ht = jsonReader.readJsonToMap("src/main/resources/tagcolors.json");
+                    ht.put("Food?"+(String.valueOf(newEvent.id)), "#43CE43");
+                    ht.put("Entrance Fees?"+(String.valueOf(newEvent.id)), "#616BD0");
+                    ht.put("Travel?" + (String.valueOf(newEvent.id)), "#D71919");
+                    jsonReader.writeMapToJsonFile(ht, "src/main/resources/tagcolors.json");
+
+                    mc.showEventOverview(String.valueOf(newEvent.id));
+
+                } else {
+//                    warningImageview.setImage(new Image("images/notifications/Slide2.png"));
+//                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                    pause.setOnFinished(p -> warningImageview.setImage(null));
+//                    pause.play();
+//                    throw new IllegalArgumentException(h.get("key59"));
+                      JOptionPane.showOptionDialog(null, h.get("key134"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                }
+            }
+        }
+        catch (Exception e){
+        //    message.setText(e.getMessage());
+//            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> warningImageview.setImage(null));
+//            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+        }
     }
 
-    public void clickEvent() {
-        mc.showEventOverview();
+    /**
+     * Method of the Join button, when pressed, it shows the eventoverview screen
+     */
+    public void openEvent() {
+        try {
+            String eid = eventJoin.getText();
+            if(checkNumber(eid)){
+                try{
+                    long eventID = Long.parseLong(eid);
+                    Event x = server.getEventByID(eventID);
+                    x.setLastActDate(new Date());
+                    server.addEvent(x);
+                    mc.showEventOverview(eid);
+                    String dest = "/topic/events/"+eid;
+                    System.out.println("Destination: "+dest);
+                    new Thread() {
+                        /**
+                         * This method is run by the thread when it executes. Subclasses of {@code
+                         * Thread} may override this method.
+                         *
+                         * <p> This method is not intended to be invoked directly. If this thread is a
+                         * platform thread created with a {@link Runnable} task then invoking this method
+                         * will invoke the task's {@code run} method. If this thread is a virtual thread
+                         * then invoking this method directly does nothing.
+                         *
+                         * @implSpec The default implementation executes the {@link Runnable} task that
+                         * the {@code Thread} was created with. If the thread was created without a task
+                         * then this method does nothing.
+                         */
+                        @Override
+                        public void run() {
+                            server.initiateWebsocketEventConnection(eventID, p -> {
+                                System.out.println("[Websocket] Received: "+p);
+                                if(p.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
+                                    System.out.println("[Websocket] ID's match thus adding...");
+                                    mc.getEventOCtrl().putParticipant(p);
+                                }
+                            }, e -> {
+                                System.out.println("[Websocket] Received: "+e);
+                                if(e.getEvent().getId() == mc.getEventOCtrl().getCurrentEventID()) {
+                                    System.out.println("[Websocket] ID's match thus adding...");
+                                    mc.getEventOCtrl().putExpense(e);
+                                }
+                            });
+                            mc.getEventOCtrl().getEventServerUtils().setWebsocketConnection(server.getWebsocketConnection());
+                        }
+                    }.start();
+
+                    String filepath = "src/main/resources/recentEvents.json";
+                    writeEventNames.writeEventName(filepath, (server.getEventByID(Long.parseLong(eid)).getName() + "\nID: " + eid), eid);
+                    message.setText("");
+                } catch(Exception e){
+//                    warningImageview.setImage(new Image("images/notifications/Slide1.png"));
+//                    PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                    pause.setOnFinished(p -> warningImageview.setImage(null));
+//                    pause.play();
+//                    throw new IllegalArgumentException(h.get("key60"));
+                    message.setText(h.get("key60"));
+                    // JOptionPane.showOptionDialog(null, h.get("key133"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+                }
+            } else{
+//                warningImageview.setImage(new Image("images/notifications/Slide2.png"));
+//                PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//                pause.setOnFinished(p -> warningImageview.setImage(null));
+//                pause.play();
+//                throw new IllegalArgumentException(h.get("key61"));
+                message.setText(h.get("key61"));
+                // JOptionPane.showOptionDialog(null, h.get("key129"),h.get("key130"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            }
+        }
+        catch (Exception e){
+//            message.setText(e.getMessage());
+//            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+//            PauseTransition pause = new PauseTransition(Duration.seconds(6));
+//            pause.setOnFinished(p -> warningImageview.setImage(null));
+//            pause.play();
+            JOptionPane.showOptionDialog(null, h.get("key131"),h.get("key132"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
+        }
+    }
+    /**
+     * Method to check if the input is a number
+     * @param eid the input
+     * @return true if the input is a number, false if it isn't
+     */
+    public boolean checkNumber(String eid) {
+        boolean check = false;
+        try {
+            if(!eid.isBlank() &&  Integer.parseInt(eid) >= 0){
+                check = true;
+            }
+            return check;
+        } catch (NumberFormatException e) {
+            return check;
+        }
     }
 
+    /**
+     * Method of the show admin button, when pressed, it shows the showAdminLogin screen
+     */
     public void clickAdmin() {
         mc.showAdminLogin();
     }
 
+
+    /**
+     * Method of the home button, when pressed, it shows the start screen
+     */
+    public void clickHome(){
+        mc.showStart();
+    }
+
+    /**
+     * Method of the settings button, when pressed, it shows the keyboard combo's
+     */
+    public void clickSettings(){
+        mc.help(h);
+    }
+
+    /**
+     * Method of the download template text, when pressed, it should download the template file
+     */
     public void downloadTemplate() {
         try {
-            URL url = new URL("C:\\Users\\ayoub\\oopp-ayoubacharki\\TEAM\\oopp-team-23\\client\\src\\main\\java\\client\\utils\\languageTemplate.json");
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("languageTemplate.json");
+            fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
+            fileChooser.setTitle("Splitty23 - Download Language Template");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+            File file = fileChooser.showSaveDialog(null);
+            file.createNewFile();
 
+            try(PrintWriter printWriter = new PrintWriter(file)){
+                printWriter.print(readFile("src/main/resources/languageJSONS/languageTemplate.json"));
+            }
 
-//            downloadFile(fileUrl, destinationPath);
-        } catch (IOException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            String error = "Please restart the application and try again later.";
-            errorAlert.setHeaderText("Error while downloading file.");
-            errorAlert.setContentText(error);
-            errorAlert.showAndWait();
+            warningImageview.setImage(new Image("images/notifications/Slide5.png"));
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.play();
+
+        } catch (Exception e) {
+            warningImageview.setImage(new Image("images/notifications/Slide4.png"));
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(5), warningImageview);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.play();
+
+            System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Method to read a file
+     * @param url the url of the file
+     * @return the text of the file
+     * @throws IOException if something is wrong with the file
+     */
+    public String readFile(String url) throws IOException{
+        String text = "";
+        Scanner myScanner = new Scanner(new File(url));
+        while(myScanner.hasNextLine()){
+            String data = myScanner.nextLine();
+            text += data + "\n" ;
+        }
+        myScanner.close();
+        return text;
+    }
+
+    /**
+     * Shows the popup screen
+     */
+    public void showPopup() {
+        while(true){
+            JTextField textFieldName = new JTextField();
+            JTextField textFieldEmail = new JTextField();
+            JTextField textFieldIBAN = new JTextField();
+            JTextField textFieldBIC = new JTextField();
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(new JLabel(h.get("key62")));
+            panel.add(new JLabel(h.get("key31")));
+            panel.add(textFieldName);
+            panel.add(new JLabel("Email: "));
+            panel.add(textFieldEmail);
+            panel.add(new JLabel("IBAN: "));
+            panel.add(textFieldIBAN);
+            panel.add(new JLabel("BIC: "));
+            panel.add(textFieldBIC);
+            Object[] options = {"OK", "Skip"};
+
+            int result = JOptionPane.showOptionDialog(null, panel, h.get("key63"),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String name = textFieldName.getText();
+                String email = textFieldEmail.getText();
+                String iban = textFieldIBAN.getText();
+                String bic = textFieldBIC.getText();
+                if(name.isBlank() || email.isBlank() || iban.isBlank() || bic.isBlank() ||
+                        !email.matches(".*@.+\\..+")){
+                    JOptionPane.showMessageDialog(null, h.get("key64"));
+                } else{
+                    this.userParticipant = new Participant(null, name, email, iban, bic);
+                    mc.setParticipant(userParticipant);
+                    break;
+                }
+            } else {
+                if(userParticipant != null) break;
+                this.userParticipant = null;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Method to stop the timer
+     * Since the user is not on the start screen anymore
+     * @return true if the timer is stopped
+     */
+    public boolean stopTimer() {
+        if(timer != null){
+            timer.cancel();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method to start the timer
+     * To update the recent events every 3 seconds
+     */
+    public void startTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    String res = readRecentEvents("src/main/resources/recentEvents.json");
+                    recentEventLabel.setText(res);
+                });
+            }
+        }, 0, 5000);
+    }
+
+    /**
+     * Method to get the participant
+     * @return the participant
+     */
+    public Participant getuserParticipant() {
+        return userParticipant;
+    }
+
+    /**
+     * Method to set the participant
+     * @param participant the participant
+     */
+    public void setUserParticipant(Participant participant) {
+        this.userParticipant = participant;
+    }
+
+    /**
+     * Method to set the hashmap
+     * @param hashmap the hashmap
+     */
+    public void setHashmap(HashMap<String, String> hashmap){
+        this.h = hashmap;
+    }
+
+    /**
+     * Method to get the hashmap
+     * @return the hashmap
+     */
+    public HashMap<String, String> getHashmap() {
+        return h;
+    }
+
+    /**
+     * Method to set the timer
+     * @param timer the timer
+     */
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
+    /**
+     * Method to get the timer
+     * @return the timer
+     */
+    public Timer getTimer() {
+        return timer;
+    }
 }

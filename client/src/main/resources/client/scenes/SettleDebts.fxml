@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.SettleDebtsCtrl">
+   <ImageView fx:id="imageview" fitHeight="25.0" fitWidth="174.0" layoutX="43.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/logo-no-background.png" />
+      </image>
+   </ImageView>
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="230.0" layoutX="468.0" layoutY="10.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="206.0" layoutX="468.0" layoutY="34.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="200.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="220.0" layoutX="42.0" layoutY="115.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="408.0" />
+   <Label fx:id="total" layoutX="340.0" layoutY="120.0" prefHeight="19.0" prefWidth="102.0" text="0" textFill="#0d5575">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Label>
+   <TableView fx:id="tableExp" layoutX="41.0" layoutY="235.0" prefHeight="99.0" prefWidth="408.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colDate" editable="false" prefWidth="70.0" text="Date" />
+         <TableColumn fx:id="colAm" editable="false" prefWidth="96.5" text="Amount" />
+         <TableColumn fx:id="colTitle" editable="false" prefWidth="131.0" text="Title" />
+         <TableColumn fx:id="colTag" editable="false" prefWidth="102.5" text="Tag" />
+      </columns>
+   </TableView>
+   <ComboBox fx:id="comboBoxPart" layoutX="257.0" layoutY="143.0" onAction="#onClickComboBoxPart" prefHeight="26.0" prefWidth="186.0" promptText="Name participant" />
+   <Label fx:id="shareLabel" layoutX="55.0" layoutY="145.0" prefHeight="20.0" prefWidth="264.0" text="See Share per person:" textAlignment="CENTER" textFill="#0d5575" wrapText="true">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Label>
+   <Label fx:id="payedLabel" layoutX="55.0" layoutY="170.0" prefHeight="18.0" prefWidth="74.0" text="Payed:" textAlignment="CENTER" textFill="#0d5575">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Label>
+   <Label fx:id="owedLabel" layoutX="55.0" layoutY="195.0" prefHeight="18.0" prefWidth="115.0" text="Needs to pay:" textAlignment="CENTER" textFill="#0d5575">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Label>
+   <PieChart fx:id="pieChart" labelsVisible="false" layoutX="468.0" layoutY="87.0" legendSide="TOP" legendVisible="false" prefHeight="76.0" prefWidth="200.0" />
+   <Label fx:id="payedAmount" layoutX="259.0" layoutY="170.0" prefHeight="20.0" prefWidth="63.0" text="0" textAlignment="CENTER" textFill="#0d5575">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Label>
+   <Label fx:id="owedAmount" layoutX="259.0" layoutY="195.0" prefHeight="18.0" prefWidth="74.0" text="0" textAlignment="CENTER" textFill="#0d5575">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Label>
+   <Text fx:id="message" fill="#0d5575" layoutX="57.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="378.5">
+      <font>
+         <Font name="Calibri Bold" size="13.0" />
+      </font>
+   </Text>
+   <Text fx:id="labelEventName" fill="#0d5575" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Eventname" wrappingWidth="700.0">
+      <font>
+         <Font name="Calibri Bold" size="20.0" />
+      </font>
+   </Text>
+   <Rectangle fill="#0d5575" height="38.0" layoutY="362.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
+   <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/br-circle-01.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" onMouseClicked="#clickSettings" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/settings.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgArrow" fitHeight="26.0" fitWidth="26.0" layoutX="626.0" layoutY="367.0" onMouseClicked="#clickBack" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.1;">
+      <image>
+         <Image url="@../../images/arrow.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgHome" fitHeight="26.0" fitWidth="39.0" layoutX="662.0" layoutY="367.0" onMouseClicked="#clickHome" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.2;">
+      <image>
+         <Image url="@../../images/home.png" />
+      </image>
+   </ImageView>
+   <Text fx:id="titleOfScreen" fill="#0d5575" layoutX="42.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics" textAlignment="CENTER" wrappingWidth="408.0">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font>
+   </Text>
+   <Text fx:id="sumLabel" fill="#0d5575" layoutX="55.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The total sum of alle expenses:" wrappingWidth="235.0">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Text>
+   <Text fx:id="titleOfScreen1" fill="#0d5575" layoutX="468.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pie Chart" textAlignment="CENTER" wrappingWidth="200.0">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font>
+   </Text>
+   <Text fx:id="sumLabel1" fill="#0d5575" layoutX="475.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by:" wrappingWidth="169.5">
+      <font>
+         <Font size="13.0" />
+      </font>
+   </Text>
+   <Button fx:id="sortParticipantBtn" layoutX="477.0" layoutY="57.0" mnemonicParsing="false" onAction="#clickParticipantBtn" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #0D5575;" text="Participant" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
+   <Button fx:id="sortTagBtn" layoutX="568.0" layoutY="57.0" mnemonicParsing="false" onAction="#clickTagBtn" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #0D5575;" text="Tag" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
+   <TableView fx:id="tableTag" layoutX="468.0" layoutY="248.0" prefHeight="99.0" prefWidth="200.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colShareTag" editable="false" text="Tags" />
+         <TableColumn fx:id="colAmShareTag" editable="false" prefWidth="50.0" text="Total" />
+         <TableColumn fx:id="colPercentTag" editable="false" prefWidth="60.0" text="\%" />
+      </columns>
+   </TableView>
+   <TableView fx:id="tableShare" layoutX="468.0" layoutY="248.0" prefHeight="99.0" prefWidth="200.0" style="-fx-border-radius: 4px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colPartShare" editable="false" text="Participant" />
+         <TableColumn fx:id="colAmShare" editable="false" prefWidth="50.0" text="Total" />
+         <TableColumn fx:id="colPercent" editable="false" prefWidth="60.0" text="\%" />
+      </columns>
+   </TableView>
+</AnchorPane>

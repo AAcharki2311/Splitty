@@ -1,4 +1,5 @@
 package commons;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,10 +13,14 @@ import java.util.*;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String name;
-    private Date creationDate;
-    private Date lastActDate;
+    @JsonProperty("id")
+    public long id;
+    @JsonProperty("name")
+    public String name;
+    @JsonProperty("creationDate")
+    public Date creationDate;
+    @JsonProperty("lastActDate")
+    public Date lastActDate;
 
     /**
      * The constructor for Event without args
@@ -26,17 +31,30 @@ public class Event {
 
     /**
      * The constructor for Event
-     *
      * @param name The name for the event
      */
     public Event(String name) {
         this.name = name;
         creationDate = new Date();
+        lastActDate = new Date();
+    }
+
+    /**
+     * The constructor for Event if all information is already known
+     * @param name The name for the event
+     * @param id the id of the event
+     * @param creationDate the creation date of the Event
+     * @param lastActDate the last activity date of the Event
+     */
+    public Event(long id, String name, Date creationDate, Date lastActDate) {
+        this.name = name;
+        this.id = id;
+        this.creationDate = creationDate;
+        this.lastActDate = lastActDate;
     }
 
     /**
      * The getter for the Event-ID
-     *
      * @return the Event-ID
      */
     public long getId() {
@@ -44,8 +62,15 @@ public class Event {
     }
 
     /**
+     * The setter for the Event-ID
+     * @param id the new Event-ID
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * The getter for the name of the Event
-     *
      * @return the name of the Event
      */
     public String getName() {
@@ -53,26 +78,7 @@ public class Event {
     }
 
     /**
-     * The getter for the creation date of the Event
-     *
-     * @return the creation date of the Event
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    /**
-     * The getter for the date of the last activity of the Event
-     *
-     * @return the last activity date of the Event
-     */
-    public Date getLastActDate() {
-        return lastActDate;
-    }
-
-    /**
      * The setter for the name of the Event
-     *
      * @param name the name to set the name of the Event to
      */
     public void setName(String name) {
@@ -80,8 +86,31 @@ public class Event {
     }
 
     /**
+     * The getter for the creation date of the Event
+     * @return the creation date of the Event
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * The setter for the date of the creation of an activity of the Event
+     * @param creationDate the date to set the creation date of an activity of the Event
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * The getter for the date of the last activity of the Event
+     * @return the last activity date of the Event
+     */
+    public Date getLastActDate() {
+        return lastActDate;
+    }
+
+    /**
      * The setter for the date of the last activity of the Event
-     *
      * @param lastActDate the date to set the last activity date of the Event to
      */
     public void setLastActDate(Date lastActDate) {
@@ -91,7 +120,6 @@ public class Event {
     /**
      * The equality method for Event
      * Events are considered equal iff they are both Events and their id's match
-     *
      * @param obj the object to compare to
      * @return True if equal
      */
@@ -103,7 +131,6 @@ public class Event {
     /**
      * The hashing method for Event
      * The hash is solely based on the Event-ID
-     *
      * @return the hash of the Event
      */
     @Override
@@ -113,7 +140,6 @@ public class Event {
 
     /**
      * A method to return event in a human-readable format
-     *
      * @return A string with the Event object converted to a Human-Readable Format
      */
     @Override

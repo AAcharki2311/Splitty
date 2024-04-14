@@ -7,6 +7,27 @@ import static org.junit.jupiter.api.Assertions.*;
 class ParticipantTest {
 
     @Test
+    void emptyConstructor(){
+        Participant p = new Participant();
+        assertNotNull(p);
+    }
+
+    @Test
+    void getId(){
+        Event e = new Event("TestEvent");
+        Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+        assertNotNull(a.getId());
+    }
+
+    @Test
+    void setId(){
+        Event e = new Event("TestEvent");
+        Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+        a.setId(101);
+        assertEquals(101, a.getId());
+    }
+
+    @Test
     void getName(){
         Event e = new Event("TestEvent");
         Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
@@ -115,6 +136,14 @@ class ParticipantTest {
         assertTrue(actual.contains("Max@gmail.com"));
         assertTrue(actual.contains("NL99ABNA0123456789"));
         assertTrue(actual.contains("RABONL2U"));
+    }
 
+    @Test
+    void setEvent(){
+        Event e = new Event("TestEvent");
+        Event newEvent = new Event("newEvent");
+        Participant a = new Participant(e, "Max", "Max@gmail.com", "NL99ABNA0123456789", "RABONL2U");
+        a.setEvent(newEvent);
+        assertEquals(a.getEvent(), newEvent);
     }
 }

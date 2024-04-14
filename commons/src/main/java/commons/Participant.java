@@ -1,4 +1,5 @@
 package commons;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -6,13 +7,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "eventId")
     private Event event;
     private String name;
     private String email;
@@ -51,11 +52,27 @@ public class Participant {
     }
 
     /**
+     * Setter for the id of the participant
+     * @param id id of the participant
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for the event id of this person
      * @return the id of the event
      */
     public Event getEvent() {
         return event;
+    }
+
+    /**
+     * Setter for the event of this participant
+     * @param event the new event of this participant
+     */
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     /**
@@ -149,6 +166,7 @@ public class Participant {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
+
 }
 
 

@@ -1,9 +1,12 @@
 package server.api;
 
+import commons.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Participant;
+import server.database.EventRepository;
 import server.database.ParticipantRepository;
 import java.util.*;
 
@@ -12,16 +15,35 @@ import java.util.*;
 public class ParticipantController {
     private final Random random;
     private final ParticipantRepository participantRepository;
+    @Autowired
+    private final EventRepository eventRepository;
+
 
     /**
      * Constructor for the controller of the participants
      *
      * @param random variable random
      * @param participantRepository repository for participants
+     * @param eventRepository repository for events
      */
-    public ParticipantController(Random random, ParticipantRepository participantRepository) {
+    public ParticipantController(Random random, ParticipantRepository participantRepository, EventRepository eventRepository) {
         this.random = random;
         this.participantRepository = participantRepository;
+        this.eventRepository = eventRepository;
+    }
+
+    /**
+     * Method to get all the participant in the repository (unsorted)
+     *
+     * @return all the participants in the current repository
+     */
+    @GetMapping(path = {"", "/"})
+    public ResponseEntity<List<Participant>> getParticipants() {
+        List<Participant> allParticipants = participantRepository.findAll();
+        if (allParticipants.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allParticipants);
     }
 
     /**
@@ -46,11 +68,30 @@ public class ParticipantController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Participant> add(@RequestBody Participant participant) {
-        if (participant == null) {
+        if (participant == null || participant.getId() < 0 ||
+        isNullOrEmpty(participant.getEmail()) || isNullOrEmpty(participant.getName()) ||
+        participant.getEvent() == null || isNullOrEmpty(participant.getBic()) ||
+        isNullOrEmpty(participant.getIban())) {
             return ResponseEntity.badRequest().build();
         }
-        Participant postedParticipant = participantRepository.save(participant);
-        return ResponseEntity.ok(postedParticipant);
+
+        try{
+            Event event = eventRepository.findById(participant.getEvent().getId()).orElse(null);
+            if(event == null) {
+                throw new NoSuchElementException();
+            }
+            participant.setEvent(event);
+            Participant postedParticipant = participantRepository.save(participant);
+            return ResponseEntity.ok(postedParticipant);
+        } catch(NullPointerException e) {
+            try {
+                Participant postedParticipant = participantRepository.save(participant);
+                return ResponseEntity.ok(postedParticipant);
+            } catch (Exception ex) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
     }
 
     /**
@@ -71,6 +112,8 @@ public class ParticipantController {
         }
         currentParticipant.setName(participant.getName());
         currentParticipant.setEmail(participant.getEmail());
+        currentParticipant.setBic(participant.getBic());
+        currentParticipant.setIban(participant.getIban());
 
         Participant newParticipant = participantRepository.save(currentParticipant);
         return ResponseEntity.ok(newParticipant);
@@ -89,6 +132,32 @@ public class ParticipantController {
         }
         participantRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Method to get all the participants of a specific event
+     *
+     * @param eventId id of the event to use
+     * @return the response from the action
+     */
+    @GetMapping("/participants/event/{eventId}")
+    public ResponseEntity<List<Participant>> getParticipantsEvent(@PathVariable("eventId") long eventId) {
+        List<Participant> eventParticipants = new ArrayList<>();
+        List<Participant> allParticipants = participantRepository.findAll();
+        for(int i = 0; i < allParticipants.size(); i++) {
+            Event event = allParticipants.get(i).getEvent();
+            if (event.getId() == eventId) {
+                eventParticipants.add(allParticipants.get(i));
+            }
+        }
+        if (eventParticipants.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(eventParticipants);
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 
 }

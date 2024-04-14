@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewAdminCtrl">
+   <Label layoutX="207.0" layoutY="139.0" text="Expenses" />
+   <Rectangle fill="#0d5575" height="38.0" layoutY="362.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
+   <ImageView fx:id="imgSet" fitHeight="26.0" fitWidth="26.0" layoutX="17.0" layoutY="367.0" onMouseClicked="#clickSettings" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/settings.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imageviewFlag" fitHeight="26.0" fitWidth="43.0" layoutX="55.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/br-circle-01.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgHome" fitHeight="26.0" fitWidth="39.0" layoutX="662.0" layoutY="367.0" onMouseClicked="#clickHome" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.2;">
+      <image>
+         <Image url="@../../images/home.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imgArrow" fitHeight="26.0" fitWidth="26.0" layoutX="626.0" layoutY="367.0" onMouseClicked="#clickBack" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 1.1;">
+      <image>
+         <Image url="@../../images/arrow.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="imageview" fitHeight="25.0" fitWidth="174.0" layoutX="43.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/logo-no-background.png" />
+      </image>
+   </ImageView>
+   <Text fx:id="eventname" fill="#0d5575" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" text="Eventname" wrappingWidth="700.0">
+      <font>
+         <Font name="Calibri Bold" size="20.0" />
+      </font>
+   </Text>
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="42.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="370.0" />
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff11" height="246.0" layoutX="417.0" layoutY="89.0" stroke="#0d5575" strokeType="INSIDE" strokeWidth="2.0" width="251.0" />
+   <TableView fx:id="tableExp" layoutX="42.0" layoutY="115.0" prefHeight="220.0" prefWidth="370.0" style="-fx-border-radius: 3px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colDate" editable="false" prefWidth="68.0" text="Date" />
+         <TableColumn fx:id="colAm" editable="false" prefWidth="64.5" text="Amount" />
+         <TableColumn fx:id="colPart" editable="false" prefWidth="92.5" text="Participant" />
+         <TableColumn fx:id="colTitle" editable="false" prefWidth="75.0" text="Title" />
+         <TableColumn fx:id="colTag" editable="false" prefWidth="75.0" text="Tag" />
+      </columns>
+   </TableView>
+   <TableView fx:id="tablePart" layoutX="417.0" layoutY="115.0" prefHeight="220.0" prefWidth="251.0" style="-fx-border-radius: 3px; -fx-border-color: #0D5575;">
+      <columns>
+         <TableColumn fx:id="colName" editable="false" prefWidth="90.0" text="Name" />
+         <TableColumn fx:id="colEmail" editable="false" prefWidth="157.0" text="Email" />
+      </columns>
+   </TableView>
+   <Button fx:id="deleteBtn" layoutX="568.0" layoutY="45.0" mnemonicParsing="false" onAction="#clickDelete" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Delete Event" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
+   <Text fx:id="expText" fill="#0d5575" layoutX="154.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expenses" textAlignment="CENTER" wrappingWidth="145.5234375">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font>
+   </Text>
+   <Text fx:id="parText" fill="#0d5575" layoutX="470.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Participants" textAlignment="CENTER" wrappingWidth="145.5234375">
+      <font>
+         <Font name="System Bold" size="13.0" />
+      </font>
+   </Text>
+   <Button fx:id="jsonBtn" layoutX="459.0" layoutY="45.0" mnemonicParsing="false" onAction="#clickDownload" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #0D5575;" text="Download JSON" textFill="#f4fdff">
+      <font>
+         <Font name="Calibri" size="12.0" />
+      </font>
+   </Button>
+   <ImageView fx:id="imgMessage" disable="true" fitHeight="200.0" fitWidth="367.0" layoutX="323.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../../images/notifications/Slide5.png" />
+      </image>
+   </ImageView>
+</AnchorPane>

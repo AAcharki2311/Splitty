@@ -32,25 +32,44 @@ public class Main extends Application {
     private static final Injector INJECTOR = Guice.createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+    /**
+     * Main method
+     * @param args used for main method
+     * @throws URISyntaxException if something is wrong with the application
+     * @throws IOException if something is wrong with the application
+     */
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
 
+    /**
+     * Loads all the different scenes
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException if something is wrong with the application
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 
         var start = FXML.load(StartScreenCtrl.class, "client", "scenes", "StartScreen.fxml");
         var eventOver = FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml");
-        var invite = FXML.load(InviteCtrl.class, "client", "scenes", "Invite.fxml");
         var expense = FXML.load(AddExpenseCtrl.class, "client", "scenes", "AddExpenseScreen.fxml");
         var participant = FXML.load(ParticipantCtrl.class, "client", "scenes", "AddParticipantScreen.fxml");
         var editParticipant = FXML.load(EditParticipantCtrl.class, "client", "scenes", "EditParticipantScreen.fxml");
         var editExpense = FXML.load(EditExpenseCtrl.class, "client", "scenes", "EditExpenseScreen.fxml");
         var alogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
         var adash = FXML.load(AdminDashboardCtrl.class, "client", "scenes", "AdminDashboard.fxml");
+        var aevent = FXML.load(EventOverviewAdminCtrl.class, "client", "scenes", "EventOverviewAdmin.fxml");
+        var settle = FXML.load(SettleDebtsCtrl.class, "client", "scenes", "SettleDebts.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, start, eventOver, invite, expense, participant, editParticipant, editExpense, alogin, adash);
+        mainCtrl.initialize(primaryStage, start, eventOver, expense, participant, editParticipant, editExpense, alogin, adash, aevent, settle);
+
+        primaryStage.setOnCloseRequest(event -> {
+            adash.getKey().stop();
+        });
 
     }
 }

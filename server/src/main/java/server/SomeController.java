@@ -7,12 +7,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class SomeController {
 
+    /**
+     *
+     * @return something
+     */
     @GetMapping("/")
     @ResponseBody
     public String index() {
         return "Hello world!";
     }
 
+    /**
+     *
+     * @param name
+     * @param title
+     * @return something
+     */
     @GetMapping("/name/{name}")
     @ResponseBody
     public String name(@PathVariable("name") String name , @RequestParam(name = "title", required = false) String title) {

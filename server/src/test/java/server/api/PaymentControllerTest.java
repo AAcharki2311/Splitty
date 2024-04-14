@@ -6,6 +6,7 @@ import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
+import server.repository.TestPaymentRepository;
 
 import java.util.List;
 import java.util.Random;

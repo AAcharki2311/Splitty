@@ -1,12 +1,19 @@
 package server.api;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import commons.Expense;
 import commons.Event;
 import commons.Participant;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.EventRepository;
+
 import java.util.*;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/events")
@@ -32,8 +39,44 @@ public class EventController {
      * @return all the events in the current repository
      */
     @GetMapping(path = {"", "/"})
-    public List<Event> getEvents() {
-        return eventRepository.findAll();
+    public ResponseEntity<List<Event>> getEvents() {
+        List<Event> allEvents = eventRepository.findAll();
+        if (allEvents.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allEvents);
+    }
+
+    private Map<Object, Consumer<Event>> listeners = new HashMap<>();
+
+    /**
+     * Method to get updates from the events
+     * @return the updates from the events
+     */
+    @GetMapping("/update")
+    public DeferredResult<ResponseEntity<Event>> getUpdates() {
+        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var error = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        var res = new DeferredResult<ResponseEntity<Event>>(5000L, noContent);
+
+        res.onTimeout(() -> {
+            res.setErrorResult(noContent);
+        });
+
+        res.onError(err -> {
+            res.setErrorResult(error);
+        });
+
+        var key = new Object();
+        listeners.put(key, event -> {
+            res.setResult(ResponseEntity.ok(event));
+        });
+
+        res.onCompletion(() -> {
+            listeners.remove(key);
+        });
+
+        return res;
     }
 
     /**
@@ -47,7 +90,10 @@ public class EventController {
         if (id < 0 || !eventRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(eventRepository.findById(id).get());
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if(optionalEvent.isPresent()) {
+            return ResponseEntity.ok(eventRepository.findById(id).get());
+        } else return ResponseEntity.notFound().build();
     }
 
     /**
@@ -58,9 +104,12 @@ public class EventController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Event> add(@RequestBody Event event) {
-        if (event == null || event.getName() == null) { // Add other attributes + Check isNullOrEmpty
+        if (event == null || isNullOrEmpty(event.name) || event.lastActDate == null || event.creationDate == null) {
             return ResponseEntity.badRequest().build();
         }
+
+        listeners.forEach((key, consumer) -> consumer.accept(event));
+
         Event postedEvent = eventRepository.save(event);
         return ResponseEntity.ok(postedEvent);
     }
@@ -84,6 +133,8 @@ public class EventController {
         currentEvent.setName(event.getName());
         currentEvent.setLastActDate(event.getLastActDate());
 
+        listeners.forEach((key, consumer) -> consumer.accept(currentEvent));
+
         Event newEvent = eventRepository.save(currentEvent);
         return ResponseEntity.ok(newEvent);
     }
@@ -103,15 +154,55 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
+
     /**
-     * Method to get all the participants of an event
+     * Method that receives and sends objects via the websocket
      *
-     * @param id id of the event to use
-     * @param participantId ids of the participants to find
-     * @return list of all the participants of the event
+     * @param o The Object received
+     * @param id The id of the event from which received
+     * @return The Object that was received
      */
-    @GetMapping("/{id}/participants/{participantId}")
-    public ResponseEntity<Participant> getParticipants(@PathVariable("id") long id, @PathVariable("participantId") long participantId) {
-        return ResponseEntity.notFound().build(); // Needs to be implemented the logic to find the participants
+    @MessageMapping("/events/{id}") // /app/events/{id}
+    @SendTo("/topic/events/{id}")
+    public Object relayObject(Object o, @DestinationVariable("id") String id) {
+        System.out.println(
+                    "[Websocket] Received and sending to id("+id+"):\n"
+                +o);
+        return o;
     }
+
+    /**
+     * Method that receives and sends Participants via the websocket
+     *
+     * @param p The Participant received
+     * @param id The id of the event from which received
+     * @return The Participant that was received
+     */
+    @MessageMapping("/events/{id}/participants") // /app/events/{id}/participants
+    public Participant relayParticipant(Participant p, @DestinationVariable("id") String id) {
+        System.out.println(
+                    "[Websocket] Received a Participant and sending to id("+id+")\n"
+                +p);
+        return p;
+    }
+
+    /**
+     * Method that receives and sends Expenses via the websocket
+     *
+     * @param e The Expense received
+     * @param id The id of the event from which received
+     * @return The Expense that was received
+     */
+    @MessageMapping("/events/{id}/expenses") // /app/events/{id}/expenses
+    public Expense relayExpense(Expense e, @DestinationVariable("id") String id) {
+        System.out.println(
+                    "[Websocket] Received a Expense and sending to id("+id+")\n"
+                +e);
+        return e;
+    }
+
+    private boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
+
 }
