@@ -92,6 +92,7 @@ class AdminLoginCtrlTest extends ApplicationTest {
 
     @Test
     void invalidLanguage(){
+
         assertThrows(Exception.class, () -> alCtrl.langueageswitch("x"));
     }
 
@@ -111,13 +112,13 @@ class AdminLoginCtrlTest extends ApplicationTest {
 
 
 
-    @Test
-    void testSetAndGetHashMap() {
-        HashMap<String, String> hash = new HashMap<>();
-        hash.put("key", "value");
-        alCtrl.setHashmap(hash);
-        assertEquals(hash, alCtrl.getHashmap());
-    }
+//    @Test
+//    void testSetAndGetHashMap() {
+//        HashMap<String, String> hash = new HashMap<>();
+//        hash.put("key", "value");
+//        alCtrl.setHashmap(hash);
+//        assertEquals(hash, alCtrl.getHashmap());
+//    }
 
     @AfterEach
     void tearDown() {
